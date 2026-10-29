@@ -1,0 +1,42 @@
+# MẪU production (không được nạp: đuôi .example). Dùng thay khối `server { listen 80; ... }` chính trong
+# haivan.conf.template khi đã có chứng chỉ (Let's Encrypt). Giữ nguyên khối default_server 444 và www → apex.
+#
+#  1. cp haivan-tls.conf.example haivan-tls.conf, sửa đường dẫn chứng chỉ; bỏ khối `server_name ${HV_SERVER_NAME}` cổng 80
+#     trong haivan.conf.template (hoặc thay bằng khối chuyển hướng bên dưới) để không trùng.
+#  2. Mount thêm /etc/letsencrypt (read-only) và /var/www/certbot vào container nginx.
+#  3. Đặt HV_HSTS_MAX_AGE=300 → kiểm tra → tăng 86400 → 604800 → 31536000. HSTS tự phát khi $scheme=https
+#     (map $hv_h_hsts trong nginx.conf), không cần thêm add_header ở đây. Chưa dùng includeSubDomains/preload.
+#  4. Khối www cũng cần chứng chỉ cho www.haivan.com (SAN) nếu muốn 301 www → apex qua HTTPS.
+#  5. Sau Cloudflare/LB: thêm set_real_ip_from + real_ip_header và đổi dải IP wp-admin (wp-locations.inc).
+
+# HTTP: ACME + chuyển hướng toàn bộ sang HTTPS apex.
+server {
+    listen 80;
+    server_name haivan.com www.haivan.com;
+    location /.well-known/acme-challenge/ { root /var/www/certbot; }
+    location / { return 301 https://haivan.com$request_uri; }
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name www.haivan.com;
+    ssl_certificate     /etc/letsencrypt/live/haivan.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/haivan.com/privkey.pem;
+    return 301 https://haivan.com$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${HV_SERVER_NAME};
+
+    ssl_certificate     /etc/letsencrypt/live/haivan.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/haivan.com/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_session_cache shared:hv_ssl:10m;
+    ssl_session_timeout 1d;
+    ssl_session_tickets off;
+
+    include /etc/nginx/hv-server-common.inc;
+}

@@ -1,0 +1,21 @@
+# Host lạ (IP trần, domain trỏ nhầm) → đóng kết nối, không chuyển tiếp Host tuỳ ý xuống WP/Next.
+server {
+    listen 80 default_server;
+    server_name _;
+    return 444;
+}
+
+# www → apex: BFF so Origin đúng bằng PUBLIC_ORIGIN, nên POST từ www sẽ bị 403 nếu không chuyển.
+server {
+    listen 80;
+    server_name www.haivan.com;
+    return 301 $scheme://haivan.com$request_uri;
+}
+
+server {
+    listen 80;
+    server_name ${HV_SERVER_NAME};
+
+    # Nội dung dùng chung (host check, Next, WordPress) nằm ở hv-server-common.inc để bản TLS production tái dùng.
+    include /etc/nginx/hv-server-common.inc;
+}
