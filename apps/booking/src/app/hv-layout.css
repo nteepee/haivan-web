@@ -1,0 +1,196 @@
+/* Khung trang v4: container, header vàng dính (kính khi cuộn), menu điện thoại, dropdown. Chỉ dùng token. */
+@layer components {
+  .hv-container {
+    width: 100%;
+    max-width: var(--container);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+  .hv-skip {
+    position: absolute;
+    left: var(--s-4);
+    top: var(--s-4);
+    z-index: var(--z-toast);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-1);
+    background: var(--color-ink);
+    color: var(--color-surface);
+    transform: translateY(-200%);
+  }
+  .hv-skip:focus-visible {
+    transform: none;
+  }
+
+  /* Header: thanh vàng một dòng, dính đầu trang; HeaderShell thêm lớp .glass-yellow khi cuộn quá 8px (chỉ đổi nền + bóng, không xô layout). */
+  .hv-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky-nav);
+    background: var(--color-field);
+    box-shadow: var(--shadow-1);
+    color: var(--color-accent-ink);
+  }
+  .hv-header-row {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    min-height: var(--header-h);
+  }
+  .hv-brand {
+    display: flex;
+    align-items: center;
+    min-height: var(--control-h);
+    margin-right: auto;
+    border-radius: var(--r-1);
+  }
+  .hv-nav {
+    display: none;
+  }
+  .hv-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    min-height: var(--control-h);
+    padding-inline: var(--s-3);
+    border-radius: var(--r-1);
+    font-weight: var(--weight-strong);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .hv-nav-link:hover,
+  .hv-nav-link[aria-expanded="true"] {
+    background: var(--color-accent-hover);
+  }
+  .hv-nav-link:active {
+    background: var(--color-accent-edge);
+  }
+  /* Trang hiện tại: nền vàng đậm + chữ 800 (không còn gạch chân ink). */
+  .hv-nav-link[aria-current="page"],
+  .hv-nav-link[aria-current="true"] {
+    background: var(--color-accent-hover);
+    font-weight: var(--weight-display);
+  }
+  .hv-header-call {
+    display: inline-flex;
+    min-width: var(--control-h);
+    min-height: var(--control-h);
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    border-radius: var(--r-1);
+    font-weight: var(--weight-display);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .hv-header-call:hover,
+  .hv-lang:hover,
+  .hv-menu-btn:hover {
+    background: var(--color-accent-hover);
+  }
+  .hv-header-call:active,
+  .hv-menu-btn:active {
+    background: var(--color-accent-edge);
+  }
+  .hv-header-call-num {
+    display: none;
+  }
+  .hv-header-login,
+  .hv-lang {
+    display: none;
+  }
+  .hv-lang {
+    min-width: var(--control-h);
+    min-height: var(--control-h);
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--r-1);
+    font-weight: var(--weight-strong);
+    text-decoration: none;
+  }
+  .hv-menu-btn {
+    display: inline-flex;
+    min-height: var(--control-h);
+    align-items: center;
+    gap: var(--s-2);
+    padding-inline: var(--s-3);
+    border-radius: var(--r-1);
+    font-weight: var(--weight-strong);
+  }
+  /* Menu điện thoại: bảng trắng đặc nổi dưới header (r-2, bóng 2), chữ 18px. */
+  .hv-menu-panel {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    top: 100%;
+    z-index: var(--z-dropdown);
+    max-height: calc(100dvh - var(--header-h) - var(--s-4));
+    overflow-y: auto;
+    padding: var(--s-2);
+    border-radius: var(--r-2);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-2);
+    color: var(--color-text);
+  }
+  .hv-menu-link {
+    display: flex;
+    min-height: var(--control-h);
+    align-items: center;
+    padding-inline: var(--s-3);
+    border-bottom: var(--line) solid var(--color-rule);
+    border-radius: var(--r-1);
+    font-size: var(--fs-18);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-18);
+    text-decoration: none;
+  }
+  .hv-menu-link:hover {
+    background: var(--color-accent-soft);
+  }
+  .hv-menu-link:active {
+    background: var(--color-accent);
+  }
+  .hv-menu-link[aria-current="page"] {
+    background: var(--color-accent-soft);
+    font-weight: var(--weight-display);
+  }
+  .hv-menu-sub {
+    padding-left: var(--s-4);
+    font-size: var(--fs-16);
+    font-weight: var(--weight-body);
+    line-height: var(--lh-16);
+    color: var(--color-muted);
+  }
+  /* Menu thả desktop (Radix): bảng trắng đặc, r-2, bóng 2, không viền. */
+  .hv-dropdown {
+    min-width: 14rem;
+    padding: var(--s-2);
+    border-radius: var(--r-2);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-2);
+  }
+  @media (min-width: 64rem) {
+    .hv-nav {
+      display: flex;
+      align-items: center;
+      margin-right: auto;
+    }
+    .hv-menu-toggle {
+      display: none;
+    }
+    .hv-header-login,
+    .hv-lang {
+      display: inline-flex;
+    }
+    .hv-brand {
+      margin-right: var(--s-6);
+    }
+  }
+  @media (min-width: 75rem) {
+    .hv-header-call-num {
+      display: inline;
+    }
+    .hv-header-call {
+      padding-inline: var(--s-3);
+    }
+  }
+}

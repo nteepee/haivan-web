@@ -1,0 +1,27 @@
+/* Leaflet theo token: nút zoom 44 (tap-min) bo r-1, bóng 1; ghi công chữ nhỏ nhưng đủ tương phản.
+   Không bọc @layer: CSS gốc của Leaflet không nằm trong layer nên chỉ luật không-layer mới thắng được. Chỉ dùng token. */
+.leaflet-container.leaflet-touch .leaflet-bar {
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--r-1);
+  box-shadow: var(--shadow-1);
+}
+.leaflet-container.leaflet-touch .leaflet-bar a {
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: 0;
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  line-height: var(--tap-min);
+}
+.leaflet-container.leaflet-touch .leaflet-bar a:hover,
+.leaflet-container.leaflet-touch .leaflet-bar a:focus {
+  background-color: var(--color-accent-soft);
+}
+.leaflet-container .leaflet-control-attribution {
+  background: var(--glass-bg);
+  color: var(--color-text);
+}
+.leaflet-container .leaflet-control-attribution a {
+  color: var(--color-link);
+}

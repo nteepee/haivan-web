@@ -1,0 +1,589 @@
+{
+  "version": 1,
+  "hotline": "1900 6763",
+  "messenger": "https://m.me/109372664196961",
+  "apps": {
+    "ios": "https://apps.apple.com/app/apple-store/id1440552948",
+    "android": "https://play.google.com/store/apps/details?id=com.havaz_app"
+  },
+  "partners": [
+    {
+      "img": "/assets/images/partner1.png",
+      "alt": "Đối tác Hải Vân 1"
+    },
+    {
+      "img": "/assets/images/partner2.png",
+      "alt": "Đối tác Hải Vân 2"
+    },
+    {
+      "img": "/assets/images/partner3.png",
+      "alt": "Đối tác Hải Vân 3"
+    },
+    {
+      "img": "/assets/images/partner4.png",
+      "alt": "Đối tác Hải Vân 4"
+    },
+    {
+      "img": "/assets/images/partner5.png",
+      "alt": "Đối tác Hải Vân 5"
+    },
+    {
+      "img": "/assets/images/partner6.png",
+      "alt": "Đối tác Hải Vân 6"
+    }
+  ],
+  "members": [
+    {
+      "img": "/assets/images/member.png",
+      "href": "https://gpn.travel/vietnam/",
+      "alt": "Thành viên Global Partner Network (GPN)"
+    }
+  ],
+  "payments": [
+    {
+      "img": "/assets/images/vnpay.jpg",
+      "alt": "VNPay"
+    },
+    {
+      "img": "/assets/images/icontien.jpg",
+      "alt": "Thanh toán tiền mặt"
+    }
+  ],
+  "social": {
+    "facebook": "https://www.facebook.com/congtyhaivan",
+    "youtube": "https://www.youtube.com/channel/UCWaijHaQY8Y8tcc3IcE0Iwg"
+  },
+  "certificate": {
+    "href": "http://online.gov.vn/Home/WebDetails/70573",
+    "img": "/assets/images/verify_info.png",
+    "alt": "Đã đăng ký với Bộ Công Thương"
+  },
+  "qr": "/assets/images/qrcode_haivan.png",
+  "badges": {
+    "appstore": "/assets/images/appstore.png",
+    "playstore": "/assets/images/playstore.png",
+    "appstore_icon": "/assets/icons/appstore.svg",
+    "playstore_icon": "/assets/icons/playstore.svg"
+  },
+  "copyright": {
+    "vi": "Bản quyền © {year} Hải Vân",
+    "en": "Copyright © {year} Hai Van"
+  },
+  "logo_white": "/assets/images/logo_white.svg",
+  "vi": {
+    "primary": [
+      {
+        "label": "Tuyến đường",
+        "href": "/xe-khach",
+        "children": [
+          {
+            "label": "Sài Gòn – Vũng Tàu",
+            "href": "/xe-khach/quan-1/vung-tau"
+          },
+          {
+            "label": "Sân bay Tân Sơn Nhất – Vũng Tàu",
+            "href": "/xe-khach/tan-son-nhat/vung-tau"
+          },
+          {
+            "label": "Hà Nội – Điện Biên",
+            "href": "/xe-khach/my-dinh/dien-bien"
+          },
+          {
+            "label": "Hà Nội – Mộc Châu",
+            "href": "/xe-khach/my-dinh/moc-chau"
+          },
+          {
+            "label": "Hà Nội – Sơn La",
+            "href": "/xe-khach/my-dinh/son-la"
+          }
+        ]
+      },
+      {
+        "label": "Khám phá",
+        "href": "/diem-den",
+        "children": [
+          {
+            "label": "Điểm đến",
+            "href": "/diem-den"
+          },
+          {
+            "label": "Tin tức",
+            "href": "/chung-toi/bao-chi-tin-tuc"
+          },
+          {
+            "label": "Chương trình khách hàng thân thiết",
+            "href": "/chung-toi/chuong-trinh-khach-hang-than-thiet"
+          }
+        ]
+      },
+      {
+        "label": "Dịch vụ",
+        "href": "/dich-vu/xe-lien-tinh/chon-cho-truoc",
+        "children": [
+          {
+            "label": "Xe liên tỉnh",
+            "href": "/dich-vu/xe-lien-tinh/chon-cho-truoc"
+          },
+          {
+            "label": "Xe hợp đồng",
+            "href": "/dich-vu/xe-hop-dong/phuong-tien"
+          },
+          {
+            "label": "Xe sân bay",
+            "href": "/xe-san-bay"
+          },
+          {
+            "label": "Tra cứu hàng hoá",
+            "href": "/dich-vu/hang-hoa/tra-cuu-don"
+          }
+        ]
+      },
+      {
+        "label": "Chúng tôi",
+        "href": "/chung-toi/gioi-thieu",
+        "children": [
+          {
+            "label": "Về HAIVAN",
+            "href": "/chung-toi/gioi-thieu"
+          },
+          {
+            "label": "An toàn & chất lượng",
+            "href": "/chung-toi/an-toan-chat-luong"
+          },
+          {
+            "label": "Phát triển bền vững",
+            "href": "/chung-toi/phat-trien-ben-vung"
+          },
+          {
+            "label": "Đánh giá của khách hàng",
+            "href": "/chung-toi/danh-gia-cua-khach-hang"
+          },
+          {
+            "label": "Đối tác",
+            "href": "/chung-toi/doi-tac"
+          },
+          {
+            "label": "Tin tức",
+            "href": "/chung-toi/bao-chi-tin-tuc"
+          },
+          {
+            "label": "Tuyển dụng",
+            "href": "/chung-toi/tuyen-dung"
+          }
+        ]
+      },
+      {
+        "label": "Hỗ trợ",
+        "href": "/ho-tro"
+      }
+    ],
+    "footer_columns": [
+      {
+        "title": "Về chúng tôi",
+        "items": [
+          {
+            "label": "Giới thiệu HAIVAN",
+            "href": "/chung-toi/gioi-thieu"
+          },
+          {
+            "label": "Tuyển dụng",
+            "href": "/chung-toi/tuyen-dung"
+          },
+          {
+            "label": "Tin tức",
+            "href": "/chung-toi/bao-chi-tin-tuc"
+          },
+          {
+            "label": "Liên hệ",
+            "href": "/chung-toi/lien-he"
+          },
+          {
+            "label": "Khách hàng thân thiết",
+            "href": "/chung-toi/chuong-trinh-khach-hang-than-thiet"
+          }
+        ]
+      },
+      {
+        "title": "Xe liên tỉnh",
+        "items": [
+          {
+            "label": "Sài Gòn – Vũng Tàu",
+            "href": "/xe-khach/quan-1/vung-tau"
+          },
+          {
+            "label": "Vũng Tàu – Sài Gòn",
+            "href": "/xe-khach/vung-tau/quan-1-san-bay"
+          },
+          {
+            "label": "Sân bay Tân Sơn Nhất – Vũng Tàu",
+            "href": "/xe-khach/tan-son-nhat/vung-tau"
+          },
+          {
+            "label": "Vũng Tàu – Sân bay Tân Sơn Nhất",
+            "href": "/xe-khach/vung-tau/tan-son-nhat"
+          },
+          {
+            "label": "Hà Nội – Điện Biên",
+            "href": "/xe-khach/my-dinh/dien-bien"
+          },
+          {
+            "label": "Điện Biên – Hà Nội",
+            "href": "/xe-khach/dien-bien/my-dinh"
+          },
+          {
+            "label": "Yên Nghĩa – Điện Biên",
+            "href": "/xe-khach/yen-nghia/dien-bien"
+          },
+          {
+            "label": "Hà Nội – Mộc Châu",
+            "href": "/xe-khach/my-dinh/moc-chau"
+          },
+          {
+            "label": "Mộc Châu – Hà Nội",
+            "href": "/xe-khach/moc-chau/my-dinh"
+          },
+          {
+            "label": "Hà Nội – Sơn La",
+            "href": "/xe-khach/my-dinh/son-la"
+          },
+          {
+            "label": "Sơn La – Hà Nội",
+            "href": "/xe-khach/son-la/my-dinh"
+          },
+          {
+            "label": "Xe hợp đồng",
+            "href": "/dich-vu/xe-hop-dong/phuong-tien"
+          }
+        ]
+      },
+      {
+        "title": "Thông tin điểm đến",
+        "items": [
+          {
+            "label": "Bà Rịa - Vũng Tàu",
+            "href": "/diem-den/vung-tau"
+          },
+          {
+            "label": "TP. Hồ Chí Minh",
+            "href": "/diem-den/ho-chi-minh"
+          },
+          {
+            "label": "Điện Biên",
+            "href": "/diem-den/dien-bien"
+          },
+          {
+            "label": "Sơn La",
+            "href": "/diem-den/son-la"
+          },
+          {
+            "label": "Mộc Châu",
+            "href": "/diem-den/moc-chau"
+          },
+          {
+            "label": "Hà Nội",
+            "href": "/diem-den/ha-noi"
+          }
+        ]
+      },
+      {
+        "title": "Hỗ trợ",
+        "items": [
+          {
+            "label": "Ứng dụng đặt vé HAIVAN",
+            "href": "/dich-vu/xe-lien-tinh/ung-dung"
+          },
+          {
+            "label": "Hướng dẫn thanh toán",
+            "href": "/ho-tro/huong-dan-thanh-toan"
+          },
+          {
+            "label": "Quy chế HAIVAN.COM",
+            "href": "/chinh-sach/quy-che"
+          },
+          {
+            "label": "Chính sách bảo mật thông tin",
+            "href": "/chinh-sach/bao-mat-thong-tin"
+          },
+          {
+            "label": "Chính sách bảo mật thanh toán",
+            "href": "/chinh-sach/bao-mat-thanh-toan"
+          },
+          {
+            "label": "Chính sách và quy trình giải quyết khiếu nại",
+            "href": "/chinh-sach/giai-quyet-khieu-nai"
+          },
+          {
+            "label": "Hướng dẫn thanh toán VNPAY-QR",
+            "href": "/chinh-sach/huong-dan-thanh-toan-vnpay"
+          }
+        ]
+      }
+    ],
+    "company": {
+      "name": "Công ty liên doanh vận chuyển quốc tế Hải Vân",
+      "lines": [
+        "Địa chỉ ĐKKD: Số 10.15 Lương Thế Vinh, khu ĐTM phía Đông, P. Tân Hưng, TP. Hải Phòng, Việt Nam",
+        "Địa chỉ Liên hệ: Tầng 5, Toà nhà 125 Hoàng Ngân, Phường Yên Hòa, Hà Nội",
+        "Giấy chứng nhận ĐKKD số 0800290724 do Sở KH&ĐT tỉnh Hải Dương cấp lần đầu ngày 18/04/2008"
+      ]
+    }
+  },
+  "en": {
+    "primary": [
+      {
+        "label": "Routes",
+        "href": "/en/xe-khach",
+        "children": [
+          {
+            "label": "Saigon – Vung Tau",
+            "href": "/en/xe-khach/quan-1/vung-tau"
+          },
+          {
+            "label": "Tan Son Nhat Airport – Vung Tau",
+            "href": "/en/xe-khach/tan-son-nhat/vung-tau"
+          },
+          {
+            "label": "Hanoi – Dien Bien",
+            "href": "/en/xe-khach/my-dinh/dien-bien"
+          },
+          {
+            "label": "Hanoi – Moc Chau",
+            "href": "/en/xe-khach/my-dinh/moc-chau"
+          },
+          {
+            "label": "Hanoi – Son La",
+            "href": "/en/xe-khach/my-dinh/son-la"
+          }
+        ]
+      },
+      {
+        "label": "Explore",
+        "href": "/en/diem-den",
+        "children": [
+          {
+            "label": "Destination",
+            "href": "/en/diem-den"
+          },
+          {
+            "label": "News",
+            "href": "/en/chung-toi/bao-chi-tin-tuc"
+          },
+          {
+            "label": "Loyalty program",
+            "href": "/en/chung-toi/chuong-trinh-khach-hang-than-thiet"
+          }
+        ]
+      },
+      {
+        "label": "Services",
+        "href": "/en/dich-vu/xe-lien-tinh/chon-cho-truoc",
+        "children": [
+          {
+            "label": "Inter-city Bus",
+            "href": "/en/dich-vu/xe-lien-tinh/chon-cho-truoc"
+          },
+          {
+            "label": "Rental cars",
+            "href": "/en/dich-vu/xe-hop-dong/phuong-tien"
+          },
+          {
+            "label": "Airport transfer",
+            "href": "/en/xe-san-bay"
+          },
+          {
+            "label": "Parcel tracking",
+            "href": "/en/dich-vu/hang-hoa/tra-cuu-don"
+          }
+        ]
+      },
+      {
+        "label": "About us",
+        "href": "/en/chung-toi/gioi-thieu",
+        "children": [
+          {
+            "label": "About Haivan",
+            "href": "/en/chung-toi/gioi-thieu"
+          },
+          {
+            "label": "Safety and Quality",
+            "href": "/en/chung-toi/an-toan-chat-luong"
+          },
+          {
+            "label": "Sustainable Development",
+            "href": "/en/chung-toi/phat-trien-ben-vung"
+          },
+          {
+            "label": "Customer Review",
+            "href": "/en/chung-toi/danh-gia-cua-khach-hang"
+          },
+          {
+            "label": "Partners",
+            "href": "/en/chung-toi/doi-tac"
+          },
+          {
+            "label": "News",
+            "href": "/en/chung-toi/bao-chi-tin-tuc"
+          },
+          {
+            "label": "Recruitment",
+            "href": "/en/chung-toi/tuyen-dung"
+          }
+        ]
+      },
+      {
+        "label": "Support",
+        "href": "/en/ho-tro"
+      }
+    ],
+    "footer_columns": [
+      {
+        "title": "About us",
+        "items": [
+          {
+            "label": "Introducing HAIVAN",
+            "href": "/en/chung-toi/gioi-thieu"
+          },
+          {
+            "label": "Recruitment",
+            "href": "/en/chung-toi/tuyen-dung"
+          },
+          {
+            "label": "News",
+            "href": "/en/chung-toi/bao-chi-tin-tuc"
+          },
+          {
+            "label": "Contact",
+            "href": "/en/chung-toi/lien-he"
+          },
+          {
+            "label": "Loyalty program",
+            "href": "/en/chung-toi/chuong-trinh-khach-hang-than-thiet"
+          }
+        ]
+      },
+      {
+        "title": "Inter-city Bus",
+        "items": [
+          {
+            "label": "Saigon – Vung Tau",
+            "href": "/en/xe-khach/quan-1/vung-tau"
+          },
+          {
+            "label": "Vung Tau – Saigon",
+            "href": "/en/xe-khach/vung-tau/quan-1-san-bay"
+          },
+          {
+            "label": "Tan Son Nhat Airport – Vung Tau",
+            "href": "/en/xe-khach/tan-son-nhat/vung-tau"
+          },
+          {
+            "label": "Vung Tau – Tan Son Nhat Airport",
+            "href": "/en/xe-khach/vung-tau/tan-son-nhat"
+          },
+          {
+            "label": "Hanoi – Dien Bien",
+            "href": "/en/xe-khach/my-dinh/dien-bien"
+          },
+          {
+            "label": "Dien Bien – Hanoi",
+            "href": "/en/xe-khach/dien-bien/my-dinh"
+          },
+          {
+            "label": "Yen Nghia – Dien Bien",
+            "href": "/en/xe-khach/yen-nghia/dien-bien"
+          },
+          {
+            "label": "Hanoi – Moc Chau",
+            "href": "/en/xe-khach/my-dinh/moc-chau"
+          },
+          {
+            "label": "Moc Chau – Hanoi",
+            "href": "/en/xe-khach/moc-chau/my-dinh"
+          },
+          {
+            "label": "Hanoi – Son La",
+            "href": "/en/xe-khach/my-dinh/son-la"
+          },
+          {
+            "label": "Son La – Hanoi",
+            "href": "/en/xe-khach/son-la/my-dinh"
+          },
+          {
+            "label": "Rental Cars",
+            "href": "/en/dich-vu/xe-hop-dong/phuong-tien"
+          }
+        ]
+      },
+      {
+        "title": "Destination information",
+        "items": [
+          {
+            "label": "Ba Ria - Vung Tau",
+            "href": "/en/diem-den/vung-tau"
+          },
+          {
+            "label": "Ho Chi Minh City",
+            "href": "/en/diem-den/ho-chi-minh"
+          },
+          {
+            "label": "Dien Bien",
+            "href": "/en/diem-den/dien-bien"
+          },
+          {
+            "label": "Son La",
+            "href": "/en/diem-den/son-la"
+          },
+          {
+            "label": "Moc Chau",
+            "href": "/en/diem-den/moc-chau"
+          },
+          {
+            "label": "Hanoi",
+            "href": "/en/diem-den/ha-noi"
+          }
+        ]
+      },
+      {
+        "title": "Support",
+        "items": [
+          {
+            "label": "HAIVAN ticket booking application",
+            "href": "/en/dich-vu/xe-lien-tinh/ung-dung"
+          },
+          {
+            "label": "Payment Guide",
+            "href": "/en/ho-tro/huong-dan-thanh-toan"
+          },
+          {
+            "label": "Regulations of HAIVAN.COM",
+            "href": "/en/chinh-sach/quy-che"
+          },
+          {
+            "label": "Information security policy",
+            "href": "/en/chinh-sach/bao-mat-thong-tin"
+          },
+          {
+            "label": "Payment security policy",
+            "href": "/en/chinh-sach/bao-mat-thanh-toan"
+          },
+          {
+            "label": "Policies and procedures to resolve the complaint",
+            "href": "/en/chinh-sach/giai-quyet-khieu-nai"
+          },
+          {
+            "label": "VNPAY-QR payment instructions",
+            "href": "/en/chinh-sach/huong-dan-thanh-toan-vnpay"
+          }
+        ]
+      }
+    ],
+    "company": {
+      "name": "HAI VAN INTERNATIONAL TRANSPORTATION JOINT VENTURE COMPANY",
+      "lines": [
+        "Registered business address: No. 10.15 Luong The Vinh Street, East Urban Area, Tan Hung Ward, Hai Phong City, Vietnam",
+        "Contact address: 5th Floor, Building 125 Hoang Ngan, Yen Hoa Ward, Hanoi, Vietnam",
+        "Business Registration Certificate No. 0800290724, first issued on April 18, 2008 by the Department of Planning and Investment of Hai Duong Province"
+      ]
+    }
+  }
+}

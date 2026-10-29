@@ -1,0 +1,39 @@
+/* Phần mở rộng của hàng chuyến (v4): dải "Khởi hành", ảnh xe r-1, sơ đồ, bản đồ lộ trình. Nằm trên nền select của thẻ mở. Chỉ dùng token. */
+@layer components {
+  .hv-trip-note {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-top: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    border-radius: var(--r-2);
+    background: var(--color-accent-soft);
+    font-weight: var(--weight-strong);
+  }
+  .hv-trip[data-open="true"] .hv-trip-note {
+    background: var(--color-surface);
+  }
+  /* Khung mở: trong suốt trên nền select của thẻ; vạch trên 1px rule; sơ đồ ghế trong khung xe, ảnh và bản đồ bên cạnh. */
+  .hv-trip-panel {
+    display: grid;
+    gap: var(--s-6);
+    margin-top: var(--s-2);
+    padding: var(--card-pad) var(--s-2) var(--s-2);
+    border-top: var(--line) solid var(--color-rule);
+  }
+  .hv-photos4 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-2);
+  }
+  .hv-photos4 .hv-photo {
+    aspect-ratio: 3 / 2;
+    border-radius: var(--r-1);
+  }
+  /* Màu bản đồ lộ trình (Leaflet) do journey-map.tsx truyền qua pathOptions từ token, không đặt ở đây. */
+  @media (min-width: 60rem) {
+    .hv-photos4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}

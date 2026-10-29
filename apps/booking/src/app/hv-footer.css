@@ -1,0 +1,256 @@
+/* Footer gọn, cùng lớp và cùng giá trị với footer.css của WP: mast (logo + hotline), cột liên kết, một hàng tin cậy (logo trên chip sáng),
+   đáy (pháp lý | theo dõi + ứng dụng), bản quyền dòng cuối. Chỉ dùng token. */
+@layer components {
+  /* Nhịp footer: một giá trị mỗi mốc = --section-pad; đáy thêm chỗ cho nút gọi nổi. */
+  .hv-footer {
+    padding-block: var(--section-pad) calc(var(--section-pad) + var(--control-h-lg));
+    background: var(--color-ink);
+    color: var(--color-surface);
+  }
+  .hv-footer a {
+    text-decoration: none;
+  }
+  .hv-footer-tier {
+    display: grid;
+    gap: var(--s-6);
+    padding-block: var(--section-pad);
+    border-bottom: var(--line) solid var(--color-muted);
+  }
+  .hv-footer-tier:first-child {
+    padding-top: 0;
+  }
+  .hv-footer-tier:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .hv-footer-logo {
+    width: calc(var(--s-24) * 2);
+    height: auto;
+  }
+  .hv-footer-call {
+    display: inline-flex;
+    min-height: var(--control-h-lg);
+    width: fit-content;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--color-accent);
+    font-size: var(--fs-32);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-32);
+  }
+  .hv-footer-call:hover {
+    text-decoration: underline;
+  }
+  .hv-footer-head {
+    margin: 0 0 var(--s-2);
+    color: var(--color-surface);
+    font-family: var(--font-display);
+    font-size: var(--fs-16);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-16);
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+  .hv-footer-link {
+    display: inline-flex;
+    min-width: var(--tap-min);
+    min-height: var(--tap-min);
+    align-items: center;
+    text-decoration: underline !important;
+    text-decoration-color: var(--color-muted-on-dark);
+  }
+  .hv-footer-link:hover {
+    color: var(--color-accent);
+    text-decoration-color: var(--color-accent);
+  }
+  /* Điện thoại: danh sách liên kết hai cột cho gọn; từ 40rem chỉ cột tuyến xe (nav thứ hai) chia hai. */
+  .hv-footer-cols ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--s-4);
+  }
+  .hv-footer-legal {
+    display: grid;
+    gap: 0;
+    align-content: start;
+    color: var(--color-muted-on-dark);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+  .hv-footer-legal p {
+    margin: 0;
+  }
+  .hv-footer-legal strong {
+    color: var(--color-surface);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+  }
+  .hv-footer-legal a {
+    display: inline-flex;
+    min-width: var(--tap-min);
+    min-height: var(--tap-min);
+    align-items: center;
+    color: var(--color-surface);
+    font-weight: var(--weight-display);
+  }
+  .hv-footer-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+  .hv-footer-icons a {
+    display: grid;
+    min-width: var(--control-h);
+    min-height: var(--control-h);
+    place-items: center;
+    border-radius: var(--r-1);
+    background: var(--color-surface);
+  }
+  .hv-footer-icons img {
+    width: var(--s-8);
+    height: var(--s-8);
+  }
+
+  /* Mast + cột + hàng tin cậy + đáy gọn. */
+  .hv-footer-cols,
+  .hv-footer-mast {
+    padding-block: var(--s-6);
+  }
+  .hv-footer-mast {
+    padding-top: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-3) var(--s-6);
+  }
+  .hv-footer-mast > span:empty {
+    display: none;
+  }
+  .hv-footer-mast .hv-footer-logo {
+    width: calc(var(--s-24) + var(--s-8));
+  }
+  .hv-footer-mast .hv-footer-call {
+    font-size: var(--fs-24);
+    line-height: var(--lh-24);
+  }
+  .hv-footer-trust {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--s-4) var(--s-8);
+    padding-block: var(--s-6);
+  }
+  .hv-footer-bottom {
+    padding-block: var(--s-6);
+    border-bottom: 0;
+  }
+  .hv-footer-group {
+    display: grid;
+    gap: var(--s-2);
+    align-content: start;
+  }
+  .hv-footer-group .hv-footer-head {
+    margin: 0;
+    color: var(--color-muted-on-dark);
+    font-family: inherit;
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+  }
+  /* Chip logo: `.hv-chips` cũng là hàng chip lọc ở trang kết quả (hv-filters.css) nên đặt lại trong phạm vi footer. */
+  .hv-footer .hv-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  .hv-footer .hv-chips li {
+    display: flex;
+    align-items: center;
+    padding: var(--s-2);
+    border-radius: var(--r-1);
+    background: var(--color-surface);
+  }
+  .hv-footer .hv-chips li:has(> a) {
+    padding: 0;
+  }
+  .hv-footer .hv-chips a {
+    display: flex;
+    align-items: center;
+    min-height: var(--tap-min);
+    padding: var(--s-2);
+    border-radius: var(--r-1);
+  }
+  .hv-footer .hv-chips img {
+    height: calc(var(--s-8) - var(--s-1));
+    width: auto;
+    max-width: none;
+  }
+  .hv-footer-follow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: var(--s-3) var(--s-8);
+  }
+  .hv-footer-copy {
+    margin: 0;
+    padding-top: var(--s-4);
+    border-top: var(--line) solid var(--color-muted);
+    color: var(--color-muted-on-dark);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+
+  @media (min-width: 40rem) {
+    .hv-footer-cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .hv-footer-cols ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hv-footer-cols nav:nth-child(2) {
+      grid-column: 1 / -1;
+    }
+    .hv-footer-cols nav:nth-child(2) ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .hv-footer .hv-chips img {
+      height: var(--s-8);
+    }
+    .hv-footer-link {
+      min-height: var(--s-8);
+    }
+    .hv-footer-legal a {
+      min-height: var(--s-8);
+    }
+  }
+  @media (min-width: 60rem) {
+    .hv-footer-mast {
+      display: grid;
+      grid-template-columns: auto auto;
+      justify-content: space-between;
+    }
+    .hv-footer-mast .hv-footer-call {
+      font-size: var(--fs-32);
+      line-height: var(--lh-32);
+    }
+    .hv-footer-mast .hv-footer-logo {
+      width: calc(var(--s-24) * 2);
+    }
+    .hv-footer-bottom {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+    }
+  }
+  @media (min-width: 75rem) {
+    .hv-footer-cols {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+    .hv-footer-cols nav:nth-child(2) {
+      grid-column: span 2;
+    }
+  }
+}

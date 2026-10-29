@@ -1,0 +1,34 @@
+/* Nút gọi nổi. Chỉ dùng token. */
+@layer components {
+  /* Nút gọi nổi (nút vuông chỉ-có-icon nên tròn, không viền): luôn cách một chạm; nằm trên thanh dính đúng bằng chiều cao đo được (--bar-h). */
+  .hv-call-fab {
+    position: fixed;
+    right: var(--s-4);
+    bottom: calc(var(--s-4) + var(--bar-h));
+    z-index: var(--z-sticky);
+    display: grid;
+    width: var(--control-h-lg);
+    height: var(--control-h-lg);
+    place-items: center;
+    border-radius: var(--r-round);
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    box-shadow: var(--shadow-2);
+    text-decoration: none;
+    transition:
+      opacity var(--dur-micro) var(--ease-out),
+      visibility var(--dur-micro) var(--ease-out);
+  }
+  /* Nhường chỗ khi một ô nhập nằm dưới nút (xem HotlineButton); visibility để nút ẩn cũng không nhận Tab. */
+  .hv-call-fab[data-dodge="true"] {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .hv-call-fab:hover {
+    background: var(--color-accent-hover);
+  }
+  .hv-call-fab:active {
+    transform: translateY(var(--line-strong));
+  }
+}

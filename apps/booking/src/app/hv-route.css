@@ -1,0 +1,177 @@
+/* Trang tuyến /xe-khach/[start]/[end] và /xe-khach: banner, số liệu, thẻ tìm vé đè mép, địa chỉ, mosaic, sơ đồ, dải CTA. Chỉ dùng token. */
+@layer components {
+  /* Banner v3: dải vàng thương hiệu, chữ trái, ảnh xe phải; thẻ tìm vé nổi (bóng raise) đè mép dưới. */
+  .hv-rhero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-6);
+    align-items: center;
+    padding-block: var(--section-pad) calc(var(--section-pad) + var(--s-6));
+  }
+  .hv-rhero-text {
+    display: grid;
+    align-content: center;
+    gap: var(--s-3);
+  }
+  .hv-rhero-art {
+    width: 100%;
+    max-width: calc(var(--s-24) * 6);
+    height: auto;
+    margin-inline: auto;
+  }
+  .hv-facts {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: var(--s-6);
+    justify-content: start;
+    margin-top: var(--s-2);
+  }
+  .hv-facts dd {
+    color: var(--color-ink);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-24);
+    font-variant-numeric: tabular-nums;
+  }
+  .hv-facts dt {
+    color: var(--color-accent-ink);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+  }
+  .hv-facts > div {
+    display: flex;
+    flex-direction: column;
+  }
+  /* Dải đệm tràn bề rộng chứa thẻ tìm vé: đè lên dải vàng s-6; nửa trên trong suốt, nửa dưới trắng như section kế tiếp; không đệm đáy (nhịp do padding của section kế tiếp). */
+  .hv-rplate-bleed {
+    position: relative;
+    z-index: var(--z-raised);
+    margin-top: calc(var(--s-6) * -1);
+    background: linear-gradient(to bottom, transparent var(--s-6), var(--color-surface) var(--s-6));
+  }
+  @media (min-width: 60rem) {
+    .hv-rhero {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+      gap: var(--s-16);
+    }
+  }
+
+  /* Cột đọc, hàng ruled, FAQ gập. */
+  .hv-ruled {
+    border-top: var(--line) solid var(--color-rule);
+  }
+  .hv-faq-more > summary {
+    width: fit-content;
+    list-style: none;
+    cursor: pointer;
+  }
+  .hv-faq-more > summary::-webkit-details-marker {
+    display: none;
+  }
+  .hv-two {
+    display: grid;
+    gap: var(--s-8);
+  }
+  .hv-addrs {
+    display: grid;
+  }
+  .hv-addrs .hv-addr:first-child {
+    border-top: var(--line) solid var(--color-rule);
+  }
+  .hv-amenities {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-3) var(--s-4);
+  }
+  .hv-amenities li {
+    display: flex;
+    min-height: var(--tap-min);
+    align-items: center;
+    gap: var(--s-3);
+    font-weight: var(--weight-strong);
+  }
+  .hv-mosaic {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-2);
+  }
+  /* Ảnh nhỏ trong mosaic r-3; ảnh lớn (cạnh ngắn > 240) và khung bản đồ r-4 (chỉ ảnh/bản đồ). */
+  .hv-mosaic .hv-photo {
+    border-radius: var(--r-3);
+    aspect-ratio: 4 / 3;
+  }
+  .hv-mosaic .hv-photo:first-child {
+    border-radius: var(--r-4);
+    grid-column: 1 / -1;
+    aspect-ratio: 3 / 2;
+  }
+  .hv-map-wrap {
+    display: grid;
+    align-content: center;
+    padding-bottom: var(--s-2);
+    overflow-x: auto;
+    border-radius: var(--r-4);
+  }
+  .hv-map-wrap img {
+    width: 100%;
+    min-width: calc(var(--s-24) * 6 + var(--s-6) * 2);
+    height: auto;
+  }
+  .hv-cta {
+    display: grid;
+    gap: var(--s-6);
+    align-items: center;
+  }
+  @media (min-width: 40rem) {
+    .hv-amenities {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 60rem) {
+    .hv-two {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: var(--s-16);
+      align-items: start;
+    }
+    .hv-amenities {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .hv-cta {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+
+  /* Bảng giá + giờ xuất bến của trang tuyến: cuộn ngang trong khung trên điện thoại, hàng kẻ 1px rule, số tabular. */
+  .hv-fare-wrap {
+    margin-bottom: var(--s-6);
+    overflow-x: auto;
+  }
+  .hv-fare-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: start;
+  }
+  .hv-fare-table caption {
+    padding-bottom: var(--s-2);
+    color: var(--color-ink);
+    font-weight: var(--weight-display);
+    text-align: start;
+  }
+  .hv-fare-table th,
+  .hv-fare-table td {
+    padding: var(--s-3) var(--s-4) var(--s-3) 0;
+    border-bottom: var(--hairline);
+    vertical-align: top;
+  }
+  .hv-fare-table thead th {
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+  }
+  .hv-fare-table tbody th {
+    color: var(--color-ink);
+    font-weight: var(--weight-display);
+  }
+}

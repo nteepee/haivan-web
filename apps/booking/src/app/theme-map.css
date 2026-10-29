@@ -1,0 +1,196 @@
+/* Cầu nối token thiết kế (tokens.css) sang tiện ích Tailwind 4.
+   `@theme inline` làm tiện ích đọc thẳng `var(--...)`; tên màu/bóng trùng tên token nên giá trị thật (kèm hex fallback)
+   luôn lấy từ :root không-layer của tokens.css. Quy tắc tra cứu: docs/design/tailwind-map.md. */
+@theme inline {
+  /* Màu: tên tiện ích = token bỏ `--color-` (bg-accent, text-ink, bg-paper, border-rule ...). */
+  --color-accent: var(--color-accent);
+  --color-accent-hover: var(--color-accent-hover);
+  --color-accent-edge: var(--color-accent-edge);
+  --color-select-edge: var(--color-select-edge);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-ink: var(--color-accent-ink);
+  --color-field: var(--color-field);
+  --color-paper: var(--color-paper);
+  --color-surface: var(--color-surface);
+  --color-paper-2: var(--color-paper-2);
+  --color-paper-3: var(--color-paper-3);
+  --color-ink: var(--color-ink);
+  --color-ink-deep: var(--color-ink-deep);
+  --color-text: var(--color-text);
+  --color-muted: var(--color-muted);
+  --color-muted-on-dark: var(--color-muted-on-dark);
+  --color-rule: var(--color-rule);
+  --color-rule-2: var(--color-rule-2);
+  --color-edge: var(--color-edge);
+  --color-sold: var(--color-sold);
+  --color-scrim: var(--color-scrim);
+  --color-focus: var(--color-focus);
+  --color-focus-on-dark: var(--color-focus-on-dark);
+  --color-error: var(--color-error);
+  --color-error-soft: var(--color-error-soft);
+  --color-success: var(--color-success);
+  --color-success-soft: var(--color-success-soft);
+  --color-link: var(--color-link);
+  /* v3: nền section ấm, màu phụ cho ưu đãi/huy hiệu; nền đậm luôn đi với chữ --color-on-* (bg-promo-teal text-on-teal). */
+  --color-tint-warm: var(--color-tint-warm);
+  --color-on-strong: var(--color-on-strong);
+  --color-promo-orange: var(--color-promo-orange);
+  --color-promo-orange-soft: var(--color-promo-orange-soft);
+  --color-promo-teal: var(--color-promo-teal);
+  --color-promo-teal-soft: var(--color-promo-teal-soft);
+  --color-promo-coral: var(--color-promo-coral);
+  --color-promo-coral-soft: var(--color-promo-coral-soft);
+  --color-promo-leaf: var(--color-promo-leaf);
+  --color-promo-leaf-soft: var(--color-promo-leaf-soft);
+  --color-promo-blue: var(--color-promo-blue);
+  --color-promo-blue-soft: var(--color-promo-blue-soft);
+  --color-on-orange: var(--color-on-orange);
+  --color-on-teal: var(--color-on-teal);
+  --color-on-coral: var(--color-on-coral);
+  --color-on-leaf: var(--color-on-leaf);
+  --color-on-blue: var(--color-on-blue);
+
+  /* Tên cũ của shadcn trỏ về token mới (component ui/ còn dùng). */
+  --color-background: var(--color-paper);
+  --color-foreground: var(--color-text);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--color-text);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--color-text);
+  --color-primary: var(--color-accent);
+  --color-primary-foreground: var(--color-accent-ink);
+  --color-secondary: var(--color-paper-2);
+  --color-secondary-foreground: var(--color-text);
+  --color-muted-foreground: var(--color-muted);
+  --color-accent-foreground: var(--color-accent-ink);
+  --color-destructive: var(--color-error);
+  --color-border: var(--color-rule);
+  --color-input: var(--color-edge);
+  --color-ring: var(--color-focus);
+
+  /* Chữ: một thang 14 đến 48 (48 chỉ cho display hero từ 60rem), line-height cố định (text-14 ... text-40, text-h1/h2/h3/lead). */
+  --text-14: var(--fs-14);
+  --text-14--line-height: var(--lh-14);
+  --text-16: var(--fs-16);
+  --text-16--line-height: var(--lh-16);
+  --text-18: var(--fs-18);
+  --text-18--line-height: var(--lh-18);
+  --text-20: var(--fs-20);
+  --text-20--line-height: var(--lh-20);
+  --text-24: var(--fs-24);
+  --text-24--line-height: var(--lh-24);
+  --text-32: var(--fs-32);
+  --text-32--line-height: var(--lh-32);
+  --text-40: var(--fs-40);
+  --text-40--line-height: var(--lh-40);
+  --text-48: var(--fs-48);
+  --text-48--line-height: var(--lh-48);
+  --text-display: var(--fs-display);
+  --text-display--line-height: var(--lh-display);
+  --text-h1: var(--fs-h1);
+  --text-h1--line-height: var(--lh-h1);
+  --text-h2: var(--fs-h2);
+  --text-h2--line-height: var(--lh-h2);
+  --text-h3: var(--fs-h3);
+  --text-h3--line-height: var(--lh-h3);
+  --text-lead: var(--fs-lead);
+  --text-lead--line-height: var(--lh-lead);
+  /* Tên cỡ mặc định của Tailwind gấp về thang chuẩn: không còn chữ dưới 14px. */
+  --text-xs: var(--fs-14);
+  --text-xs--line-height: var(--lh-14);
+  --text-sm: var(--fs-14);
+  --text-sm--line-height: var(--lh-14);
+  --text-base: var(--fs-16);
+  --text-base--line-height: var(--lh-16);
+  --text-lg: var(--fs-18);
+  --text-lg--line-height: var(--lh-18);
+  --text-xl: var(--fs-20);
+  --text-xl--line-height: var(--lh-20);
+  --text-2xl: var(--fs-24);
+  --text-2xl--line-height: var(--lh-24);
+  --text-3xl: var(--fs-32);
+  --text-3xl--line-height: var(--lh-32);
+  --text-4xl: var(--fs-40);
+  --text-4xl--line-height: var(--lh-40);
+
+  --font-sans: var(--font-body);
+  --font-heading: var(--font-display);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  /* Khoảng cách: thang 4px; p-4 = --s-4 ... Các khoá ngữ nghĩa (p-card, gap-cards, py-section, h-control) đọc token cỡ. */
+  --spacing: var(--s-1);
+  --spacing-1: var(--s-1);
+  --spacing-2: var(--s-2);
+  --spacing-3: var(--s-3);
+  --spacing-4: var(--s-4);
+  --spacing-6: var(--s-6);
+  --spacing-8: var(--s-8);
+  --spacing-12: var(--s-12);
+  --spacing-16: var(--s-16);
+  --spacing-24: var(--s-24);
+  --spacing-gutter: var(--gutter);
+  --spacing-section: var(--section-pad);
+  --spacing-card: var(--card-pad);
+  --spacing-cards: var(--gap-card);
+  --spacing-field: var(--gap-field);
+  --spacing-title: var(--title-gap);
+  --spacing-header: var(--header-h);
+  --spacing-icon: var(--icon-size);
+  --spacing-control: var(--control-h);
+  --spacing-control-lg: var(--control-h-lg);
+  --spacing-tap: var(--tap-min);
+  --container-page: var(--container);
+
+  /* Bo góc v4: bốn bậc suy ra từ logo (4 / 8 / 16 / 24) + tròn cho nút vuông chỉ-có-icon.
+     rounded-1 nút, ô nhập, chip, nhãn, ghế, tab · rounded-2 ảnh trong thẻ, hàng chuyến, menu · rounded-3 thẻ, form, dialog, thanh dính
+     rounded-4 chỉ ảnh/banner/bản đồ · rounded-round chỉ nút vuông chỉ-có-icon. Bậc Tailwind/shadcn cũ gấp về bậc gần nhất (nội dung dừng ở r-3). */
+  --radius-1: var(--r-1);
+  --radius-2: var(--r-2);
+  --radius-3: var(--r-3);
+  --radius-4: var(--r-4);
+  --radius-round: var(--r-round);
+  --radius-xs: var(--r-1);
+  --radius-sm: var(--r-1);
+  --radius-md: var(--r-2);
+  --radius-lg: var(--r-3);
+  --radius-xl: var(--r-3);
+  --radius-2xl: var(--r-3);
+  --radius-3xl: var(--r-3);
+  --radius-4xl: var(--r-3);
+  --radius-pill: var(--r-1);
+  --radius-full: var(--r-round);
+
+  /* Bóng v4, ba bậc: shadow-1 (nghỉ: thẻ, hàng, ô nhóm), shadow-2 (nổi: hover, kính nổi, menu, thanh dính), shadow-3 (dialog, sheet).
+     shadow-card/float/raise là bí danh v3 (cùng giá trị); bậc Tailwind cũ gấp về ba bậc này. */
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
+  --shadow-card: var(--shadow-1);
+  --shadow-float: var(--shadow-2);
+  --shadow-raise: var(--shadow-3);
+  --shadow-2xs: none;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: var(--shadow-1);
+  --shadow-lg: var(--shadow-2);
+  --shadow-xl: var(--shadow-2);
+  --shadow-2xl: var(--shadow-3);
+
+  /* Chọn (select) và kính: bg-select = nền mục đang chọn; select-ring = vòng 2px (luôn kèm dấu tích); kính dùng lớp .glass / .glass-yellow trong tokens.css (đã có @supports + prefers-reduced-transparency). */
+  --color-select: var(--select-bg);
+  --blur-glass: var(--glass-blur);
+
+  --ease-out: var(--ease-out);
+  --ease-in: var(--ease-in);
+  --ease-in-out: var(--ease-in-out);
+}
+
+/* Vòng chọn: box-shadow --select-ring (luôn đi với dấu tích, không chỉ màu). */
+@utility select-ring {
+  box-shadow: var(--select-ring);
+}
+/* Vạch phân cách 1px màu rule; viền ô nhập dùng border-edge. */
+@utility hairline {
+  border: var(--hairline);
+}

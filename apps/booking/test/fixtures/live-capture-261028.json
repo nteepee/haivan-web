@@ -1,0 +1,220 @@
+{
+ "_source": "docs/booking-flow/00-live-capture-261028.md (haivan.com chạy thật 2026-10-28, anh duyệt); chuỗi query kiểm-theo-spec lấy từ docs/booking-flow/02-confirm-booking.md và 03-payment-account.md",
+ "_note": "SĐT/tên thật được thay bằng giá trị giả; mã đơn/vé là mã mẫu trong tài liệu. Query ở dạng đã giải mã (đúng như tài liệu hiển thị) — so sánh theo cặp khoá/giá trị theo thứ tự.",
+ "scenario": {
+  "pageUrl": "https://haivan.com/xe-khach/tim-chuyen?from=Quận 1,10.7753882,106.702825&to=Vũng Tàu,10.3391989,107.0710401&date=01-11-2026&numberGuest=1",
+  "origin": "https://haivan.com",
+  "trip": {
+   "id": 41389806,
+   "from": {
+    "place_id": 95,
+    "place_name": "159 Điện Biên Phủ, Đa Kao, Quận 1, Hồ Chí Minh",
+    "location": [
+     106.6952939,
+     10.7879376
+    ],
+    "reached_at": "2026-11-01 05:45:00"
+   },
+   "to": {
+    "place_id": 12,
+    "place_name": "TP Vũng Tàu (Gành Hào)",
+    "location": [
+     107.0710401,
+     10.3391989
+    ],
+    "reached_at": "2026-11-01 08:25:00"
+   },
+   "direction": "B",
+   "node_code": "VTA-TSN0530B",
+   "date": "2026-11-01",
+   "time": "05:30",
+   "node_time": "2026-11-01 05:30:00",
+   "available_seats": 11,
+   "price": {
+    "min": 200000,
+    "max": 250000
+   },
+   "product": {
+    "code": "LUXURY",
+    "name": "Luxury"
+   },
+   "merchant": {
+    "code": "02",
+    "name": "Hải Vân Vũng Tàu",
+    "id": "3"
+   },
+   "route": {
+    "code": "VTA-TSN",
+    "name": "Vũng Tàu - Tân Sơn Nhất",
+    "show_price": 1
+   },
+   "transit": {
+    "start": true,
+    "end": true,
+    "is_check_transit_start": true,
+    "is_check_transit_end": false
+   }
+  },
+  "seat": {
+   "id": 503528630,
+   "ticket_code": null,
+   "name": "11",
+   "price": 250000,
+   "priceNy": 230000,
+   "is_empty": true,
+   "color": "#86D5BE",
+   "seat_rank": "Hạng B",
+   "seat_type": 0,
+   "customer": null,
+   "order": null,
+   "ticket_status": null,
+   "is_edit": 0,
+   "is_payment": null,
+   "expire_time": null
+  },
+  "holdResponse": {
+   "message": "Giữ chỗ thành công!",
+   "expire_time": "28-10-2026 14:38:29",
+   "order_code": "B02SAMPLE00001",
+   "tickets": [
+    {
+     "id": 503528630,
+     "code": "V02SAMPLE000001"
+    }
+   ]
+  },
+  "customer": {
+   "email": null,
+   "phone": "0900000000",
+   "name": "Khach Test"
+  }
+ },
+ "requests": {
+  "el_trips_query": "from_location=10.7753882,106.702825&to_location=10.3391989,107.0710401&numberGuest=1&date=2026-11-01&sort_by=time&sort_mode=asc&type=0",
+  "hold_booking_body": {
+   "trip_id": 41389806,
+   "seats": [
+    {
+     "id": 503528630,
+     "ticket_code": null,
+     "name": "11",
+     "price": 250000,
+     "priceNy": 230000,
+     "is_empty": true,
+     "color": "#86D5BE",
+     "seat_rank": "Hạng B",
+     "seat_type": 0,
+     "customer": null,
+     "order": null,
+     "ticket_status": null,
+     "is_edit": 0,
+     "is_payment": null,
+     "expire_time": null,
+     "is_select": true
+    }
+   ],
+   "merchant_code": "02",
+   "channel": 1
+  },
+  "get_promotions_query": "merchant_code=02&route=VTA-TSN&product=LUXURY&channel=1&direction=2&departure_id=95&destination_id=12&departure_time=2026-11-01 05:30:00&price=200000&channel_code=WEBHAIVAN",
+  "get_price_transit_body_keys": [
+   "order_code",
+   "merchant_code",
+   "seats",
+   "services",
+   "trip_id"
+  ],
+  "get_price_transit_seat_keys": [
+   "id",
+   "code",
+   "ticket_code",
+   "phone",
+   "name",
+   "pick_up",
+   "pick_up_lat",
+   "pick_up_lng",
+   "drop_off",
+   "drop_off_lat",
+   "drop_off_lng",
+   "number",
+   "quantity",
+   "date"
+  ],
+  "get_price_transit_service_extra_keys": [
+   "check",
+   "seat",
+   "seatCheck",
+   "address",
+   "title",
+   "transit_location",
+   "transit_lat",
+   "transit_lng"
+  ],
+  "bookings_body": {
+   "pick_up": {
+    "address": "Quận 1",
+    "coordinates": {
+     "lat": 10.7753882,
+     "lng": 106.702825
+    }
+   },
+   "drop_off": {
+    "address": "Vũng Tàu",
+    "coordinates": {
+     "lat": 10.3391989,
+     "lng": 107.0710401
+    }
+   },
+   "trip": {
+    "trip_id": 41389806,
+    "departure_id": 95,
+    "destination_id": 12
+   },
+   "transit": {
+    "departure": true,
+    "destination": false
+   },
+   "seats": [
+    {
+     "id": 503528630,
+     "is_reward": false
+    }
+   ],
+   "order_code": "B02SAMPLE00001",
+   "merchant_code": "02",
+   "note": "",
+   "is_combo": 0,
+   "if_customer": {
+    "email": null,
+    "phone": "0900000000",
+    "name": "Khach Test"
+   }
+  },
+  "hold_transit_body": {
+   "order_code": "B02SAMPLE00001",
+   "merchant_code": "02",
+   "pick_up": "Quận 1",
+   "pick_up_lat": 10.7753882,
+   "pick_up_lng": 106.702825,
+   "drop_off": "Vũng Tàu",
+   "drop_off_lat": 10.3391989,
+   "drop_off_lng": 107.0710401,
+   "services": []
+  },
+  "cancel_seat_body": {
+   "order_code": "B02SAMPLE00001",
+   "seat_code": "V02SAMPLE000001",
+   "merchant_code": "02",
+   "reason_cancel_id": 3,
+   "reason_cancel_note": ""
+  }
+ },
+ "reconstructed": {
+  "_note": "Chưa chạy thật (tạo link/đổi trạng thái thanh toán); dựng lại từ docs/booking-flow/02 §check-promotions và 03 §thanh toán.",
+  "check_promotions_query": "merchant_code=02&route=VTA-TSN&product=LUXURY&channel=1&direction=2&departure_id=95&destination_id=12&departure_time=2026-11-01 05:30:00&bookingCode=B02SAMPLE00001&tripCode=41389806&adm_id=0&codes[0][promotion]=KM10&codes[0][ticketCode]=V02SAMPLE000001&codes[0][ticketPrice]=250000&channel_code=WEBHAIVAN",
+  "vnpay_raw_query": {
+   "vi": "return_url=https://haivan.com/xe-khach/thanh-toan?booking_code=B02SAMPLE00001&order_code=B02SAMPLE00001&bank_code=VNPAYQR&merchant_code=02&trip_id=41389806",
+   "en": "return_url=https://haivan.com/en/xe-khach/thanh-toan?booking_code=B02SAMPLE00001&order_code=B02SAMPLE00001&bank_code=NCB&merchant_code=02&trip_id=41389806"
+  }
+ }
+}

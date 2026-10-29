@@ -1,0 +1,160 @@
+/* v3/v4: nền section xen kẽ, huy hiệu (r-1), ô icon vuông r-1, chip lọc (chọn = nền select + vòng + tick). Chỉ dùng token. */
+@layer components {
+  /* Nền section: trắng, vàng ấm, xám nhạt, vàng thương hiệu. `.hv-ground` tự xoay trắng, ấm, xám theo thứ tự anh em liền kề
+     (khối tuỳ chọn vắng mặt thì không bao giờ có hai nền giống nhau liền nhau); dải đậm hay banner ngắt chuỗi. */
+  .hv-section-white {
+    --rail-bg: var(--color-surface);
+    background: var(--color-surface);
+  }
+  .hv-section-warm,
+  .hv-section-soft {
+    --rail-bg: var(--color-tint-warm);
+    background: var(--color-tint-warm);
+  }
+  .hv-section-grey,
+  .hv-band {
+    --rail-bg: var(--color-paper-2);
+    background: var(--color-paper-2);
+  }
+  .hv-section-yellow {
+    background: var(--color-field);
+    color: var(--color-accent-ink);
+  }
+  .hv-ground {
+    --rail-bg: var(--color-surface);
+    background: var(--color-surface);
+  }
+  /* Xoay theo thứ tự trong các anh em .hv-ground: 1 trắng, 2 vàng ấm, 3 xám, 4 trắng... (chu kỳ 3, không giới hạn số khối). */
+  .hv-ground:nth-child(3n + 2 of .hv-ground) {
+    --rail-bg: var(--color-tint-warm);
+    background: var(--color-tint-warm);
+  }
+  .hv-ground:nth-child(3n + 3 of .hv-ground) {
+    --rail-bg: var(--color-paper-2);
+    background: var(--color-paper-2);
+  }
+
+  /* Huy hiệu khuyến mãi: chữ nhật r-1, 14/20 800; mỗi màu đi với chữ --color-on-* cố định. */
+  .hv-badge {
+    display: inline-flex;
+    min-height: calc(var(--s-6) + var(--s-1));
+    align-items: center;
+    gap: var(--s-1);
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-1);
+    background: var(--color-ink);
+    color: var(--color-on-strong);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-14);
+    white-space: nowrap;
+  }
+  .hv-badge-sale {
+    background: var(--color-promo-coral);
+    color: var(--color-on-coral);
+  }
+  .hv-badge-new {
+    background: var(--color-promo-teal);
+    color: var(--color-on-teal);
+  }
+  .hv-badge-orange {
+    background: var(--color-promo-orange);
+    color: var(--color-on-orange);
+  }
+  .hv-badge-blue {
+    background: var(--color-promo-blue);
+    color: var(--color-on-blue);
+  }
+  .hv-badge-leaf {
+    background: var(--color-promo-leaf);
+    color: var(--color-on-leaf);
+  }
+  /* Trạng thái "Còn ít chỗ": chữ nhật r-1 san hô nhạt, icon đồng hồ, chữ ink, vòng 1px (chữ + icon + vòng, không chỉ màu). */
+  .hv-badge-few {
+    padding-inline: var(--s-3);
+    background: var(--color-promo-coral-soft);
+    box-shadow: inset 0 0 0 var(--line) var(--color-promo-coral);
+    color: var(--color-ink);
+  }
+  .hv-badge-few svg {
+    color: var(--color-promo-coral);
+  }
+  /* Trên ảnh: góc trên trái, cách mép s-3, nền đặc (không kính), bóng 1. */
+  .hv-badge-photo {
+    position: absolute;
+    top: var(--s-3);
+    left: var(--s-3);
+    z-index: var(--z-base);
+    box-shadow: var(--shadow-1);
+  }
+
+  /* Ô icon vuông r-1: lucide nét 2 trên ô 48 (vàng cho dữ kiện thương hiệu; tông nhạt + nét đậm cho nhóm). */
+  .hv-ico {
+    display: grid;
+    width: var(--control-h);
+    height: var(--control-h);
+    flex: none;
+    place-items: center;
+    border-radius: var(--r-1);
+    background: var(--ico-bg, var(--color-accent));
+    color: var(--ico-fg, var(--color-ink));
+  }
+  .hv-ico svg {
+    fill: var(--color-surface);
+    fill-opacity: 0.55;
+  }
+  .hv-ico-teal {
+    --ico-bg: var(--color-promo-teal-soft);
+    --ico-fg: var(--color-promo-teal);
+  }
+  .hv-ico-coral {
+    --ico-bg: var(--color-promo-coral-soft);
+    --ico-fg: var(--color-promo-coral);
+  }
+  .hv-ico-leaf {
+    --ico-bg: var(--color-promo-leaf-soft);
+    --ico-fg: var(--color-promo-leaf);
+  }
+  .hv-ico-blue {
+    --ico-bg: var(--color-promo-blue-soft);
+    --ico-fg: var(--color-promo-blue);
+  }
+  .hv-ico-sm {
+    width: var(--tap-min);
+    height: var(--tap-min);
+  }
+
+  /* Chip lọc: 44 cao, r-1, nền xám paper-2, không viền; đang lọc = nền select + vòng chọn 2px + tick (markup), chữ 800. */
+  .hv-chip {
+    display: inline-flex;
+    min-height: var(--tap-min);
+    flex: none;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 0 var(--s-4);
+    border: 0;
+    border-radius: var(--r-1);
+    background: var(--color-paper-2);
+    color: var(--color-ink);
+    font-weight: var(--weight-strong);
+    white-space: nowrap;
+    transition:
+      background-color var(--dur-micro) var(--ease-out),
+      box-shadow var(--dur-micro) var(--ease-out);
+  }
+  .hv-chip:hover {
+    background: var(--color-paper-3);
+  }
+  .hv-chip:active {
+    transform: translateY(var(--line));
+  }
+  .hv-chip[data-active="true"],
+  .hv-chip[aria-pressed="true"] {
+    background: var(--select-bg);
+    box-shadow: var(--select-ring);
+    font-weight: var(--weight-display);
+  }
+  .hv-chip[data-state="open"] .hv-chip-chevron {
+    transform: rotate(180deg);
+  }
+}

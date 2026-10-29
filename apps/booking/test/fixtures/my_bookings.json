@@ -1,0 +1,1207 @@
+{
+ "data": [
+  {
+   "merchant": {
+    "id": "1",
+    "code": "01",
+    "name": "Hải Vân",
+    "hotline": "19006763",
+    "partner_id": 0,
+    "partner_code": "00"
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B0124ZZ546DRNL",
+     "created_at": "2026-10-26 09:15:51",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 1,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=41&day=2026-11-21",
+      "trip_id": 22054080,
+      "code": "V012W73VQKQ25W4Z5B",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": null,
+      "reason_cancel_note": null,
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-21",
+      "start_datetime": "2026-11-21 19:45:00",
+      "ticket_no": "C1-4",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "mkm": null,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792980951,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "A",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 2,
+       "code": null,
+       "name": "Luxury"
+      },
+      "route": {
+       "id": 19,
+       "code": "MDI-DBI",
+       "name": "Mỹ Đình - Điện Biên"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1795265100
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "1",
+    "code": "01",
+    "name": "Hải Vân",
+    "hotline": "19006763",
+    "partner_id": 0,
+    "partner_code": "00"
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B01DJDDZVNNBVP",
+     "created_at": "2026-10-25 17:47:01",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 1,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=41&day=2026-11-12",
+      "trip_id": 22044882,
+      "code": "V01D32RQ1LX4VVEK48",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": 1,
+      "reason_cancel_note": "Test",
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-12",
+      "start_datetime": "2026-11-12 19:45:00",
+      "ticket_no": "C1-3",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "mkm": null,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792925221,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "A",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 2,
+       "code": null,
+       "name": "Luxury"
+      },
+      "route": {
+       "id": 19,
+       "code": "MDI-DBI",
+       "name": "Mỹ Đình - Điện Biên"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1794487500
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "3",
+    "code": "02",
+    "name": "Hải Vân Vũng Tàu",
+    "hotline": "19006763",
+    "partner_id": 13
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B02ELR75VVGL79",
+     "created_at": "2026-10-25 08:36:51",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 2,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=1319&day=2026-11-09",
+      "trip_id": 41422558,
+      "code": "V02E3QKQBW3E72R",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": 1,
+      "reason_cancel_note": "Test",
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-09",
+      "start_datetime": "2026-11-09 05:30:00",
+      "ticket_no": "7",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792892211,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "B",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 44,
+       "code": null,
+       "name": "luxury"
+      },
+      "route": {
+       "id": 1,
+       "code": "VTA-TSN",
+       "name": "Vũng Tàu - Tân Sơn Nhất"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     },
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=1319&day=2026-11-09",
+      "trip_id": 41422558,
+      "code": "V02E3QKQBWE22W9",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": 1,
+      "reason_cancel_note": "Test",
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-09",
+      "start_datetime": "2026-11-09 05:30:00",
+      "ticket_no": "8",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792892211,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "B",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 44,
+       "code": null,
+       "name": "luxury"
+      },
+      "route": {
+       "id": 1,
+       "code": "VTA-TSN",
+       "name": "Vũng Tàu - Tân Sơn Nhất"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1794177000
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "3",
+    "code": "02",
+    "name": "Hải Vân Vũng Tàu",
+    "hotline": "19006763",
+    "partner_id": 13
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B024RDEJ62K98R",
+     "created_at": "2026-10-25 08:39:21",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 2,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=2306&day=2026-11-06",
+      "trip_id": 41411124,
+      "code": "V024LPE48RNRGJJ",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": null,
+      "reason_cancel_note": null,
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-06",
+      "start_datetime": "2026-11-06 05:00:00",
+      "ticket_no": "9",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792892361,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "B",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 44,
+       "code": null,
+       "name": "luxury"
+      },
+      "route": {
+       "id": 1,
+       "code": "VTA-TSN",
+       "name": "Vũng Tàu - Tân Sơn Nhất"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     },
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=2306&day=2026-11-06",
+      "trip_id": 41411124,
+      "code": "V024LPE48RQ41K5",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": null,
+      "reason_cancel_note": null,
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-06",
+      "start_datetime": "2026-11-06 05:00:00",
+      "ticket_no": "10",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792892361,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "B",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 44,
+       "code": null,
+       "name": "luxury"
+      },
+      "route": {
+       "id": 1,
+       "code": "VTA-TSN",
+       "name": "Vũng Tàu - Tân Sơn Nhất"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1793916000
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "1",
+    "code": "01",
+    "name": "Hải Vân",
+    "hotline": "19006763",
+    "partner_id": 0,
+    "partner_code": "00"
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B0124ZZVQPKEPD",
+     "created_at": "2026-10-25 08:41:15",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 1,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=2706&day=2026-11-03",
+      "trip_id": 22036394,
+      "code": "V012W73VQKRLP4KV1D",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": null,
+      "reason_cancel_note": null,
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-03",
+      "start_datetime": "2026-11-03 19:00:00",
+      "ticket_no": "C1-5",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "mkm": null,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792892475,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "A",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 4,
+       "code": null,
+       "name": "Economy"
+      },
+      "route": {
+       "id": 19,
+       "code": "MDI-DBI",
+       "name": "Mỹ Đình - Điện Biên"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1793707200
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "1",
+    "code": "01",
+    "name": "Hải Vân",
+    "hotline": "19006763",
+    "partner_id": 0,
+    "partner_code": "00"
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B01V1LLXEVBBPL",
+     "created_at": "2026-10-25 17:43:12",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 1,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=41&day=2026-11-02",
+      "trip_id": 22034662,
+      "code": "V01VQG2VRGKQ79JXED",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": 1,
+      "reason_cancel_note": "Test",
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-02",
+      "start_datetime": "2026-11-02 19:45:00",
+      "ticket_no": "C1-3",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "mkm": null,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792924992,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "A",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 2,
+       "code": null,
+       "name": "Luxury"
+      },
+      "route": {
+       "id": 19,
+       "code": "MDI-DBI",
+       "name": "Mỹ Đình - Điện Biên"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1793623500
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "1",
+    "code": "01",
+    "name": "Hải Vân",
+    "hotline": "19006763",
+    "partner_id": 0,
+    "partner_code": "00"
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B01P1884LK6E6V",
+     "created_at": "2026-10-25 17:40:12",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 1,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=41&day=2026-11-01",
+      "trip_id": 22033640,
+      "code": "V01PP9NV7LN7J16ZLQ",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": 1,
+      "reason_cancel_note": "Test",
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-01",
+      "start_datetime": "2026-11-01 19:45:00",
+      "ticket_no": "B1-4",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "mkm": null,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792924812,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "A",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 2,
+       "code": null,
+       "name": "Luxury"
+      },
+      "route": {
+       "id": 19,
+       "code": "MDI-DBI",
+       "name": "Mỹ Đình - Điện Biên"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1793537100
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "1",
+    "code": "01",
+    "name": "Hải Vân",
+    "hotline": "19006763",
+    "partner_id": 0,
+    "partner_code": "00"
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B01ZLQQ1BRGL8N",
+     "created_at": "2026-10-25 17:38:17",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 1,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=41&day=2026-11-01",
+      "trip_id": 22033640,
+      "code": "V01ZDN78RB7RJRPR2N",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": null,
+      "reason_cancel_note": null,
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-11-01",
+      "start_datetime": "2026-11-01 19:45:00",
+      "ticket_no": "C1-5",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": null,
+      "source": 0,
+      "mkm": null,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792924697,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "A",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 2,
+       "code": null,
+       "name": "Luxury"
+      },
+      "route": {
+       "id": 19,
+       "code": "MDI-DBI",
+       "name": "Mỹ Đình - Điện Biên"
+      },
+      "cancel_note": "Hủy đơn hàng Haivan"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1793537100
+   },
+   "booking_ticket": null
+  },
+  {
+   "merchant": {
+    "id": "3",
+    "code": "02",
+    "name": "Hải Vân Vũng Tàu",
+    "hotline": "19006763",
+    "partner_id": 13
+   },
+   "booking": {
+    "booking_info": {
+     "status": 3,
+     "status_text": "Hủy",
+     "code": "B0254DP17L9L56",
+     "created_at": "2026-10-24 22:30:00",
+     "created_max_at": null,
+     "created_by": {
+      "id": null,
+      "name": null,
+      "code": null,
+      "phone": null
+     },
+     "created_type_id": 0,
+     "method_payment": 0,
+     "created_type_name": "Khách hàng",
+     "total_money": 0,
+     "discount": 0,
+     "num_ticket": 1,
+     "custmer_phone": "0900000000",
+     "custmer_name": "Khach Test",
+     "status_payment": 0,
+     "is_cancel": true
+    },
+    "VNPAY_transaction_code": null,
+    "VNPAY_status_booking": 0,
+    "VNPAY_status_booking_text": "",
+    "booking_ticket": [
+     {
+      "agency": [],
+      "is_cancel": true,
+      "is_rating": false,
+      "url": "admin_lv2/modules/ban_ve/listing.php?not=2306&day=2026-10-30",
+      "trip_id": 41756364,
+      "code": "V025L9P17D1R4DR",
+      "reward_points": 0,
+      "base_money": 0,
+      "reason_cancel_id": null,
+      "reason_cancel_note": null,
+      "discount": 0,
+      "discount_type": null,
+      "discount_type_text": null,
+      "discount_description": null,
+      "money": 0,
+      "channel_code": "APPHAIVAN",
+      "channel_name": "App HAIVAN",
+      "start_date": "2026-10-30",
+      "start_datetime": "2026-10-30 05:00:00",
+      "ticket_no": "7",
+      "status": 5,
+      "status_text": "Huy",
+      "payment_channel": null,
+      "payment_status": 0,
+      "payment_method": 0,
+      "ticket_note": "",
+      "source": 0,
+      "order_vnpay_id": 0,
+      "created_by": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "phone": null
+      },
+      "created_at": 1792855800,
+      "customer": {
+       "name": "",
+       "phone": "0900000000",
+       "name_di": "",
+       "phone_di": ""
+      },
+      "direction": "B",
+      "from": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickup": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "to": {
+       "id": null,
+       "name": null,
+       "code": null,
+       "pickdown": "",
+       "transitable": 0,
+       "time_run": null
+      },
+      "product": {
+       "id": 44,
+       "code": null,
+       "name": "luxury"
+      },
+      "route": {
+       "id": 1,
+       "code": "VTA-TSN",
+       "name": "Vũng Tàu - Tân Sơn Nhất"
+      },
+      "cancel_note": "Vé được giữ quá 10p"
+     }
+    ],
+    "booking_rating_trip": [],
+    "did_time": 1793311200
+   },
+   "booking_ticket": null
+  }
+ ],
+ "links": {
+  "first": "/?page=1",
+  "last": "/?page=1",
+  "prev": null,
+  "next": null
+ },
+ "meta": {
+  "current_page": 1,
+  "from": 1,
+  "last_page": 1,
+  "links": [
+   {
+    "url": null,
+    "label": "&laquo; Previous",
+    "active": false
+   },
+   {
+    "url": "/?page=1",
+    "label": "1",
+    "active": true
+   },
+   {
+    "url": null,
+    "label": "Next &raquo;",
+    "active": false
+   }
+  ],
+  "path": "/",
+  "per_page": 10,
+  "to": 9,
+  "total": 9
+ }
+}

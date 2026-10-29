@@ -1,0 +1,119 @@
+/* Màn đặt vé v4: khung trang, dải vàng kết quả, thẻ tóm tắt tìm kiếm, bước (ô số r-1, không viền ink). Chỉ dùng token. */
+@layer components {
+  /* Thân trang ứng dụng (kết quả, xác nhận, thanh toán, tài khoản): nhịp như một section, đệm --section-pad hai phía. */
+  .hv-app-main {
+    padding-block: var(--section-pad);
+  }
+  .hv-page-title {
+    display: grid;
+    gap: var(--s-1);
+    margin-bottom: var(--s-6);
+  }
+  .hv-page-title p {
+    color: var(--color-muted);
+  }
+  .hv-results-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-6);
+    align-items: start;
+  }
+  /* Dải vàng đầu trang kết quả: bước, tiêu đề, thẻ tóm tắt tìm kiếm nổi (bóng 2) với nút "Sửa". */
+  .hv-rs-top {
+    padding-block: var(--section-pad);
+    background: var(--color-field);
+    color: var(--color-accent-ink);
+  }
+  .hv-rs-top .hv-steps {
+    margin-bottom: 0;
+  }
+  /* Trên dải vàng: bước là ô vàng đậm; bước hiện tại là ô trắng nổi (bóng 1), ô số nền vàng. */
+  .hv-rs-top .hv-step {
+    background: var(--color-accent-hover);
+    color: var(--color-ink);
+  }
+  .hv-rs-top .hv-step[aria-current="step"] {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+  }
+  .hv-rs-top .hv-step-mark {
+    background: var(--color-surface);
+    box-shadow: none;
+  }
+  .hv-rs-top .hv-step[aria-current="step"] .hv-step-mark {
+    background: var(--color-accent);
+    color: var(--color-ink);
+  }
+  .hv-rs-top .hv-step[data-done="true"] .hv-step-mark {
+    background: var(--color-ink);
+    color: var(--color-surface);
+  }
+  .hv-rs-top .hv-page-title {
+    margin-block: var(--s-4);
+  }
+  .hv-rs-top .hv-page-title p {
+    color: var(--color-accent-ink);
+  }
+  .hv-edit-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-3);
+    align-items: center;
+    padding: var(--s-3) var(--card-pad);
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-2);
+    color: var(--color-text);
+  }
+  .hv-edit-row dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-1) var(--s-4);
+    min-width: 0;
+  }
+  @media (min-width: 40rem) {
+    .hv-edit-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--s-4);
+    }
+    .hv-edit-row dl {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2) var(--s-6);
+    }
+  }
+  .hv-edit-row dl > div {
+    display: flex;
+    min-height: var(--tap-min);
+    align-items: center;
+    gap: var(--s-3);
+    min-width: 0;
+  }
+  .hv-edit-row dt {
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+  .hv-edit-row dd {
+    font-weight: var(--weight-strong);
+    font-variant-numeric: tabular-nums;
+  }
+  /* Cột phải: chỗ gắn thẻ tổng; có thẻ thì ẩn câu gợi ý. */
+  .hv-summary-slot:not(:empty) + .hv-summary-hint {
+    display: none;
+  }
+  @media (max-width: 59.99rem) {
+    .hv-summary-hint {
+      display: none;
+    }
+  }
+  @media (min-width: 60rem) {
+    .hv-results-grid {
+      grid-template-columns: minmax(0, 1fr) 20rem;
+    }
+    .hv-results-aside {
+      position: sticky;
+      top: var(--s-4);
+    }
+  }
+}

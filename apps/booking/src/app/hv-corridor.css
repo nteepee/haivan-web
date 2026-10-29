@@ -1,0 +1,290 @@
+/* Ô tìm vé theo tuyến chính (cùng dáng với ô WP): nút tuyến, chọn trạm, ngày kiểu Việt, ngày về tuỳ chọn, hàng "Chuyến hôm nay". Chỉ dùng token. */
+@layer components {
+  /* Nút tuyến: nút riêng (không phải thanh phân đoạn). Điện thoại: lưới 2x2, đủ 4 tuyến, không cuộn; mỗi nút hai dòng
+     (đầu a nhạt, rồi mũi tên + đầu b đậm) cao bằng nhau. Từ 40rem: lưới 4 cột, một dòng nhãn đầy đủ.
+     Đang chọn = nền select + vòng chọn + dấu tick (không chỉ màu); tick ở góc trên phải trên điện thoại. */
+  .hv-corr-btns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-2);
+    margin: var(--card-pad) var(--card-pad) 0;
+  }
+  .hv-corr-btn {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: calc(var(--tap-min) + var(--s-6));
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: var(--s-2) var(--s-6) var(--s-2) var(--s-3);
+    border-radius: var(--r-1);
+    background: var(--color-paper-2);
+    color: var(--color-ink);
+    line-height: var(--lh-16);
+    text-align: start;
+    cursor: pointer;
+  }
+  .hv-corr-btn:hover {
+    background: var(--color-paper-3);
+  }
+  .hv-corr-btn:active {
+    transform: translateY(var(--line));
+  }
+  .hv-corr-btn[aria-pressed="true"] {
+    background: var(--select-bg);
+    box-shadow: var(--select-ring);
+  }
+  .hv-corr-full {
+    display: none;
+  }
+  .hv-corr-ends {
+    display: grid;
+    min-width: 0;
+    gap: 0;
+    font-size: var(--fs-16);
+  }
+  .hv-corr-a {
+    color: var(--color-muted);
+  }
+  .hv-corr-b {
+    display: flex;
+    align-items: center;
+    gap: var(--s-1);
+    font-weight: var(--weight-strong);
+  }
+  .hv-corr-btn[aria-pressed="true"] .hv-corr-b {
+    font-weight: var(--weight-display);
+  }
+  .hv-corr-check {
+    position: absolute;
+    inset-block-start: var(--s-2);
+    inset-inline-end: var(--s-2);
+  }
+  @media (min-width: 40rem) {
+    .hv-corr-btns {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .hv-corr-btn {
+      min-height: var(--tap-min);
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: var(--s-2);
+      padding: var(--s-1) var(--s-4);
+      font-weight: var(--weight-strong);
+      text-align: center;
+    }
+    .hv-corr-btn[aria-pressed="true"] {
+      font-weight: var(--weight-display);
+    }
+    .hv-corr-check {
+      position: static;
+    }
+    .hv-corr-ends {
+      display: none;
+    }
+    .hv-corr-full {
+      display: block;
+    }
+  }
+
+  /* Ô chọn có icon: select ẩn mũi tên gốc (appearance none ở .hv-field); mũi tên phải và ghim trái là icon đặt đè. */
+  .hv-selectbox {
+    position: relative;
+  }
+  .hv-selectbox > select {
+    padding-inline-end: calc(var(--s-4) + var(--icon-size) + var(--s-2));
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+  .hv-selectbox-pin > select {
+    padding-inline-start: calc(var(--s-4) + var(--icon-size) + var(--s-2));
+  }
+  .hv-selectbox > svg {
+    position: absolute;
+    inset-block: 0;
+    margin-block: auto;
+    pointer-events: none;
+    color: var(--color-ink);
+  }
+  .hv-selectbox > .hv-chev {
+    inset-inline-end: var(--s-4);
+  }
+  .hv-selectbox > .hv-pin {
+    inset-inline-start: var(--s-4);
+  }
+
+  /* Ô ngày: input date gốc, chữ gốc ẩn; nhãn "Thứ năm, 29/10/2026" phủ lên (không bắt chuột, nhường icon lịch bên phải). */
+  .hv-datebox {
+    position: relative;
+    min-width: 0;
+    flex: 1;
+  }
+  .hv-datebox > input {
+    color: transparent;
+  }
+  .hv-datebox > input::-webkit-datetime-edit {
+    opacity: 0;
+  }
+  .hv-datebox-text {
+    position: absolute;
+    inset-block: 0;
+    inset-inline: var(--s-4) calc(var(--s-4) + var(--icon-size) + var(--s-2));
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    pointer-events: none;
+    color: var(--color-text);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  /* Hàng ngày: điện thoại = Ngày đi, Ngày về, rồi Số vé + Tìm vé chung một hàng; 40rem = hai cột; 60rem = một hàng bốn ô. */
+  .hv-corr-note,
+  .hv-corr-row {
+    grid-column: 1 / -1;
+  }
+  .hv-corr-note {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    color: var(--color-text);
+  }
+  .hv-corr-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--gap-field) var(--s-3);
+    align-items: end;
+  }
+  .hv-corr-last {
+    display: grid;
+    grid-template-columns: 9.5rem minmax(0, 1fr);
+    gap: var(--s-3);
+    align-items: end;
+  }
+  .hv-corr-go {
+    min-height: var(--control-h);
+  }
+  .hv-label-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-1) var(--s-2);
+  }
+  .hv-return-field {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .hv-return-add {
+    display: flex;
+    width: 100%;
+    min-height: var(--control-h);
+    align-items: center;
+    gap: var(--s-2);
+    padding: 0 var(--s-4);
+    border-radius: var(--r-1);
+    background: var(--color-paper-2);
+    color: var(--color-ink);
+    font-weight: var(--weight-strong);
+    text-align: start;
+    cursor: pointer;
+  }
+  .hv-return-add:hover:not(:disabled) {
+    background: var(--color-paper-3);
+  }
+  .hv-return-add:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .hv-return-clear {
+    display: grid;
+    width: var(--control-h);
+    height: var(--control-h);
+    flex: none;
+    place-items: center;
+    border-radius: var(--r-round);
+    background: var(--color-paper-2);
+    box-shadow: var(--shadow-1);
+    color: var(--color-ink);
+  }
+  .hv-return-clear:hover {
+    background: var(--color-accent-soft);
+  }
+  .hv-return-clear:active {
+    background: var(--color-accent);
+  }
+  @media (min-width: 40rem) {
+    .hv-corr-grid {
+      grid-template-columns: minmax(0, 1fr) var(--control-h) minmax(0, 1fr);
+    }
+    .hv-corr-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .hv-corr-last {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 60rem) {
+    .hv-corr-row {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 9.5rem 11rem;
+    }
+    .hv-corr-last {
+      display: contents;
+    }
+  }
+
+  /* Cuối thẻ: "Đi tỉnh khác?" chữ thường + liên kết gạch chân. */
+  .hv-plate-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--s-2);
+    padding: 0 var(--card-pad) var(--s-4);
+  }
+  .hv-plate-foot:last-child {
+    padding-bottom: var(--card-pad);
+  }
+
+  /* Chuyến hôm nay: nằm trong thẻ, ngăn bằng đường kẻ; "Chuyến hôm nay" đậm + tên chiều nhạt; chip kèm số chuyến, khung rỗng bị vô hiệu. */
+  .hv-today {
+    display: grid;
+    gap: var(--s-3);
+    margin-inline: var(--card-pad);
+    padding-block: var(--s-4) var(--card-pad);
+    border-top: var(--hairline);
+  }
+  .hv-today-title {
+    font-size: var(--fs-18);
+    line-height: var(--lh-18);
+    color: var(--color-ink);
+  }
+  .hv-today-title strong {
+    font-weight: var(--weight-display);
+  }
+  .hv-today-route {
+    color: var(--color-muted);
+  }
+  .hv-today-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .hv-chip:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .hv-chip-count {
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--weight-display);
+  }
+  .hv-chip-wait {
+    color: var(--color-muted);
+  }
+
+  /* Thẻ "Đặt chiều về" ở trang thành công của chiều đi: nền vàng nhạt để nổi hơn các thẻ vé bên dưới. */
+  .hv-return-cta {
+    background: var(--color-accent-soft);
+  }
+}

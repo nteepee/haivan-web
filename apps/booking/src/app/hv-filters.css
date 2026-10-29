@@ -1,0 +1,47 @@
+/* Thanh lọc dính v4 (kính, .glass trong markup): hàng chip + dòng trạng thái "Đang lọc N/M chuyến". Chip (.hv-chip) ở hv-depth.css.
+   Dính dưới header; chữ trên kính 16px+. Chỉ dùng token. */
+@layer components {
+  .hv-filters {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-2));
+    z-index: var(--z-sticky);
+    display: grid;
+    gap: var(--s-3);
+    margin-bottom: var(--s-4);
+    padding: var(--s-3);
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+  }
+  .hv-filters .hv-hint {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    color: var(--color-ink);
+  }
+  /* Phone: một hàng cuộn ngang trong thanh (chip không bị cắt vòng chọn); từ 60rem xuống dòng. */
+  .hv-chips {
+    display: flex;
+    gap: var(--s-2);
+    margin-inline: calc(var(--s-3) * -1);
+    padding: var(--s-1) var(--s-3);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .hv-chips::-webkit-scrollbar {
+    display: none;
+  }
+  .hv-filter-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-4);
+    align-items: center;
+    font-weight: var(--weight-strong);
+  }
+  @media (min-width: 60rem) {
+    .hv-chips {
+      flex-wrap: wrap;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow: visible;
+    }
+  }
+}

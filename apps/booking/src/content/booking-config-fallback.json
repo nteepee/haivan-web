@@ -1,0 +1,594 @@
+{
+  "version": 1,
+  "corridors": [
+    {
+      "id": "sg-vt",
+      "label": {
+        "vi": "Sài Gòn – Vũng Tàu",
+        "en": "Saigon – Vung Tau"
+      },
+      "ends": {
+        "a": {
+          "vi": "Sài Gòn",
+          "en": "Saigon",
+          "point": {
+            "name": "Quận 1",
+            "lat": 10.7753882,
+            "lng": 106.702825
+          }
+        },
+        "b": {
+          "vi": "Vũng Tàu",
+          "en": "Vung Tau",
+          "point": {
+            "name": "TP Vũng Tàu (Gành Hào)",
+            "lat": 10.3391989,
+            "lng": 107.0710401
+          }
+        }
+      },
+      "landing": {
+        "ab": "quan-1/vung-tau",
+        "ba": "vung-tau/quan-1-san-bay"
+      },
+      "sleeper": false,
+      "max_days": 29,
+      "stops": {
+        "a": [
+          {
+            "id": "q1",
+            "vi": "Quận 1 – Phòng chờ 34 Nguyễn Thái Bình",
+            "en": "District 1 – 34 Nguyen Thai Binh waiting room",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "luong-dinh-cua",
+            "vi": "Thủ Đức – 6 Lương Định Của",
+            "en": "Thu Duc – 6 Luong Dinh Cua",
+            "note": "Đón/trả tại 6 Lương Định Của, An Khánh, Thủ Đức.",
+            "point": null
+          },
+          {
+            "id": "tsn-t1",
+            "vi": "Sân bay Tân Sơn Nhất – Ga quốc nội T1",
+            "en": "Tan Son Nhat Airport – Domestic terminal T1",
+            "note": "Đón/trả tại sân bay Tân Sơn Nhất, ga quốc nội T1.",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "tsn-t2",
+            "vi": "Sân bay Tân Sơn Nhất – Ga quốc tế T2",
+            "en": "Tan Son Nhat Airport – International terminal T2",
+            "note": "Đón/trả tại sân bay Tân Sơn Nhất, ga quốc tế T2.",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "tsn-t3",
+            "vi": "Sân bay Tân Sơn Nhất – Ga quốc nội T3",
+            "en": "Tan Son Nhat Airport – Domestic terminal T3",
+            "note": "Đón/trả tại sân bay Tân Sơn Nhất, ga quốc nội T3.",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "tan-binh",
+            "vi": "Tân Bình – Phòng chờ 307 Nguyễn Văn Trỗi",
+            "en": "Tan Binh – 307 Nguyen Van Troi waiting room",
+            "note": "",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "binh-thanh",
+            "vi": "Bình Thạnh – Phòng chờ 607 Điện Biên Phủ",
+            "en": "Binh Thanh – 607 Dien Bien Phu waiting room",
+            "note": "",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "dbp-159",
+            "vi": "Quận 1 – 159 Điện Biên Phủ",
+            "en": "District 1 – 159 Dien Bien Phu",
+            "note": "",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "vinh-nghiem",
+            "vi": "Quận 3 – Chùa Vĩnh Nghiêm",
+            "en": "District 3 – Vinh Nghiem Pagoda",
+            "note": "",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "huynh-van-banh",
+            "vi": "Phú Nhuận – Cây xăng Huỳnh Văn Bánh",
+            "en": "Phu Nhuan – Huynh Van Banh petrol station",
+            "note": "",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "thao-dien",
+            "vi": "Thủ Đức – Vincom Thảo Điền",
+            "en": "Thu Duc – Vincom Thao Dien",
+            "note": "",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "lexington",
+            "vi": "Thủ Đức – Lexington Residence (Mai Chí Thọ)",
+            "en": "Thu Duc – Lexington Residence (Mai Chi Tho)",
+            "note": "",
+            "point": {
+              "name": "Sân bay Tân Sơn Nhất",
+              "lat": 10.8184631,
+              "lng": 106.6588245
+            }
+          },
+          {
+            "id": "long-thanh",
+            "vi": "Long Thành",
+            "en": "Long Thanh",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "long-thanh-stop",
+            "vi": "Trạm dừng Long Thành",
+            "en": "Long Thanh rest stop",
+            "note": "",
+            "point": null
+          }
+        ],
+        "b": [
+          {
+            "id": "vt",
+            "vi": "Vũng Tàu – Phòng chờ 156B Lê Hồng Phong",
+            "en": "Vung Tau – 156B Le Hong Phong waiting room",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "vt-hotel",
+            "vi": "Vũng Tàu – Khách sạn / nhà riêng (ghi địa chỉ)",
+            "en": "Vung Tau – Hotel / home (enter the address)",
+            "note": "Đón/trả tại khách sạn / nhà riêng ở Vũng Tàu, địa chỉ:",
+            "point": null
+          },
+          {
+            "id": "ganh-hao",
+            "vi": "Vũng Tàu – Gành Hào (bãi sau)",
+            "en": "Vung Tau – Ganh Hao (Back Beach)",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "hoang-hoa-tham",
+            "vi": "Vũng Tàu – Cây xăng Hoàng Hoa Thám",
+            "en": "Vung Tau – Hoang Hoa Tham petrol station",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "lotte",
+            "vi": "Vũng Tàu – Lotte Mart",
+            "en": "Vung Tau – Lotte Mart",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "paradise",
+            "vi": "Vũng Tàu – Bùng binh Paradise",
+            "en": "Vung Tau – Paradise roundabout",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "gieng-nuoc",
+            "vi": "Vũng Tàu – Ngã tư Giếng Nước",
+            "en": "Vung Tau – Gieng Nuoc intersection",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "dau-khi",
+            "vi": "Vũng Tàu – Bùng binh Dầu Khí",
+            "en": "Vung Tau – Dau Khi roundabout",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "seaview",
+            "vi": "Vũng Tàu – Chung cư Seaview",
+            "en": "Vung Tau – Seaview apartments",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "nguyen-huu-canh",
+            "vi": "Vũng Tàu – Ngã tư Nguyễn Hữu Cảnh",
+            "en": "Vung Tau – Nguyen Huu Canh intersection",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "luu-chi-hieu",
+            "vi": "Vũng Tàu – Ngã tư Lưu Chí Hiếu",
+            "en": "Vung Tau – Luu Chi Hieu intersection",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "khang-linh",
+            "vi": "Vũng Tàu – Cổng Khang Linh",
+            "en": "Vung Tau – Khang Linh gate",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "dong-xuyen",
+            "vi": "Vũng Tàu – KCN Đông Xuyên",
+            "en": "Vung Tau – Dong Xuyen industrial park",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "cua-lap",
+            "vi": "Vũng Tàu – Bùng binh Cửa Lấp",
+            "en": "Vung Tau – Cua Lap roundabout",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "eo-ong-tu",
+            "vi": "Vũng Tàu – Ẹo Ông Từ",
+            "en": "Vung Tau – Eo Ong Tu",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "ba-ria",
+            "vi": "Bà Rịa – Trung tâm",
+            "en": "Ba Ria – City centre",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "nga-ba-ba-ria",
+            "vi": "Bà Rịa – Ngã ba Bà Rịa",
+            "en": "Ba Ria – Ba Ria junction",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "tan-thanh",
+            "vi": "Tân Thành – Bà Rịa",
+            "en": "Tan Thanh – Ba Ria",
+            "note": "",
+            "point": null
+          }
+        ]
+      },
+      "default_stop": {
+        "a": "q1",
+        "b": "vt"
+      }
+    },
+    {
+      "id": "hn-db",
+      "label": {
+        "vi": "Hà Nội – Điện Biên",
+        "en": "Hanoi – Dien Bien"
+      },
+      "ends": {
+        "a": {
+          "vi": "Hà Nội",
+          "en": "Hanoi",
+          "point": {
+            "name": "Bến xe Mỹ Đình",
+            "lat": 21.0284297,
+            "lng": 105.7782687
+          }
+        },
+        "b": {
+          "vi": "Điện Biên",
+          "en": "Dien Bien",
+          "point": {
+            "name": "Bến xe Điện Biên",
+            "lat": 21.392683719524,
+            "lng": 103.010258674622
+          }
+        }
+      },
+      "landing": {
+        "ab": "my-dinh/dien-bien",
+        "ba": null
+      },
+      "sleeper": true,
+      "max_days": 29,
+      "stops": {
+        "a": [
+          {
+            "id": "my-dinh",
+            "vi": "Bến xe Mỹ Đình",
+            "en": "My Dinh Bus Station",
+            "note": "",
+            "point": null
+          }
+        ],
+        "b": [
+          {
+            "id": "dien-bien",
+            "vi": "Bến xe Điện Biên",
+            "en": "Dien Bien Bus Station",
+            "note": "",
+            "point": {
+              "name": "Bến xe Điện Biên",
+              "lat": 21.392683719524,
+              "lng": 103.010258674622
+            }
+          },
+          {
+            "id": "ban-phu",
+            "vi": "Bản Phủ",
+            "en": "Ban Phu",
+            "note": "",
+            "point": {
+              "name": "Bản Phủ",
+              "lat": 21.3174085589382,
+              "lng": 103.010549797354
+            }
+          },
+          {
+            "id": "muong-cha",
+            "vi": "Mường Chà",
+            "en": "Muong Cha",
+            "note": "",
+            "point": {
+              "name": "Mường Chà",
+              "lat": 21.7547891787249,
+              "lng": 103.088819161293
+            }
+          }
+        ]
+      },
+      "default_stop": {
+        "a": "my-dinh",
+        "b": "dien-bien"
+      }
+    },
+    {
+      "id": "hn-moc",
+      "label": {
+        "vi": "Hà Nội – Mộc Châu",
+        "en": "Hanoi – Moc Chau"
+      },
+      "ends": {
+        "a": {
+          "vi": "Hà Nội",
+          "en": "Hanoi",
+          "point": {
+            "name": "Bến xe Mỹ Đình",
+            "lat": 21.0284297,
+            "lng": 105.7782687
+          }
+        },
+        "b": {
+          "vi": "Mộc Châu",
+          "en": "Moc Chau",
+          "point": {
+            "name": "Mộc Châu",
+            "lat": 20.8461723,
+            "lng": 104.6415738
+          }
+        }
+      },
+      "landing": {
+        "ab": null,
+        "ba": null
+      },
+      "sleeper": false,
+      "max_days": 29,
+      "stops": {
+        "a": [
+          {
+            "id": "my-dinh",
+            "vi": "Bến xe Mỹ Đình",
+            "en": "My Dinh Bus Station",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "nguyen-tuan",
+            "vi": "35 Nguyễn Tuân",
+            "en": "35 Nguyen Tuan",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "chau-van-liem",
+            "vi": "10 Châu Văn Liêm",
+            "en": "10 Chau Van Liem",
+            "note": "",
+            "point": null
+          }
+        ],
+        "b": [
+          {
+            "id": "nong-truong",
+            "vi": "Nông trường Mộc Châu",
+            "en": "Moc Chau Farm",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "muong-thanh",
+            "vi": "Khách sạn Mường Thanh",
+            "en": "Muong Thanh Hotel",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "truong-giang",
+            "vi": "Khách sạn Trường Giang",
+            "en": "Truong Giang Hotel",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "ben-xe-mc",
+            "vi": "Bến xe Mộc Châu",
+            "en": "Moc Chau Bus Station",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "tran-huy-lieu",
+            "vi": "Văn phòng 254 Trần Huy Liệu",
+            "en": "Office, 254 Tran Huy Lieu",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "ban-ang",
+            "vi": "Bản Áng",
+            "en": "Ban Ang",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "pa-hang",
+            "vi": "Ngã 3 Pa Háng",
+            "en": "Pa Hang junction",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "muong-sang",
+            "vi": "Cây xăng Mường Sang",
+            "en": "Muong Sang petrol station",
+            "note": "",
+            "point": null
+          }
+        ]
+      },
+      "default_stop": {
+        "a": "my-dinh",
+        "b": "nong-truong"
+      }
+    },
+    {
+      "id": "hn-sl",
+      "label": {
+        "vi": "Hà Nội – Sơn La",
+        "en": "Hanoi – Son La"
+      },
+      "ends": {
+        "a": {
+          "vi": "Hà Nội",
+          "en": "Hanoi",
+          "point": {
+            "name": "Bến xe Mỹ Đình",
+            "lat": 21.0284297,
+            "lng": 105.7782687
+          }
+        },
+        "b": {
+          "vi": "Sơn La",
+          "en": "Son La",
+          "point": {
+            "name": "Bến xe Sơn La",
+            "lat": 21.3014976,
+            "lng": 103.9435128
+          }
+        }
+      },
+      "landing": {
+        "ab": "my-dinh/son-la",
+        "ba": null
+      },
+      "sleeper": false,
+      "max_days": 29,
+      "stops": {
+        "a": [
+          {
+            "id": "my-dinh",
+            "vi": "Bến xe Mỹ Đình",
+            "en": "My Dinh Bus Station",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "nguyen-tuan",
+            "vi": "35 Nguyễn Tuân",
+            "en": "35 Nguyen Tuan",
+            "note": "",
+            "point": null
+          },
+          {
+            "id": "chau-van-liem",
+            "vi": "10 Châu Văn Liêm",
+            "en": "10 Chau Van Liem",
+            "note": "",
+            "point": null
+          }
+        ],
+        "b": [
+          {
+            "id": "don-tan-noi",
+            "vi": "Đón trả tận nơi (trung tâm TP)",
+            "en": "Door-to-door (Son La city centre)",
+            "note": "Đón trả tận nơi trong trung tâm TP. Sơn La",
+            "point": null
+          },
+          {
+            "id": "ben-xe-sl",
+            "vi": "Bến xe Sơn La",
+            "en": "Son La Bus Station",
+            "note": "",
+            "point": null
+          }
+        ]
+      },
+      "default_stop": {
+        "a": "my-dinh",
+        "b": "don-tan-noi"
+      }
+    }
+  ],
+  "promos": []
+}

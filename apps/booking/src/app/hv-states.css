@@ -1,0 +1,133 @@
+/* Trạng thái và thông báo: huy hiệu, notice, liên kết, giảm chuyển động, toast. Chỉ dùng token. */
+@layer components {
+  /* Sheet/dialog v4: kính trên scrim, r-3 (do class), bóng 3 + viền sáng trong. Nền đặc khi không có backdrop-filter hoặc người dùng giảm trong suốt.
+     (.glass trong tokens.css cố định bóng 2 nên sheet có lớp riêng cho bóng 3.) */
+  .hv-sheet {
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+    box-shadow: var(--glass-edge), var(--shadow-3);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .hv-sheet {
+      background: var(--color-surface);
+    }
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .hv-sheet {
+      background: var(--color-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+  /* Huy hiệu trạng thái v4: chữ nhật r-1, chữ + icon, vòng 1px. */
+  .hv-tag {
+    display: inline-flex;
+    min-height: calc(var(--s-6) + var(--s-1));
+    align-items: center;
+    gap: var(--s-1);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-1);
+    background: var(--color-paper-3);
+    color: var(--color-ink);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+    white-space: nowrap;
+  }
+  .hv-tag-in {
+    background: var(--color-accent-soft);
+    box-shadow: inset 0 0 0 var(--line) var(--color-accent-edge);
+  }
+  /* Ghế đang chọn: nền ink chữ surface (như tag--on của comp), tick đi kèm ở markup. */
+  .hv-tag-on {
+    background: var(--color-ink);
+    color: var(--color-surface);
+    font-weight: var(--weight-display);
+  }
+  /* Nhãn nằm trên kính (thanh tổng, thanh lọc, dialog/sheet): chữ 16px trở lên. */
+  :is(.glass, .glass-yellow, .hv-sheet) .hv-tag {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+  }
+  .hv-tag-out {
+    background: transparent;
+    box-shadow: inset 0 0 0 var(--line) var(--color-edge);
+    color: var(--color-muted);
+    text-decoration: line-through;
+  }
+  .hv-tag-ok {
+    background: var(--color-success-soft);
+    color: var(--color-success);
+    box-shadow: inset 0 0 0 var(--line) var(--color-success);
+  }
+  .hv-tag-bad {
+    background: var(--color-error-soft);
+    color: var(--color-error);
+    box-shadow: inset 0 0 0 var(--line) var(--color-error);
+  }
+  /* Thông báo nằm trong trang (toast chỉ cho lỗi hệ thống). */
+  .hv-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4);
+    border: var(--line) solid var(--color-accent-edge);
+    border-radius: var(--r-1);
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+  .hv-notice-error {
+    border-color: var(--color-error);
+    background: var(--color-error-soft);
+    color: var(--color-error);
+  }
+  /* Liên kết đứng riêng: gạch chân 1px, cao 44, r-1 cho vùng hover. */
+  .hv-link {
+    display: inline-flex;
+    min-height: var(--tap-min);
+    align-items: center;
+    font-weight: var(--weight-strong);
+    text-decoration: underline;
+    text-decoration-thickness: var(--line);
+    text-underline-offset: 0.2em;
+    border-radius: var(--r-1);
+  }
+  .hv-link:hover {
+    background: var(--color-accent-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Toast sonner (richColors) mặc định chữ nhạt trên nền nhạt < 4,5:1: ép chữ ink/semantic trên nền surface, viền theo loại. */
+[data-sonner-toast][data-rich-colors="true"][data-type="warning"] {
+  --normal-bg: var(--color-accent-soft);
+  background: var(--color-accent-soft);
+  color: var(--color-ink);
+  border-color: var(--color-accent-edge);
+}
+[data-sonner-toast][data-rich-colors="true"][data-type="error"] {
+  background: var(--color-surface);
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+[data-sonner-toast][data-rich-colors="true"][data-type="success"] {
+  background: var(--color-surface);
+  color: var(--color-success);
+  border-color: var(--color-success);
+}
+[data-sonner-toast][data-rich-colors="true"][data-type="info"] {
+  background: var(--color-surface);
+  color: var(--color-link);
+  border-color: var(--color-link);
+}

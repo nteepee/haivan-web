@@ -1,0 +1,111 @@
+/* Khối trang marketing dùng chung: section, đầu khối, thẻ tuyến, thẻ hạng xe, dải app, FAQ, hàng ý. Chỉ dùng token. */
+@layer components {
+  .hv-section {
+    padding-block: var(--section-pad);
+  }
+  .hv-section-dark {
+    background: var(--color-ink);
+    color: var(--color-surface);
+  }
+  .hv-section-dark h2,
+  .hv-section-dark h3 {
+    color: var(--color-surface);
+  }
+  .hv-section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--title-gap);
+  }
+  .hv-head-block {
+    display: grid;
+    gap: var(--s-2);
+    margin-bottom: var(--title-gap);
+  }
+  .hv-lead {
+    max-width: 52ch;
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+    color: var(--color-muted);
+  }
+  /* Thẻ tuyến ảnh (v4): r-3, không viền, bóng 1; cả thẻ là vùng bấm (nút kéo giãn), hover bóng 2, không zoom. */
+  .hv-rcard {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+  }
+  .hv-rcard:hover,
+  .hv-rcard:focus-within {
+    box-shadow: var(--shadow-2);
+  }
+  .hv-rcard-img {
+    aspect-ratio: 16 / 9;
+    background: var(--color-paper-3);
+  }
+  .hv-rcard-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* Hàng: tên (tối thiểu 2 dòng) / giờ / giá + nút; hàng cuối nhận phần dư nên giá và nút thẳng hàng giữa các thẻ cùng rail. */
+  .hv-rcard-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: "name name" "time time" "price go";
+    gap: var(--s-1) var(--s-3);
+    align-items: end;
+    padding: var(--card-pad);
+  }
+  .hv-rcard-body h3 {
+    min-height: 2lh;
+    grid-area: name;
+    align-self: start;
+  }
+  .hv-rcard-time {
+    display: flex;
+    grid-area: time;
+    align-self: start;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--color-muted);
+    font-weight: var(--weight-strong);
+  }
+  .hv-rcard-price {
+    grid-area: price;
+    margin-top: var(--s-2);
+  }
+  .hv-rcard-price small {
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+  .hv-rcard-price strong {
+    color: var(--color-ink);
+    font-size: var(--fs-24);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-24);
+    font-variant-numeric: tabular-nums;
+  }
+  .hv-rcard-go {
+    grid-area: go;
+    margin-top: var(--s-2);
+  }
+  .hv-rcard-go::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .hv-rcard-go:focus-visible {
+    outline-offset: calc(var(--line-strong) * -1);
+  }
+  .hv-rcard:has(.hv-rcard-go:focus-visible) {
+    outline: var(--line-strong) solid var(--color-focus);
+    outline-offset: var(--line-strong);
+  }
+}

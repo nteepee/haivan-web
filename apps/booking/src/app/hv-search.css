@@ -1,0 +1,156 @@
+/* Thẻ tìm vé v4: tab phân đoạn xám, lưới ô nhập, nút đổi chiều tròn, bộ đếm số người. Chỉ dùng token. */
+@layer components {
+  /* Tab loại hình v4: thanh phân đoạn. Track xám paper-2 r-2 (đệm s-1, đồng tâm với đoạn r-1); đoạn đang chọn = nền trắng nổi bóng 1.
+     2x2 trên điện thoại, một hàng từ 40rem. Track nằm trong thẻ, cách mép card-pad. */
+  .hv-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-1);
+    margin: var(--card-pad) var(--card-pad) 0;
+    padding: var(--s-1);
+    border-radius: var(--r-2);
+    background: var(--color-paper-2);
+  }
+  .hv-tab {
+    display: flex;
+    min-height: var(--tap-min);
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    min-width: 0;
+    padding: var(--s-1) var(--s-2);
+    border-radius: var(--r-1);
+    color: var(--color-ink);
+    font-weight: var(--weight-strong);
+    line-height: 1.25;
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+  .hv-tab svg {
+    fill: var(--color-surface);
+    fill-opacity: 0.55;
+  }
+  a.hv-tab:hover {
+    background: var(--color-accent-soft);
+  }
+  a.hv-tab:active {
+    background: var(--color-accent);
+  }
+  .hv-tab[aria-current="page"] {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+    font-weight: var(--weight-display);
+  }
+  /* Thẻ tìm vé trên nền phẳng (không phải ảnh): nền đặc surface + bóng 2, không blur. */
+  .hv-plate-solid {
+    box-shadow: var(--shadow-2);
+  }
+  /* --label-h = nhãn 16/24 + s-2: đỉnh ô nhập cách đỉnh cột đúng chừng này, nên nút đổi chiều và nút Tìm vé dùng nó để thẳng hàng với ô. */
+  .hv-plate-grid {
+    --label-h: calc(var(--lh-16) + var(--s-2));
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--gap-field) var(--s-4);
+    padding: var(--card-pad);
+  }
+  /* Phone: nút đổi chiều đè mép phải, nằm trong khoảng cách + hàng nhãn "Đến" (gap-field + label-h = tap-min): hàng lưới cao 0 nên không có hàng trống. */
+  .hv-swap {
+    display: inline-grid;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    place-items: center;
+    justify-self: end;
+    margin-block: 0 calc(var(--tap-min) * -1);
+    z-index: var(--z-base);
+    border-radius: var(--r-round);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+    color: var(--color-ink);
+  }
+  .hv-swap:hover:not(:disabled) {
+    background: var(--color-accent-soft);
+  }
+  .hv-swap:active:not(:disabled) {
+    background: var(--color-accent);
+  }
+  .hv-swap:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  /* Bộ đếm: một khối r-1 viền 1px edge, ba ô liền nhau (nút trừ, số, nút cộng); không viền ink. */
+  .hv-counter {
+    display: grid;
+    height: var(--control-h);
+    grid-template-columns: var(--control-h) minmax(0, 1fr) var(--control-h);
+    overflow: hidden;
+    border: var(--line) solid var(--color-edge);
+    border-radius: var(--r-1);
+    background: var(--color-surface);
+  }
+  .hv-counter button {
+    display: grid;
+    min-height: 0;
+    place-items: center;
+    border: 0;
+    background: transparent;
+  }
+  .hv-counter :focus-visible {
+    outline-offset: calc(var(--line-strong) * -1);
+  }
+  .hv-counter button:hover:not(:disabled) {
+    background: var(--color-accent-soft);
+  }
+  .hv-counter button:active:not(:disabled) {
+    background: var(--color-accent);
+  }
+  .hv-counter button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .hv-counter input {
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    font-size: var(--fs-20);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-20);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    appearance: textfield;
+  }
+  .hv-counter input::-webkit-inner-spin-button,
+  .hv-counter input::-webkit-outer-spin-button {
+    appearance: none;
+  }
+  @media (min-width: 40rem) {
+    .hv-tabs {
+      grid-template-columns: repeat(4, max-content);
+      justify-content: start;
+    }
+    .hv-tab {
+      padding-inline: var(--s-4);
+      white-space: nowrap;
+    }
+    .hv-plate-grid {
+      grid-template-columns: minmax(0, 1fr) var(--control-h) minmax(0, 1fr);
+      align-items: start;
+      gap: var(--gap-field) var(--s-3);
+    }
+    .hv-swap {
+      width: var(--control-h);
+      height: var(--control-h);
+      justify-self: center;
+      margin: var(--label-h) 0 0;
+    }
+  }
+  @media (min-width: 60rem) {
+    .hv-plate-grid {
+      grid-template-columns: minmax(0, 1fr) var(--control-h) minmax(0, 1fr) 9.5rem 9.5rem 11rem;
+    }
+    .hv-plate-go {
+      margin-top: var(--label-h);
+    }
+  }
+}

@@ -1,0 +1,76 @@
+/* Thanh tổng dính v4 (phone: đáy; desktop: thẻ cột phải): lớp kính nổi (.glass trong markup). Chiều cao do StickyBar đo vào --bar-h. Chỉ dùng token. */
+@layer components {
+  /* Phone: fixed đáy, hai góc trên r-3, nền đặc dự phòng (kính do .glass); từ 60rem thành thẻ dính cột phải r-3 (tổng 32/40). Chữ trên kính 16px+. */
+  .hv-sticky-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    padding: var(--s-3) var(--gutter) calc(var(--s-3) + env(safe-area-inset-bottom, 0px));
+    border-radius: var(--r-3) var(--r-3) 0 0;
+    background: var(--color-surface);
+    box-shadow: var(--shadow-2);
+  }
+  .hv-sticky-inner {
+    display: grid;
+    max-width: var(--container);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--s-4);
+    align-items: center;
+    margin-inline: auto;
+  }
+  .hv-sticky-sum {
+    display: grid;
+    min-width: 0;
+  }
+  .hv-sticky-label {
+    color: var(--color-ink);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    overflow-wrap: anywhere;
+  }
+  .hv-total {
+    color: var(--color-ink);
+    font-size: var(--fs-32);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-32);
+    font-variant-numeric: tabular-nums;
+  }
+  .hv-sticky-msg {
+    grid-column: 1 / -1;
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+  }
+  /* Chip ghế đã chọn: chỉ hiện trong thẻ cột phải (từ 60rem). */
+  .hv-sel-chips {
+    display: none;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  /* Chiều cao thanh dính do StickyBar đo và ghi vào <html>; không có thanh (hoặc từ 60rem) thì 0. */
+  :root {
+    --bar-h: calc(var(--s-1) * 0);
+  }
+  .hv-bar-spacer {
+    height: var(--bar-h);
+  }
+  @media (min-width: 60rem) {
+    .hv-bar-spacer {
+      display: none;
+    }
+    .hv-sticky-bar {
+      position: static;
+      padding: var(--card-pad);
+      border-radius: var(--r-3);
+      box-shadow: var(--shadow-2);
+    }
+    .hv-sticky-inner {
+      max-width: none;
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .hv-sel-chips {
+      display: flex;
+    }
+  }
+}

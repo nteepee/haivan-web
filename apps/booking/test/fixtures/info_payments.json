@@ -1,0 +1,44 @@
+[
+ {
+  "type": 5,
+  "name": "Thanh toán bằng mã QR",
+  "info": [],
+  "description": "Thanh toán bằng mã QR qua VNPay",
+  "is_locked": false
+ },
+ {
+  "type": 1,
+  "name": "Thanh toán trực tuyến",
+  "info": [],
+  "description": "Thanh toán trực tuyến qua VNPay",
+  "is_locked": false
+ },
+ {
+  "type": 2,
+  "name": "Chuyển khoản",
+  "info": [
+   {
+    "code": "66868888999",
+    "name_cp": "CN CTY LIEN DOANH VAN CHUYEN QUOC TE HAI VAN TAI BRVT",
+    "name": "MB bank - Chi nhánh Vũng Tàu",
+    "branch": "Chi nhánh Vũng Tàu"
+   }
+  ],
+  "description": "Thanh toán bằng chuyển khoản ngân hàng",
+  "is_locked": true
+ },
+ {
+  "type": 6,
+  "name": "Thanh toán bằng mã QR qua PayOS",
+  "info": [],
+  "description": "Thanh toán bằng mã QR qua PayOS",
+  "is_locked": false
+ },
+ {
+  "type": 3,
+  "name": "Tiền mặt",
+  "info": [],
+  "description": "Thanh toán bằng tiền mặt khi lên xe",
+  "is_locked": false
+ }
+]

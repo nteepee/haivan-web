@@ -1,0 +1,179 @@
+/* Lớp thành phần dùng chung (v4): nút không viền, ô nhập viền 1px edge, thẻ r-3 bóng 1, lỗi, ảnh. Chỉ dùng token (docs/design/check-tokens.mjs). */
+@layer components {
+  /* Nút v4: 48 cao, r-1, không viền, chữ 16/24 800. Hover đổi màu, :active lún 1px, disabled 55%, loading = aria-busy. */
+  .hv-btn {
+    display: inline-flex;
+    min-height: var(--control-h);
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    padding: var(--s-3) var(--s-6);
+    border: 0;
+    border-radius: var(--r-1);
+    font-size: var(--fs-16);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-16);
+    color: var(--color-accent-ink);
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background-color var(--dur-micro) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+  /* Dải cuộn ngang (tab dài): mép phải mờ dần báo còn nội dung; đệm cuối đúng bằng vùng mờ để mục cuối đọc rõ khi cuộn hết. */
+  .hv-scroll-fade {
+    overflow-x: auto;
+    padding-inline-end: var(--s-8);
+    scrollbar-width: none;
+    mask-image: linear-gradient(to right, var(--color-ink) calc(100% - var(--s-8)), transparent);
+  }
+  .hv-btn:active:not(:disabled):not([aria-disabled="true"]) {
+    transform: translateY(var(--line));
+  }
+  /* Chỉ `disabled` thật mới mờ. `aria-disabled` giữ nguyên độ tương phản (chữ ink trên vàng 7.8:1), chỉ đổi con trỏ. */
+  .hv-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .hv-btn[aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+  .hv-btn[aria-busy="true"] {
+    cursor: progress;
+  }
+  .hv-btn-primary {
+    background: var(--color-accent);
+  }
+  .hv-btn-primary:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: var(--color-accent-hover);
+  }
+  /* Nút phụ: nền xám paper-2, vạch trong 1px rule (không viền ngoài). */
+  .hv-btn-outline {
+    background: var(--color-paper-2);
+    box-shadow: inset 0 0 0 var(--line) var(--color-rule);
+  }
+  .hv-btn-outline:hover:not(:disabled):not([aria-disabled="true"]) {
+    background: var(--color-paper-3);
+  }
+  .hv-btn-outline:active:not(:disabled):not([aria-disabled="true"]) {
+    background: var(--color-paper-3);
+  }
+  .hv-btn-lg {
+    min-height: var(--control-h-lg);
+    padding-block: var(--s-1);
+    padding-inline: var(--s-8);
+    font-size: var(--fs-18);
+    line-height: var(--lh-18);
+  }
+  .hv-btn-sm {
+    min-height: var(--tap-min);
+    padding-block: var(--s-1);
+    padding-inline: var(--s-4);
+  }
+  .hv-btn-block {
+    width: 100%;
+  }
+  /* Trên nền vàng của header: nút nền trắng nổi nhẹ (bóng 1), hover vàng nhạt. */
+  .hv-btn-ghost {
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+  }
+  .hv-btn-ghost:hover:not(:disabled) {
+    background: var(--color-accent-soft);
+  }
+
+  /* Ô nhập v4: cao 48, viền 1px edge (4,2:1 trên nền trắng), hover nền vàng nhạt, lỗi viền error. */
+  .hv-field {
+    width: 100%;
+    min-height: var(--control-h);
+    padding: 0 var(--s-4);
+    border: var(--line) solid var(--color-edge);
+    border-radius: var(--r-1);
+    background: var(--color-surface);
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    color: var(--color-text);
+    appearance: none;
+    transition: background-color var(--dur-micro) var(--ease-out);
+  }
+  textarea.hv-field {
+    padding-block: var(--s-3);
+  }
+  .hv-field::placeholder {
+    color: var(--color-muted);
+    opacity: 1;
+  }
+  .hv-field:hover:not(:disabled) {
+    background: var(--color-accent-soft);
+  }
+  .hv-field:focus-visible {
+    outline-offset: 0;
+  }
+  .hv-field:disabled {
+    background: var(--color-paper-2);
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .hv-field[aria-invalid="true"] {
+    border-color: var(--color-error);
+  }
+  .hv-label {
+    display: block;
+    margin-bottom: var(--s-2);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+    color: var(--color-ink);
+  }
+  /* Lỗi dưới ô: icon + một câu, không chỉ màu. */
+  .hv-err {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s-2);
+    margin-top: var(--s-1);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+    color: var(--color-error);
+  }
+  /* Gợi ý nằm cả trên thanh kính dính nên luôn 16px, chữ text (không nhạt hơn muted). */
+  .hv-hint {
+    min-height: 1lh;
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    color: var(--color-text);
+  }
+
+  /* Thẻ v4: r-3, không viền, bóng 1 lúc nghỉ; thẻ bấm được hover = bóng 2. */
+  .hv-card {
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+  }
+  .hv-card-link:hover {
+    box-shadow: var(--shadow-2);
+  }
+  /* Thẻ biển (plate) = thẻ tìm vé nổi trên banner: r-3, kính (lớp .glass thêm ở markup, nền đặc khi không hỗ trợ). Nhãn trên kính 16px. */
+  .hv-plate {
+    display: flow-root;
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+  }
+  .hv-plate .hv-label {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+  }
+  .hv-photo {
+    overflow: hidden;
+    border-radius: var(--r-2);
+    background: var(--color-paper-3);
+  }
+  .hv-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hv-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}

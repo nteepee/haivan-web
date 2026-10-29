@@ -1,0 +1,95 @@
+/* Dải tải app nền vàng thương hiệu: cùng lớp và cùng giá trị với footer.css của WordPress (dải này nằm ngay trước footer ở mọi trang). Chỉ dùng token. */
+@layer components {
+  .hv-app {
+    display: grid;
+    gap: var(--s-8);
+    align-items: center;
+  }
+  .hv-app-text {
+    display: grid;
+    gap: var(--s-4);
+  }
+  .hv-ticks {
+    display: grid;
+    gap: var(--s-2);
+  }
+  .hv-ticks li {
+    display: flex;
+    min-height: var(--s-8);
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: var(--weight-strong);
+  }
+  .hv-ticks__link {
+    display: inline-flex;
+    min-height: var(--tap-min);
+    align-items: center;
+    border-radius: var(--r-1);
+    text-decoration: underline;
+    text-decoration-thickness: var(--line);
+    text-underline-offset: 0.2em;
+  }
+  .hv-ticks__link:hover {
+    background: var(--color-accent-hover);
+  }
+  .hv-app-qr {
+    display: grid;
+    grid-template-columns: calc(var(--s-24) + var(--s-4)) minmax(0, 1fr);
+    gap: var(--s-4);
+    align-items: center;
+  }
+  .hv-qr {
+    width: calc(var(--s-24) + var(--s-4));
+    height: calc(var(--s-24) + var(--s-4));
+    padding: var(--s-2);
+    border-radius: var(--r-2);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+  }
+  .hv-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: var(--s-2);
+  }
+  .hv-badges a {
+    display: block;
+  }
+  .hv-badges img {
+    width: auto;
+    height: var(--s-12);
+    border-radius: var(--r-1);
+  }
+  .hv-app-phone {
+    width: min(100%, 20rem);
+    height: auto;
+    justify-self: center;
+  }
+  /* Tiêu đề dải app không phải heading của trang (tránh 10+ <h2> lặp ở mọi trang): dáng như h2. */
+  .hv-app-band .hv-app-title {
+    color: var(--color-accent-ink);
+    font-size: var(--fs-h2);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-h2);
+    text-wrap: balance;
+  }
+  .hv-app-band :focus-visible {
+    outline-color: var(--color-focus);
+  }
+  .hv-app-band .hv-ticks .hv-ic {
+    padding: var(--s-1);
+    border-radius: var(--r-1);
+    background: var(--color-ink);
+    color: var(--color-accent);
+    stroke-width: 3;
+  }
+  @media (min-width: 60rem) {
+    .hv-app {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      gap: var(--s-16);
+    }
+    .hv-app-phone {
+      justify-self: end;
+    }
+  }
+}

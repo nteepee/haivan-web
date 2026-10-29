@@ -1,0 +1,37 @@
+{
+ "path": "my-dinh/dien-bien",
+ "seo_title": "Xe Hà Nội đi Điện Biên – Vé từ 485.000đ | Hải Vân",
+ "meta_description": "Đặt vé xe Hải Vân Hà Nội đi Điện Biên: giá từ 485.000đ, 11 giờ, đón tại Bến xe Mỹ Đình. Giữ chỗ online, thanh toán VNPay.",
+ "h1": "Đặt vé xe Hà Nội đi Điện Biên",
+ "intro": "Hải Vân chạy tuyến Hà Nội – Điện Biên mỗi ngày, xuất phát từ Bến xe Mỹ Đình. Chọn giờ, chọn ghế và giữ chỗ trực tuyến, không cần ra quầy.",
+ "schedule_text": "<p>Xe xuất phát từ Bến xe Mỹ Đình theo nhiều khung giờ trong ngày. Giá hiển thị bên dưới đã gồm thuế VAT và thay đổi theo hạng xe, ngày đi.</p>",
+ "content_html": "<h2>Đi xe Hà Nội – Điện Biên cần biết gì?</h2><p>Hành trình khoảng <strong>11 giờ</strong>, dừng nghỉ dọc đường để khách ăn uống và nghỉ chân.</p><ul><li>Có mặt tại điểm đón trước giờ xe chạy 15 phút.</li><li>Hành lý lớn nên báo trước khi đặt vé.</li></ul><p>Xem thêm <a href=\"/diem-den\">điểm đến</a> và <a href=\"https://haivan.com/ho-tro\">hỗ trợ</a>.</p>",
+ "faq": [
+  { "q": "Xe Hà Nội đi Điện Biên chạy mất bao lâu?", "a": "Khoảng 11 giờ tuỳ tình hình giao thông và thời gian nghỉ dọc đường." },
+  { "q": "Tôi có thể đổi hoặc huỷ vé không?", "a": "Có. Vào Chuyến đi của tôi để đổi hoặc huỷ theo chính sách hiện hành của Hải Vân." }
+ ],
+ "pickup_points": [
+  { "name": "Bến xe Mỹ Đình", "address": "20 Phạm Hùng, Mỹ Đình, Hà Nội", "note": "Có mặt trước giờ xe chạy 15 phút" },
+  { "name": "Văn phòng Hải Vân Hà Nội", "address": "Tầng 5, Toà nhà 125 Hoàng Ngân, Yên Hòa, Hà Nội" }
+ ],
+ "offices": [
+  {
+   "name": "Văn phòng Hải Vân Hà Nội",
+   "address": "Tầng 5, Toà nhà 125 Hoàng Ngân, Yên Hòa, Hà Nội",
+   "hours": "06:00 – 21:00 hằng ngày",
+   "note": "Hotline 1900 6763",
+   "map_url": "https://www.google.com/maps/search/?api=1&query=125+Ho%C3%A0ng+Ng%C3%A2n+H%C3%A0+N%E1%BB%99i"
+  }
+ ],
+ "vehicle_classes": [
+  { "name": "Limousine 22 phòng", "seats": 22, "price_from": "485.000đ", "text": "Ghế ngả sâu, khoảng để chân rộng cho chặng dài.", "amenities": ["Điều hòa", "Sạc USB", "Nước uống"] },
+  { "name": "Giường nằm 34 chỗ", "seats": 34, "price_from": "485.000đ" }
+ ],
+ "related_routes": [
+  { "label": "Yên Nghĩa đi Điện Biên", "path": "yen-nghia/dien-bien" },
+  { "label": "Mỹ Đình đi Sơn La", "path": "my-dinh/son-la" }
+ ],
+ "reverse_route": { "label": "Điện Biên đi Hà Nội", "path": "dien-bien/my-dinh" },
+ "round_trip_note": "Đặt chuyến về cùng lúc: chọn lại điểm đi và điểm đến ở chiều ngược lại sau khi hoàn tất chiều đi.",
+ "updated_at": "2026-10-28T08:00:00+07:00"
+}

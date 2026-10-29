@@ -1,0 +1,191 @@
+/* Hàng chuyến v4 (kết quả tìm và lịch chạy): thẻ r-3 đệm s-2 bao ảnh r-2 (đồng tâm), giờ 32px, hai điểm, huy hiệu chỗ, giá nổi. Chỉ dùng token. */
+@layer components {
+  /* Thẻ chuyến: nền trắng, bóng 1, không viền; hover = bóng 2; mở = nền select + vòng chọn 2px (hover giữ bóng 1). */
+  .hv-trips {
+    display: grid;
+    gap: var(--gap-card);
+  }
+  .hv-trip {
+    padding: var(--s-2);
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+    transition: box-shadow var(--dur-short) var(--ease-out);
+  }
+  .hv-trip:hover {
+    box-shadow: var(--shadow-2);
+  }
+  .hv-trip[data-open="true"],
+  .hv-trip[data-open="true"]:hover {
+    background: var(--select-bg);
+    box-shadow: var(--select-ring), var(--shadow-1);
+  }
+  .hv-trip-main {
+    position: relative;
+    border-radius: var(--r-2);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hv-trip-thumb {
+    position: relative;
+    aspect-ratio: 16 / 9;
+  }
+  .hv-trip-body {
+    display: grid;
+    gap: var(--s-3);
+    align-content: center;
+    min-width: 0;
+    padding: var(--s-4) var(--s-2) var(--s-2);
+  }
+  .hv-trip-title {
+    color: var(--color-ink);
+    font-size: var(--fs-18);
+    line-height: var(--lh-18);
+    overflow-wrap: anywhere;
+  }
+  /* Hàng giờ: giờ đi, đường kẻ đứt với thời lượng, giờ đến. */
+  .hv-trip-times {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--s-3);
+    align-items: center;
+  }
+  .hv-time {
+    color: var(--color-ink);
+    font-size: var(--fs-32);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-32);
+    font-variant-numeric: tabular-nums;
+  }
+  .hv-stop-mid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0 var(--s-2);
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+    text-align: center;
+  }
+  .hv-stop-mid::after {
+    content: "";
+    flex-basis: 100%;
+    margin-top: var(--s-1);
+    border-top: var(--line) dashed var(--color-edge);
+  }
+  .hv-dur {
+    color: var(--color-ink);
+    white-space: nowrap;
+  }
+  /* Hai điểm: icon ghim và cờ, chữ 14/20. */
+  .hv-trip-route {
+    display: grid;
+    gap: var(--s-1);
+  }
+  .hv-stop {
+    display: grid;
+    grid-template-columns: var(--icon-size) minmax(0, 1fr);
+    gap: var(--s-2);
+    align-items: start;
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+    overflow-wrap: anywhere;
+  }
+  .hv-trip-transit {
+    padding-left: calc(var(--icon-size) + var(--s-2));
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+  .hv-trip-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    align-items: center;
+  }
+  /* Cột phải (phone: dưới): giá nổi + nút. */
+  .hv-trip-side {
+    display: grid;
+    gap: var(--s-3);
+    align-content: space-between;
+    padding: 0 var(--s-2) var(--s-2);
+  }
+  .hv-trip-price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-1) var(--s-3);
+    align-items: baseline;
+  }
+  .hv-trip-price strong {
+    color: var(--color-ink);
+    font-size: var(--fs-32);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-32);
+    font-variant-numeric: tabular-nums;
+  }
+  .hv-trip-price s,
+  .hv-trip-price small {
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+  .hv-trip-price small {
+    color: var(--color-muted);
+  }
+  .hv-trip-price strong small {
+    margin-right: var(--s-1);
+    font-weight: var(--weight-strong);
+  }
+  .hv-trip-price > small {
+    flex-basis: 100%;
+  }
+  /* Cả hàng là vùng bấm: nút "Chọn ghế" kéo giãn phủ hàng; vòng focus vẽ quanh hàng. */
+  .hv-trip-act .hv-btn {
+    width: 100%;
+  }
+  .hv-trip-act .hv-btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  /* Vòng focus vẽ quanh cả hàng khi :has() có; trình duyệt cũ không có :has() thì nút giữ vòng focus mặc định của chính nó. */
+  @supports selector(:has(*)) {
+    .hv-trip-act .hv-btn:focus-visible {
+      outline: none;
+    }
+    .hv-trip-main:has(.hv-btn:focus-visible) {
+      outline: var(--line-strong) solid var(--color-focus);
+      outline-offset: calc(var(--line-strong) * -1);
+    }
+  }
+  .hv-trip-chevron {
+    transition: transform var(--dur-micro) var(--ease-out);
+  }
+  [aria-expanded="true"] > .hv-trip-chevron {
+    transform: rotate(180deg);
+  }
+  @media (min-width: 60rem) {
+    .hv-trip-main {
+      grid-template-columns: 11rem minmax(0, 1fr) 13rem;
+    }
+    .hv-trip-main[data-thumb="false"] {
+      grid-template-columns: minmax(0, 1fr) 13rem;
+    }
+    .hv-trip-thumb {
+      aspect-ratio: auto;
+      min-height: 100%;
+    }
+    .hv-trip-body {
+      padding: var(--s-4);
+    }
+    .hv-trip-side {
+      padding: var(--s-4) var(--s-4) var(--s-4) 0;
+    }
+    .hv-trip-price {
+      justify-content: flex-end;
+      text-align: right;
+    }
+  }
+}

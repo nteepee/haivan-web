@@ -1,0 +1,112 @@
+/* v3: rail cuộn ngang scroll-snap, mũi tên tròn ở đầu section (từ 60rem), mép phải mờ dần. Cuộn được khi chưa có JS. Chỉ dùng token. */
+@layer components {
+  .hv-sec-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: var(--title-gap);
+  }
+  .hv-sec-head h2 {
+    max-width: none;
+  }
+  .hv-rail-wrap {
+    position: relative;
+  }
+  .hv-rail {
+    display: flex;
+    gap: var(--gap-card);
+    /* Đệm trên/dưới (chỗ cho bóng thẻ) được bù bằng margin âm cùng cỡ: rail không làm lệch nhịp section. */
+    margin: calc(var(--s-2) * -1) calc(var(--gutter) * -1) calc(var(--s-6) * -1);
+    padding: var(--s-2) var(--gutter) var(--s-6);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--gutter);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .hv-rail::-webkit-scrollbar {
+    display: none;
+  }
+  .hv-rail > li {
+    min-width: 0;
+    flex: 0 0 min(82vw, 17.5rem);
+    scroll-snap-align: start;
+  }
+  .hv-rail:focus-visible {
+    outline-offset: calc(var(--line-strong) * -1);
+  }
+  /* Mép phải mờ dần về màu nền section (--rail-bg); hết cuộn thì bỏ. */
+  .hv-rail-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: calc(var(--gutter) * -1);
+    bottom: var(--s-6);
+    width: var(--s-12);
+    background: linear-gradient(to right, transparent, var(--rail-bg, var(--color-surface)));
+    pointer-events: none;
+  }
+  .hv-rail-wrap[data-end="true"]::after {
+    display: none;
+  }
+  .hv-rail-ctrls {
+    display: none;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .hv-rail-btn {
+    display: grid;
+    width: var(--tap-min);
+    height: var(--tap-min);
+    place-items: center;
+    border-radius: var(--r-round);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+    color: var(--color-ink);
+  }
+  .hv-rail-btn:hover:not(:disabled) {
+    background: var(--color-accent-soft);
+    box-shadow: var(--shadow-2);
+  }
+  .hv-rail-btn:active:not(:disabled) {
+    background: var(--color-accent);
+    transform: translateY(var(--line));
+  }
+  .hv-rail-btn:disabled {
+    box-shadow: none;
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  @media (min-width: 40rem) {
+    .hv-rail > li {
+      flex-basis: 17.5rem;
+    }
+  }
+  @media (min-width: 60rem) {
+    .hv-rail {
+      margin-inline: calc(var(--s-2) * -1);
+      padding-inline: var(--s-2);
+      scroll-padding-inline: var(--s-2);
+    }
+    .hv-rail-wrap::after {
+      right: calc(var(--s-2) * -1);
+    }
+    .hv-rail-ctrls:not([hidden]) {
+      display: flex;
+    }
+    /* Mọi mục vừa khung: rail thành lưới 3 cột, không còn mũi tên và mép mờ. */
+    .hv-rail-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      overflow: visible;
+      scroll-snap-type: none;
+    }
+    .hv-rail-3 > li {
+      width: auto;
+    }
+    .hv-rail-wrap:has(.hv-rail-3)::after {
+      display: none;
+    }
+  }
+}

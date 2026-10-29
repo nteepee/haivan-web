@@ -1,0 +1,198 @@
+/* Sơ đồ ghế v4: chú giải, khung xe r-3 (viền 1px edge), ghế r-1 64x52; chọn = vàng + vòng chọn + tick; đã đặt = xám + gạch. Chỉ dùng token. */
+@layer components {
+  .hv-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2) var(--s-6);
+    justify-content: center;
+    color: var(--color-text);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+  }
+  .hv-legend li {
+    display: inline-flex;
+    min-height: var(--tap-min);
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .hv-legend .hv-seat {
+    width: var(--icon-size);
+    min-width: 0;
+    height: var(--icon-size);
+    padding: 0;
+    pointer-events: none;
+  }
+  /* Khung xe v4: viền 1px edge, r-3, bốn thanh bánh, dải cabin (tài xế + "Đầu xe"), "Cuối xe" dưới vạch đứt. */
+  /* Khung xe co theo panel nhưng không hẹp hơn nội dung nhỏ nhất (ghế >= 56): màn rất hẹp thì cuộn ngang trong .hv-bus-scroll, trang không tràn. */
+  .hv-bus-scroll {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: safe center;
+    gap: var(--s-4);
+    margin-inline: calc(var(--s-3) * -1);
+    padding: var(--s-1) var(--s-3);
+    overflow-x: auto;
+  }
+  .hv-bus {
+    position: relative;
+    display: grid;
+    width: max-content;
+    min-width: min-content;
+    max-width: 100%;
+    gap: var(--s-2);
+    margin-inline: auto;
+    padding: var(--s-4) var(--s-3) var(--s-6);
+    border: var(--line) solid var(--color-edge);
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+  }
+  .hv-bus-cab {
+    display: grid;
+    grid-template-columns: var(--s-16) minmax(0, 1fr) var(--s-16);
+    gap: var(--s-2);
+    align-items: center;
+    margin-bottom: var(--s-2);
+    padding: var(--s-2) 0 var(--s-3);
+    border-bottom: var(--line) dashed var(--color-edge);
+  }
+  .hv-bus-driver {
+    display: grid;
+    justify-items: center;
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+  }
+  .hv-bus-driver i {
+    width: var(--s-8);
+    height: var(--s-8);
+    border: var(--line) solid var(--color-edge);
+    border-radius: var(--r-1);
+    background: var(--color-paper-2);
+  }
+  .hv-bus-wheel {
+    position: absolute;
+    width: var(--s-2);
+    height: var(--s-8);
+    background: var(--color-edge);
+  }
+  .hv-bus-wheel-l {
+    left: calc(var(--s-2) * -1 - var(--line));
+    border-radius: var(--r-1) 0 0 var(--r-1);
+  }
+  .hv-bus-wheel-r {
+    right: calc(var(--s-2) * -1 - var(--line));
+    border-radius: 0 var(--r-1) var(--r-1) 0;
+  }
+  .hv-bus-wheel-f {
+    top: var(--s-16);
+  }
+  .hv-bus-wheel-b {
+    bottom: var(--s-12);
+  }
+  .hv-bus-front,
+  .hv-bus-rear {
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+    text-align: center;
+  }
+  .hv-bus-rear {
+    margin-top: var(--s-2);
+    padding-top: var(--s-2);
+    border-top: var(--line) dashed var(--color-edge);
+  }
+  /* Hàng ghế: ô rộng 64, chỉ co đến 56 khi khung hẹp (giá "240.000" vẫn vừa), dưới đó khung cuộn ngang. */
+  .hv-bus-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--s-2);
+  }
+  .hv-bus-row > * {
+    width: var(--s-16);
+    min-width: calc(var(--s-16) - var(--s-2));
+    max-width: var(--s-16);
+    flex: 0 1 var(--s-16);
+  }
+  .hv-seat {
+    position: relative;
+    display: grid;
+    width: var(--s-16);
+    min-width: calc(var(--s-16) - var(--s-2));
+    height: calc(var(--s-16) + var(--s-2));
+    place-content: center;
+    justify-items: center;
+    padding: 0;
+    border: var(--line) solid var(--color-edge);
+    border-radius: var(--r-1);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-weight: var(--weight-display);
+    line-height: 1.1;
+    transition:
+      background-color var(--dur-micro) var(--ease-out),
+      box-shadow var(--dur-micro) var(--ease-out);
+  }
+  .hv-seat-no {
+    font-size: var(--fs-16);
+    line-height: var(--lh-16);
+    font-variant-numeric: tabular-nums;
+  }
+  .hv-seat-price {
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+    line-height: var(--lh-14);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  /* Đơn vị tiền dưới giá: chữ thường, cùng cỡ 14 để không nhỏ hơn mức tối thiểu; luôn một dòng. */
+  .hv-seat-unit {
+    white-space: nowrap;
+    font-size: var(--fs-14);
+    font-weight: var(--weight-body);
+    line-height: var(--lh-14);
+  }
+  button.hv-seat:hover:not([aria-pressed="true"]):not([aria-disabled="true"]) {
+    background: var(--color-accent-soft);
+  }
+  button.hv-seat:active:not([aria-disabled="true"]) {
+    transform: translateY(var(--line));
+  }
+  .hv-seat[aria-pressed="true"],
+  .hv-seat-on {
+    border-color: var(--color-accent);
+    background: var(--color-accent);
+    box-shadow: var(--select-ring);
+    color: var(--color-accent-ink);
+  }
+  .hv-seat-check {
+    position: absolute;
+    top: var(--line-strong);
+    right: var(--line-strong);
+  }
+  .hv-seat-booked,
+  .hv-seat[aria-disabled="true"] {
+    border-color: var(--color-sold);
+    background: var(--color-sold);
+    color: var(--color-muted);
+    cursor: not-allowed;
+  }
+  .hv-seat-booked .hv-seat-no {
+    text-decoration: line-through;
+  }
+  /* Chú giải ghế đã đặt: gạch ngang giữa ô, giống số ghế bị gạch. */
+  .hv-legend .hv-seat-booked::after {
+    content: "";
+    position: absolute;
+    left: var(--s-1);
+    right: var(--s-1);
+    top: 50%;
+    border-top: var(--line-strong) solid var(--color-muted);
+  }
+  .hv-seat-empty {
+    height: calc(var(--s-16) + var(--s-2));
+  }
+}

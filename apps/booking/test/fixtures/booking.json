@@ -1,0 +1,188 @@
+{
+ "data": {
+  "id": 4768396,
+  "code": "B02ELR3J6PD62D",
+  "status": {
+   "type": 1,
+   "type_name": "Chưa xếp chỗ"
+  },
+  "price": 200000,
+  "surcharge_price": 0,
+  "customer": {
+   "id": 0,
+   "name": "Khach Test",
+   "phone": "0900000000",
+   "email": null,
+   "balance": 0,
+   "given": 0,
+   "expire_date": null,
+   "transactions": [],
+   "rank": {
+    "id": 0,
+    "uuid": "00000000-0000-0000-0000-000000000000",
+    "joined_date": "2026-10-24 00:00:00",
+    "expire_date": "2027-10-24 00:00:00",
+    "period_point": 0,
+    "period_transaction": 0,
+    "rank": 0,
+    "created_at": "2026-10-24 22:29:29",
+    "updated_at": "2026-10-24 22:29:29",
+    "rank_code": "Thành viên",
+    "rank_icon": "https://api.crm.haivan.com/images/rank-icon/icon_member_v2.png",
+    "next_rank": {
+     "point_accumulation": 0,
+     "transaction_accumulation": 1,
+     "expire_date": "24/10/2027",
+     "rank_set": "Bạc"
+    }
+   }
+  },
+  "tickets": [
+   {
+    "order": {
+     "code": null
+    },
+    "id": 505329862,
+    "code": "V02E3671PBGN31D",
+    "price": 200000,
+    "price_discount": 0,
+    "name": "1",
+    "number": 2,
+    "is_payment": null,
+    "note": "",
+    "is_payment_text": "Nhà xe",
+    "customer": {
+     "name": "Khach Test",
+     "phone": "0900000000",
+     "email": null
+    },
+    "trip": {
+     "id": 41409366,
+     "product": {
+      "id": 44,
+      "name1": "luxury",
+      "description": "",
+      "standard_code": "LUXURY",
+      "name": "Luxury"
+     },
+     "node": {
+      "id": 76,
+      "code": "VTA-TSN1330B",
+      "direction": "B",
+      "route": {
+       "id": 1,
+       "name": "Vũng Tàu - Tân Sơn Nhất",
+       "code": "VTA-TSN",
+       "distance": 110,
+       "price": 160000,
+       "standard_code": "VTA-TSN"
+      }
+     },
+     "date": "06-11-2026",
+     "time": "06-11-2026 13:30",
+     "departure_time": "2026-11-06 13:45",
+     "destination_time": "2026-11-06 16:25",
+     "duration": 160,
+     "duration_a": 15,
+     "total_seat_sold": 3,
+     "car": null
+    },
+    "departure": {
+     "id": 95,
+     "code": "SG31",
+     "name": "159 Điện Biên Phủ, Đa Kao, Quận 1, Hồ Chí Minh",
+     "address": "159 Điện Biên Phủ, Đa Kao, Quận 1, Ho Chi Minh City, Vietnam",
+     "lat": 10.7879376,
+     "lng": 106.6952939,
+     "business": 0,
+     "city": {
+      "id": 4,
+      "name": "Hồ Chí Minh"
+     }
+    },
+    "destination": {
+     "id": 12,
+     "code": "GHAO",
+     "name": "TP Vũng Tàu (Gành Hào)",
+     "address": "TP Vũng Tàu (Gành Hào)",
+     "lat": 10.3391989,
+     "lng": 107.0710401,
+     "business": 0,
+     "city": {
+      "id": 69,
+      "name": "Bà Rịa - Vũng Tàu"
+     }
+    },
+    "pick_up": {
+     "address": "159 Điện Biên Phủ, Đa Kao, Quận 1, Hồ Chí Minh",
+     "id": 0,
+     "coordinates": {
+      "lat": 10.7879376,
+      "lng": 106.6952939
+     }
+    },
+    "drop_off": {
+     "address": "TP Vũng Tàu (Gành Hào)",
+     "id": 0,
+     "coordinates": {
+      "lat": 10.3391989,
+      "lng": 107.0710401
+     }
+    },
+    "transit": {
+     "departure": false,
+     "destination": false
+    },
+    "payment": {
+     "type": 0,
+     "type_name": "Chưa thanh toán"
+    },
+    "status": {
+     "type": 2,
+     "type_name": "Cập nhật"
+    },
+    "url_erp_detail": "https://admin.vungtau.havaz.vn/admin_lv2/modules/ban_ve/listing.php?not=76&day=06-11-2026&kh_id=827708",
+    "channel": "APPHAIVAN",
+    "promotions": null,
+    "method_payment": "Chưa chọn hình thức thanh toán",
+    "user_created": {
+     "id": 827708,
+     "name": "Khach Test",
+     "code": "",
+     "type": 0
+    },
+    "reviews": null,
+    "cancel_reason": null,
+    "reason_cancel_id": null,
+    "reason_cancel_note": null,
+    "signed_status": 0,
+    "transit_price": []
+   }
+  ],
+  "payment": {
+   "type": 0,
+   "type_name": "Chưa thanh toán"
+  },
+  "note": "Đơn hàng đặt từ Haivan",
+  "created_at": "27-10-2026 00:00",
+  "method_payment": "Chưa chọn hình thức thanh toán",
+  "method_payment_type": 0,
+  "merchant_code": "02",
+  "project": {
+   "con_page_name": "Hải Vân Vũng Tàu",
+   "con_page_name_short": "HVVT",
+   "con_company_name": "CÔNG TY LD VẬN CHUYỂN QUỐC TẾ HẢI VÂN - CHI NHÁNH HỒ CHÍ MINH",
+   "con_company_addr": "62/3 Tân Mỹ, phường Tân Thuận Tây, quận 7, Hồ Chí Minh",
+   "con_code": "02",
+   "con_merchant_id": "3",
+   "con_ios_link": "",
+   "con_android_link": "",
+   "con_ios_ver": "40",
+   "con_android_version": "40",
+   "con_color_boc": "#FFC20E",
+   "con_logo_boc": "wfy1729756205.png",
+   "con_time_khoa_bv_atcl": "-1600",
+   "hotline": "19006763"
+  }
+ }
+}
