@@ -44,8 +44,38 @@
   }
   /* Thẻ tìm vé trên nền phẳng (không phải ảnh): nền đặc surface + bóng 2, không blur. */
   .hv-plate-solid {
-    border: var(--line) solid var(--color-rule-2);
-    box-shadow: 0 16px 48px rgb(26 25 23 / 0.14);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hv-home-search-wrap .hv-plate-solid {
+    position: relative;
+    background: var(--color-surface);
+  }
+  .hv-home-search-wrap .hv-plate-solid::after {
+    content: "";
+    position: absolute;
+    right: 2rem;
+    bottom: -0.65rem;
+    width: 4rem;
+    height: 1.3rem;
+    background: var(--color-accent);
+    transform: skewX(-28deg);
+  }
+  .hv-home-search-wrap .hv-field,
+  .hv-home-search-wrap .hv-counter {
+    border-radius: 0;
+    border-color: var(--color-ink);
+    background: transparent;
+  }
+  .hv-home-search-wrap .hv-plate-go {
+    border-radius: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    transform: skewX(-8deg);
+  }
+  .hv-home-search-wrap .hv-plate-go:hover {
+    transform: skewX(-8deg) translateY(-2px);
   }
   /* --label-h = nhãn 16/24 + s-2: đỉnh ô nhập cách đỉnh cột đúng chừng này, nên nút đổi chiều và nút Tìm vé dùng nó để thẳng hàng với ô. */
   .hv-plate-grid {

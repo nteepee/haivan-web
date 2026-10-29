@@ -483,4 +483,253 @@
     color: var(--color-ink);
     font-weight: var(--weight-display);
   }
+
+  /* Brand language 2026 — editorial, graphic, direct. */
+  .hv-home-hero {
+    position: relative;
+    padding-block: clamp(2.5rem, 6vw, 6rem) 4rem;
+    overflow: hidden;
+    background: #fff;
+  }
+  .hv-home-hero::before {
+    content: "01 / HÀNH TRÌNH";
+    position: absolute;
+    top: 1.25rem;
+    left: max(1rem, calc((100vw - var(--container)) / 2));
+    color: var(--color-accent-edge);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+  }
+  .hv-home-hero-grid {
+    position: relative;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+  .hv-home-hero-copy {
+    position: relative;
+    z-index: 2;
+    gap: 1.5rem;
+  }
+  .hv-home-hero-copy h1 {
+    display: flex;
+    max-width: none;
+    flex-direction: column;
+    color: #353535;
+    font-size: clamp(4rem, 8vw, 7.5rem);
+    font-weight: 900;
+    line-height: 0.78;
+    letter-spacing: -0.075em;
+    text-transform: uppercase;
+  }
+  .hv-home-hero-copy h1 span:last-child {
+    margin-left: clamp(1.5rem, 5vw, 5rem);
+    color: var(--color-accent);
+    -webkit-text-stroke: 2px #353535;
+    paint-order: stroke fill;
+  }
+  .hv-home-statement {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: start;
+    max-width: 32rem;
+  }
+  .hv-home-statement > span {
+    height: 0.65rem;
+    margin-top: 0.55rem;
+    background: var(--color-accent);
+    transform: skewX(-28deg);
+  }
+  .hv-home-hero-media {
+    min-height: 24rem;
+    border-radius: 0;
+    clip-path: polygon(12% 0, 100% 0, 88% 100%, 0 100%);
+    filter: grayscale(100%) contrast(1.05);
+  }
+  .hv-home-slash {
+    right: 5%;
+    bottom: -3rem;
+    width: 4rem;
+    height: 15rem;
+    background: var(--color-accent);
+    mix-blend-mode: normal;
+  }
+  .hv-home-search-wrap {
+    margin-top: 2.5rem;
+    padding: 0;
+    border: 2px solid #353535;
+    background: #fff;
+    box-shadow: 1rem 1rem 0 var(--color-accent);
+  }
+  .hv-home-search-head {
+    padding: 1rem 1.5rem;
+    border-radius: 0;
+    background: #353535;
+  }
+  .hv-home-search-head::after {
+    content: "02 / ĐẶT VÉ";
+    color: var(--color-accent);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+  }
+  .hv-home-search-wrap .hv-plate {
+    border-radius: 0;
+  }
+  .hv-home-trust {
+    padding-block: clamp(3rem, 7vw, 6rem);
+    border: 0;
+    background: var(--color-accent);
+  }
+  .hv-home-trust-grid {
+    gap: 1.5rem;
+  }
+  .hv-home-trust-item {
+    position: relative;
+    flex-direction: column;
+    padding: 2rem;
+    border: 2px solid #353535;
+    background: transparent;
+  }
+  .hv-home-trust-item::after {
+    content: "";
+    position: absolute;
+    right: 1.25rem;
+    bottom: -0.55rem;
+    width: 3rem;
+    height: 1.1rem;
+    background: #fff;
+    transform: skewX(-28deg);
+  }
+  .hv-home-trust-item > svg {
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+  }
+  .hv-home-trust-item h2 {
+    font-size: 1.35rem;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+  .hv-home-trust-item p {
+    color: #353535;
+  }
+  .hv-section {
+    padding-block: clamp(4rem, 8vw, 7rem);
+  }
+  .hv-head-block h2,
+  .hv-home-lounge-copy h2 {
+    max-width: 15ch;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 900;
+    line-height: 0.92;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+  }
+  .hv-head-block .hv-home-eyebrow {
+    color: var(--color-accent-edge);
+  }
+  .hv-rcard,
+  .hv-home-destination,
+  .hv-home-news-card {
+    border: 1px solid #353535;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hv-rcard-img,
+  .hv-home-destination-media,
+  .hv-home-news-media {
+    filter: grayscale(100%);
+  }
+  .hv-rcard:hover .hv-rcard-img,
+  .hv-home-destination:hover .hv-home-destination-media,
+  .hv-home-news-card:hover .hv-home-news-media {
+    filter: grayscale(0%);
+  }
+  .hv-rcard-body,
+  .hv-home-destination-copy,
+  .hv-home-news-copy {
+    border-top: 1px solid #353535;
+  }
+  .hv-home-offers {
+    background: #353535;
+    color: #fff;
+  }
+  .hv-home-offers h2,
+  .hv-home-offers .hv-lead {
+    color: inherit;
+  }
+  .hv-home-offer-grid {
+    gap: 1.25rem;
+  }
+  .hv-home-offer {
+    min-height: 30rem;
+    border: 2px solid #fff;
+    border-radius: 0;
+  }
+  .hv-home-offer-main {
+    box-shadow: 1rem 1rem 0 var(--color-accent);
+  }
+  .hv-home-offer-side {
+    clip-path: polygon(8% 0, 100% 0, 92% 100%, 0 100%);
+  }
+  .hv-home-lounges {
+    position: relative;
+    overflow: hidden;
+  }
+  .hv-home-lounges::before {
+    content: "TỬ TẾ";
+    position: absolute;
+    right: -0.05em;
+    bottom: -0.2em;
+    color: rgb(255 255 255 / 0.035);
+    font-size: clamp(8rem, 23vw, 22rem);
+    font-weight: 900;
+    letter-spacing: -0.09em;
+    line-height: 1;
+  }
+  .hv-home-lounge-collage {
+    gap: 0.75rem;
+    transform: skewX(-3deg);
+  }
+  .hv-home-lounge-collage > div {
+    border-radius: 0;
+    filter: grayscale(100%);
+  }
+  .hv-home-news-copy > span {
+    color: #353535;
+    text-transform: uppercase;
+  }
+  @media (min-width: 60rem) {
+    .hv-home-hero-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      min-height: 34rem;
+    }
+    .hv-home-search-wrap {
+      margin-top: -2rem;
+    }
+    .hv-home-trust-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .hv-home-trust-item:nth-child(2) {
+      transform: translateY(1.5rem);
+    }
+  }
+  @media (max-width: 59.99rem) {
+    .hv-home-hero-copy h1 {
+      font-size: clamp(3.5rem, 17vw, 5.5rem);
+    }
+    .hv-home-hero-media {
+      min-height: 18rem;
+    }
+    .hv-home-search-wrap {
+      margin-inline: 1rem;
+      box-shadow: 0.6rem 0.6rem 0 var(--color-accent);
+    }
+    .hv-home-search-head::after {
+      display: none;
+    }
+  }
 }

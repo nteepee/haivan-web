@@ -14,11 +14,24 @@
     position: absolute;
     top: 0;
     right: clamp(2rem, 10vw, 9rem);
-    width: 7rem;
-    height: 0.5rem;
+    width: 11rem;
+    height: 0.85rem;
     background: var(--color-accent);
     transform: skewX(-28deg);
     transform-origin: top;
+  }
+  .hv-footer::after {
+    content: "TỬ TẾ TỪ TÂM";
+    position: absolute;
+    right: -0.04em;
+    bottom: -0.24em;
+    color: rgb(255 255 255 / 0.035);
+    font-size: clamp(4rem, 11vw, 10rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
   }
   .hv-footer a {
     text-decoration: none;

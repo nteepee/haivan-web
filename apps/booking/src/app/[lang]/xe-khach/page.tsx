@@ -97,8 +97,14 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
         <div className="hv-container hv-home-hero-grid">
           <div className="hv-home-hero-copy">
             <p className="hv-home-eyebrow">{homeCopy.eyebrow}</p>
-            <h1 id="xe-khach-h1">{homeCopy.title}</h1>
-            <p className="hv-home-lead">{homeCopy.lead}</p>
+            <h1 id="xe-khach-h1" aria-label={homeCopy.title}>
+              <span>{isVi ? "Tử tế" : "Kindness"}</span>
+              <span>{isVi ? "Từ tâm" : "From the heart"}</span>
+            </h1>
+            <div className="hv-home-statement">
+              <span aria-hidden />
+              <p className="hv-home-lead">{homeCopy.lead}</p>
+            </div>
           </div>
           <div className="hv-home-hero-media">
             <Image src="/assets/design/home-hero.jpg" alt={isVi ? "Xe khách Hải Vân trên hành trình" : "Hải Vân coach on the road"} fill priority sizes="(min-width: 960px) 55vw, 100vw" />
