@@ -1,0 +1,47 @@
+# Phase 2 (Next) report, 261029
+
+## Files (all under apps/booking)
+New: schemas/booking-config.ts, content/booking-config-fallback.json (copied from live WP endpoint, promos []), lib/{booking-config-fallback,booking-config-source,corridors,promo-match,promo-apply,roundtrip-carry}.ts, components/booking-config-provider.tsx, app/[lang]/xe-khach/layout.tsx (provides config to all booking pages), components/search/{corridor-form,today-trips}.tsx, components/confirm/auto-promo.tsx, components/payment/return-cta.tsx, app/hv-corridor.css, test/booking-config.ts, e2e/corridor-search.spec.ts, tests next to each lib/component.
+Edited: next.config.ts (cacheLife profile bookingConfig 60/300/3600), lib/search-url.ts (own params helpers, optional `corridor` on SearchParamsData; buildSearchUrl/tripsQuery untouched), hooks/use-trips.ts (options enabled/staleTime, abort signal), search-form.tsx (mode switch), route-trips.tsx + route-landing-page.tsx, search-results.tsx, trip-list.tsx (initial time bucket from `gio`), trip-card.tsx (combo badge), confirm-form.tsx (note prefill, AutoPromo, save carry), promo-dialog.tsx (uses shared checkPromotions), success-page.tsx, i18n vi/en (`corridor.*`), globals.css, e2e/mock-apigw.ts (serves booking-config + a sample roundtrip promo).
+
+## Behavior
+- booking-config: server fetch `<WP base>/wp-json/haivan-web/v1/booking-config` (base from WP_ROUTE_URL or WP_LAYOUT_URL), zod, "use cache" revalidate 5 min, last-good, 404 -> fallback silently, other errors -> last-good/fallback with one warning. A bad promo or corridor entry is dropped, not the whole config.
+- SearchForm: corridor mode (4 buttons, stop selects by direction, swap keeps date/guests, date min today VN max +max_days, "+ Thêm ngày về" with x, min = ngay di (+1 sleeper), guests 1-9, footer link to unchanged free PlacePicker mode and a way back). Default on /xe-khach, on landings that match a corridor `landing` slug (tuyen+chieu preselected), and on tim-chuyen when `tuyen` is in the URL. Other landings: old behavior.
+- URL: buildSearchUrl unchanged + `&tuyen&chieu&diem_di&diem_den&ngay_ve[&chang=ve&don_di][&gio]` via appendCorridorParams. Stop.point != null -> stop coords, else end point. el/trips query byte-identical (unit + e2e + contract-diff).
+- "Chuyến hôm nay" chips: today, 1 ticket, same useTrips/tripsQuery; loads all pages (max 12) for counts; empty buckets disabled; click -> tim-chuyen with `gio` (TripList starts with that time filter). Load control per coordinator: only when row in viewport (IntersectionObserver), 400 ms debounce, staleTime 5 min, key = effective points + today + 1 guest, request aborted on key change.
+- Promo labels: roundtrip label next to "+ Thêm ngày về" (corridor + return direction); combo badge + "N vé từ <price>" (tier by class/seat count) on trip cards when corridor, direction, travel date, weekday, hour window, book-ahead, seat count match. Nothing otherwise.
+- Confirm auto-apply: AutoPromo runs once on mount: combo (when eligible) else roundtrip only if `chang=ve`; POST promotion/check-promotions via shared checkPromotions (same body as PromoCodeTab), eligible seats = first `seats.max` by id. Shows "Đã áp <label>" + "Bỏ ưu đãi". Server error or zero discount -> no label + toast. Skipped when draft.is_combo=1 (system combo price) or seats already have a code. No client-side discount math.
+- Round trip: corridor params travel in draft.search; at booking success saved to localStorage `hv_return_carry` (stop ids/date/seats only). Success page shows "Đặt chiều về <ngày>" card (+ roundtrip label) -> tim-chuyen reversed, date=ngay_ve, swapped stops, chang=ve, don_di=order, guests = tickets of the order. Hidden if ngay_ve past / already return leg / corridor gone. tim-chuyen shows a notice on return leg. Confirm note prefilled "Đón: …; Trả: …" (vi names, editable).
+
+## Results
+- pnpm verify: pass (typecheck, lint, 437 vitest, build:verify). contract-diff: 9/9. check-tokens: clean.
+- e2e: 16/16 pass, 0 server-side production DNS lookups (needed `rm -rf apps/booking/.next-e2e` once because the build cached the previous config for <5 min).
+- start-next.sh: rebuilt, Next running on 127.0.0.1:3010 (PID in deploy/local/next.pid). layout-audit (5 URLs x 2 viewports): 0 errors, 0 warnings.
+- Screenshots: scratchpad/corridors/next-home-1440.png, next-home-390.png, next-landing-1440.png, next-landing-390.png (return-date open). These hit the real apigw read-only (el/trips) for the chips.
+
+## Open questions
+1. Combo vs roundtrip both eligible: I pick combo (WP spec says no stacking). OK?
+2. Roundtrip eligible seats = all seats up to seats.max; the "min(outbound, return)" rule is left to the server (outbound count not carried to the return leg except via numberGuest).
+3. Fallback stop labels now mirror the WP seed; only the fallback differs if WP edits names.
+4. Real check-promotions never run against production (mock only), as planned.
+
+## Update: aligned with the WP card (coordinator review)
+- Corridor buttons: separate buttons (selected = accent-soft fill + select ring + tick); 4-across grid from 40rem; below that a single-line scroll-snap rail, next button partly visible, active one scrolled into view (rail only, not the page).
+- Dates: native date input with its text hidden and a visible label over it ("Thứ năm, 29/10/2026"; en "Thu, 29 Oct 2026", `formatDateLabel`).
+- Field order: phone = Ngày đi, Ngày về ("Thêm ngày về" block / input + x), then Số vé + Tìm vé on one row; tablet = 2 columns; desktop (60rem) = Ngày đi | Ngày về | Số vé | Tìm vé on one row. Số vé shows "1 vé". Roundtrip label sits in the Ngày về label row. Stop selects have the map-pin icon.
+- Footer: muted "Đi tỉnh khác?" + underlined link "Tìm theo điểm đi, điểm đến".
+- "Chuyến hôm nay": now inside the card under a divider; bold "Chuyến hôm nay" + muted route; "Cả ngày N" and bucket counts; empty buckets disabled only once counts are known; while loading chips stay enabled with "…" (aria-busy), on error enabled without counts.
+- Combo wins over roundtrip, no stacking (new test).
+- Re-run: pnpm verify pass (441 tests), contract-diff 9/9, check-tokens clean, e2e 16/16 (0 production lookups), layout-audit 0 errors on the 5 URLs, start-next.sh rebuilt (:3010). Screenshots re-shot: scratchpad/corridors/next-{home,landing}-{1440,390}.png (return date open).
+- Roundtrip badge is not visible in the screenshots because WP promos are currently [].
+
+## Update 2: code-review fixes (Next side)
+- H1: auto-apply race. ConfirmForm decides the promo once and holds `promoPending`; "Tiếp tục" and the promo box (`PromoBox disabled`) are locked until check-promotions settles. The response is dropped if seats changed since the request (fingerprint of code/discount/reward) or the draft is gone. Tests: continue-first (button disabled, no booking, then booking body carries the code) and manual-code-first (response dropped, manual code kept, no toast).
+- M1: roundtrip uses the same window filter as combo (travel_from/to, weekdays, hours, book_ahead, seats): `windowMatches` shared. Form/return-cta label: shown if any day in the return range (or the chosen return date) can qualify; auto-apply checks the actual trip. Tests in promo-match + corridor-form.
+- M2: lenient() logs `[booking-config] bỏ corridor|promo <id>: <issue>` once per element (test). M3: return date opens from `ngay_ve` (not on `chang=ve`). M4: "Đã áp …" label derived from config promos matching the seat's code (survives reload/back); removal stored in sessionStorage `hv_promo_off_<order>` so it is not re-applied.
+- M5: chips useTrips `retry:false`, paging stops on any error (429 incl.), no fetch while `document.hidden` (+ in-view, 400 ms debounce, staleTime 5 min as before). M6: "N vé từ <giá> (giá tham khảo)" / "(indicative)".
+- L2 chip click keeps the selected guest count (count query stays 1). L3 default return date: sleeper +1 else +2 (as WP search.js). L5 ReturnCta only when the outbound order is paid. L10: vi `booking.order_missing_*` added (the only en-only keys; all `corridor.*` exist in both).
+- /xe-khach "Các tuyến phổ biến": cards come from booking-config corridors (landing ab -> /xe-khach/<ab>, else `corridorSearchHref` = tim-chuyen with default stops, no date so it defaults to today VN); time/price shown only when the landing is in popular-routes.json (kept for generateStaticParams/sitemap). Falls back to the old list if no corridors.
+- Static landing question: checked `.next-local/prerender-manifest.json`: every /xe-khach page has initialRevalidateSeconds=300, so ISR does not bake config longer than 5 min; stale-while-revalidate could serve an older page once after idle, so I cut the cacheLife profile expire from 3600 to 900. Labels are also re-checked client side (`isRunning`) and the server decides at check-promotions.
+- Service tabs (Xe liên tỉnh/sân bay/hợp đồng/du lịch) hidden in the free-mode SearchForm via `SHOW_SERVICE_TABS = false` (search-form.tsx); corridor mode never had them. Tests updated (hidden assertion; tab-specific tests `runIf` the flag). No e2e relied on them.
+- Re-run: verify pass (454 tests, 1 skipped by the flag; note `sanitize-html` 200 ms perf test is flaky under load, passed on rerun), contract-diff 9/9, check-tokens clean, e2e 16/16 (0 production lookups; the corridor spec now checks only the visible "Ngày về" because the previous route stays hidden in the DOM), layout-audit 0 errors on the 5 URLs, start-next.sh rebuilt, /xe-khach re-shot (next-home-1440.png, next-home-390.png in scratchpad/corridors).

@@ -1,0 +1,3 @@
+- [HaiVan-Web test safety](project_haivan_web_test_safety.md) — prod-only backend; MSW 3 bypass paths; `pnpm verify` build hits live CMS; safe probe recipe
+- [HaiVan old bundle archive](reference_haivan_old_bundle.md) — grep archive/old-site chunks to verify parity claims; plan/spec text has been wrong
+- [HaiVan-Web Next16 gotchas](project_haivan_web_next16_gotchas.md) — use-cache no stale-if-error in ISR regen; unlayered :focus-visible kills outline-white; sanitizer ReDoS

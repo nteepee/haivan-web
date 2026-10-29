@@ -29,3 +29,9 @@ blob-report/
 
 # Layout audit (scripts/layout-audit.mjs)
 .layout-audit/
+
+# Ảnh tham khảo, ảnh chụp bản thiết kế và site cũ: chỉ lưu ở máy, không đẩy lên git
+docs/design/ref/*.png
+docs/design/ref/*.jpg
+docs/design/comps/shots/
+docs/screenshots/

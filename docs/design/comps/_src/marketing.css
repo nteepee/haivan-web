@@ -1,0 +1,41 @@
+/* rails: horizontal on phones, grid from tablet */
+.rail { display: flex; gap: var(--gap-card); overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); padding-bottom: var(--s-2); scroll-padding-inline: var(--gutter); }
+.rail > li { flex: 0 0 78%; scroll-snap-align: start; min-width: 0; }
+.rail:focus-visible { outline-offset: calc(-1 * var(--line-strong)); }
+@media (min-width: 40rem) { .rail--grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; margin-inline: 0; padding-inline: 0; gap: var(--gap-card); } .rail--grid > li { flex: none; } }
+@media (min-width: 60rem) { .rail--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: var(--s-4); margin-bottom: var(--s-6); }
+/* class cards */
+.ccard { display: grid; background: var(--color-surface); border: var(--line) solid var(--color-rule); border-radius: var(--r-md); overflow: hidden; }
+.ccard-img { aspect-ratio: 16 / 9; background: var(--color-accent-soft); display: grid; place-items: center; }
+.ccard-img img { width: 100%; height: 100%; object-fit: cover; }
+.ccard-img--cut img { object-fit: contain; padding: var(--s-3); }
+.ccard-body { padding: var(--card-pad); display: grid; gap: var(--s-1); }
+.ccard-body h3 { font-size: var(--fs-24); line-height: var(--lh-24); }
+.ccard-body p { color: var(--color-muted); }
+/* app band */
+.app { display: grid; gap: var(--s-8); align-items: center; }
+.app-text { display: grid; gap: var(--s-4); }
+.ticks { display: grid; gap: var(--s-2); }
+.ticks li { display: flex; align-items: center; gap: var(--s-2); font-weight: var(--weight-strong); min-height: 32px; }
+.app-qr { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: var(--s-4); align-items: center; }
+.app-qr img.qr { width: 112px; height: 112px; background: var(--color-surface); padding: var(--s-2); border-radius: var(--r-sm); }
+.app-phone { justify-self: center; width: min(100%, 320px); }
+@media (min-width: 60rem) { .app { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-16); } .app-phone { justify-self: end; } }
+/* rooms mosaic */
+.mosaic { display: grid; gap: var(--s-2); grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "a a" "b c" "d d"; }
+.mosaic .photo { min-height: 0; border-radius: var(--r-lg); }
+.mosaic .photo:nth-child(1) { grid-area: a; aspect-ratio: 3 / 2; } .mosaic .photo:nth-child(2) { grid-area: b; aspect-ratio: 4 / 3; } .mosaic .photo:nth-child(3) { grid-area: c; aspect-ratio: 4 / 3; } .mosaic .photo:nth-child(4) { grid-area: d; aspect-ratio: 5 / 2; }
+@media (min-width: 60rem) {
+  .mosaic { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: 200px 200px; grid-template-areas: "a a a a a a b b b c c c" "a a a a a a d d d d d d"; }
+  .mosaic .photo { aspect-ratio: auto !important; }
+}
+.addrs { display: grid; gap: 0; margin-top: var(--s-6); }
+.addr { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: var(--s-3); padding-block: var(--s-3); border-bottom: var(--line) solid var(--color-rule); align-items: start; }
+.addr:first-child { border-top: var(--line-strong) solid var(--color-ink); }
+.addr h3 { font-size: var(--fs-16); line-height: var(--lh-16); font-weight: var(--weight-display); } .addr p { color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+.addr .ic { margin-top: var(--s-1); }
+@media (min-width: 40rem) { .addrs { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-6); } .addr:nth-child(2) { border-top: var(--line-strong) solid var(--color-ink); } }
+@media (min-width: 60rem) { .addrs { grid-template-columns: repeat(3, minmax(0, 1fr)); } .addr:nth-child(3) { border-top: var(--line-strong) solid var(--color-ink); } }
+`;.split--rev .split-photo { order: 2; }
+@media (min-width: 60rem) { .split--rev { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } .split--rev .split-photo { order: 0; } .addrs--one { grid-template-columns: minmax(0, 1fr); } .mosaic--route { grid-template-rows: 160px 160px; grid-template-areas: "a a a a a a b b b b b b" "a a a a a a c c c c c c"; } .mosaic--route .photo:nth-child(4) { display: none; } }

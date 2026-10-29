@@ -1,0 +1,192 @@
+/* Hải Vân design tokens v4: v3 tokens plus the logo-derived radius ladder, functional glass and the selection ring. tokens.css (v3) is untouched; migrate code to these names.
+   v4 = "kính chức năng" (glass only on floating layers) + fixed radius 4/8/16/24 + circle for icon-only squares + no black borders (see v4-glass-radius-proposal.md).
+   Every colour is hex by default; the oklch twin lives in the @supports (color: oklch(0% 0 0)) block below (a custom property never falls back, so both on one line made old WebViews lose the colour).
+   Tailwind 4: paste the :root body into `@theme { ... }`; map --r-* to --radius-*, --fs-* to --text-*. Raw px is only legal inside this block.
+   WordPress: enqueue this file as is; theme CSS reads the same variables. Hallmark mapping: Ink paper/ink/rule + brand yellow in the accent role. */
+:root {
+  color-scheme: light;
+
+  /* Brand field and the one colour that means "act / selected" */
+  --color-accent: #FFC20E;
+  --color-accent-hover: #F2B600;
+  --color-accent-edge: #D9A400;   /* decorative edge, pressed state: 2.2:1 on white, never the only cue */
+  --color-select-edge: #A67C00;   /* selection ring: 3.8:1 on surface, 3.4:1 on --select-bg (WCAG 1.4.11 needs 3:1) */
+  --color-accent-soft: #FFF3CD;
+  --color-accent-ink: #333333;
+  --color-field: var(--color-accent);
+
+  /* Paper (warm, chroma 0.004 to 0.01 toward the brand hue) and ink */
+  --color-paper: #FAF9F5;
+  --color-surface: #FEFEFB;
+  --color-paper-2: #F3F2EC;
+  --color-paper-3: #EAE8E1;
+  --color-ink: #333333;       /* brand dark: headings, buttons, footer band */
+  --color-ink-deep: #252421;
+  --color-text: #272623;        /* body copy, 14:1 on paper */
+  --color-muted: #565552;       /* 6.9:1 on paper; never on yellow */
+  --color-muted-on-dark: #BFBEB9;
+  --color-rule: #DFDED8;
+  --color-rule-2: #EEEDE8;
+  --color-edge: #787773;        /* field, seat and card-control edge, 4.2:1 on surface */
+  --color-sold: #E5E4E1;
+  --color-scrim: rgb(26 25 23 / 0.55);                                /* behind dialogs and photo captions only */
+  --color-focus: var(--color-ink);   --color-focus-on-dark: var(--color-accent);
+
+  /* States: always with an icon and words, never colour alone */
+  --color-error: #C62827;     /* 5.6:1 */
+  --color-error-soft: #FFEFED;
+  --color-success: #2E7D31;  /* 5.1:1 */
+  --color-success-soft: #E3F7E2;
+  --color-link: #0E5FB4;       /* running-text links only, 6:1 */
+
+  /* v3 app-style: section tints and the secondary (promo) palette.
+     Rule: a strong fill always carries its --color-on-* text (>= 4.5:1); a soft tint always carries --color-ink text (>= 10:1).
+     Strong colours are never text on a tint, never body copy, never states (states keep error / success). */
+  --color-tint-warm: #FFF8E3;   /* section band: warm yellow tint */
+  --color-on-strong: #FEFEFB;   /* text on the deep promo fills */
+  --color-promo-orange: #F28C28;  /* ink text on it, 5.2:1 */
+  --color-promo-orange-soft: #FFE9D2;
+  --color-promo-teal: #0B6F6F;   /* surface text 5.9:1 */
+  --color-promo-teal-soft: #D8F1EF;
+  --color-promo-coral: #C23A3A;     /* surface text 5.3:1 */
+  --color-promo-coral-soft: #FFE4E1;
+  --color-promo-leaf: #287A2E;   /* surface text 5.3:1 */
+  --color-promo-leaf-soft: #E2F4E3;
+  --color-promo-blue: #1D4FA8;   /* surface text 7.6:1 */
+  --color-promo-blue-soft: #E1EAFB;
+  --color-on-orange: var(--color-ink);
+  --color-on-teal: var(--color-on-strong); --color-on-coral: var(--color-on-strong); --color-on-leaf: var(--color-on-strong); --color-on-blue: var(--color-on-strong);
+
+  /* Type: Nunito only (latin + vietnamese subsets, 400/600/800, font-display swap). One scale, fixed line-heights. */
+  --font-display: "Nunito", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-body: var(--font-display);
+  --weight-body: 400; --weight-strong: 600; --weight-display: 800;
+  --fs-14: 0.875rem; --lh-14: 1.25rem;   /* label, caption, meta, tag, fine print */
+  --fs-16: 1rem;     --lh-16: 1.5rem;    /* body, input, button */
+  --fs-18: 1.125rem; --lh-18: 1.75rem;   /* reading copy, row title, lead on phones */
+  --fs-20: 1.25rem;  --lh-20: 1.75rem;   /* h3, card title, lead from tablet */
+  --fs-24: 1.5rem;   --lh-24: 2rem;      /* h2 on phones, price, time */
+  --fs-32: 2rem;     --lh-32: 2.5rem;    /* h1 on phones, h2 from tablet, total */
+  --fs-40: 2.5rem;   --lh-40: 3rem;      /* h1 from tablet */
+  --fs-48: 3rem;     --lh-48: 3.5rem;    /* v3: home hero display from 60rem; nowhere else */
+  --fs-h1: var(--fs-32); --lh-h1: var(--lh-32);
+  --fs-h2: var(--fs-24); --lh-h2: var(--lh-24);
+  --fs-h3: var(--fs-20); --lh-h3: var(--lh-20);
+  --fs-lead: var(--fs-18); --lh-lead: var(--lh-18);
+  --fs-display: var(--fs-32); --lh-display: var(--lh-32);   /* hero display: 32 phone, 48 from 60rem */
+
+  /* Space: one 4px scale */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-6: 24px; --s-8: 32px; --s-12: 48px; --s-16: 64px; --s-24: 96px;
+  --container: 1200px; --gutter: var(--s-4);            /* gutter: s-4 phone, s-6 from 40rem */
+  --section-pad: var(--s-8);                            /* each side: s-8 phone, s-12 from 60rem (v3: faster rhythm) */
+  --card-pad: var(--s-4);                               /* card padding: s-4 phone, s-6 from 60rem */
+  --gap-card: var(--s-4);                               /* between cards, rows, tiles */
+  --gap-field: var(--s-3);                              /* between form fields */
+  --title-gap: var(--s-6);                              /* section title to its content */
+  --header-h: 64px;
+
+  /* Controls: touch first (heights are sizes, not spacing) */
+  --icon-size: 24px;
+  --control-h: 48px; --control-h-lg: 52px; --tap-min: 44px;
+
+  /* Radius v4: derived from the HAIVAN logo. Logo corner r is about 1/12 of the letter height (2 on a 24 cap height), so r = short side / 12, snapped to a ladder.
+     Containers that hold content (cards, forms, sheets) stop at r-3; r-4 is for media-only frames (banner, big photo, map). Inner = outer - padding, never below r-1. */
+  --r-1: 4px;        /* short side up to 72px: button, input, chip, tag, badge, seat, tab, thumbnail */
+  --r-2: 8px;        /* 73 to 144px: media inset in a card, trip row, menu, small photo */
+  --r-3: 16px;       /* 145 to 240px: card, search form, sheet, dialog, sticky bar */
+  --r-4: 24px;       /* over 240px, media only: hero banner, big photo, map frame */
+  --r-round: 50%;    /* icon-only square buttons only (call, arrow, swap, avatar); never on anything wider than tall */
+  /* v3 names kept as aliases so code migrates safely */
+  --r-sm: var(--r-1);
+  --r-md: var(--r-2);
+  --r-lg: var(--r-3);   /* hero banner and big photos take --r-4 explicitly */
+  --r-pill: var(--r-1); /* badges and tags are r-1 rectangles now, not pills */
+
+  /* Lines: hairline only. No black borders; depth comes from shadow and glass. */
+  --line: 1px;            /* hairline: field edge, row rule, divider */
+  --line-strong: 2px;     /* focus ring and selection ring only */
+  --hairline: var(--line) solid var(--color-rule);
+  --select-bg: var(--color-accent-soft);                                          /* selected card, row, chip, seat ground */
+  --select-ring: 0 0 0 var(--line-strong) var(--color-select-edge);               /* box-shadow ring; always with a tick icon, never colour alone */
+
+  /* Shadow v4: three levels of light */
+  --shadow-1: 0 1px 2px rgb(26 25 23 / 0.06), 0 2px 8px rgb(26 25 23 / 0.08);   /* rest: card, row, input group */
+  --shadow-2: 0 8px 24px rgb(26 25 23 / 0.10);                                          /* raised: hover, floating glass, menu, sticky bar */
+  --shadow-3: 0 24px 48px rgb(26 25 23 / 0.16);                                         /* dialog and sheet */
+  --shadow-card: var(--shadow-1); --shadow-float: var(--shadow-2); --shadow-raise: var(--shadow-3);   /* v3 aliases */
+
+  /* Glass v4: functional, not decorative. Only on floating layers (sticky header, search card over the banner, sticky filter and total bars, dialog sheet).
+     Never under text smaller than 16px; ink text on it is checked at 4.5:1 over the darkest backdrop (see README v4). At most three glass layers on one screen. */
+  --glass-bg: #FEFEFBC7;                    /* hex fallback = surface at 78% */
+  --glass-bg-yellow: #FFC20ED9;             /* hex fallback = accent at 85% */
+  --glass-blur: 12px;                       /* 16px from 60rem */
+  --glass-saturate: 160%;
+  --glass-edge: inset 0 0 0 var(--line) rgb(255 255 255 / 0.6);                    /* 1px inner highlight */
+
+  /* Motion: colour and press only; no reveal, no parallax, no autoplay */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500;
+}
+@supports (color: oklch(0% 0 0)) {
+  :root {
+    --color-accent: oklch(84.6% 0.172 85);
+    --color-accent-hover: oklch(80.9% 0.166 85);
+    --color-accent-edge: oklch(74.8% 0.153 85);
+    --color-select-edge: oklch(61.1% 0.125 85);
+    --color-accent-soft: oklch(96.4% 0.051 93);
+    --color-accent-ink: oklch(32.1% 0.004 95);
+    --color-paper: oklch(98.2% 0.006 95);
+    --color-surface: oklch(99.6% 0.003 95);
+    --color-paper-2: oklch(96% 0.008 95);
+    --color-paper-3: oklch(93% 0.010 95);
+    --color-ink: oklch(32.1% 0.004 95);
+    --color-ink-deep: oklch(26% 0.006 95);
+    --color-text: oklch(27% 0.006 95);
+    --color-muted: oklch(45% 0.006 95);
+    --color-muted-on-dark: oklch(80% 0.006 95);
+    --color-rule: oklch(90% 0.008 95);
+    --color-rule-2: oklch(94.5% 0.006 95);
+    --color-edge: oklch(57% 0.006 95);
+    --color-sold: oklch(92% 0.005 95);
+    --color-error: oklch(53.9% 0.194 27);
+    --color-error-soft: oklch(96.5% 0.018 27);
+    --color-success: oklch(52.3% 0.135 144);
+    --color-success-soft: oklch(95.5% 0.035 144);
+    --color-link: oklch(49% 0.153 255);
+    --color-tint-warm: oklch(97.9% 0.028 92);
+    --color-on-strong: oklch(99.6% 0.003 95);
+    --color-promo-orange: oklch(73.5% 0.161 59);
+    --color-promo-orange-soft: oklch(94.6% 0.039 69);
+    --color-promo-teal: oklch(49.2% 0.081 195);
+    --color-promo-teal-soft: oklch(93.9% 0.026 191);
+    --color-promo-coral: oklch(55% 0.173 25);
+    --color-promo-coral-soft: oklch(94% 0.03 25);
+    --color-promo-leaf: oklch(51.2% 0.137 144);
+    --color-promo-leaf-soft: oklch(94.9% 0.029 147);
+    --color-promo-blue: oklch(44.9% 0.153 261);
+    --color-promo-blue-soft: oklch(93.5% 0.025 263);
+  }
+}
+@supports (color: color-mix(in oklch, red, blue)) {
+  :root { --glass-bg: color-mix(in oklch, var(--color-surface) 78%, transparent); --glass-bg-yellow: color-mix(in oklch, var(--color-accent) 85%, transparent); }
+}
+@media (min-width: 40rem) { :root { --gutter: var(--s-6); } }
+@media (min-width: 60rem) {
+  :root { --glass-blur: 16px; --section-pad: var(--s-12); --card-pad: var(--s-6); --fs-h1: var(--fs-40); --lh-h1: var(--lh-40); --fs-h2: var(--fs-32); --lh-h2: var(--lh-32); --fs-lead: var(--fs-20); --lh-lead: var(--lh-20); --fs-display: var(--fs-48); --lh-display: var(--lh-48); }
+}
+
+/* Glass utilities. Fallbacks: no backdrop-filter, or the user asks for less transparency -> solid ground, same shadow. */
+.glass, .glass-yellow { -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); box-shadow: var(--glass-edge), var(--shadow-2); }
+.glass { background: var(--glass-bg); }
+.glass-yellow { background: var(--glass-bg-yellow); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--color-surface); }
+  .glass-yellow { background: var(--color-accent); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-yellow { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass { background: var(--color-surface); }
+  .glass-yellow { background: var(--color-accent); }
+}

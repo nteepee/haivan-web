@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quy chuẩn bo góc v4 | Hải Vân</title>
+<meta name="description" content="Hệ bo góc 4/8/16/24 suy ra từ hình học logo HAIVAN, quy tắc lồng đồng tâm, nên và không nên.">
+<style>
+/* Hallmark · shape: spec sheet (internal, not a page of the site) · genre: editorial · theme: Ink (by request) · job: book · draw: 3a5769
+ * hero: none · nav: slab · footer: mast · imagery: logo geometry and token swatches · signature: logo corner annotated at 40x with k = 1/12 · ink: board
+ * axes: light/rounded-sans/brand-yellow · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P3 H4 E4 S3 R4 V4 · an internal reference sheet, not a marketing page */
+/* Hallmark · waive 44c · internal reference sheet, not a landing page · the title block is the first screen, the logo plate follows below · nothing to fill beside a hero visual */
+/* Hallmark · waive 59 · internal reference sheet, sections sit 64px apart · each section is one table or one diagram, so a tighter rhythm reads as one document · not a marketing page */
+/* Hallmark · waive 78 · section heads at 32px under a 40px sheet title · the type scale tops at 40 outside the home hero · a spec sheet is scanned */
+/* Hallmark · dismissed 58 · the screen holds the derivation table and its annotations, which are the specification the owner asked for, not marketing copy; a table is read by row */
+/* Hallmark · note glass · the do/don't strip shows glass on purpose, one demo on a photo and one counter-example */
+/* Hallmark · dismissed 42 · the footer is a mast over four link columns because Hải Vân publishes about thirty real destination and policy pages */
+/* Hallmark · dismissed 58 · the footer sitemap and legal lines hold about two hundred of the page words; each body section stays short */
+/* Hallmark · waive 49b · one real legal page title wrapping to two lines at 320px · the footer link Chính sách và quy trình giải quyết khiếu nại is the page's own title and cannot shorten */
+/* Hallmark · answered F4 · ghost buttons, the stepper and carousel arrows are outlined secondaries; each screen holds one yellow primary */
+/* Hallmark · answered F7 · the swap, call and step-marker circles are controls sized as controls */
+/* v4: radius ladder r-1..r-4 from the logo, glass on floating layers only, no black borders. Source: docs/design/v4-glass-radius-proposal.md */
+:root {
+  color-scheme: light;
+
+  /* Brand field and the one colour that means "act / selected" */
+  --color-accent: #FFC20E;           --color-accent: oklch(84.6% 0.172 85);
+  --color-accent-hover: #F2B600;     --color-accent-hover: oklch(80.9% 0.166 85);
+  --color-accent-edge: #D9A400;      --color-accent-edge: oklch(74.8% 0.153 85);
+  --color-accent-soft: #FFF3CD;      --color-accent-soft: oklch(96.4% 0.051 93);
+  --color-accent-ink: #333333;       --color-accent-ink: oklch(32.1% 0.004 95);
+  --color-field: var(--color-accent);
+
+  /* Paper (warm, chroma 0.004 to 0.01 toward the brand hue) and ink */
+  --color-paper: #FAF9F5;            --color-paper: oklch(98.2% 0.006 95);
+  --color-surface: #FEFEFB;          --color-surface: oklch(99.6% 0.003 95);
+  --color-paper-2: #F3F2EC;          --color-paper-2: oklch(96% 0.008 95);
+  --color-paper-3: #EAE8E1;          --color-paper-3: oklch(93% 0.010 95);
+  --color-ink: #333333;              --color-ink: oklch(32.1% 0.004 95);       /* brand dark: headings, buttons, footer band */
+  --color-ink-deep: #252421;         --color-ink-deep: oklch(26% 0.006 95);
+  --color-text: #272623;             --color-text: oklch(27% 0.006 95);        /* body copy, 14:1 on paper */
+  --color-muted: #565552;            --color-muted: oklch(45% 0.006 95);       /* 6.9:1 on paper; never on yellow */
+  --color-muted-on-dark: #BFBEB9;    --color-muted-on-dark: oklch(80% 0.006 95);
+  --color-rule: #DFDED8;             --color-rule: oklch(90% 0.008 95);
+  --color-rule-2: #EEEDE8;           --color-rule-2: oklch(94.5% 0.006 95);
+  --color-edge: #787773;             --color-edge: oklch(57% 0.006 95);        /* field, seat and card-control edge, 4.2:1 on surface */
+  --color-sold: #E5E4E1;             --color-sold: oklch(92% 0.005 95);
+  --color-scrim: oklch(20% 0.006 95 / 0.55);                                /* behind dialogs and photo captions only */
+  --color-focus: var(--color-ink);   --color-focus-on-dark: var(--color-accent);
+
+  /* States: always with an icon and words, never colour alone */
+  --color-error: #C62827;            --color-error: oklch(53.9% 0.194 27);     /* 5.6:1 */
+  --color-error-soft: #FFEFED;       --color-error-soft: oklch(96.5% 0.018 27);
+  --color-success: #2E7D31;          --color-success: oklch(52.3% 0.135 144);  /* 5.1:1 */
+  --color-success-soft: #E3F7E2;     --color-success-soft: oklch(95.5% 0.035 144);
+  --color-link: #0E5FB4;             --color-link: oklch(49% 0.153 255);       /* running-text links only, 6:1 */
+
+  /* v3 app-style: section tints and the secondary (promo) palette.
+     Rule: a strong fill always carries its --color-on-* text (>= 4.5:1); a soft tint always carries --color-ink text (>= 10:1).
+     Strong colours are never text on a tint, never body copy, never states (states keep error / success). */
+  --color-tint-warm: #FFF8E3;        --color-tint-warm: oklch(97.9% 0.028 92);   /* section band: warm yellow tint */
+  --color-on-strong: #FEFEFB;        --color-on-strong: oklch(99.6% 0.003 95);   /* text on the deep promo fills */
+  --color-promo-orange: #F28C28;     --color-promo-orange: oklch(73.5% 0.161 59);  /* ink text on it, 5.2:1 */
+  --color-promo-orange-soft: #FFE9D2; --color-promo-orange-soft: oklch(94.6% 0.039 69);
+  --color-promo-teal: #0B6F6F;       --color-promo-teal: oklch(49.2% 0.081 195);   /* surface text 5.9:1 */
+  --color-promo-teal-soft: #D8F1EF;  --color-promo-teal-soft: oklch(93.9% 0.026 191);
+  --color-promo-coral: #C23A3A;      --color-promo-coral: oklch(55% 0.173 25);     /* surface text 5.3:1 */
+  --color-promo-coral-soft: #FFE4E1; --color-promo-coral-soft: oklch(94% 0.03 25);
+  --color-promo-leaf: #287A2E;       --color-promo-leaf: oklch(51.2% 0.137 144);   /* surface text 5.3:1 */
+  --color-promo-leaf-soft: #E2F4E3;  --color-promo-leaf-soft: oklch(94.9% 0.029 147);
+  --color-promo-blue: #1D4FA8;       --color-promo-blue: oklch(44.9% 0.153 261);   /* surface text 7.6:1 */
+  --color-promo-blue-soft: #E1EAFB;  --color-promo-blue-soft: oklch(93.5% 0.025 263);
+  --color-on-orange: var(--color-ink);
+  --color-on-teal: var(--color-on-strong); --color-on-coral: var(--color-on-strong); --color-on-leaf: var(--color-on-strong); --color-on-blue: var(--color-on-strong);
+
+  /* Type: Nunito only (latin + vietnamese subsets, 400/600/800, font-display swap). One scale, fixed line-heights. */
+  --font-display: "Nunito", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-body: var(--font-display);
+  --weight-body: 400; --weight-strong: 600; --weight-display: 800;
+  --fs-14: 0.875rem; --lh-14: 1.25rem;   /* label, caption, meta, tag, fine print */
+  --fs-16: 1rem;     --lh-16: 1.5rem;    /* body, input, button */
+  --fs-18: 1.125rem; --lh-18: 1.75rem;   /* reading copy, row title, lead on phones */
+  --fs-20: 1.25rem;  --lh-20: 1.75rem;   /* h3, card title, lead from tablet */
+  --fs-24: 1.5rem;   --lh-24: 2rem;      /* h2 on phones, price, time */
+  --fs-32: 2rem;     --lh-32: 2.5rem;    /* h1 on phones, h2 from tablet, total */
+  --fs-40: 2.5rem;   --lh-40: 3rem;      /* h1 from tablet */
+  --fs-48: 3rem;     --lh-48: 3.5rem;    /* v3: home hero display from 60rem; nowhere else */
+  --fs-h1: var(--fs-32); --lh-h1: var(--lh-32);
+  --fs-h2: var(--fs-24); --lh-h2: var(--lh-24);
+  --fs-h3: var(--fs-20); --lh-h3: var(--lh-20);
+  --fs-lead: var(--fs-18); --lh-lead: var(--lh-18);
+  --fs-display: var(--fs-32); --lh-display: var(--lh-32);   /* hero display: 32 phone, 48 from 60rem */
+
+  /* Space: one 4px scale */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px; --s-6: 24px; --s-8: 32px; --s-12: 48px; --s-16: 64px; --s-24: 96px;
+  --container: 1200px; --gutter: var(--s-4);            /* gutter: s-4 phone, s-6 from 40rem */
+  --section-pad: var(--s-8);                            /* each side: s-8 phone, s-12 from 60rem (v3: faster rhythm) */
+  --card-pad: var(--s-4);                               /* card padding: s-4 phone, s-6 from 60rem */
+  --gap-card: var(--s-4);                               /* between cards, rows, tiles */
+  --gap-field: var(--s-3);                              /* between form fields */
+  --title-gap: var(--s-6);                              /* section title to its content */
+  --header-h: 64px;
+
+  /* Controls: touch first (heights are sizes, not spacing) */
+  --icon-size: 24px;
+  --control-h: 48px; --control-h-lg: 52px; --tap-min: 44px;
+
+  /* Radius v4: derived from the HAIVAN logo. Logo corner r is about 1/12 of the letter height (2 on a 24 cap height), so r = short side / 12, snapped to a ladder.
+     Containers that hold content (cards, forms, sheets) stop at r-3; r-4 is for media-only frames (banner, big photo, map). Inner = outer - padding, never below r-1. */
+  --r-1: 4px;        /* short side up to 72px: button, input, chip, tag, badge, seat, tab, thumbnail */
+  --r-2: 8px;        /* 73 to 144px: media inset in a card, trip row, menu, small photo */
+  --r-3: 16px;       /* 145 to 240px: card, search form, sheet, dialog, sticky bar */
+  --r-4: 24px;       /* over 240px, media only: hero banner, big photo, map frame */
+  --r-round: 50%;    /* icon-only square buttons only (call, arrow, swap, avatar); never on anything wider than tall */
+  /* v3 names kept as aliases so code migrates safely */
+  --r-sm: var(--r-1);
+  --r-md: var(--r-2);
+  --r-lg: var(--r-3);   /* hero banner and big photos take --r-4 explicitly */
+  --r-pill: var(--r-1); /* badges and tags are r-1 rectangles now, not pills */
+
+  /* Lines: hairline only. No black borders; depth comes from shadow and glass. */
+  --line: 1px;            /* hairline: field edge, row rule, divider */
+  --line-strong: 2px;     /* focus ring and selection ring only */
+  --hairline: var(--line) solid var(--color-rule);
+  --select-bg: var(--color-accent-soft);                                          /* selected card, row, chip, seat ground */
+  --select-ring: 0 0 0 var(--line-strong) var(--color-accent-edge);               /* box-shadow ring; always with a tick icon, never colour alone */
+
+  /* Shadow v4: three levels of light */
+  --shadow-1: 0 1px 2px oklch(20% 0.006 95 / 0.06), 0 2px 8px oklch(20% 0.006 95 / 0.08);   /* rest: card, row, input group */
+  --shadow-2: 0 8px 24px oklch(20% 0.006 95 / 0.10);                                          /* raised: hover, floating glass, menu, sticky bar */
+  --shadow-3: 0 24px 48px oklch(20% 0.006 95 / 0.16);                                         /* dialog and sheet */
+  --shadow-card: var(--shadow-1); --shadow-float: var(--shadow-2); --shadow-raise: var(--shadow-3);   /* v3 aliases */
+
+  /* Glass v4: functional, not decorative. Only on floating layers (sticky header, search card over the banner, sticky filter and total bars, dialog sheet).
+     Never under text smaller than 16px; ink text on it is checked at 4.5:1 over the darkest backdrop (see README v4). At most three glass layers on one screen. */
+  --glass-bg: #FEFEFBC7;                    /* hex fallback = surface at 78% */
+  --glass-bg-yellow: #FFC20ED9;             /* hex fallback = accent at 85% */
+  --glass-blur: 12px;                       /* 16px from 60rem */
+  --glass-saturate: 160%;
+  --glass-edge: inset 0 0 0 var(--line) oklch(100% 0 0 / 0.6);                    /* 1px inner highlight */
+
+  /* Motion: colour and press only; no reveal, no parallax, no autoplay */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
+
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500;
+}
+@supports (color: color-mix(in oklch, red, blue)) {
+  :root { --glass-bg: color-mix(in oklch, var(--color-surface) 78%, transparent); --glass-bg-yellow: color-mix(in oklch, var(--color-accent) 85%, transparent); }
+}
+@media (min-width: 40rem) { :root { --gutter: var(--s-6); } }
+@media (min-width: 60rem) {
+  :root { --glass-blur: 16px; --section-pad: var(--s-12); --card-pad: var(--s-6); --fs-h1: var(--fs-40); --lh-h1: var(--lh-40); --fs-h2: var(--fs-32); --lh-h2: var(--lh-32); --fs-lead: var(--fs-20); --lh-lead: var(--lh-20); --fs-display: var(--fs-48); --lh-display: var(--lh-48); }
+}
+
+/* Glass utilities. Fallbacks: no backdrop-filter, or the user asks for less transparency -> solid ground, same shadow. */
+.glass, .glass-yellow { -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); box-shadow: var(--glass-edge), var(--shadow-2); }
+.glass { background: var(--glass-bg); }
+.glass-yellow { background: var(--glass-bg-yellow); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: var(--color-surface); }
+  .glass-yellow { background: var(--color-accent); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .glass, .glass-yellow { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .glass { background: var(--color-surface); }
+  .glass-yellow { background: var(--color-accent); }
+}
+
+@font-face { font-family: "Nunito"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("assets/fonts/nunito-vietnamese.woff2") format("woff2"); unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+@font-face { font-family: "Nunito"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("assets/fonts/nunito-latin.woff2") format("woff2"); unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* ===== v4 layer. Tokens only. Radius ladder r-1..r-4 (+ r-round for icon-only squares), hairlines and light instead of black borders, glass on floating layers only. ===== */
+
+/* ---- base */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { overflow-x: clip; }
+html { scrollbar-color: var(--color-muted) var(--color-paper); scroll-padding-top: calc(var(--header-h) + var(--s-8)); -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--color-paper); color: var(--color-text); font-family: var(--font-body); font-size: var(--fs-16); line-height: var(--lh-16); font-weight: var(--weight-body); -webkit-font-smoothing: antialiased; font-synthesis: none; caret-color: var(--color-ink); }
+::selection { background: var(--color-accent); color: var(--color-accent-ink); }
+:focus-visible { outline: var(--line-strong) solid var(--color-focus); outline-offset: var(--line-strong); }
+a { color: inherit; text-decoration-thickness: var(--line); text-underline-offset: 0.18em; }
+h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: var(--weight-display); font-synthesis: none; overflow-wrap: break-word; min-width: 0; text-wrap: balance; color: var(--color-ink); }
+h1 { font-size: var(--fs-h1); line-height: var(--lh-h1); max-width: 20ch; } h2 { font-size: var(--fs-h2); line-height: var(--lh-h2); max-width: 28ch; } h3 { font-size: var(--fs-h3); line-height: var(--lh-h3); max-width: 40ch; }
+p { margin: 0; text-wrap: pretty; }
+p:not([class]) { max-width: 65ch; }
+ul, ol, figure { margin: 0; padding: 0; list-style: none; }
+img, video { max-width: 100%; height: auto; display: block; }
+svg { display: block; }
+[hidden] { display: none !important; }
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+b, strong, th { font-weight: var(--weight-display); }
+small { font-size: var(--fs-14); line-height: var(--lh-14); }
+s { color: var(--color-muted); }
+.container { width: 100%; max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
+.num { font-variant-numeric: tabular-nums; }
+.lead { font-size: var(--fs-lead); line-height: var(--lh-lead); max-width: 52ch; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip { position: absolute; left: var(--s-4); top: var(--s-4); z-index: var(--z-toast); padding: var(--s-3) var(--s-4); background: var(--color-ink); color: var(--color-surface); border-radius: var(--r-1); transform: translateY(-200%); }
+.skip:focus-visible { transform: none; }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ic { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ic--sm { width: 20px; height: 20px; } .ic--lg { width: 28px; height: 28px; }
+.link { white-space: nowrap; font-weight: var(--weight-strong); text-decoration: underline; text-decoration-thickness: var(--line); text-underline-offset: 0.2em; min-height: var(--tap-min); display: inline-flex; align-items: center; border-radius: var(--r-1); }
+.link:hover { background: var(--color-accent-soft); }
+.link:active { background: var(--color-accent); }
+
+/* ---- header: glass-yellow, sticky (floating layer over scrolling content) */
+.site-header { position: sticky; top: 0; z-index: var(--z-sticky-nav); color: var(--color-accent-ink); box-shadow: var(--shadow-1); }
+.header-row { display: flex; align-items: center; gap: var(--s-2); min-height: var(--header-h); }
+.brand { display: flex; align-items: center; min-height: var(--control-h); margin-right: auto; border-radius: var(--r-1); }
+.nav { display: none; }
+.nav-link { display: inline-flex; align-items: center; gap: var(--s-1); min-height: var(--control-h); padding-inline: var(--s-3); font-weight: var(--weight-strong); text-decoration: none; border-radius: var(--r-1); white-space: nowrap; }
+.nav-link:hover { background: var(--color-accent-hover); }
+.nav-link:active { background: var(--color-accent-edge); }
+.nav-link[aria-current="page"] { background: var(--color-accent-hover); font-weight: var(--weight-display); }
+.header-call { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-width: var(--control-h); min-height: var(--control-h); font-weight: var(--weight-display); text-decoration: none; border-radius: var(--r-1); white-space: nowrap; }
+.header-call:hover { background: var(--color-accent-hover); }
+.header-call:active { background: var(--color-accent-edge); }
+.header-call-num { display: none; }
+.header-login, .lang { display: none; }
+.lang { min-height: var(--control-h); min-width: var(--control-h); align-items: center; justify-content: center; font-weight: var(--weight-strong); text-decoration: none; border-radius: var(--r-1); }
+.lang:hover { background: var(--color-accent-hover); }
+.menu summary { list-style: none; }
+.menu summary::-webkit-details-marker { display: none; }
+.menu-btn { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--control-h); padding-inline: var(--s-3); font-weight: var(--weight-strong); border-radius: var(--r-1); cursor: pointer; }
+.menu-btn:hover { background: var(--color-accent-hover); }
+.menu-btn:active { background: var(--color-accent-edge); }
+.menu-close { display: none; } .menu[open] .menu-close { display: block; } .menu[open] .menu-open { display: none; }
+.menu-panel { position: absolute; left: var(--gutter); right: var(--gutter); top: 100%; z-index: var(--z-dropdown); background: var(--color-surface); color: var(--color-text); border-radius: var(--r-2); box-shadow: var(--shadow-2); padding: var(--s-2); }
+.menu-panel a { white-space: nowrap; display: flex; align-items: center; min-height: var(--control-h); padding-inline: var(--s-3); font-weight: var(--weight-strong); font-size: var(--fs-18); line-height: var(--lh-18); text-decoration: none; border-radius: var(--r-1); }
+.menu-panel a:hover { background: var(--color-accent-soft); }
+.menu-panel a:active { background: var(--color-accent); }
+@media (min-width: 64rem) {
+  .nav { display: flex; align-items: center; margin-right: var(--s-3); }
+  .menu { display: none; }
+  .header-login, .lang { display: inline-flex; }
+  .brand { margin-right: var(--s-6); }
+  .nav { margin-right: auto; }
+}
+@media (min-width: 75rem) { .header-call-num { display: inline; } .header-call { padding-inline: var(--s-3); } }
+
+/* ---- buttons: yellow primary has no border; secondary is a quiet grey fill */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--control-h); padding: var(--s-3) var(--s-6); border: 0; border-radius: var(--r-1); background: var(--color-accent); color: var(--color-accent-ink); font-weight: var(--weight-display); font-size: var(--fs-16); line-height: var(--lh-16); text-decoration: none; white-space: nowrap; transition: background-color var(--dur-micro) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.btn:hover { background: var(--color-accent-hover); }
+.btn:active { transform: translateY(var(--line)); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+.btn--lg { padding-block: var(--s-3); min-height: var(--control-h-lg); font-size: var(--fs-18); line-height: var(--lh-18); padding-inline: var(--s-8); }
+.btn--sm { min-height: var(--tap-min); padding-block: var(--s-2); padding-inline: var(--s-4); }
+.btn--block { width: 100%; }
+.btn--ghost { background: var(--color-paper-2); box-shadow: inset 0 0 0 var(--line) var(--color-rule); }
+.btn--ghost:hover { background: var(--color-paper-3); }
+.btn--ghost:active { background: var(--color-paper-3); }
+.site-header .btn--ghost { background: var(--color-surface); box-shadow: var(--shadow-1); }
+.site-header .btn--ghost:hover { background: var(--color-accent-soft); }
+
+/* ---- fields: 1px edge (3:1 against the surface, kept for accessibility), no black */
+.field { display: grid; gap: var(--s-2); align-content: start; min-width: 0; }
+.field > label, .field > .label { font-weight: var(--weight-strong); font-size: var(--fs-14); line-height: var(--lh-14); color: var(--color-ink); }
+.input-wrap { position: relative; display: flex; align-items: center; }
+.input-wrap > .ic { position: absolute; left: var(--s-3); pointer-events: none; color: var(--color-muted); }
+.input { width: 100%; min-height: var(--control-h); padding: 0 var(--s-4); border: var(--line) solid var(--color-edge); border-radius: var(--r-1); background: var(--color-surface); color: var(--color-text); font-size: var(--fs-16); line-height: var(--lh-16); appearance: none; transition: box-shadow var(--dur-micro) var(--ease-out); }
+.input-wrap > .ic + .input { padding-left: calc(var(--s-3) + var(--icon-size) + var(--s-2)); }
+.input::placeholder { color: var(--color-muted); opacity: 1; }
+.input:hover { background: var(--color-accent-soft); }
+.input:focus-visible { outline: var(--line-strong) solid var(--color-focus); outline-offset: 0; }
+.input[aria-invalid="true"] { border-color: var(--color-error); }
+.field-msg:empty { display: none; }
+.field-msg { display: flex; align-items: flex-start; gap: var(--s-2); min-height: 1lh; font-size: var(--fs-14); line-height: var(--lh-14); color: var(--color-muted); }
+.field-msg--error { color: var(--color-error); font-weight: var(--weight-strong); }
+.swap { width: var(--control-h); height: var(--control-h); display: inline-grid; place-items: center; border: 0; border-radius: var(--r-round); background: var(--color-surface); box-shadow: var(--shadow-1); }
+.swap:hover { background: var(--color-accent-soft); } .swap:active { background: var(--color-accent); }
+.stepper { display: grid; grid-template-columns: var(--control-h) minmax(0, 1fr) var(--control-h); border: var(--line) solid var(--color-edge); border-radius: var(--r-1); background: var(--color-surface); overflow: hidden; }
+.stepper button { min-height: calc(var(--control-h) - 2 * var(--line)); border: 0; background: transparent; display: grid; place-items: center; }
+.stepper button:hover { background: var(--color-accent-soft); } .stepper button:active { background: var(--color-accent); }
+.stepper output { display: grid; place-items: center; font-weight: var(--weight-display); font-size: var(--fs-20); line-height: var(--lh-20); font-variant-numeric: tabular-nums; }
+
+/* ---- segmented tabs (search type): grey track, selected = raised white segment */
+.tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-1); padding: var(--s-1); background: var(--color-paper-2); border-radius: var(--r-2); }
+.tab { display: flex; align-items: center; justify-content: center; gap: var(--s-2); min-height: var(--tap-min); padding-inline: var(--s-4); font-weight: var(--weight-strong); text-decoration: none; border-radius: var(--r-1); white-space: nowrap; }
+.tab:hover { background: var(--color-accent-soft); }
+.tab:active { background: var(--color-accent); }
+.tab[aria-selected="true"] { font-weight: var(--weight-display); background: var(--color-surface); box-shadow: var(--shadow-1); }
+@media (min-width: 40rem) { .tabs { grid-template-columns: repeat(4, max-content); justify-content: start; } }
+
+/* ---- tags and badges: r-1 rectangles, never pills */
+.tag, .badge { display: inline-flex; align-items: center; gap: var(--s-1); min-height: 28px; padding: var(--s-1) var(--s-2); border-radius: var(--r-1); font-size: var(--fs-14); line-height: var(--lh-14); white-space: nowrap; }
+.tag { background: var(--color-paper-3); color: var(--color-ink); font-weight: var(--weight-strong); }
+.tag .ic, .badge .ic { width: 16px; height: 16px; }
+.tag--in { background: var(--color-accent-soft); box-shadow: inset 0 0 0 var(--line) var(--color-accent-edge); }
+.tag--out { background: transparent; box-shadow: inset 0 0 0 var(--line) var(--color-edge); color: var(--color-muted); text-decoration: line-through; }
+.tag--on { background: var(--color-ink); color: var(--color-surface); }
+.badge { font-weight: var(--weight-display); background: var(--color-ink); color: var(--color-surface); }
+.badge--sale { background: var(--color-promo-coral); color: var(--color-on-coral); }
+.badge--new { background: var(--color-promo-teal); color: var(--color-on-teal); }
+.badge--orange { background: var(--color-promo-orange); color: var(--color-on-orange); }
+.badge--blue { background: var(--color-promo-blue); color: var(--color-on-blue); }
+.badge--leaf { background: var(--color-promo-leaf); color: var(--color-on-leaf); }
+.badge--on-fill { background: var(--color-surface); color: var(--color-ink); }
+.badge--few { background: var(--color-promo-coral-soft); color: var(--color-ink); box-shadow: inset 0 0 0 var(--line) var(--color-promo-coral); }
+.badge--few .ic { color: var(--color-promo-coral); }
+.badge--photo { position: absolute; top: var(--s-3); left: var(--s-3); z-index: var(--z-base); box-shadow: var(--shadow-1); }
+
+/* ---- icon tiles (square, r-1), icon-only round buttons (r-round) */
+.ico { width: var(--control-h); height: var(--control-h); flex: none; display: grid; place-items: center; border-radius: var(--r-1); background: var(--ico-bg, var(--color-accent)); color: var(--ico-fg, var(--color-ink)); }
+.ico .ic { fill: var(--color-surface); fill-opacity: 0.55; stroke-width: 2; }
+.ico--orange { --ico-bg: var(--color-promo-orange); --ico-fg: var(--color-ink); }
+.ico--teal { --ico-bg: var(--color-promo-teal-soft); --ico-fg: var(--color-promo-teal); }
+.ico--coral { --ico-bg: var(--color-promo-coral-soft); --ico-fg: var(--color-promo-coral); }
+.ico--leaf { --ico-bg: var(--color-promo-leaf-soft); --ico-fg: var(--color-promo-leaf); }
+.ico--blue { --ico-bg: var(--color-promo-blue-soft); --ico-fg: var(--color-promo-blue); }
+.ico--sm { width: var(--tap-min); height: var(--tap-min); }
+
+/* ---- sections and grounds */
+.section { padding-block: var(--section-pad); }
+.section--white { background: var(--color-surface); --rail-bg: var(--color-surface); }
+.section--warm { background: var(--color-tint-warm); --rail-bg: var(--color-tint-warm); }
+.section--grey { background: var(--color-paper-2); --rail-bg: var(--color-paper-2); }
+.section--yellow { background: var(--color-field); color: var(--color-accent-ink); }
+.head-block { display: grid; gap: var(--s-2); margin-bottom: var(--s-6); }
+.photo { border-radius: var(--r-3); overflow: hidden; background: var(--color-paper-3); box-shadow: var(--shadow-1); }
+.photo img { width: 100%; height: 100%; object-fit: cover; }
+.sec-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); margin-bottom: var(--s-4); }
+.sec-head h2 { max-width: none; }
+.sec-head-end { display: flex; align-items: center; gap: var(--s-6); }
+.link .ic { width: 20px; height: 20px; margin-left: var(--s-1); }
+
+/* ---- rail: scroll-snap, arrows from 60rem, edge fade; works without JS */
+.rail-wrap { position: relative; }
+.hrail { display: flex; gap: var(--gap-card); overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding: var(--s-2) var(--gutter) var(--s-6); margin-bottom: calc(-1 * var(--s-4)); scroll-padding-inline: var(--gutter); }
+.hrail::-webkit-scrollbar { display: none; }
+.hrail > li { flex: 0 0 auto; scroll-snap-align: start; min-width: 0; }
+.hrail:focus-visible { outline-offset: calc(-1 * var(--line-strong)); }
+.rail-wrap::after { content: ""; position: absolute; top: 0; bottom: var(--s-4); right: calc(-1 * var(--gutter)); width: var(--s-12); pointer-events: none; background: linear-gradient(to right, transparent, var(--rail-bg, var(--color-surface))); }
+.rail-wrap[data-end]::after { display: none; }
+.rail-ctrls { display: none; align-items: center; gap: var(--s-2); }
+.rail-btn { display: grid; place-items: center; width: var(--tap-min); height: var(--tap-min); border: 0; border-radius: var(--r-round); background: var(--color-surface); color: var(--color-ink); box-shadow: var(--shadow-1); }
+.rail-btn:hover { background: var(--color-accent-soft); box-shadow: var(--shadow-2); } .rail-btn:active { background: var(--color-accent); transform: translateY(var(--line)); }
+.rail-btn[disabled] { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+@media (min-width: 60rem) {
+  .hrail { margin-inline: calc(-1 * var(--s-2)); padding-inline: var(--s-2); scroll-padding-inline: var(--s-2); }
+  .rail-wrap::after { right: calc(-1 * var(--s-2)); }
+  .rail-ctrls:not([hidden]) { display: flex; }
+  .hrail--grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); overflow: visible; scroll-snap-type: none; }
+  .hrail--grid3 > li { width: auto !important; }
+  .rail-wrap:has(.hrail--grid3)::after { display: none !important; }
+  .sec-head-end .rail-ctrls[data-grid] { display: none !important; }
+}
+
+/* ---- offer card (solid fill, r-3, no decoration shapes) */
+.pcard { position: relative; display: grid; align-content: start; gap: var(--s-2); padding: var(--card-pad); width: min(82vw, 20rem); height: 100%; border-radius: var(--r-3); overflow: hidden; background: var(--c); color: var(--on); box-shadow: var(--shadow-1); transition: box-shadow var(--dur-short) var(--ease-out); }
+.pcard:hover { box-shadow: var(--shadow-2); }
+.pcard > .badge { justify-self: start; }
+.pcard h3 { color: inherit; font-size: var(--fs-18); line-height: var(--lh-18); max-width: none; }
+.pcard-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s-1) var(--s-2); }
+.pcard-price strong { font-size: var(--fs-32); line-height: var(--lh-32); font-weight: var(--weight-display); font-variant-numeric: tabular-nums; }
+.pcard-price small { font-weight: var(--weight-strong); }
+.pcard-cond { font-size: var(--fs-14); line-height: var(--lh-14); }
+.pcard-foot { display: flex; align-items: end; justify-content: space-between; gap: var(--s-3); align-self: end; margin-top: var(--s-2); }
+.pcard-photo { width: 6.5rem; aspect-ratio: 4 / 3; border-radius: var(--r-1); overflow: hidden; background: var(--color-paper-3); }
+.pcard-photo img { width: 100%; height: 100%; object-fit: cover; }
+.pcard-go { display: inline-flex; align-items: center; gap: var(--s-1); min-height: var(--tap-min); padding: var(--s-1) var(--s-4); border-radius: var(--r-1); background: var(--color-surface); color: var(--color-ink); font-weight: var(--weight-display); text-decoration: none; }
+.pcard-go::after { content: ""; position: absolute; inset: 0; }
+.pcard-go:hover { background: var(--color-accent-soft); }
+.pcard-go:focus-visible { outline-offset: calc(-1 * var(--line-strong)); outline-color: var(--color-surface); }
+.pcard:has(.pcard-go:focus-visible) { outline: var(--line-strong) solid var(--color-focus); outline-offset: var(--line-strong); }
+.pcard--orange { --c: var(--color-promo-orange); --on: var(--color-on-orange); }
+.pcard--teal { --c: var(--color-promo-teal); --on: var(--color-on-teal); }
+.pcard--coral { --c: var(--color-promo-coral); --on: var(--color-on-coral); }
+.pcard--leaf { --c: var(--color-promo-leaf); --on: var(--color-on-leaf); }
+.pcard--blue { --c: var(--color-promo-blue); --on: var(--color-on-blue); }
+
+/* ---- chips: filters. Pressed = soft yellow + ring + tick (state is never colour alone) */
+.chips { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; }
+.chip { display: inline-flex; align-items: center; gap: var(--s-2); min-height: var(--tap-min); padding: 0 var(--s-4); border: 0; border-radius: var(--r-1); background: var(--color-paper-2); color: var(--color-ink); font-weight: var(--weight-strong); white-space: nowrap; transition: background-color var(--dur-micro) var(--ease-out); }
+.chip .ic { width: 20px; height: 20px; }
+.chip:hover { background: var(--color-paper-3); }
+.chip:active { transform: translateY(var(--line)); }
+.chip[aria-pressed="true"] { background: var(--select-bg); box-shadow: var(--select-ring); font-weight: var(--weight-display); }
+
+/* ---- footer: ink band, mast */
+.site-footer { background: var(--color-ink); color: var(--color-surface); padding-block: var(--s-24) var(--s-12); }
+.site-footer :focus-visible { outline-color: var(--color-focus-on-dark); }
+.site-footer a { text-decoration: none; }
+.site-footer .fcol a { display: inline-flex; align-items: center; min-height: var(--tap-min); text-decoration: underline; text-decoration-color: var(--color-muted-on-dark); }
+.site-footer .fcol a:hover { text-decoration-color: var(--color-accent); color: var(--color-accent); }
+.mast { display: grid; gap: var(--s-3); padding-bottom: var(--s-16); border-bottom: var(--line) solid var(--color-muted); }
+.mast-logo { width: 200px; height: auto; aspect-ratio: 130 / 24; }
+.mast-call { display: inline-flex; align-items: center; gap: var(--s-3); width: fit-content; min-height: var(--control-h-lg); color: var(--color-accent); font-weight: var(--weight-display); font-size: var(--fs-32); line-height: var(--lh-32); }
+.mast-call:hover { text-decoration: underline; }
+.fcols { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); padding-block: var(--s-24); border-bottom: var(--line) solid var(--color-muted); }
+.fhead { font-size: var(--fs-16); line-height: var(--lh-16); font-weight: var(--weight-display); color: var(--color-surface); margin: 0 0 var(--s-2); max-width: none; }
+.fmeta { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); padding-block: var(--s-24); border-bottom: var(--line) solid var(--color-muted); }
+.fmeta .fhead + .logo-tiles { margin-bottom: var(--s-4); }
+.logo-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-2); }
+.logo-tiles li { background: var(--color-surface); border-radius: var(--r-2); padding: var(--s-2); display: grid; place-items: center; min-height: 80px; }
+.logo-tiles img { max-height: 48px; width: auto; object-fit: contain; }
+.flegal { display: grid; gap: var(--s-6); padding-top: var(--s-24); }
+.flegal-text { color: var(--color-muted-on-dark); font-size: var(--fs-14); line-height: var(--lh-14); display: grid; gap: var(--s-1); }
+.flegal-text strong { color: var(--color-surface); font-size: var(--fs-16); line-height: var(--lh-16); }
+.flegal-text p { max-width: 70ch; }
+.flegal-side .fhead { margin-top: var(--s-4); } .flegal-side .fhead:first-child { margin-top: 0; }
+.social, .badges { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.social a { display: grid; place-items: center; width: var(--control-h); height: var(--control-h); background: var(--color-surface); border-radius: var(--r-1); }
+.badges a { display: block; } .badges img { height: 44px; width: auto; border-radius: var(--r-1); }
+@media (min-width: 40rem) { .fcols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 75rem) { .fcols { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 60rem) {
+  .mast { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-6); }
+  .fmeta { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+  .flegal { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
+}
+
+/* ---- call button: icon-only square, so round */
+.call-fab { position: fixed; right: var(--s-4); bottom: var(--s-4); z-index: var(--z-sticky); width: var(--control-h-lg); height: var(--control-h-lg); display: grid; place-items: center; border-radius: var(--r-round); background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-2); text-decoration: none; }
+.call-fab:hover { background: var(--color-accent-hover); } .call-fab:active { transform: translateY(var(--line-strong)); }
+.has-sticky-bar .call-fab { bottom: calc(var(--s-4) + 96px); }
+@media (min-width: 60rem) { .has-sticky-bar .call-fab { bottom: var(--s-4); } }
+
+/* ---- dialog: scrim + glass sheet */
+dialog { padding: 0; border: 0; border-radius: var(--r-3); color: var(--color-text); width: min(28rem, calc(100% - 2 * var(--gutter))); box-shadow: var(--glass-edge), var(--shadow-3); background: var(--glass-bg); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { dialog { background: var(--color-surface); } }
+@media (prefers-reduced-transparency: reduce) { dialog { background: var(--color-surface); -webkit-backdrop-filter: none; backdrop-filter: none; } }
+dialog::backdrop { background: var(--color-scrim); }
+.dialog-body { display: grid; gap: var(--s-4); padding: var(--card-pad); }
+.dialog-head { display: flex; align-items: start; justify-content: space-between; gap: var(--s-4); }
+.dialog-head h2 { font-size: var(--fs-24); line-height: var(--lh-24); }
+.dialog-close { display: grid; place-items: center; width: var(--tap-min); height: var(--tap-min); flex: none; border: 0; border-radius: var(--r-round); background: var(--color-surface); box-shadow: var(--shadow-1); }
+.dialog-close:hover { background: var(--color-accent-soft); }
+.dialog-body .field > label { font-size: var(--fs-16); line-height: var(--lh-16); }
+.dialog-body .lead { font-size: var(--fs-16); line-height: var(--lh-16); color: var(--color-ink); }
+.dialog-alt { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-6); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+
+body { background: var(--color-surface); }
+.sheet { padding-block: var(--s-12) var(--s-16); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-16); }
+.sheet h1 { max-width: none; font-size: var(--fs-40); line-height: var(--lh-40); }
+.sheet h2 { max-width: none; margin-bottom: var(--s-4); }
+.sheet p.lead { max-width: 70ch; }
+.sheet code { white-space: nowrap; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: var(--fs-14); background: var(--color-paper-2); padding: 0 var(--s-1); border-radius: var(--r-1); }
+.top { display: grid; gap: var(--s-3); }
+.k-badge { display: inline-flex; width: fit-content; }
+/* A. logo */
+.a-grid { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); align-items: start; }
+.panel { background: var(--color-paper); border-radius: var(--r-3); padding: var(--s-6); box-shadow: var(--shadow-1); display: grid; gap: var(--s-4); align-content: start; }
+.logo-big { width: 100%; height: auto; color: var(--color-ink); overflow: visible; }
+.logo-zoom { width: 100%; max-width: 20rem; height: auto; color: var(--color-ink); background: var(--color-surface); border-radius: var(--r-2); }
+.logo-fill { fill: currentColor; }
+.corner-ring { fill: none; stroke: var(--color-accent); stroke-width: 0.14; }
+.dim { stroke: var(--color-promo-coral); stroke-width: 0.1; fill: none; }
+.dot { fill: var(--color-promo-coral); }
+.dim-t { font-family: var(--font-display); font-weight: 800; fill: var(--color-promo-coral); }
+.facts { display: grid; gap: var(--s-2); }
+.facts li { display: flex; gap: var(--s-3); align-items: start; }
+.facts .ic { color: var(--color-success); margin-top: var(--s-1); }
+@media (min-width: 60rem) { .a-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); } }
+/* B. table + swatches */
+.tbl { width: 100%; border-collapse: collapse; background: var(--color-paper); border-radius: var(--r-3); overflow: hidden; box-shadow: var(--shadow-1); }
+.tbl th, .tbl td { padding: var(--s-3) var(--s-4); text-align: left; vertical-align: top; font-weight: var(--weight-body); }
+.tbl thead th { background: var(--color-paper-3); font-weight: var(--weight-display); font-size: var(--fs-14); line-height: var(--lh-14); }
+.tbl tbody tr + tr > * { border-top: var(--hairline); }
+.tbl .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 39.99rem) {
+  .tbl thead { display: none; }
+  .tbl tbody tr { display: grid; gap: var(--s-1); padding: var(--s-3) var(--s-4); }
+  .tbl tbody tr + tr { border-top: var(--hairline); }
+  .tbl tbody tr + tr > * { border-top: 0; }
+  .tbl th, .tbl td { padding: 0; white-space: normal; }
+}
+.swatches { display: flex; flex-wrap: wrap; align-items: end; gap: var(--s-6); margin-top: var(--s-6); }
+.sw { display: grid; gap: var(--s-2); justify-items: start; }
+.sw-box { width: 240px; display: grid; place-content: center; background: var(--color-accent); color: var(--color-accent-ink); font-weight: var(--weight-display); text-align: center; }
+.sw-box span { padding: var(--s-2); }
+.r1 { border-radius: var(--r-1); } .r2 { border-radius: var(--r-2); } .r3 { border-radius: var(--r-3); } .r4 { border-radius: var(--r-4); }
+.sw figcaption { font-size: var(--fs-14); line-height: var(--lh-14); color: var(--color-muted); margin: 0; }
+/* C. concentric */
+.c-grid { display: grid; gap: var(--s-6); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 60rem) { .c-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.nest { display: grid; gap: var(--s-3); align-content: start; }
+.nest-outer { background: var(--color-paper-3); color: var(--color-ink); box-shadow: var(--shadow-1); padding: var(--pad); height: 168px; }
+.nest-inner { background: var(--color-accent); color: var(--color-accent-ink); height: 100%; display: grid; place-content: center; font-weight: var(--weight-display); text-align: center; }
+.n1 { --pad: var(--s-2); border-radius: var(--r-3); } .n1 .nest-inner { border-radius: var(--r-2); }
+.n2 { --pad: var(--s-3); border-radius: var(--r-3); } .n2 .nest-inner { border-radius: var(--r-1); }
+.n3 { --pad: var(--s-2); border-radius: var(--r-4); } .n3 .nest-inner { border-radius: var(--r-3); }
+.n-bad { --pad: var(--s-3); border-radius: var(--r-3); } .n-bad .nest-inner { border-radius: var(--r-3); }
+.nest p { font-size: var(--fs-14); line-height: var(--lh-14); }
+.formula { display: flex; flex-wrap: wrap; gap: var(--s-3) var(--s-6); align-items: center; padding: var(--s-4) var(--s-6); background: var(--color-accent-soft); border-radius: var(--r-3); font-weight: var(--weight-strong); margin-bottom: var(--s-6); }
+.formula strong { font-size: var(--fs-20); line-height: var(--lh-20); }
+/* D. do / don't */
+.dd { display: grid; gap: var(--s-4); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 40rem) { .dd { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 90rem) { .dd { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.dd-item { display: grid; gap: var(--s-3); align-content: start; }
+.dd-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.verdict { display: grid; gap: var(--s-2); align-content: start; justify-items: start; }
+.verdict .tag { font-weight: var(--weight-display); }
+.tag--ok { background: var(--color-success-soft); color: var(--color-success); box-shadow: inset 0 0 0 var(--line) var(--color-success); }
+.tag--no { background: var(--color-error-soft); color: var(--color-error); box-shadow: inset 0 0 0 var(--line) var(--color-error); }
+.demo { display: grid; place-items: center; min-height: 96px; width: 100%; background: var(--color-paper-2); border-radius: var(--r-2); padding: var(--s-3); }
+.demo .badge { }
+.demo-photo { background: url("assets/img/home-hero.jpg") 50% 70% / cover; position: relative; overflow: hidden; }
+.demo-photo .glass { padding: var(--s-3); border-radius: var(--r-3); font-weight: var(--weight-strong); color: var(--color-ink); text-align: center; }
+.dd-item h3 { font-size: var(--fs-18); line-height: var(--lh-18); }
+.dd-item p { font-size: var(--fs-14); line-height: var(--lh-14); color: var(--color-muted); }
+/* negative examples: the lint exempts selectors starting with .dont- */
+.dont-pill { border-radius: var(--r-4); }
+.dont-mixed { background: var(--color-accent); padding: var(--s-4); border-radius: var(--r-3) var(--r-1) var(--r-4) var(--r-2); font-weight: var(--weight-display); }
+.dont-black { background: var(--color-surface); padding: var(--s-4); border: var(--line-strong) solid var(--color-ink); border-radius: var(--r-3); font-weight: var(--weight-display); }
+.dont-wide-round { border-radius: var(--r-round); min-width: 96px; }
+.specimen { background: var(--color-surface); padding: var(--s-4); border-radius: var(--r-3); box-shadow: var(--shadow-1); font-weight: var(--weight-display); }
+.do-round { width: var(--control-h); height: var(--control-h); border: 0; border-radius: var(--r-round); background: var(--color-accent); box-shadow: var(--shadow-1); display: grid; place-items: center; }
+.dont-flat-glass { padding: var(--s-3); border-radius: var(--r-3); font-weight: var(--weight-strong); }
+
+</style>
+</head>
+<body class="">
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false"><defs><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol></defs></svg>
+<a class="skip" href="#main">Bỏ qua, tới nội dung</a>
+<main id="main" class="container sheet">
+  <header class="top">
+    <h1>Bo góc suy ra từ logo HAIVAN</h1>
+    <p class="lead">Góc bo của chữ khối trong logo bằng khoảng 1/12 chiều cao chữ. Mọi bán kính trên site đều là bội số của tỉ lệ đó, khoá thành bốn bậc. Không có giá trị thứ năm, ngoại trừ hình tròn cho nút chỉ có icon.</p>
+  </header>
+
+  <section aria-labelledby="a-h">
+    <h2 id="a-h">1. Hình học logo: r = 2 trên chiều cao 24, k = 1/12</h2>
+    <div class="a-grid">
+      <div class="panel"><svg class="logo-big" viewBox="-2 -3 125 30" role="img" aria-label="Logo HAIVAN với bán kính góc bo r bằng 2 trên chiều cao chữ 24">
+  <g class="logo-fill"><path d="M51.8715 0.38949C51.7418 0.241113 51.5379 0.12983 51.2785 0.0741887C51.019 0.0185472 50.6484 0 50.1851 0H45.3667V21.1438L38.3245 1.55796C38.1206 1.05719 37.8612 0.667698 37.5647 0.408038C37.2496 0.148377 36.8234 0.0185472 36.2489 0.0185472H29.6885L21.59 21.7744V1.94745C21.59 1.55796 21.5714 1.22411 21.5344 0.983C21.4973 0.741887 21.4232 0.537868 21.2934 0.38949C21.1637 0.241113 20.9599 0.12983 20.7004 0.0741887C20.441 0.0185472 20.0703 0 19.607 0H14.8999V9.03247H6.72717V1.94745C6.72717 1.55796 6.70864 1.22411 6.67158 0.983C6.63451 0.741887 6.56038 0.556415 6.43066 0.38949C6.30093 0.241113 6.09708 0.12983 5.83763 0.0741887C5.57818 0.0185472 5.20754 0 4.74423 0H0V22.034C0 22.4235 0.0185322 22.7574 0.0555965 22.9985C0.0926608 23.2396 0.185322 23.4436 0.315047 23.592C0.444772 23.7404 0.630093 23.8517 0.908076 23.9073C1.16753 23.9444 1.53817 23.9815 2.00147 23.9815H6.7457V14.5039H14.9184V22.034C14.9184 22.4235 14.9369 22.7574 14.974 22.9985C15.011 23.2396 15.0852 23.4436 15.2149 23.592C15.3446 23.7404 15.5485 23.8517 15.8079 23.9073C16.0674 23.9444 16.438 23.9815 16.9013 23.9815H20.7931H26.2045C26.779 23.9815 27.2052 23.8517 27.5017 23.592C27.7982 23.3323 28.0577 22.9428 28.2801 22.4421L29.3549 19.8084H37.6759L38.6951 22.4421C38.8805 22.9428 39.1399 23.3323 39.455 23.592C39.77 23.8517 40.2148 23.9815 40.7707 23.9815H46.4416L46.423 23.9258C46.6825 23.9629 46.9975 23.9815 47.4053 23.9815H52.2236V1.94745C52.2236 1.55796 52.2051 1.22411 52.1865 0.983C52.0754 0.741887 52.0012 0.556415 51.8715 0.38949ZM31.1155 14.5039L33.5988 6.19475L35.9338 14.5039H31.1155Z" fill="currentColor"/><path d="M74.8144 0C73.3874 0 72.4423 0.612057 71.9604 1.85472L67.3645 16.711L62.7129 1.85472C62.231 0.612057 61.2859 0 59.8775 0H54.8738L62.5832 21.9969C62.8241 22.7017 63.2133 23.2211 63.7692 23.5178C64.3252 23.8331 64.9367 23.9815 65.641 23.9815H71.6083L79.9107 0H74.8144Z" fill="currentColor"/><path d="M120.719 0.982999C120.682 0.741886 120.607 0.537867 120.478 0.38949C120.348 0.241113 120.163 0.12983 119.885 0.0741886C119.625 0.0185471 119.273 0 118.791 0H114.64V16.2658C114.473 15.7465 114.214 15.0603 113.862 14.1886C113.491 13.3354 113.102 12.3895 112.639 11.4065C112.194 10.4049 111.712 9.38485 111.193 8.32767C110.674 7.28903 110.211 6.30603 109.748 5.39722C109.303 4.48841 108.895 3.70943 108.543 3.04173C108.191 2.37403 107.95 1.91036 107.802 1.68779C107.431 1.09428 107.042 0.64915 106.634 0.38949C106.227 0.12983 105.689 0 105.003 0H98.0353V21.1252L90.9931 1.53941C90.7892 1.03864 90.5298 0.64915 90.2333 0.38949C89.9553 0.12983 89.5105 0 88.9545 0H82.3942L73.4617 23.9815H78.8731C79.4476 23.9815 79.8738 23.8516 80.1703 23.592C80.4668 23.3323 80.7263 22.9428 80.9487 22.442L82.0235 19.8083H90.3445L91.3637 22.442C91.549 22.9428 91.8085 23.3323 92.1235 23.592C92.4386 23.8516 92.8648 23.9815 93.4393 23.9815H99.1102L99.0916 23.9258C99.3511 23.9629 99.6661 23.9815 100.074 23.9815H104.318V7.91963C104.484 8.40186 104.725 9.01391 105.04 9.73725C105.355 10.4606 105.726 11.2581 106.134 12.1298C106.542 13.0015 106.986 13.9104 107.45 14.8563C107.913 15.8022 108.395 16.7295 108.84 17.6198C109.303 18.5286 109.748 19.3632 110.192 20.1607C110.637 20.9397 111.026 21.6445 111.341 22.238C111.99 23.4065 112.935 24 114.14 24H120.774V1.94745C120.756 1.55796 120.756 1.24266 120.719 0.982999ZM83.8026 14.5039L86.2859 6.19475L88.621 14.5039H83.8026Z" fill="currentColor"/></g>
+  <circle class="corner-ring" cx="2" cy="22" r="2"/><circle class="corner-ring" cx="4.75" cy="1.95" r="2"/>
+  <line class="dim" x1="-1.2" y1="0" x2="-1.2" y2="24"/><line class="dim" x1="-1.9" y1="0" x2="-0.5" y2="0"/><line class="dim" x1="-1.9" y1="24" x2="-0.5" y2="24"/>
+  <text class="dim-t" font-size="1.1" x="-2.4" y="12.8" text-anchor="end">24</text>
+</svg><p class="muted">Vòng vàng: cung bo thật của chữ, r = 2. Đỉnh trong A, V, N sắc nhọn.</p></div>
+      <div class="panel"><svg class="logo-zoom" viewBox="-1 17 7 8" role="img" aria-label="Phóng to góc dưới trái của chữ H: cung bo bán kính 2 đơn vị">
+  <g class="logo-fill"><path d="M51.8715 0.38949C51.7418 0.241113 51.5379 0.12983 51.2785 0.0741887C51.019 0.0185472 50.6484 0 50.1851 0H45.3667V21.1438L38.3245 1.55796C38.1206 1.05719 37.8612 0.667698 37.5647 0.408038C37.2496 0.148377 36.8234 0.0185472 36.2489 0.0185472H29.6885L21.59 21.7744V1.94745C21.59 1.55796 21.5714 1.22411 21.5344 0.983C21.4973 0.741887 21.4232 0.537868 21.2934 0.38949C21.1637 0.241113 20.9599 0.12983 20.7004 0.0741887C20.441 0.0185472 20.0703 0 19.607 0H14.8999V9.03247H6.72717V1.94745C6.72717 1.55796 6.70864 1.22411 6.67158 0.983C6.63451 0.741887 6.56038 0.556415 6.43066 0.38949C6.30093 0.241113 6.09708 0.12983 5.83763 0.0741887C5.57818 0.0185472 5.20754 0 4.74423 0H0V22.034C0 22.4235 0.0185322 22.7574 0.0555965 22.9985C0.0926608 23.2396 0.185322 23.4436 0.315047 23.592C0.444772 23.7404 0.630093 23.8517 0.908076 23.9073C1.16753 23.9444 1.53817 23.9815 2.00147 23.9815H6.7457V14.5039H14.9184V22.034C14.9184 22.4235 14.9369 22.7574 14.974 22.9985C15.011 23.2396 15.0852 23.4436 15.2149 23.592C15.3446 23.7404 15.5485 23.8517 15.8079 23.9073C16.0674 23.9444 16.438 23.9815 16.9013 23.9815H20.7931H26.2045C26.779 23.9815 27.2052 23.8517 27.5017 23.592C27.7982 23.3323 28.0577 22.9428 28.2801 22.4421L29.3549 19.8084H37.6759L38.6951 22.4421C38.8805 22.9428 39.1399 23.3323 39.455 23.592C39.77 23.8517 40.2148 23.9815 40.7707 23.9815H46.4416L46.423 23.9258C46.6825 23.9629 46.9975 23.9815 47.4053 23.9815H52.2236V1.94745C52.2236 1.55796 52.2051 1.22411 52.1865 0.983C52.0754 0.741887 52.0012 0.556415 51.8715 0.38949ZM31.1155 14.5039L33.5988 6.19475L35.9338 14.5039H31.1155Z" fill="currentColor"/><path d="M74.8144 0C73.3874 0 72.4423 0.612057 71.9604 1.85472L67.3645 16.711L62.7129 1.85472C62.231 0.612057 61.2859 0 59.8775 0H54.8738L62.5832 21.9969C62.8241 22.7017 63.2133 23.2211 63.7692 23.5178C64.3252 23.8331 64.9367 23.9815 65.641 23.9815H71.6083L79.9107 0H74.8144Z" fill="currentColor"/><path d="M120.719 0.982999C120.682 0.741886 120.607 0.537867 120.478 0.38949C120.348 0.241113 120.163 0.12983 119.885 0.0741886C119.625 0.0185471 119.273 0 118.791 0H114.64V16.2658C114.473 15.7465 114.214 15.0603 113.862 14.1886C113.491 13.3354 113.102 12.3895 112.639 11.4065C112.194 10.4049 111.712 9.38485 111.193 8.32767C110.674 7.28903 110.211 6.30603 109.748 5.39722C109.303 4.48841 108.895 3.70943 108.543 3.04173C108.191 2.37403 107.95 1.91036 107.802 1.68779C107.431 1.09428 107.042 0.64915 106.634 0.38949C106.227 0.12983 105.689 0 105.003 0H98.0353V21.1252L90.9931 1.53941C90.7892 1.03864 90.5298 0.64915 90.2333 0.38949C89.9553 0.12983 89.5105 0 88.9545 0H82.3942L73.4617 23.9815H78.8731C79.4476 23.9815 79.8738 23.8516 80.1703 23.592C80.4668 23.3323 80.7263 22.9428 80.9487 22.442L82.0235 19.8083H90.3445L91.3637 22.442C91.549 22.9428 91.8085 23.3323 92.1235 23.592C92.4386 23.8516 92.8648 23.9815 93.4393 23.9815H99.1102L99.0916 23.9258C99.3511 23.9629 99.6661 23.9815 100.074 23.9815H104.318V7.91963C104.484 8.40186 104.725 9.01391 105.04 9.73725C105.355 10.4606 105.726 11.2581 106.134 12.1298C106.542 13.0015 106.986 13.9104 107.45 14.8563C107.913 15.8022 108.395 16.7295 108.84 17.6198C109.303 18.5286 109.748 19.3632 110.192 20.1607C110.637 20.9397 111.026 21.6445 111.341 22.238C111.99 23.4065 112.935 24 114.14 24H120.774V1.94745C120.756 1.55796 120.756 1.24266 120.719 0.982999ZM83.8026 14.5039L86.2859 6.19475L88.621 14.5039H83.8026Z" fill="currentColor"/></g>
+  <circle class="corner-ring" cx="2" cy="22" r="2"/>
+  <line class="dim" x1="2" y1="22" x2="2" y2="24"/><line class="dim" x1="0" y1="22" x2="2" y2="22"/>
+  <circle class="dot" cx="2" cy="22" r="0.12"/>
+  <text class="dim-t" font-size="0.95" x="2.35" y="23.2">r = 2</text>
+</svg><ul class="facts"><li><svg class="ic ic--sm" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Phóng 40 lần: cung (0, 22) đến (2, 24), tâm (2, 22)</span></li><li><svg class="ic ic--sm" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>k = 2 / 24 = 1/12</span></li><li><svg class="ic ic--sm" width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg><span>Bo nhẹ, không pill</span></li></ul></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="b-h">
+    <h2 id="b-h">2. Bảng suy ra: cạnh ngắn x 1/12, làm tròn về bậc gần nhất</h2>
+    <div class="formula"><strong>r = cạnh ngắn / 12</strong><span>gần nhất của 4, 8, 16, 24</span><span>Khung chứa nội dung dừng ở r-3. r-4 chỉ cho ảnh.</span></div>
+    <table class="tbl">
+      <thead><tr><th scope="col">Token</th><th scope="col">Cạnh ngắn</th><th scope="col">x 1/12</th><th scope="col">Bán kính</th><th scope="col">Dùng cho (đo trong comp)</th></tr></thead>
+      <tbody>
+        <tr><th scope="row"><code>--r-1</code></th><td class="num">≤ 72 px</td><td class="num">4 (nút 48 = 4,0)</td><td class="num">4px</td><td>Nút, ô nhập, chip, tab, tag, ghế</td></tr>
+        <tr><th scope="row"><code>--r-2</code></th><td class="num">73 đến 144 px</td><td class="num">8 (96 = 8,0)</td><td class="num">8px</td><td>Ảnh lồng trong thẻ, thẻ địa chỉ, menu</td></tr>
+        <tr><th scope="row"><code>--r-3</code></th><td class="num">145 đến 240 px</td><td class="num">16 (192 = 16,0)</td><td class="num">16px</td><td>Thẻ ưu đãi, tuyến, chuyến, form tìm, dialog, thanh dính</td></tr>
+        <tr><th scope="row"><code>--r-4</code></th><td class="num">> 240 px, chỉ ảnh</td><td class="num">≥ 20 (kẹp 24)</td><td class="num">24px</td><td>Banner chính, ảnh lớn, bản đồ</td></tr>
+        <tr><th scope="row"><code>--r-round</code></th><td class="num">ô vuông chỉ icon</td><td class="num">-</td><td class="num">50%</td><td>Nút gọi, mũi tên, nút đóng</td></tr>
+      </tbody>
+    </table>
+    <div class="swatches" aria-label="Bốn bậc bo góc ở kích thước thật"><figure class="sw"><div class="sw-box r1" style="height:48px"><span>r-1, 4px, nút 48</span></div></figure><figure class="sw"><div class="sw-box r2" style="height:96px"><span>r-2, 8px, hàng 96</span></div></figure><figure class="sw"><div class="sw-box r3" style="height:192px"><span>r-3, 16px, form 192</span></div></figure><figure class="sw"><div class="sw-box r4" style="height:288px"><span>r-4, 24px, ảnh 288</span></div></figure></div>
+  </section>
+
+  <section aria-labelledby="c-h">
+    <h2 id="c-h">3. Lồng nhau: bán kính trong = bán kính ngoài trừ khoảng đệm</h2>
+    <div class="formula"><strong>r trong = r ngoài − padding, tối thiểu r-1</strong><span>Cùng tâm cung, hai đường cong song song, không bị phình ở góc</span></div>
+    <div class="c-grid">
+      <div class="nest"><div class="nest-outer n1"><div class="nest-inner">r-2</div></div><p><strong>r-3 − s-2 = r-2.</strong> Ảnh lồng trong thẻ.</p></div>
+      <div class="nest"><div class="nest-outer n2"><div class="nest-inner">r-1</div></div><p><strong>r-3 − s-3 = r-1.</strong> Thanh dính chứa chip.</p></div>
+      <div class="nest"><div class="nest-outer n3"><div class="nest-inner">r-3</div></div><p><strong>r-4 − s-2 = r-3.</strong> Khung banner.</p></div>
+    </div>
+    <div class="c-grid" style="margin-top: var(--s-6)">
+      <div class="nest"><div class="nest-outer n-bad"><div class="nest-inner">r-3 trong r-3</div></div><p><strong>Sai:</strong> cùng bán kính, góc trong phình.</p></div>
+    </div>
+  </section>
+
+  <section aria-labelledby="d-h">
+    <h2 id="d-h">4. Nên và không nên</h2>
+    <div class="dd">
+      <div class="dd-item"><h3>Badge và tag</h3>
+        <div class="dd-pair">
+          <div class="verdict"><span class="tag tag--no"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Không</span><div class="demo"><span class="badge badge--sale dont-pill">Tiết kiệm 101k</span></div></div>
+          <div class="verdict"><span class="tag tag--ok"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Nên</span><div class="demo"><span class="badge badge--sale">Tiết kiệm 101k</span></div></div>
+        </div><p>Badge là chữ nhật r-1.</p></div>
+      <div class="dd-item"><h3>Một khung, một bán kính</h3>
+        <div class="dd-pair">
+          <div class="verdict"><span class="tag tag--no"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Không</span><div class="demo"><div class="dont-mixed">4 góc khác nhau</div></div></div>
+          <div class="verdict"><span class="tag tag--ok"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Nên</span><div class="demo"><div class="specimen">r-3 cả bốn</div></div></div>
+        </div><p>Tròn chỉ cho nút icon.</p></div>
+      <div class="dd-item"><h3>Viền đen và ánh sáng</h3>
+        <div class="dd-pair">
+          <div class="verdict"><span class="tag tag--no"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Không</span><div class="demo"><div class="dont-black">Viền ink 2px</div></div></div>
+          <div class="verdict"><span class="tag tag--ok"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Nên</span><div class="demo" style="background: var(--color-paper-2)"><div class="specimen">Nền đặc + shadow-1</div></div></div>
+        </div><p>Viền ink chỉ còn ở focus.</p></div>
+      <div class="dd-item"><h3>Kính chỉ ở lớp nổi</h3>
+        <div class="dd-pair">
+          <div class="verdict"><span class="tag tag--no"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Không</span><div class="demo"><div class="glass dont-flat-glass">Kính trên nền phẳng</div></div></div>
+          <div class="verdict"><span class="tag tag--ok"><svg class="ic " width="24" height="24" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Nên</span><div class="demo demo-photo"><div class="glass">Kính trên ảnh</div></div></div>
+        </div><p>Chỉ lớp nổi, chữ từ 16px.</p></div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>
