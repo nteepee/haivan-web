@@ -1,0 +1,19 @@
+{
+  "name": "haivan-web",
+  "private": true,
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm -C apps/booking dev",
+    "build": "pnpm -C apps/booking build",
+    "typecheck": "pnpm -C apps/booking typecheck",
+    "lint": "pnpm -C apps/booking lint",
+    "test": "pnpm -C apps/booking test",
+    "e2e": "pnpm -C apps/booking e2e",
+    "smoke": "pnpm -C apps/booking smoke",
+    "verify": "pnpm typecheck && pnpm lint && pnpm test && pnpm -C apps/booking build:verify",
+    "contract-diff": "pnpm -C apps/booking contract-diff"
+  }
+}

@@ -1,0 +1,31 @@
+# Ảnh chụp có thông tin cá nhân (tên, SĐT)
+docs/screenshots/private/
+
+# Bản chụp lưu site haivan.com cũ (lớn, lưu riêng)
+archive/
+
+# Bí mật
+.env*
+!.env.example
+
+# Build / deps
+node_modules/
+.next/
+.DS_Store
+
+# Next build dirs / TS cache
+.next*/
+*.tsbuildinfo
+
+# Stack local
+deploy/local/next.pid
+deploy/local/next.log
+
+# E2E (Playwright)
+test-results/
+playwright-report/
+blob-report/
+.e2e-output/
+
+# Layout audit (scripts/layout-audit.mjs)
+.layout-audit/
