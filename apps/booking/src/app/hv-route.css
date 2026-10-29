@@ -187,6 +187,185 @@
     }
   }
 
+  .hv-home-offer-grid {
+    display: grid;
+    gap: var(--gap-card);
+  }
+  .hv-home-offer {
+    position: relative;
+    min-height: 22rem;
+    overflow: hidden;
+    border-radius: var(--r-4);
+    background: var(--color-ink);
+    color: var(--color-surface);
+  }
+  .hv-home-offer img {
+    object-fit: cover;
+  }
+  .hv-home-offer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 25%, rgb(20 20 18 / 0.82));
+  }
+  .hv-home-offer-copy {
+    position: absolute;
+    z-index: var(--z-raised);
+    right: var(--card-pad);
+    bottom: var(--card-pad);
+    left: var(--card-pad);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    align-items: flex-start;
+  }
+  .hv-home-offer-copy > p,
+  .hv-home-news-copy > p {
+    color: var(--color-accent);
+    font-size: var(--fs-12);
+    font-weight: var(--weight-display);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hv-home-offer-copy h3 {
+    max-width: 20ch;
+    color: inherit;
+    font-size: var(--fs-28);
+    line-height: var(--lh-28);
+  }
+  .hv-home-offer-copy .hv-btn svg {
+    width: var(--s-4);
+    height: var(--s-4);
+  }
+  .hv-home-destination,
+  .hv-home-news-card {
+    overflow: hidden;
+    border-radius: var(--r-3);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-1);
+  }
+  .hv-home-destination-media,
+  .hv-home-news-media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--color-paper-3);
+  }
+  .hv-home-destination-media img,
+  .hv-home-news-media img {
+    object-fit: cover;
+    transition: transform var(--dur-slow) var(--ease-standard);
+  }
+  .hv-home-destination:hover img,
+  .hv-home-news-card:hover img {
+    transform: scale(1.035);
+  }
+  .hv-home-destination-copy,
+  .hv-home-news-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    padding: var(--card-pad);
+  }
+  .hv-home-destination-copy p {
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+  }
+  .hv-home-destination-copy h3 {
+    font-size: var(--fs-24);
+  }
+  .hv-home-lounges {
+    background: var(--color-ink);
+    color: var(--color-surface);
+  }
+  .hv-home-lounge-grid {
+    display: grid;
+    gap: var(--s-8);
+    align-items: center;
+  }
+  .hv-home-lounge-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+  .hv-home-lounge-copy .hv-home-eyebrow {
+    color: var(--color-accent);
+  }
+  .hv-home-lounge-copy h2 {
+    color: inherit;
+  }
+  .hv-home-lounge-copy .hv-lead {
+    color: var(--color-muted-on-dark);
+  }
+  .hv-home-lounge-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+  .hv-home-lounge-points span {
+    display: inline-flex;
+    min-height: var(--tap-min);
+    align-items: center;
+    gap: var(--s-2);
+    padding-inline: var(--s-3);
+    border: var(--line) solid rgb(255 255 255 / 0.16);
+    border-radius: var(--r-round);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+  }
+  .hv-home-lounge-points svg {
+    width: var(--s-5);
+    height: var(--s-5);
+    color: var(--color-accent);
+  }
+  .hv-home-lounge-collage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-2);
+  }
+  .hv-home-lounge-collage > div {
+    position: relative;
+    min-height: 9rem;
+    overflow: hidden;
+    border-radius: var(--r-2);
+    background: var(--color-paper-2);
+  }
+  .hv-home-lounge-collage .hv-home-lounge-main {
+    grid-column: 1 / -1;
+    min-height: 15rem;
+  }
+  .hv-home-lounge-collage img {
+    object-fit: cover;
+  }
+  .hv-home-news-copy h3 {
+    min-height: 3.2em;
+    font-size: var(--fs-18);
+    line-height: var(--lh-18);
+  }
+  .hv-home-news-copy > span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-strong);
+  }
+  .hv-home-news-copy > span svg {
+    width: var(--s-4);
+    height: var(--s-4);
+  }
+  @media (min-width: 60rem) {
+    .hv-home-offer-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+    .hv-home-lounge-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--s-16);
+    }
+    .hv-home-lounge-collage .hv-home-lounge-main {
+      min-height: 20rem;
+    }
+  }
+
   /* Cột đọc, hàng ruled, FAQ gập. */
   .hv-ruled {
     border-top: var(--line) solid var(--color-rule);

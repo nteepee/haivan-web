@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Clock, Headphones, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowRight, Clock, Headphones, MapPin, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import popularRoutes from "@/content/popular-routes.json";
@@ -166,6 +166,118 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
                   <Link href={c.href} className="hv-btn hv-btn-primary hv-btn-sm hv-rcard-go" aria-label={`${t("route.book_ticket")} ${c.name}`}>
                     {t("route.book_ticket")}
                   </Link>
+                </div>
+              </li>
+            ))}
+          </Rail>
+        </div>
+      </section>
+
+      <section aria-labelledby="home-offers" className="hv-section hv-section-tint hv-home-offers">
+        <div className="hv-container">
+          <div className="hv-sec-head">
+            <div className="hv-head-block">
+              <p className="hv-home-eyebrow">{isVi ? "Đặc quyền hành khách" : "Passenger benefits"}</p>
+              <h2 id="home-offers">{isVi ? "Ưu đãi hôm nay" : "Today’s offers"}</h2>
+              <p className="hv-lead">{isVi ? "Đặt vé thuận tiện hơn với những ưu đãi thiết thực cho mỗi hành trình." : "Make every journey easier with practical booking benefits."}</p>
+            </div>
+          </div>
+          <div className="hv-home-offer-grid">
+            <article className="hv-home-offer hv-home-offer-main">
+              <Image src="/assets/design/banner-app50.jpg" alt={isVi ? "Ưu đãi đặt vé trên ứng dụng Hải Vân" : "Hải Vân app booking offer"} fill sizes="(min-width: 960px) 58vw, 100vw" />
+              <div className="hv-home-offer-copy">
+                <p>{isVi ? "Ưu đãi trên ứng dụng" : "App exclusive"}</p>
+                <h3>{isVi ? "Giảm đến 50% khi đặt vé lần đầu" : "Save up to 50% on your first booking"}</h3>
+                <a href="#app-band-title" className="hv-btn hv-btn-primary hv-btn-sm">
+                  {isVi ? "Tải ứng dụng" : "Get the app"}
+                  <ArrowRight aria-hidden />
+                </a>
+              </div>
+            </article>
+            <article className="hv-home-offer hv-home-offer-side">
+              <Image src="/assets/design/xe-luxury.webp" alt={isVi ? "Không gian xe limousine Hải Vân" : "Hải Vân limousine interior"} fill sizes="(min-width: 960px) 34vw, 100vw" />
+              <div className="hv-home-offer-copy">
+                <p>{isVi ? "Nâng tầm trải nghiệm" : "Elevated comfort"}</p>
+                <h3>{isVi ? "Limousine tiện nghi, riêng tư" : "Private, comfortable limousine travel"}</h3>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="home-destinations" className="hv-section hv-section-white">
+        <div className="hv-container">
+          <Rail
+            label={isVi ? "Danh sách điểm đến" : "Destination list"}
+            head={
+              <div className="hv-head-block">
+                <p className="hv-home-eyebrow">{isVi ? "Gợi ý hành trình" : "Journey inspiration"}</p>
+                <h2 id="home-destinations">{isVi ? "Điểm đến đáng nhớ" : "Memorable destinations"}</h2>
+                <p className="hv-lead">{isVi ? "Khám phá những miền đất Hải Vân kết nối mỗi ngày." : "Discover the places Hải Vân connects every day."}</p>
+              </div>
+            }
+          >
+            {[
+              ["dest-vungtau.jpg", "Vũng Tàu", isVi ? "Biển xanh gần thành phố" : "A seaside escape"],
+              ["dest-dienbien.jpg", "Điện Biên", isVi ? "Dấu ấn lịch sử Tây Bắc" : "History in the Northwest"],
+              ["dest-sapa.jpg", "Sa Pa", isVi ? "Sương núi và bản làng" : "Mountain mist and villages"],
+              ["dest-hagiang.jpg", "Hà Giang", isVi ? "Cung đường của đá và hoa" : "Roads of stone and flowers"],
+            ].map(([image, title, description]) => (
+              <li key={title} className="hv-home-destination">
+                <div className="hv-home-destination-media">
+                  <Image src={`/assets/design/${image}`} alt={title} fill sizes="(min-width: 640px) 280px, 82vw" />
+                </div>
+                <div className="hv-home-destination-copy">
+                  <p>{description}</p>
+                  <h3>{title}</h3>
+                </div>
+              </li>
+            ))}
+          </Rail>
+        </div>
+      </section>
+
+      <section aria-labelledby="home-lounges" className="hv-section hv-home-lounges">
+        <div className="hv-container hv-home-lounge-grid">
+          <div className="hv-home-lounge-copy">
+            <p className="hv-home-eyebrow">{isVi ? "Chờ chuyến cũng là trải nghiệm" : "Comfort before departure"}</p>
+            <h2 id="home-lounges">{isVi ? "Phòng chờ tử tế, hành trình an tâm" : "Thoughtful lounges, calmer journeys"}</h2>
+            <p className="hv-lead">{isVi ? "Không gian sạch sẽ, thuận tiện và luôn có nhân viên hỗ trợ để hành khách bắt đầu chuyến đi thật nhẹ nhàng." : "Clean, convenient spaces with real support help every journey begin with ease."}</p>
+            <div className="hv-home-lounge-points">
+              <span><ShieldCheck aria-hidden /> {isVi ? "An toàn, sạch sẽ" : "Safe and clean"}</span>
+              <span><Headphones aria-hidden /> {isVi ? "Hỗ trợ tận tâm" : "Real support"}</span>
+            </div>
+          </div>
+          <div className="hv-home-lounge-collage">
+            <div className="hv-home-lounge-main"><Image src="/assets/design/phong_cho_1.jpg" alt={isVi ? "Phòng chờ Hải Vân" : "Hải Vân passenger lounge"} fill sizes="(min-width: 960px) 45vw, 100vw" /></div>
+            <div><Image src="/assets/design/phong_cho_2.jpg" alt={isVi ? "Khu vực ghế ngồi phòng chờ" : "Lounge seating area"} fill sizes="(min-width: 960px) 22vw, 50vw" /></div>
+            <div><Image src="/assets/design/phong_cho_3.jpg" alt={isVi ? "Quầy hỗ trợ hành khách" : "Passenger support desk"} fill sizes="(min-width: 960px) 22vw, 50vw" /></div>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="home-news" className="hv-section hv-section-white">
+        <div className="hv-container">
+          <Rail
+            label={isVi ? "Tin tức Hải Vân" : "Hải Vân news"}
+            head={
+              <div className="hv-head-block">
+                <p className="hv-home-eyebrow">{isVi ? "Câu chuyện trên đường" : "Stories from the road"}</p>
+                <h2 id="home-news">{isVi ? "Tin mới từ Hải Vân" : "Latest from Hải Vân"}</h2>
+              </div>
+            }
+          >
+            {[
+              ["news-1.jpg", isVi ? "Kinh nghiệm chuẩn bị cho một chuyến đi đường dài" : "How to prepare for a long-distance journey"],
+              ["news-2.jpg", isVi ? "Những điều cần biết khi đặt vé xe trực tuyến" : "What to know when booking coach tickets online"],
+              ["news-3.jpg", isVi ? "Hải Vân nâng chuẩn trải nghiệm hành khách" : "Hải Vân raises the passenger experience standard"],
+            ].map(([image, title]) => (
+              <li key={title} className="hv-home-news-card">
+                <div className="hv-home-news-media"><Image src={`/assets/design/${image}`} alt="" fill sizes="(min-width: 640px) 280px, 82vw" /></div>
+                <div className="hv-home-news-copy">
+                  <p>{isVi ? "Cẩm nang hành trình" : "Travel guide"}</p>
+                  <h3>{title}</h3>
+                  <span>{isVi ? "Đọc thêm" : "Read more"} <ArrowRight aria-hidden /></span>
                 </div>
               </li>
             ))}
