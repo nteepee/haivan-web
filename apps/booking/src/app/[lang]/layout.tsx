@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { AppBand } from "@/components/layout/app-band";
@@ -13,9 +13,14 @@ import { getSiteLayout } from "@/lib/layout-source";
 import { publicOrigin } from "@/lib/public-origin";
 import "../globals.css";
 
-const nunito = Nunito({
-  variable: "--font-nunito",
-  // Nunito là font biến thiên: không khai báo `weight` thì một file phủ 200-1000 (design dùng 400, 600, 800).
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
+  subsets: ["vietnamese", "latin"],
+  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["vietnamese", "latin"],
   display: "swap",
 });
@@ -36,7 +41,7 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
   const layout = await getSiteLayout();
 
   return (
-    <html lang={lang} className={`${nunito.variable} h-full antialiased`}>
+    <html lang={lang} className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <Providers locale={lang}>
           <SiteHeader locale={lang} layout={layout[lang]} hotline={layout.hotline} />

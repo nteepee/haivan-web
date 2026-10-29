@@ -65,7 +65,7 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
   const isVi = locale === "vi";
   const homeCopy = isVi
     ? {
-        eyebrow: "Tử tế từ Tâm",
+        eyebrow: "01 / Tử tế từ Tâm",
         title: "Đi xa hơn, tử tế hơn.",
         lead: "Mỗi hành trình là một lần chúng tôi được đồng hành, chăm sóc và trao đi những điều tốt đẹp.",
         search: "Tìm chuyến đi của bạn",
@@ -78,7 +78,7 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
         ],
       }
     : {
-        eyebrow: "A journey with heart",
+        eyebrow: "01 / A journey with heart",
         title: "Kind at heart, calm on every journey",
         lead: "Book Hải Vân quickly and transparently, with real support whenever you need it.",
         search: "Find your trip",
@@ -98,8 +98,8 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
           <div className="hv-home-hero-copy">
             <p className="hv-home-eyebrow">{homeCopy.eyebrow}</p>
             <h1 id="xe-khach-h1" aria-label={homeCopy.title}>
-              <span>{isVi ? "Tử tế" : "Kindness"}</span>
-              <span>{isVi ? "Từ tâm" : "From the heart"}</span>
+              <span>{isVi ? "Đi xa hơn," : "Go further,"}</span>
+              <span>{isVi ? "tử tế hơn." : "with more care."}</span>
             </h1>
             <div className="hv-home-statement">
               <span aria-hidden />
