@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Clock } from "lucide-react";
+import { Clock, Headphones, MapPin, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import popularRoutes from "@/content/popular-routes.json";
@@ -62,27 +62,89 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
         price: r.price_avg,
         href: `${p}/xe-khach/${r.slug}`,
       }));
+  const isVi = locale === "vi";
+  const homeCopy = isVi
+    ? {
+        eyebrow: "Hành trình tử tế",
+        title: "Tử tế từ tâm, an tâm từng chuyến",
+        lead: "Đặt vé Hải Vân nhanh chóng, minh bạch và luôn có người đồng hành khi bạn cần.",
+        search: "Tìm chuyến phù hợp",
+        searchHint: "Chọn hành trình của bạn, chúng tôi lo phần còn lại.",
+        routesHint: "Những hành trình được khách hàng lựa chọn nhiều nhất.",
+        trust: [
+          ["An toàn là ưu tiên", "Đội ngũ chuyên nghiệp, phương tiện được kiểm tra định kỳ."],
+          ["Đón trả thuận tiện", "Điểm đón rõ ràng và hỗ trợ trung chuyển theo từng tuyến."],
+          ["Hỗ trợ tận tâm", "Luôn có người đồng hành trước, trong và sau chuyến đi."],
+        ],
+      }
+    : {
+        eyebrow: "A journey with heart",
+        title: "Kind at heart, calm on every journey",
+        lead: "Book Hải Vân quickly and transparently, with real support whenever you need it.",
+        search: "Find your trip",
+        searchHint: "Choose your journey. We will take care of the rest.",
+        routesHint: "The journeys our passengers choose most often.",
+        trust: [
+          ["Safety first", "Professional teams and regularly inspected vehicles."],
+          ["Convenient pickup", "Clear pickup points and route-specific transfers."],
+          ["Care that stays", "Real support before, during, and after your journey."],
+        ],
+      };
+  const trustIcons = [ShieldCheck, MapPin, Headphones];
   return (
     <>
-      <section aria-labelledby="xe-khach-h1">
-        <div className="hv-section-yellow">
-          <div className="hv-container hv-rhero">
-            <div className="hv-rhero-text">
-              <h1 id="xe-khach-h1">{t("xe_khach.h1")}</h1>
-            </div>
+      <section aria-labelledby="xe-khach-h1" className="hv-home-hero">
+        <div className="hv-container hv-home-hero-grid">
+          <div className="hv-home-hero-copy">
+            <p className="hv-home-eyebrow">{homeCopy.eyebrow}</p>
+            <h1 id="xe-khach-h1">{homeCopy.title}</h1>
+            <p className="hv-home-lead">{homeCopy.lead}</p>
+          </div>
+          <div className="hv-home-hero-media">
+            <Image src="/assets/design/home-hero.jpg" alt={isVi ? "Xe khách Hải Vân trên hành trình" : "Hải Vân coach on the road"} fill priority sizes="(min-width: 960px) 55vw, 100vw" />
+            <span className="hv-home-slash" aria-hidden />
           </div>
         </div>
-        <div className="hv-rplate-bleed">
-          <div className="hv-container hv-rplate-wrap">
-            <div id="tim-ve" className="hv-rplate">
-              <SearchForm mode="corridor" todayChips />
+        <div className="hv-container hv-home-search-wrap">
+          <div className="hv-home-search-head">
+            <div>
+              <p className="hv-home-eyebrow">{homeCopy.search}</p>
+              <p>{homeCopy.searchHint}</p>
             </div>
           </div>
+          <div id="tim-ve" className="hv-rplate">
+            <SearchForm mode="corridor" todayChips />
+          </div>
+        </div>
+      </section>
+      <section aria-label={isVi ? "Cam kết dịch vụ" : "Service commitments"} className="hv-home-trust">
+        <div className="hv-container hv-home-trust-grid">
+          {homeCopy.trust.map(([title, description], index) => {
+            const Icon = trustIcons[index];
+            return (
+              <article key={title} className="hv-home-trust-item">
+                <Icon aria-hidden />
+                <div>
+                  <h2>{title}</h2>
+                  <p>{description}</p>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </section>
       <section aria-labelledby="popular-routes" className="hv-section hv-section-white">
         <div className="hv-container">
-          <Rail label={t("popular_routes.popular_routes")} head={<h2 id="popular-routes">{t("popular_routes.popular_routes")}</h2>}>
+          <Rail
+            label={t("popular_routes.popular_routes")}
+            head={
+              <div className="hv-head-block">
+                <p className="hv-home-eyebrow">{isVi ? "Đi cùng Hải Vân" : "Travel with Hải Vân"}</p>
+                <h2 id="popular-routes">{t("popular_routes.popular_routes")}</h2>
+                <p className="hv-lead">{homeCopy.routesHint}</p>
+              </div>
+            }
+          >
             {cards.map((c, i) => (
               <li key={c.key} className="hv-rcard">
                 <div className="hv-rcard-img">

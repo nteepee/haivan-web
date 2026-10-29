@@ -57,6 +57,136 @@
     }
   }
 
+  /* Trang chủ đặt vé: thông điệp thương hiệu + ảnh thật + form là hành động chính. */
+  .hv-home-hero {
+    padding-block: var(--s-6) var(--s-8);
+    background: linear-gradient(180deg, var(--color-surface), var(--color-tint-warm));
+  }
+  .hv-home-hero-grid {
+    display: grid;
+    gap: var(--s-6);
+    align-items: stretch;
+  }
+  .hv-home-hero-copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--s-4);
+    padding-block: var(--s-4);
+  }
+  .hv-home-hero-copy h1 {
+    max-width: 13ch;
+    font-size: clamp(var(--fs-40), 5.5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+  .hv-home-eyebrow {
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    font-weight: var(--weight-display);
+    line-height: var(--lh-14);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hv-home-lead {
+    max-width: 47ch;
+    color: var(--color-muted);
+    font-size: var(--fs-20);
+    line-height: var(--lh-20);
+  }
+  .hv-home-hero-media {
+    position: relative;
+    min-height: 18rem;
+    overflow: hidden;
+    border-radius: var(--r-4);
+    background: var(--color-paper-3);
+  }
+  .hv-home-hero-media img {
+    object-fit: cover;
+    object-position: center;
+  }
+  .hv-home-slash {
+    position: absolute;
+    right: 10%;
+    bottom: -2rem;
+    width: 2.5rem;
+    height: 9rem;
+    background: var(--color-accent);
+    transform: skewX(-24deg);
+  }
+  .hv-home-search-wrap {
+    position: relative;
+    z-index: var(--z-raised);
+    margin-top: var(--s-6);
+  }
+  .hv-home-search-head {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--s-4) var(--card-pad);
+    border-radius: var(--r-3) var(--r-3) 0 0;
+    background: var(--color-ink);
+    color: var(--color-surface);
+  }
+  .hv-home-search-head .hv-home-eyebrow {
+    color: var(--color-accent);
+  }
+  .hv-home-search-head p:last-child {
+    margin-top: var(--s-1);
+    color: var(--color-muted-on-dark);
+  }
+  .hv-home-search-wrap .hv-plate {
+    border-radius: 0 0 var(--r-3) var(--r-3);
+  }
+  .hv-home-trust {
+    padding-block: var(--s-6);
+    background: var(--color-surface);
+    border-bottom: var(--hairline);
+  }
+  .hv-home-trust-grid {
+    display: grid;
+    gap: var(--s-6);
+  }
+  .hv-home-trust-item {
+    display: flex;
+    gap: var(--s-4);
+    align-items: flex-start;
+  }
+  .hv-home-trust-item > svg {
+    flex: 0 0 auto;
+    width: var(--s-8);
+    height: var(--s-8);
+    padding: var(--s-1);
+    border-radius: var(--r-1);
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+  }
+  .hv-home-trust-item h2 {
+    font-size: var(--fs-18);
+    line-height: var(--lh-18);
+  }
+  .hv-home-trust-item p {
+    margin-top: var(--s-1);
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+  @media (min-width: 60rem) {
+    .hv-home-hero {
+      padding-block: var(--s-8) var(--s-12);
+    }
+    .hv-home-hero-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      min-height: 30rem;
+      gap: var(--s-12);
+    }
+    .hv-home-search-wrap {
+      margin-top: calc(var(--s-16) * -1);
+    }
+    .hv-home-trust-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
   /* Cột đọc, hàng ruled, FAQ gập. */
   .hv-ruled {
     border-top: var(--line) solid var(--color-rule);

@@ -21,20 +21,25 @@
     transform: none;
   }
 
-  /* Header: thanh vàng một dòng, dính đầu trang; HeaderShell thêm lớp .glass-yellow khi cuộn quá 8px (chỉ đổi nền + bóng, không xô layout). */
+  /* Header sáng, gọn và tin cậy; vàng chỉ giữ vai trò trạng thái/CTA. */
   .hv-header {
     position: sticky;
     top: 0;
     z-index: var(--z-sticky-nav);
-    background: var(--color-field);
-    box-shadow: var(--shadow-1);
+    background: rgb(254 254 251 / 0.94);
+    box-shadow: 0 1px 0 var(--color-rule);
     color: var(--color-accent-ink);
+    backdrop-filter: blur(var(--glass-blur));
+  }
+  .hv-header.glass-yellow {
+    background: rgb(254 254 251 / 0.9);
+    box-shadow: var(--shadow-2);
   }
   .hv-header-row {
     display: flex;
     align-items: center;
     gap: var(--s-2);
-    min-height: var(--header-h);
+    min-height: 72px;
   }
   .hv-brand {
     display: flex;

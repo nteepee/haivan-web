@@ -3,9 +3,22 @@
 @layer components {
   /* Nhịp footer: một giá trị mỗi mốc = --section-pad; đáy thêm chỗ cho nút gọi nổi. */
   .hv-footer {
+    position: relative;
     padding-block: var(--section-pad) calc(var(--section-pad) + var(--control-h-lg));
-    background: var(--color-ink);
+    overflow: hidden;
+    background: var(--color-ink-deep);
     color: var(--color-surface);
+  }
+  .hv-footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: clamp(2rem, 10vw, 9rem);
+    width: 7rem;
+    height: 0.5rem;
+    background: var(--color-accent);
+    transform: skewX(-28deg);
+    transform-origin: top;
   }
   .hv-footer a {
     text-decoration: none;

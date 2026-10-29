@@ -44,7 +44,8 @@
   }
   /* Thẻ tìm vé trên nền phẳng (không phải ảnh): nền đặc surface + bóng 2, không blur. */
   .hv-plate-solid {
-    box-shadow: var(--shadow-2);
+    border: var(--line) solid var(--color-rule-2);
+    box-shadow: 0 16px 48px rgb(26 25 23 / 0.14);
   }
   /* --label-h = nhãn 16/24 + s-2: đỉnh ô nhập cách đỉnh cột đúng chừng này, nên nút đổi chiều và nút Tìm vé dùng nó để thẳng hàng với ô. */
   .hv-plate-grid {
