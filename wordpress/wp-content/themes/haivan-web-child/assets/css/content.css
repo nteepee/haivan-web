@@ -1,0 +1,131 @@
+/* Nhịp section: các khối xếp liền nhau, không margin giữa chúng; khoảng trống dọc chỉ do padding-block: var(--section-pad) của từng khối; hai khối liền nhau khác nền. */
+/* Trang nội dung v4 (page, archive, 404): đường dẫn, tiêu đề, thanh điều hướng cùng mục, cột đọc 68ch cỡ 18/28, thẻ danh sách, phân trang, bảng cuộn. Bo 4/8/16/24, vạch 1px, bóng 1/2, không viền ink. */
+.hv-page { padding-block: var(--section-pad); }
+/* Dấu "/" thuộc về mục đứng sau (li + li::before) và nằm lùi vào trái nó; khung ol cắt phần lùi ra ngoài mép, nên khi một mục xuống dòng mới dấu "/" của nó bị cắt: không bao giờ có "/" mồ côi đầu dòng. */
+.hv-crumbs { display: flex; flex-wrap: wrap; align-items: center; padding-block: 0; overflow: clip; overflow-clip-margin: var(--s-1); color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+.hv-crumbs li { position: relative; display: flex; align-items: center; min-height: var(--tap-min); padding-right: var(--s-4); }
+.hv-crumbs li:last-child { padding-right: 0; }
+.hv-crumbs li + li { margin-left: calc(-1 * var(--s-4)); padding-left: var(--s-4); }
+.hv-crumbs li + li::before { content: "/"; position: absolute; left: 0; width: var(--s-4); text-align: center; }
+.hv-crumbs a { display: inline-flex; align-items: center; justify-content: center; min-width: var(--tap-min); min-height: var(--tap-min); border-radius: var(--r-1); }
+.hv-crumbs [aria-current="page"] { color: var(--color-ink); font-weight: var(--weight-strong); }
+.hv-page-head { display: grid; gap: var(--s-6); padding-bottom: var(--s-8); }
+/* Câu giới thiệu dưới H1 và lưới thẻ tuyến (trang /xe-san-bay). */
+.hv-page-head .hv-lead { max-width: 60ch; color: var(--color-text); font-size: var(--fs-lead); line-height: var(--lh-lead); }
+.hv-page-head .hv-actions { margin: 0; }
+.hv-rcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr)); gap: var(--gap-card); }
+.hv-rcards .hv-rcard { width: auto; }
+.hv-page-head .hv-photo { aspect-ratio: 16 / 9; border-radius: var(--r-4); }
+/* Ảnh đại diện nhỏ không kéo giãn quá cỡ gốc: PHP đặt --hv-nat (px, từ metadata tệp), khung co lại theo đó. */
+.hv-photo[style*="--hv-nat"] { max-width: min(100%, var(--hv-nat)); }
+.hv-meta { color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+.hv-doc-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
+.hv-doc-grid > * { min-width: 0; }
+.hv-subnav { display: flex; overflow-x: auto; gap: var(--s-1); padding: var(--s-1); border-radius: var(--r-2); background: var(--color-paper-2); scrollbar-width: none; }
+.hv-subnav::-webkit-scrollbar { display: none; }
+.hv-subnav a { display: inline-flex; align-items: center; min-height: var(--control-h); padding-inline: var(--s-4); border-radius: var(--r-1); font-weight: var(--weight-strong); text-decoration: none; white-space: nowrap; }
+.hv-subnav a:hover { background: var(--color-accent-soft); }
+.hv-subnav a:active { background: var(--color-accent); }
+.hv-subnav a[aria-current="page"] { background: var(--select-bg); box-shadow: inset 0 0 0 var(--line-strong) var(--color-select-edge); font-weight: var(--weight-display); }
+@media (min-width: 60rem) {
+  .hv-doc-grid--nav { grid-template-columns: minmax(0, 3fr) minmax(0, 9fr); gap: var(--s-16); align-items: start; }
+  .hv-subnav { flex-direction: column; overflow: visible; gap: var(--s-1); padding: var(--s-2); border-radius: var(--r-3); background: var(--color-surface); box-shadow: var(--shadow-1); position: sticky; top: calc(var(--header-h) + var(--s-6)); }
+  .hv-subnav a { width: 100%; white-space: normal; }
+}
+/* Nội dung biên tập (MKT soạn hoặc nhập từ CMS): cột đọc, ảnh r-3, bảng cuộn ngang trong khung r-2 */
+.hv-entry { font-size: var(--fs-18); line-height: var(--lh-18); min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-content: start; }
+.hv-entry > * { max-width: 68ch; }
+.hv-entry > figure, .hv-entry > .wp-block-image, .hv-entry > table, .hv-entry > iframe, .hv-entry > .hv-cta, .hv-entry > div { max-width: none; }
+.hv-entry > .hv-actions { max-width: none; }
+.hv-entry h2 { margin-top: var(--s-6); padding-top: var(--s-6); border-top: var(--line) solid var(--color-rule); max-width: none; }
+.hv-entry h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.hv-entry h3 { margin-top: var(--s-4); font-size: var(--fs-h3); }
+.hv-entry h4 { font-size: var(--fs-18); line-height: var(--lh-18); }
+.hv-entry ul, .hv-entry ol { display: grid; gap: var(--s-2); padding-left: var(--s-6); }
+.hv-entry ul { list-style: disc; } .hv-entry ol { list-style: decimal; }
+.hv-entry a { color: var(--color-link); font-weight: var(--weight-strong); text-decoration: underline; }
+.hv-entry img { width: auto; max-width: 100%; height: auto; border-radius: var(--r-3); }
+/* Ảnh nhập từ CMS mang style="width:800px;height:532px": !important để chiều cao theo tỉ lệ khi chiều rộng bị co (không méo trên điện thoại). */
+.hv-entry img[style], .hv-entry img[height] { height: auto !important; }
+/* Chữ/URL dài không được đẩy trang tràn ngang; khối cố định bề rộng theo style nội tuyến co theo cột. */
+.hv-entry { overflow-wrap: anywhere; }
+.hv-entry [style] { max-width: 100% !important; white-space: normal !important; }
+.hv-entry pre { max-width: 100%; overflow-x: auto; }
+.hv-entry img[hidden] { display: none; }
+.hv-entry figure { display: grid; gap: var(--s-2); }
+.hv-entry figcaption { color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+.hv-entry iframe { width: 100%; max-width: 100%; aspect-ratio: 16 / 9; height: auto; border: 0; border-radius: var(--r-3); }
+/* Liên kết gọi điện trong nội dung: luôn vùng chạm >= 44px; đứng một mình trong đoạn (vd. "GỌI NGAY") hoặc là nút nhúng sẵn của bài (style nội tuyến) thì dựng thành nút vàng. */
+.hv-entry a[href^="tel:"] { display: inline-flex; align-items: center; min-height: var(--tap-min); padding-inline: var(--s-1); border-radius: var(--r-1); }
+.hv-entry p > a[href^="tel:"]:only-child, .hv-entry a[href^="tel:"][style*="inline-block"] { justify-content: center; min-height: var(--control-h); padding: var(--s-3) var(--s-6); background: var(--color-accent) !important; color: var(--color-accent-ink) !important; font-weight: var(--weight-display); text-decoration: none; }
+.hv-entry p > a[href^="tel:"]:only-child:hover, .hv-entry a[href^="tel:"][style*="inline-block"]:hover { background: var(--color-accent-hover) !important; }
+/* Nút trong nội dung (vd. "Tham gia ngay"): giữ kiểu nút, không bị kiểu liên kết của .hv-entry a ghi đè */
+.hv-entry a.hv-btn { color: var(--color-accent-ink); font-weight: var(--weight-display); text-decoration: none; }
+.hv-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+/* Bảng: khung r-2, vạch 1px, cuộn ngang có mờ mép (JS bật data-more-*), cột đầu dính. Khung có tabindex=0 role=region aria-label để cuộn bằng bàn phím. */
+.hv-table-wrap { position: relative; max-width: 100%; border-radius: var(--r-2); background: var(--color-surface); box-shadow: var(--shadow-1); overflow: hidden; }
+.hv-table-scroll { overflow-x: auto; overscroll-behavior-x: contain; border-radius: var(--r-2); }
+.hv-table-scroll:focus-visible { outline-offset: calc(-1 * var(--line-strong)); }
+.hv-table-wrap::before, .hv-table-wrap::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: var(--z-raised); width: var(--s-8); pointer-events: none; opacity: 0; transition: opacity var(--dur-short) var(--ease-out); }
+.hv-table-wrap::before { left: 0; background: linear-gradient(to left, transparent, var(--color-surface)); }
+.hv-table-wrap::after { right: 0; background: linear-gradient(to right, transparent, var(--color-surface)); }
+.hv-table-wrap[data-more-left]::before, .hv-table-wrap[data-more-right]::after { opacity: 1; }
+.hv-entry table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: var(--fs-16); line-height: var(--lh-16); }
+.hv-entry caption { padding: var(--s-3) var(--s-3) 0; text-align: left; font-weight: var(--weight-display); }
+.hv-entry th, .hv-entry td { min-width: 6rem; padding: var(--s-3); border-bottom: var(--hairline); border-right: var(--hairline); text-align: left; vertical-align: top; background: var(--color-surface); }
+.hv-entry tr > :last-child { border-right: 0; }
+.hv-entry tr:last-child > * { border-bottom: 0; }
+.hv-entry thead th { background: var(--color-paper-2); vertical-align: bottom; }
+.hv-entry tbody th { text-align: left; font-weight: var(--weight-strong); }
+.hv-entry tr > :first-child { position: sticky; left: 0; z-index: var(--z-base); min-width: 9rem; max-width: 14rem; }
+.hv-entry tr:first-child > :first-child { z-index: var(--z-base); }
+.hv-entry table img { display: block; width: auto; max-width: var(--s-8); height: var(--s-8); margin: var(--s-1) auto 0; border-radius: 0; }
+.hv-entry td img:only-child { margin-top: 0; }
+/* Bài nhập từ CMS mang style nội tuyến (Arial, cỡ chữ, màu): ép về thang chữ và màu của hệ thiết kế để giữ tương phản. */
+.hv-entry [style] { font-family: inherit !important; font-size: inherit !important; line-height: inherit !important; color: inherit !important; background: none !important; }
+.hv-entry a[style], .hv-entry a [style] { color: var(--color-link) !important; }
+.hv-entry h2 [style], .hv-entry h3 [style] { font-weight: inherit !important; }
+.hv-entry blockquote { margin: 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-2); background: var(--color-tint-warm); color: var(--color-text); }
+/* Thẻ danh sách (archive điểm đến / tin tức) */
+.hv-cards { display: grid; gap: var(--gap-card); grid-template-columns: minmax(0, 1fr); }
+.hv-card { position: relative; display: grid; grid-template-rows: auto 1fr; padding: var(--s-2); background: var(--color-surface); border-radius: var(--r-3); box-shadow: var(--shadow-1); transition: box-shadow var(--dur-short) var(--ease-out); }
+.hv-card:hover, .hv-card:focus-within { box-shadow: var(--shadow-2); }
+.hv-card-img { aspect-ratio: 3 / 2; border-radius: var(--r-2); overflow: hidden; background: var(--color-paper-3); }
+.hv-card-img img { width: 100%; height: 100%; object-fit: cover; }
+.hv-card-body { display: grid; gap: var(--s-2); align-content: start; padding: var(--s-3) var(--s-2) var(--s-2); }
+.hv-card-body h2 { font-size: var(--fs-20); line-height: var(--lh-20); }
+.hv-card--noimg { grid-template-rows: 1fr; }
+.hv-card-body h2 a { display: flex; align-items: center; min-height: var(--tap-min); text-decoration: none; }
+.hv-card-body h2 a::after { content: ""; position: absolute; inset: 0; }
+.hv-card-body h2 a { border-radius: var(--r-3); }
+.hv-card-body h2 a:focus-visible { outline-offset: calc(-1 * var(--line-strong)); }
+.hv-card:has(h2 a:focus-visible) { outline: var(--line-strong) solid var(--color-focus); outline-offset: var(--line-strong); }
+.hv-card-body p { color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+@media (min-width: 40rem) { .hv-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 60rem) { .hv-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.hv-pagination, .navigation.pagination { margin-top: var(--s-8); }
+.nav-links { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.page-numbers { display: inline-flex; align-items: center; justify-content: center; min-width: var(--control-h); min-height: var(--control-h); padding-inline: var(--s-3); border: var(--line) solid var(--color-edge); border-radius: var(--r-1); background: var(--color-surface); font-weight: var(--weight-strong); text-decoration: none; }
+a.page-numbers:hover { background: var(--color-accent-soft); }
+.page-numbers.current { border-color: transparent; background: var(--select-bg); box-shadow: var(--select-ring); font-weight: var(--weight-display); }
+.page-numbers.dots { border-color: transparent; background: transparent; }
+.hv-404 { display: grid; gap: var(--s-4); justify-items: start; padding-block: var(--section-pad); }
+/* Dải ảnh đầu trang khôi phục từ web cũ (scripts/restore-static-images.php): ảnh thật của Hải Vân từ /assets/... */
+.hv-photo-strip { display: grid; gap: var(--gap-card); grid-template-columns: minmax(0, 1fr); margin-bottom: var(--s-4); }
+.hv-photo-strip .hv-photo { border-radius: var(--r-3); background: var(--color-paper-2); }
+.hv-photo-strip--1 .hv-photo { width: fit-content; max-width: 100%; border-radius: var(--r-4); }
+/* Ảnh đơn không kéo giãn quá cỡ gốc (width/height của thẻ img là cỡ thật): khung ôm theo ảnh. */
+.hv-photo-strip--1 img { width: auto; }
+.hv-photo-strip img { width: 100%; height: auto; border-radius: 0; }
+.hv-photo-strip:not(.hv-photo-strip--1) img { aspect-ratio: 3 / 2; object-fit: cover; }
+.hv-photo-strip:not(.hv-photo-strip--1) img[src$=".png"] { object-fit: contain; }
+@media (min-width: 40rem) {
+  .hv-photo-strip:not(.hv-photo-strip--1) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hv-photo-strip--3 .hv-photo:first-child { grid-column: 1 / -1; }
+}
+@media (min-width: 60rem) { .hv-photo-strip.hv-photo-strip--3, .hv-photo-strip.hv-photo-strip--6 { grid-template-columns: repeat(3, minmax(0, 1fr)); } .hv-photo-strip--3 .hv-photo:first-child { grid-column: auto; } }
+/* Khối bắc cầu cuối bài (div.hv-seo-bridge) và đoạn liên kết đặt vé cuối bài: thẻ ấm r-3, không viền, chữ theo cột đọc. */
+.hv-entry .hv-seo-bridge { display: grid; gap: var(--s-2); max-width: 68ch; padding: var(--card-pad); border-radius: var(--r-3); background: var(--color-tint-warm); color: var(--color-text); font-size: var(--fs-16); line-height: var(--lh-16); }
+.hv-entry .hv-seo-bridge > * { max-width: none; margin: 0; }
+.hv-entry .hv-seo-bridge ul { display: grid; gap: var(--s-1); padding-left: var(--s-6); list-style: disc; }
+.hv-entry p.hv-context-link, .hv-entry p.hv-context-outro { padding: var(--s-3) var(--s-4); border-radius: var(--r-2); background: var(--color-tint-warm); font-size: var(--fs-16); line-height: var(--lh-16); }

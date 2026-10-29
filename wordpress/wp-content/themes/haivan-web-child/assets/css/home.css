@@ -1,0 +1,94 @@
+/* Trang chủ v4: dải vàng (H1), banner tràn mép (ảnh phủ kín) với thẻ tìm vé kính nổi ở phần dưới, dải "Chuyến hôm nay", dải cam kết, popup kính. Chỉ dùng token.
+   Điện thoại: banner trên, thẻ đặc phía dưới đè tối đa s-6 lên banner. Từ 40rem: thẻ kính nằm trong banner, phần trên của banner để trống cho tiêu đề của slide. */
+.hv-brand-band { background: var(--color-field); padding-block: var(--s-4); }
+.hv-lede { display: grid; gap: var(--s-2); }
+.hv-lede h1 { max-width: none; font-size: var(--fs-display); line-height: var(--lh-display); }
+.hv-lead { max-width: 40ch; color: var(--color-accent-ink); font-size: var(--fs-lead); line-height: var(--lh-lead); }
+.hv-hero--plain .hv-brand-band { padding-bottom: var(--s-12); }
+.hv-hero-stage { position: relative; background: var(--color-tint-warm); --hero-h: 44.5rem; }
+/* Banner: cuộn snap không cần JS; JS chỉ thêm mũi tên và bộ đếm. Mỗi slide rộng đủ khung (điện thoại: 16:9). */
+.hv-hero-banner { position: relative; background: var(--color-field); }
+.hv-slides { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; }
+.hv-slides::-webkit-scrollbar { display: none; }
+.hv-slides:focus-visible { outline-offset: calc(-1 * var(--line-strong)); }
+.hv-slide { position: relative; display: block; flex: 0 0 100%; scroll-snap-align: start; aspect-ratio: 16 / 9; overflow: hidden; background: var(--color-field); text-decoration: none; }
+.hv-slide picture, .hv-slide img { display: block; width: 100%; height: 100%; }
+.hv-slide picture img { object-fit: contain; }
+/* Ảnh thật (tỉ lệ gần vuông hơn poster): phủ kín khung. */
+.hv-slide--photo { background: var(--color-ink); }
+.hv-slide--photo picture img { object-fit: cover; object-position: 50% 46%; }
+.hv-slide-btn { position: absolute; top: 50%; translate: 0 -50%; z-index: var(--z-raised); display: none; place-items: center; width: var(--control-h); height: var(--control-h); border: 0; border-radius: var(--r-round); background: var(--color-surface); color: var(--color-ink); box-shadow: var(--shadow-2); }
+.hv-slide-btn:hover { background: var(--color-accent-soft); }
+.hv-slide-btn:active { background: var(--color-accent); }
+.hv-slide-prev { left: var(--s-4); } .hv-slide-next { right: var(--s-4); }
+.hv-slide-count { position: absolute; top: var(--s-4); right: var(--s-3); z-index: var(--z-raised); display: inline-flex; align-items: center; min-height: var(--s-8); padding: 0 var(--s-2); border-radius: var(--r-1); background: var(--color-scrim); color: var(--color-surface); font-size: var(--fs-14); line-height: var(--lh-14); font-weight: var(--weight-strong); }
+/* Slide dựng sẵn: nền màu khuyến mãi đặc, chữ, ảnh xe tách nền (không có hình trang trí) */
+.hv-slide--promo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); align-items: center; padding-left: var(--s-4); background: var(--c); color: var(--on); }
+.hv-slide--noimg { grid-template-columns: minmax(0, 1fr); }
+.hv-slide-copy { display: grid; gap: var(--s-1); justify-items: start; min-width: 0; }
+.hv-slide-copy .hv-badge { display: none; }
+.hv-slide-title { font-size: var(--fs-14); line-height: var(--lh-14); font-weight: var(--weight-display); }
+.hv-slide-big { display: block; font-size: var(--fs-24); line-height: var(--lh-24); }
+.hv-slide-sub, .hv-slide-cta { display: none; }
+.hv-slide--promo > img { width: 100%; height: auto; max-height: 100%; align-self: end; object-fit: contain; margin-bottom: var(--s-4); }
+/* Thẻ tìm vé: điện thoại = thẻ đặc đè s-6 lên banner (không kính); từ 40rem = kính phủ phần dưới của banner (có ảnh để làm mờ). Chữ trên kính >= 16px, màu ink. */
+.hv-hero-card-wrap { position: relative; z-index: var(--z-raised); margin-top: calc(-1 * var(--s-6)); padding-bottom: var(--s-8); }
+.hv-hero--plain .hv-hero-card-wrap { margin-top: calc(-1 * var(--s-8)); }
+.hv-hero-card { border-radius: var(--r-3); background: var(--color-surface); box-shadow: var(--shadow-2); }
+.hv-hero-card .hv-search { background: transparent; box-shadow: none; }
+/* Dải "Chuyến hôm nay" ngay dưới banner: nền trắng, đệm chuẩn của khối. */
+.hv-today { padding-block: var(--section-pad); }
+/* Dải cam kết (4 ý có nguồn) */
+.hv-after-hero { padding-block: var(--section-pad); }
+.hv-trust { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+.hv-trust li { display: grid; grid-template-columns: var(--control-h) minmax(0, 1fr); gap: var(--s-3); align-items: center; }
+.hv-trust h3 { font-size: var(--fs-16); line-height: var(--lh-16); }
+.hv-trust p { font-size: var(--fs-14); line-height: var(--lh-14); color: var(--color-muted); }
+@media (min-width: 40rem) {
+  .hv-slide-btn { display: grid; top: calc(var(--hero-h) * 0.22); }
+  .hv-slide--phone { display: none; }
+  /* Banner cao cố định, mọi ảnh phủ kín; thẻ kính nằm đáy banner, nửa trên còn thấy tiêu đề của slide. */
+  .hv-slide { height: var(--hero-h); aspect-ratio: auto; }
+  .hv-slide picture img { object-fit: cover; object-position: 50% 38%; }
+  .hv-slide--photo picture img { object-position: 50% 46%; }
+  .hv-hero-stage--banner .hv-hero-card-wrap { position: absolute; inset-inline: 0; bottom: 0; margin: 0 auto; padding-bottom: var(--s-8); }
+  .hv-hero-stage--banner .hv-hero-card { background: var(--glass-bg); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); box-shadow: var(--glass-edge), var(--shadow-2); }
+  /* Slide dựng sẵn thẳng hàng với khung nội dung, chữ ở dải trên. */
+  /* Cả slide là liên kết nên nút phụ bị bỏ: dải trên (35% banner) chỉ đủ chỗ cho nhãn, tiêu đề, một dòng phụ. */
+  .hv-slide--promo .hv-slide-cta { display: none; }
+  .hv-slide--promo { align-items: start; padding: var(--s-6) 0 0 max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter))); }
+  .hv-slide--promo > img { align-self: start; max-height: 45%; margin: var(--s-8) max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter))) 0 0; width: auto; justify-self: end; }
+  .hv-slide-title { font-size: var(--fs-18); line-height: var(--lh-18); }
+  .hv-slide-big { font-size: var(--fs-32); line-height: var(--lh-32); }
+  .hv-slide-sub { display: block; font-size: var(--fs-16); line-height: var(--lh-16); }
+  .hv-trust { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .hv-hero-stage--banner .hv-hero-card { background: var(--color-surface); } }
+@media (prefers-reduced-transparency: reduce) { .hv-hero-stage--banner .hv-hero-card { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--color-surface); } }
+@media (min-width: 60rem) {
+  .hv-hero-stage { --hero-h: clamp(37rem, 64vh, 42.5rem); }
+  .hv-brand-band { padding-block: var(--s-6); }
+  .hv-hero--plain .hv-brand-band { padding-bottom: var(--s-12); }
+  .hv-lede { grid-template-columns: auto minmax(0, 1fr); align-items: end; gap: var(--s-8); }
+  .hv-lead { justify-self: end; max-width: 60ch; padding-bottom: var(--s-2); text-align: right; }
+  .hv-hero-stage--banner .hv-hero-card-wrap { padding-bottom: var(--section-pad); }
+  .hv-hero--plain .hv-hero-card-wrap { margin-top: calc(-1 * var(--s-12)); }
+  .hv-slide--promo > img { max-height: 55%; }
+  .hv-slide-copy { gap: var(--s-3); }
+  .hv-slide-copy .hv-badge { display: inline-flex; }
+  .hv-slide-title { font-size: var(--fs-40); line-height: var(--lh-40); }
+  .hv-slide-big { display: inline; font-size: inherit; line-height: inherit; }
+  .hv-slide-sub { font-size: var(--fs-20); line-height: var(--lh-20); }
+  .hv-trust { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6); }
+}
+/* Popup (1 lần/ngày, JS hiện sau khi trình duyệt rảnh): tấm kính trên nền scrim. Đệm s-2 + ảnh r-2 = đồng tâm với r-3. */
+.hv-popup { width: min(100% - var(--s-8), 40rem); max-height: 90dvh; padding: var(--s-2); border: 0; border-radius: var(--r-3); background: var(--glass-bg); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); box-shadow: var(--glass-edge), var(--shadow-3); overflow: visible; }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .hv-popup { background: var(--color-surface); } }
+@media (prefers-reduced-transparency: reduce) { .hv-popup { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--color-surface); } }
+.hv-popup::backdrop { background: var(--color-scrim); }
+.hv-popup img { width: 100%; height: auto; border-radius: var(--r-2); }
+.hv-popup-link { display: block; border-radius: var(--r-2); }
+.hv-popup form { position: absolute; top: calc(-1 * var(--s-3)); right: calc(-1 * var(--s-3)); margin: 0; }
+.hv-popup-close { display: grid; place-items: center; width: var(--control-h); height: var(--control-h); border: 0; border-radius: var(--r-round); background: var(--color-surface); color: var(--color-ink); box-shadow: var(--shadow-1); }
+.hv-popup-close:hover { background: var(--color-accent-soft); }
+.hv-popup-close:active { background: var(--color-accent); }

@@ -1,0 +1,2 @@
+Nunito font family (c) The Nunito Project Authors, licensed under the SIL Open Font License 1.1
+https://openfontlicense.org/ - woff2 subsets (vietnamese, latin, latin-ext) from Google Fonts, variable weight 200-1000.

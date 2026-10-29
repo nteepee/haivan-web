@@ -1,0 +1,90 @@
+# WordPress nội dung haivan.com (chạy local, độc lập với app Next.js).
+#   cp .env.example .env            # tuỳ chọn, mặc định chạy được ngay
+#   docker compose up -d            # http://localhost:8089
+#   ./scripts/install-themes.sh && ./scripts/setup.sh
+name: haivan-wp
+
+x-wp-env: &wp-env
+  WORDPRESS_DB_HOST: db:3306
+  WORDPRESS_DB_NAME: ${WP_DB_NAME:-wordpress}
+  WORDPRESS_DB_USER: ${WP_DB_USER:-wordpress}
+  WORDPRESS_DB_PASSWORD: ${WP_DB_PASSWORD:-hv_local_only}
+  WORDPRESS_TABLE_PREFIX: hv_
+  # Bí mật dùng chung với server Next (header X-HV-Secret của GET /wp-json/haivan-web/v1/promo-codes). Đặt trong .env (gitignored), tối thiểu 16 ký tự; trống = endpoint luôn trả 403.
+  HV_WP_SHARED_SECRET: ${HV_WP_SHARED_SECRET:-}
+  WORDPRESS_CONFIG_EXTRA: |
+    define('WP_HOME', '${WP_URL:-http://localhost:8089}');
+    define('WP_SITEURL', '${WP_URL:-http://localhost:8089}');
+    // Mặc định production (cho lập chỉ mục). Máy dev/staging phải đặt rõ WP_ENV_TYPE=local|staging trong .env.
+    define('WP_ENVIRONMENT_TYPE', '${WP_ENV_TYPE:-production}');
+    // Cùng origin với BFF Next: khoá chỉnh sửa mã và HTML tuỳ ý từ admin.
+    define('DISALLOW_FILE_EDIT', true);
+    define('DISALLOW_UNFILTERED_HTML', true);
+    define('WP_AUTO_UPDATE_CORE', 'minor');
+    define('WP_POST_REVISIONS', 10);
+    define('FORCE_SSL_ADMIN', ${WP_FORCE_SSL_ADMIN:-false});
+    // Ngôn ngữ lấy từ tiền tố URL (/en/), không từ cookie: Polylang thôi gửi Set-Cookie pll_language trên mọi trang (cookie làm nginx không cache được HTML).
+    define('PLL_COOKIE', false);
+
+services:
+  db:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${WP_DB_NAME:-wordpress}
+      MARIADB_USER: ${WP_DB_USER:-wordpress}
+      MARIADB_PASSWORD: ${WP_DB_PASSWORD:-hv_local_only}
+      MARIADB_ROOT_PASSWORD: ${WP_DB_ROOT_PASSWORD:-hv_local_root_only}
+    volumes:
+      - ./data/db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  wordpress:
+    image: wordpress:php8.3-fpm
+    restart: unless-stopped
+    depends_on:
+      db: {condition: service_healthy}
+    environment: *wp-env
+    volumes:
+      - ./data/wp:/var/www/html
+      - ./wp-content/themes/haivan-web-child:/var/www/html/wp-content/themes/haivan-web-child
+      - ./wp-content/themes/flatsome:/var/www/html/wp-content/themes/flatsome
+      - ./php/hv-uploads.ini:/usr/local/etc/php/conf.d/hv-uploads.ini:ro
+      - ../archive:/archive:ro
+
+  nginx:
+    image: nginx:1.27-alpine
+    restart: unless-stopped
+    depends_on: [wordpress]
+    ports:
+      - "${WP_BIND_ADDR:-127.0.0.1}:${WP_PORT:-8089}:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./data/wp:/var/www/html:ro
+      - ./wp-content/themes/haivan-web-child:/var/www/html/wp-content/themes/haivan-web-child:ro
+      - ./wp-content/themes/flatsome:/var/www/html/wp-content/themes/flatsome:ro
+
+  # docker compose --profile tools run --rm wpcli <lệnh wp ...>
+  wpcli:
+    image: wordpress:cli-php8.3
+    profiles: [tools]
+    user: "33:33"
+    depends_on:
+      db: {condition: service_healthy}
+    environment:
+      <<: *wp-env
+      HOME: /tmp
+    volumes:
+      - ./data/wp:/var/www/html
+      - ./wp-content/themes/haivan-web-child:/var/www/html/wp-content/themes/haivan-web-child
+      - ./wp-content/themes/flatsome:/var/www/html/wp-content/themes/flatsome
+      - ./php/hv-uploads.ini:/usr/local/etc/php/conf.d/hv-uploads.ini:ro
+      - ./scripts:/scripts:ro
+      - ../archive:/archive:ro
+      - ./data/cms-cache:/cms-cache   # bản lưu JSON thô của CMS (import-cms.php), gitignore qua /data/
+    working_dir: /var/www/html
+    entrypoint: ["wp"]

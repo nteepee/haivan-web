@@ -1,0 +1,46 @@
+/* Trang chủ v4: thẻ tuyến, điểm đến, tin, dải app vàng, mosaic phòng chờ, địa chỉ dạng thẻ. Thẻ r-3 đệm s-2, ảnh trong r-2 (đồng tâm). Chỉ dùng token. */
+.hv-rcard { position: relative; display: grid; grid-template-rows: auto 1fr; padding: var(--s-2); width: min(72vw, 17.5rem); height: 100%; background: var(--color-surface); border-radius: var(--r-3); box-shadow: var(--shadow-1); transition: box-shadow var(--dur-short) var(--ease-out); }
+.hv-rcard:hover, .hv-rcard:focus-within { box-shadow: var(--shadow-2); }
+.hv-rcard-img { aspect-ratio: 3 / 2; border-radius: var(--r-2); overflow: hidden; background: var(--color-paper-3); }
+.hv-rcard-img img { width: 100%; height: 100%; object-fit: cover; }
+.hv-rcard-body { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto auto; grid-template-areas: "name name" "time time" "price go"; gap: var(--s-1) var(--s-3); padding: var(--s-3) var(--s-2) var(--s-2); align-items: center; }
+.hv-rcard-body h3 { grid-area: name; align-self: start; font-size: var(--fs-18); line-height: var(--lh-18); }
+.hv-rcard-time { grid-area: time; display: flex; align-items: center; gap: var(--s-2); color: var(--color-muted); font-weight: var(--weight-strong); }
+.hv-rcard-price { grid-area: price; margin-top: var(--s-2); }
+.hv-rcard-price small { color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+.hv-rcard-price strong { font-size: var(--fs-24); line-height: var(--lh-24); color: var(--color-ink); }
+.hv-rcard-go { grid-area: go; margin-top: var(--s-2); }
+.hv-rcard-go::after { content: ""; position: absolute; inset: 0; border-radius: var(--r-3); }
+.hv-rcard-go:focus-visible { outline-offset: calc(-1 * var(--line-strong)); }
+.hv-rcard:has(.hv-rcard-go:focus-visible) { outline: var(--line-strong) solid var(--color-focus); outline-offset: var(--line-strong); }
+/* Điểm đến: ảnh dọc, tên trên nhãn đặc (không phải kính) */
+.hv-dcard { width: 10rem; }
+.hv-dcard a { position: relative; display: block; aspect-ratio: 4 / 5; border-radius: var(--r-3); overflow: hidden; background: var(--color-paper-3); box-shadow: var(--shadow-1); text-decoration: none; transition: box-shadow var(--dur-short) var(--ease-out); }
+.hv-dcard a:hover { box-shadow: var(--shadow-2); }
+.hv-dcard a:focus-visible { outline-offset: var(--line-strong); }
+.hv-dcard img { width: 100%; height: 100%; object-fit: cover; }
+.hv-dcard-name { position: absolute; left: var(--s-3); bottom: var(--s-3); max-width: calc(100% - 2 * var(--s-3)); padding: var(--s-1) var(--s-3); border-radius: var(--r-1); background: var(--color-surface); color: var(--color-ink); font-size: var(--fs-16); line-height: var(--lh-16); font-weight: var(--weight-display); box-shadow: var(--shadow-1); }
+/* Tin tức */
+.hv-ncard { width: min(82vw, 20rem); height: 100%; }
+.hv-ncard a { display: grid; grid-template-rows: auto 1fr; height: 100%; padding: var(--s-2); border-radius: var(--r-3); background: var(--color-surface); box-shadow: var(--shadow-1); text-decoration: none; transition: box-shadow var(--dur-short) var(--ease-out); }
+.hv-ncard a:hover { box-shadow: var(--shadow-2); }
+.hv-ncard a:focus-visible { outline-offset: var(--line-strong); }
+.hv-ncard-img { display: block; aspect-ratio: 16 / 9; border-radius: var(--r-2); overflow: hidden; background: var(--color-paper-3); }
+.hv-ncard-img img { width: 100%; height: 100%; object-fit: cover; }
+.hv-ncard-body { display: grid; gap: var(--s-2); align-content: start; padding: var(--s-3) var(--s-2) var(--s-2); }
+.hv-ncard h3 { font-size: var(--fs-18); line-height: var(--lh-18); }
+.hv-ncard-more { color: var(--color-muted); font-weight: var(--weight-strong); }
+.hv-ncard a:hover h3 { text-decoration: underline; text-decoration-thickness: var(--line-strong); text-decoration-color: var(--color-select-edge); }
+@media (min-width: 60rem) { .hv-dcard { width: 11rem; } .hv-ncard { width: auto; } }
+/* Phòng chờ: mosaic ảnh (ảnh lớn r-4, ảnh nhỏ r-3) + địa chỉ dạng thẻ r-2 */
+.hv-mosaic { display: grid; gap: var(--s-2); grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "a a" "b c" "d d"; }
+.hv-mosaic .hv-photo:nth-child(1) { grid-area: a; aspect-ratio: 3 / 2; border-radius: var(--r-4); } .hv-mosaic .hv-photo:nth-child(2) { grid-area: b; aspect-ratio: 4 / 3; } .hv-mosaic .hv-photo:nth-child(3) { grid-area: c; aspect-ratio: 4 / 3; } .hv-mosaic .hv-photo:nth-child(4) { grid-area: d; aspect-ratio: 5 / 2; }
+.hv-addrs { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); margin-top: var(--s-6); }
+.hv-addr { display: grid; grid-template-columns: var(--tap-min) minmax(0, 1fr); gap: var(--s-3); align-items: center; padding: var(--s-3) var(--s-4); background: var(--color-surface); border-radius: var(--r-2); box-shadow: var(--shadow-1); }
+.hv-addr h3 { font-size: var(--fs-16); line-height: var(--lh-16); }
+.hv-addr p { color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+@media (min-width: 40rem) { .hv-addrs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 60rem) {
+  .hv-mosaic { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: 12.5rem 12.5rem; grid-template-areas: "a a a a a a b b b c c c" "a a a a a a d d d d d d"; }
+  .hv-mosaic .hv-photo { aspect-ratio: auto !important; }
+}

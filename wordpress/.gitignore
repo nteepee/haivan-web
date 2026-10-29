@@ -1,0 +1,11 @@
+# Dữ liệu chạy (DB, lõi WP, uploads)
+/data/
+/.env
+*.log
+
+# Theme/plugin bên thứ ba (Flatsome là bản thương mại, không commit)
+wp-content/themes/flatsome/
+wp-content/themes/twenty*/
+wp-content/plugins/
+wp-content/uploads/
+wp-content/upgrade/

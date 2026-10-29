@@ -1,0 +1,6 @@
+/* Bảng màu thẻ ưu đãi / slide thiết kế (--c nền, --on chữ); dùng ở trang chủ và trang /uu-dai. Chỉ token. */
+.hv-tone-orange { --c: var(--color-promo-orange); --on: var(--color-on-orange); }
+.hv-tone-teal { --c: var(--color-promo-teal); --on: var(--color-on-teal); }
+.hv-tone-coral { --c: var(--color-promo-coral); --on: var(--color-on-coral); }
+.hv-tone-leaf { --c: var(--color-promo-leaf); --on: var(--color-on-leaf); }
+.hv-tone-blue { --c: var(--color-promo-blue); --on: var(--color-on-blue); }

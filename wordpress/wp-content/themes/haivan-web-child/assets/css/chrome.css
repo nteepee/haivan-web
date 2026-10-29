@@ -1,0 +1,66 @@
+/* Header v4: thanh vàng đặc lúc nghỉ; cuộn quá 8px (site.js đặt data-scrolled) thì thành kính vàng. Logo, 5 nhóm menu có dropdown, hotline, Đăng nhập/Tài khoản, EN + bảng menu điện thoại (đặc) + nút gọi nổi. Cùng lớp với Next. */
+/* Nền (đặc hoặc kính) nằm ở ::before: chỉ đổi màu và blur, không đổi kích thước nên không xô layout. */
+.hv-header { position: sticky; top: 0; z-index: var(--z-sticky-nav); background: transparent; color: var(--color-accent-ink); box-shadow: var(--shadow-1); }
+.hv-header::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--color-field); transition: background-color var(--dur-micro) var(--ease-out); }
+.hv-header[data-scrolled="true"]::before { background: var(--glass-bg-yellow); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)); }
+.hv-header-row { display: flex; align-items: center; gap: var(--s-2); min-height: var(--header-h); }
+.hv-brand { display: flex; align-items: center; min-height: var(--control-h); margin-right: auto; border-radius: var(--r-1); }
+.hv-brand img { height: var(--s-6); width: auto; }
+.hv-nav { display: none; }
+.hv-nav-item { position: relative; }
+.hv-nav-link { display: inline-flex; align-items: center; gap: var(--s-1); min-height: var(--control-h); padding-inline: var(--s-3); border: 0; border-radius: var(--r-1); background: transparent; font-weight: var(--weight-strong); text-decoration: none; white-space: nowrap; }
+.hv-nav-link:hover, .hv-nav-link[aria-expanded="true"] { background: var(--color-accent-hover); }
+.hv-nav-link:active { background: var(--color-accent-edge); }
+.hv-nav-link[aria-current="page"] { background: var(--color-accent-hover); font-weight: var(--weight-display); }
+.hv-nav-link .hv-ic { width: var(--s-6); height: var(--s-6); transition: transform var(--dur-micro) var(--ease-out); }
+.hv-nav-link[aria-expanded="true"] .hv-ic { transform: rotate(180deg); }
+.hv-dropdown { position: absolute; left: 0; top: 100%; z-index: var(--z-dropdown); min-width: 14rem; padding: var(--s-2); border-radius: var(--r-2); background: var(--color-surface); box-shadow: var(--shadow-2); color: var(--color-text); }
+.hv-dropdown a { display: flex; align-items: center; min-height: var(--control-h); padding-inline: var(--s-3); border-radius: var(--r-1); text-decoration: none; font-weight: var(--weight-strong); white-space: nowrap; }
+.hv-dropdown a:hover, .hv-dropdown a:focus-visible { background: var(--color-accent-soft); }
+.hv-dropdown a:active { background: var(--color-accent); }
+.hv-header-call { display: inline-flex; min-width: var(--control-h); min-height: var(--control-h); align-items: center; justify-content: center; gap: var(--s-2); border-radius: var(--r-1); font-weight: var(--weight-display); text-decoration: none; white-space: nowrap; }
+.hv-header-call:hover, .hv-lang:hover, .hv-menu-btn:hover { background: var(--color-accent-hover); }
+.hv-header-call:active, .hv-menu-btn:active { background: var(--color-accent-edge); }
+.hv-header-call-num, .hv-header-account, .hv-lang { display: none; }
+.hv-lang { min-width: var(--control-h); min-height: var(--control-h); align-items: center; justify-content: center; border-radius: var(--r-1); font-weight: var(--weight-strong); text-decoration: none; }
+.hv-header .hv-btn--ghost { background: var(--color-surface); box-shadow: var(--shadow-1); }
+.hv-header .hv-btn--ghost:hover { background: var(--color-accent-soft); }
+.hv-menu-toggle { position: static; }
+.hv-menu-btn { display: inline-flex; min-height: var(--control-h); align-items: center; gap: var(--s-2); padding-inline: var(--s-3); border: 0; border-radius: var(--r-1); background: transparent; font-weight: var(--weight-strong); }
+.hv-menu-btn .hv-ic--close { display: none; }
+.hv-menu-btn[aria-expanded="true"] .hv-ic--close { display: block; }
+.hv-menu-btn[aria-expanded="true"] .hv-ic--open { display: none; }
+/* Bảng menu điện thoại: bảng trắng đặc nổi dưới header (r-2, bóng 2), chữ 18px ink; mỗi mục 48px, vạch 1px rule dưới từng mục, mục con thụt s-4. Cùng nhịp với Next. */
+.hv-menu-panel { position: absolute; left: var(--gutter); right: var(--gutter); top: 100%; z-index: var(--z-dropdown); max-height: calc(100dvh - var(--header-h) - var(--s-4)); overflow-y: auto; padding: var(--s-2); border-radius: var(--r-2); background: var(--color-surface); box-shadow: var(--shadow-2); color: var(--color-text); }
+.hv-menu-link { display: flex; min-height: var(--control-h); align-items: center; padding-inline: var(--s-3); border-bottom: var(--line) solid var(--color-rule); border-radius: var(--r-1); font-size: var(--fs-18); font-weight: var(--weight-strong); line-height: var(--lh-18); text-decoration: none; }
+.hv-menu-panel li:last-child > .hv-menu-link:last-child { border-bottom: 0; }
+.hv-menu-link:hover { background: var(--color-accent-soft); }
+.hv-menu-link:active { background: var(--color-accent); }
+.hv-menu-sub { padding-left: var(--s-4); font-size: var(--fs-16); font-weight: var(--weight-body); line-height: var(--lh-16); color: var(--color-muted); }
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .hv-header[data-scrolled="true"]::before { background: var(--color-accent); } }
+@media (prefers-reduced-transparency: reduce) {
+  .hv-header[data-scrolled="true"]::before { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--color-accent); }
+}
+/* Tài khoản (JS dựng khi đã đăng nhập) */
+.hv-account { position: relative; }
+.hv-account__menu { position: absolute; right: 0; top: 100%; z-index: var(--z-dropdown); min-width: 16rem; margin-top: var(--s-2); padding: var(--s-2); border-radius: var(--r-2); background: var(--color-surface); box-shadow: var(--shadow-2); color: var(--color-text); }
+.hv-account__menu a, .hv-account__menu button { display: flex; width: 100%; min-height: var(--control-h); align-items: center; padding-inline: var(--s-3); border: 0; border-radius: var(--r-1); background: transparent; text-align: left; text-decoration: none; font-weight: var(--weight-strong); }
+.hv-account__menu a:hover, .hv-account__menu button:hover { background: var(--color-accent-soft); }
+.hv-account__logout { margin-top: var(--s-1); padding-top: var(--s-1); border-top: var(--line) solid var(--color-rule); }
+.hv-account__error { padding: var(--s-2) var(--s-3); color: var(--color-error); font-weight: var(--weight-strong); }
+@media (min-width: 64rem) {
+  .hv-nav { display: flex; align-items: center; margin-right: auto; }
+  .hv-menu-toggle { display: none; }
+  .hv-header-account, .hv-lang { display: inline-flex; }
+  .hv-brand { margin-right: var(--s-6); }
+}
+@media (min-width: 75rem) { .hv-header-call-num { display: inline; } .hv-header-call { padding-inline: var(--s-3); } }
+/* Nút gọi nổi: nút chỉ-có-icon vuông nên tròn; luôn cách một chạm. */
+.hv-call-fab { position: fixed; right: var(--s-4); bottom: var(--s-4); z-index: var(--z-sticky); display: grid; width: var(--control-h-lg); height: var(--control-h-lg); place-items: center; border-radius: var(--r-round); background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-2); text-decoration: none; }
+.hv-call-fab { transition: opacity var(--dur-micro) var(--ease-out), visibility var(--dur-micro) var(--ease-out); }
+/* Ẩn khi thẻ tìm vé đang trong màn hình (site.js): nút gọi nổi không đè lên ô ngày, nút +/− hay nút Tìm vé; số gọi vẫn ở header. */
+.hv-call-fab[data-hidden="true"] { opacity: 0; visibility: hidden; pointer-events: none; }
+.hv-call-fab:hover { background: var(--color-accent-hover); }
+.hv-call-fab:active { transform: translateY(var(--line-strong)); }
+/* Chừa chỗ cho nút gọi nổi: ô được focus cuộn vào không nằm dưới nút. */
+html { scroll-padding-bottom: calc(var(--control-h-lg) + var(--s-8)); }

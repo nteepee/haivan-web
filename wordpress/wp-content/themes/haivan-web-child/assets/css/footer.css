@@ -1,0 +1,73 @@
+/* Footer "mast": dải app + QR, logo + hotline, cột liên kết, Đối tác/Thành viên/Thanh toán, tầng tối pháp lý. Cùng lớp với Next. */
+.hv-app { display: grid; gap: var(--s-8); align-items: center; }
+.hv-app-text { display: grid; gap: var(--s-4); }
+.hv-ticks { display: grid; gap: var(--s-2); }
+.hv-ticks li { display: flex; align-items: center; gap: var(--s-2); min-height: var(--s-8); font-weight: var(--weight-strong); }
+.hv-app-qr { display: grid; grid-template-columns: calc(var(--s-24) + var(--s-4)) minmax(0, 1fr); gap: var(--s-4); align-items: center; }
+.hv-qr { width: calc(var(--s-24) + var(--s-4)); height: calc(var(--s-24) + var(--s-4)); padding: var(--s-2); border-radius: var(--r-2); background: var(--color-surface); box-shadow: var(--shadow-1); }
+.hv-badges { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-top: var(--s-2); }
+.hv-badges a { display: block; }
+.hv-badges img { height: var(--s-12); width: auto; border-radius: var(--r-1); }
+.hv-ticks__link { display: inline-flex; align-items: center; min-height: var(--tap-min); border-radius: var(--r-1); text-decoration: underline; text-decoration-thickness: var(--line); text-underline-offset: 0.2em; }
+.hv-ticks__link:hover { background: var(--color-accent-hover); }
+.hv-app-phone { justify-self: center; width: min(100%, 20rem); height: auto; }
+/* Dải app (v3): nền vàng thương hiệu ở trang chủ và mọi trang trước footer; nền ấm khi khối liền trước cũng vàng */
+.hv-app-band .hv-app-text .hv-app-title { margin: 0; color: var(--color-accent-ink); font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--weight-display); line-height: var(--lh-h2); overflow-wrap: break-word; text-wrap: balance; }
+.hv-app-band :focus-visible { outline-color: var(--color-focus); }
+.hv-app-band .hv-ticks .hv-ic { padding: var(--s-1); border-radius: var(--r-1); background: var(--color-ink); color: var(--color-accent); stroke-width: 3; }
+/* Nhịp footer: một giá trị mỗi mốc = --section-pad (như mọi khối khác); các tầng cách nhau bằng đệm đó mỗi phía vạch; đáy thêm chỗ cho nút gọi nổi. */
+.hv-footer { padding-block: var(--section-pad) calc(var(--section-pad) + var(--control-h-lg)); background: var(--color-ink); color: var(--color-surface); }
+.hv-footer a { text-decoration: none; }
+.hv-footer :focus-visible { outline-color: var(--color-focus-on-dark); }
+.hv-footer-tier { display: grid; gap: var(--s-6); padding-block: var(--section-pad); border-bottom: var(--line) solid var(--color-muted); }
+.hv-footer-tier:first-child { padding-top: 0; }
+.hv-footer-tier:last-child { padding-bottom: 0; border-bottom: 0; }
+.hv-footer-logo { width: calc(var(--s-24) * 2); height: auto; }
+.hv-footer-call { display: inline-flex; min-height: var(--control-h-lg); width: fit-content; align-items: center; gap: var(--s-3); color: var(--color-accent); font-size: var(--fs-32); font-weight: var(--weight-display); line-height: var(--lh-32); }
+.hv-footer-call:hover { text-decoration: underline; }
+.hv-footer-head { margin: 0 0 var(--s-2); color: var(--color-surface); font-family: var(--font-display); font-size: var(--fs-16); font-weight: var(--weight-display); line-height: var(--lh-16); overflow-wrap: break-word; text-wrap: balance; }
+.hv-footer-link { display: inline-flex; min-width: var(--tap-min); min-height: var(--tap-min); align-items: center; text-decoration: underline !important; text-decoration-color: var(--color-muted-on-dark); }
+.hv-footer-cols ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--s-4); } /* điện thoại: danh sách hai cột cho gọn; từ 40rem chỉ cột tuyến xe (nav thứ hai) chia hai */
+.hv-footer-link:hover { color: var(--color-accent); text-decoration-color: var(--color-accent); }
+.hv-footer-legal { color: var(--color-muted-on-dark); font-size: var(--fs-14); line-height: var(--lh-14); display: grid; gap: var(--s-1); align-content: start; }
+.hv-footer-legal strong { color: var(--color-surface); font-size: var(--fs-16); line-height: var(--lh-16); }
+.hv-footer-legal a { display: inline-flex; align-items: center; min-width: var(--tap-min); min-height: var(--tap-min); color: var(--color-surface); font-weight: var(--weight-display); }
+.hv-footer-legal p { margin: 0; }
+.hv-footer-icons { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hv-footer-icons a { display: grid; min-width: var(--control-h); min-height: var(--control-h); place-items: center; border-radius: var(--r-1); background: var(--color-surface); }
+.hv-footer-icons img { width: var(--s-8); height: var(--s-8); }
+@media (min-width: 40rem) { .hv-footer-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hv-footer-cols ul { grid-template-columns: minmax(0, 1fr); } .hv-footer-cols nav:nth-child(2) { grid-column: 1 / -1; } .hv-footer-cols nav:nth-child(2) ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 60rem) {
+  .hv-app { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-16); }
+  .hv-app-phone { justify-self: end; }
+  .hv-footer-mast { grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; }
+  .hv-footer-bottom { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
+}
+@media (min-width: 75rem) { .hv-footer-cols { grid-template-columns: repeat(5, minmax(0, 1fr)); } .hv-footer-cols nav:nth-child(2) { grid-column: span 2; } }
+/* Footer gọn: một hàng tin cậy (nhãn nhỏ + logo cao 32px/28px trên chip sáng), đáy hai cột (pháp lý | theo dõi + ứng dụng), bản quyền dòng cuối. */
+.hv-footer-cols, .hv-footer-mast { padding-block: var(--s-6); }
+.hv-footer-mast { padding-top: 0; }
+.hv-footer-trust { display: flex; flex-wrap: wrap; align-items: end; gap: var(--s-4) var(--s-8); padding-block: var(--s-6); }
+.hv-footer-bottom { padding-block: var(--s-6); border-bottom: 0; }
+.hv-footer-group { display: grid; gap: var(--s-2); align-content: start; }
+.hv-footer-group .hv-footer-head { margin: 0; color: var(--color-muted-on-dark); font-family: inherit; font-size: var(--fs-14); font-weight: var(--weight-strong); line-height: var(--lh-14); }
+.hv-chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+.hv-chips li { display: flex; align-items: center; padding: var(--s-2); border-radius: var(--r-1); background: var(--color-surface); }
+.hv-chips li:has(> a) { padding: 0; }
+.hv-chips a { display: flex; align-items: center; min-height: var(--tap-min); padding: var(--s-2); border-radius: var(--r-1); }
+.hv-chips img { height: calc(var(--s-8) - var(--s-1)); width: auto; max-width: none; }
+.hv-footer-follow { display: flex; flex-wrap: wrap; align-items: end; gap: var(--s-3) var(--s-8); }
+.hv-footer-legal { gap: 0; }
+.hv-footer-copy { margin: 0; padding-top: var(--s-4); border-top: var(--line) solid var(--color-muted); color: var(--color-muted-on-dark); font-size: var(--fs-14); line-height: var(--lh-14); }
+@media (min-width: 40rem) {
+  .hv-chips img { height: var(--s-8); }
+  .hv-footer-link { min-height: var(--s-8); }
+  .hv-footer-legal a { min-height: var(--s-8); }
+}
+/* Điện thoại: logo và hotline cùng một hàng. */
+.hv-footer-mast { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3) var(--s-6); }
+.hv-footer-mast .hv-footer-call { font-size: var(--fs-24); line-height: var(--lh-24); }
+@media (min-width: 60rem) { .hv-footer-mast { display: grid; grid-template-columns: auto auto; justify-content: space-between; } .hv-footer-mast .hv-footer-call { font-size: var(--fs-32); line-height: var(--lh-32); } }
+.hv-footer-mast > span:empty { display: none; }
+.hv-footer-mast .hv-footer-logo { width: calc(var(--s-24) + var(--s-8)); }
+@media (min-width: 60rem) { .hv-footer-mast .hv-footer-logo { width: calc(var(--s-24) * 2); } }

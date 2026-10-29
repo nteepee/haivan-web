@@ -1,0 +1,26 @@
+/* Trang /uu-dai: chỉ vàng / xám / trắng. Dải nền vàng chứa tiêu đề + lưới; thẻ trắng chữ mực, nhãn xám,
+   nút vàng. Ghi đè màu MKT chọn cho thẻ (màu đó chỉ dùng ở trang chủ). v4: bo r-3, bóng 1/2, không viền đen. Chỉ token. */
+/* Dải vàng liền kề dải tải app: dải app đổi sang nền ấm (hv_app_band_ground), ranh giới là đổi nền, không có khoảng trống. Header đặc cùng màu nên có vạch 1px dưới đáy (chỉ trang này). */
+.hv-offer-band { padding-block: var(--section-pad); background: var(--color-field); color: var(--color-ink); }
+.post-type-archive-uu_dai .hv-header { border-bottom: var(--line) solid var(--color-accent-edge); }
+.hv-offer-band .hv-page-head { padding-bottom: var(--s-6); }
+.hv-offer-band .hv-crumbs, .hv-offer-band .hv-crumbs a { color: var(--color-ink); }
+.hv-offer-lead { max-width: 68ch; margin-top: var(--s-2); color: var(--color-ink); font-size: var(--fs-18); line-height: var(--lh-18); }
+
+.hv-offer-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr)); gap: var(--s-4); margin: 0; padding: 0; list-style: none; }
+.hv-offer-grid > li { display: flex; }
+.hv-offer-band .hv-pcard { --c: var(--color-surface); --on: var(--color-ink); width: 100%; box-shadow: var(--shadow-1); }
+.hv-offer-band .hv-pcard:hover { box-shadow: var(--shadow-2); }
+.hv-offer-band .hv-pcard-cond { color: var(--color-muted); }
+.hv-offer-band .hv-badge--on-fill { background: var(--color-paper-2); color: var(--color-ink); }
+.hv-offer-band .hv-badge--sale { background: var(--color-ink); color: var(--color-surface); }
+.hv-offer-band .hv-pcard-go { background: var(--color-accent); color: var(--color-ink); }
+.hv-offer-band .hv-pcard-go:hover { background: var(--color-accent-hover); }
+.hv-offer-band .hv-pcard-go:focus-visible { outline-color: var(--color-focus); }
+.hv-offer-band .hv-pcard-photo { background: var(--color-paper-2); }
+.hv-offer-band .hv-ico { background: var(--color-accent-soft); color: var(--color-ink); }
+
+.hv-offer-empty { display: grid; justify-items: start; gap: var(--s-4); padding: var(--s-6); border-radius: var(--r-3); background: var(--color-surface); box-shadow: var(--shadow-1); }
+.hv-offer-empty p { max-width: 60ch; }
+.hv-offer-empty-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hv-offer-posts h2 { margin-bottom: var(--s-6); font-size: var(--fs-24); line-height: var(--lh-24); }

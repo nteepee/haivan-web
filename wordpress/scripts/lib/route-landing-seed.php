@@ -1,0 +1,356 @@
+<?php
+/**
+ * Nội dung landing tuyến (đã viết lại bằng lời của Hải Vân, không dán nguyên văn trang quảng cáo booking.haivan.com).
+ * Dữ kiện (giờ chạy, địa chỉ, hạng xe, giá "từ") lấy từ docs/reference/route-landing/*.json (trang của chính Hải Vân).
+ * Khoá = hv_route_path. Ô nhiều dòng dùng dấu "|" như meta box (xem theme inc/route-meta.php).
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit( 1 );
+}
+
+$map = static fn( $q ) => 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( $q );
+$ul  = static fn( array $li ) => '<ul>' . implode( '', array_map( static fn( $x ) => '<li>' . $x . '</li>', $li ) ) . '</ul>';
+
+$sg_vt_common_faq = array(
+	'Có xe trung chuyển đón ở các quận khác không? | Có. Hải Vân trung chuyển ở hầu hết các quận huyện để gom khách về điểm đón chính; vùng trung chuyển thay đổi theo chuyến, hãy báo địa chỉ khi đặt vé để được xác nhận điểm hẹn.',
+	'Tôi cần đổi giờ hoặc huỷ vé thì làm thế nào? | Gọi 1900 6763 trước giờ xe chạy ít nhất một tiếng để được hỗ trợ đổi chuyến hoặc huỷ theo chính sách hiện hành.',
+	'Xe có bán ghế phụ hay cho nằm sàn không? | Không. Mỗi khách một chỗ đã đánh số trên sơ đồ, xe không nhận thêm khách dọc đường và chạy đúng tuyến đã đăng ký.',
+);
+
+return array(
+	'quan-1/vung-tau' => array(
+		'seo_title'        => 'Xe đi Vũng Tàu từ Quận 1: giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe limousine Hải Vân từ Quận 1, Sài Gòn đi Vũng Tàu. Xe chạy từ 5h đến 24h, chọn ghế và giữ vé điện tử ngay trên điện thoại.',
+		'h1'               => 'Xe đi Vũng Tàu từ Quận 1 Sài Gòn',
+		'intro'            => 'Limousine Hải Vân chạy Quận 1 – Vũng Tàu từ 5 giờ sáng đến nửa đêm, khoảng 15 đến 30 phút một chuyến. Chọn giờ, chọn ghế trên sơ đồ và giữ vé điện tử trên điện thoại.',
+		'schedule_text'    => '<p>Bảng dưới liệt kê các chuyến theo ngày bạn chọn. Giá đã gồm VAT và đổi theo hạng xe, vị trí ghế. Cần đổi giờ hay huỷ vé, gọi 1900 6763 trước giờ xe chạy ít nhất một tiếng.</p>',
+		'content_html'     => '<h2>Đi Vũng Tàu cùng Hải Vân có gì thuận tiện?</h2>' . $ul( array(
+			'Đầu Sài Gòn có xe từ 5h sáng đến 0h đêm, đầu Vũng Tàu từ 2h đến 21h45, nên ít khi phải canh một giờ cố định.',
+			'Đón tại phòng chờ, trạm trên tuyến hoặc trung chuyển theo khu vực; khách bay đến Tân Sơn Nhất gặp quầy Hải Vân ngay ở nhà ga T1, T2 và T3.',
+			'Trả khách gần khách sạn hoặc resort ở Vũng Tàu: ghi địa chỉ lưu trú khi đặt để Hải Vân xác nhận điểm trả.',
+			'Mỗi khách một chỗ có số, không ghế phụ, không nằm sàn.',
+		) ) . '<h2>Chuẩn bị trước giờ xe chạy</h2><p>Có mặt tại điểm đón ghi trên vé trước giờ khởi hành. Nếu xuống Bà Rịa, chọn điểm trả 54 Lê Thành Duy, phường Phước Trung khi đặt vé. Đọc thêm <a href="/diem-den/vung-tau">kinh nghiệm du lịch Vũng Tàu</a> trước chuyến đi.</p>',
+		'faq'              => implode( "\n", array_merge( array(
+			'Xe Sài Gòn đi Vũng Tàu mất bao lâu? | Dự trù khoảng 3 giờ, tuỳ giao thông, điểm đón và trung chuyển. Xem giờ đến dự kiến của chuyến để sắp xếp lịch nhận phòng.',
+			'Xe đón khách ở đâu tại Quận 1? | Phòng chờ chính ở 34 Nguyễn Thái Bình, phường Bến Thành, gần chợ Bến Thành. Hãy đối chiếu địa chỉ và giờ có mặt ghi trên vé.',
+			'Chuyến sớm nhất và muộn nhất đầu Sài Gòn là mấy giờ? | Chuyến sớm nhất lúc 5h sáng và chuyến cuối lúc 0h đêm, trung bình 15 đến 30 phút một chuyến.',
+			'Có trả khách gần khách sạn ở Vũng Tàu không? | Có, trong khu vực phục vụ. Ghi địa chỉ khách sạn hoặc resort khi đặt vé để Hải Vân xác nhận điểm trả và điều kiện trung chuyển.',
+			'Từ sân bay Tân Sơn Nhất đi Vũng Tàu lên xe ở đâu? | Quầy Hải Vân nằm ở cột B5 nhà ga T1, cột GF12 nhà ga T2 và giữa cột A17, A18 nhà ga T3; xe vào rước tận quầy. Bay trễ thì gọi 1900 6763 để đổi sang chuyến sau.',
+		), $sg_vt_common_faq ) ),
+		'pickup_points'    => implode( "\n", array(
+			'Phòng chờ 34 Nguyễn Thái Bình | Phường Bến Thành, Quận 1, TP. Hồ Chí Minh | Gần chợ Bến Thành, điểm đón phụ 159 Điện Biên Phủ',
+			'Quầy sân bay Tân Sơn Nhất | Nhà ga T1 (cột B5), T2 (cột GF12), T3 (cột A17 – A18) | Xe vào rước tận quầy',
+			'307 Nguyễn Văn Trỗi | Quận Tân Bình, TP. Hồ Chí Minh | Gần sân bay, tiện nối chuyến',
+			'607 Điện Biên Phủ | Quận Bình Thạnh, TP. Hồ Chí Minh | Hướng ra cao tốc',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Phòng chờ 34 Nguyễn Thái Bình | Phường Bến Thành, Quận 1, TP. Hồ Chí Minh | Phòng chờ 7:00 – 21:00, xe chạy 5:00 – 0:00 | Hotline 1900 6763 | ' . $map( '34 Nguyễn Thái Bình, Bến Thành, Quận 1, Hồ Chí Minh' ),
+			'Phòng chờ 156B Lê Hồng Phong | TP. Vũng Tàu | Phòng chờ 7:00 – 21:00, xe chạy 2:00 – 21:45 | Khách Bà Rịa lên xe tại 54 Lê Thành Duy | ' . $map( '156B Lê Hồng Phong, Vũng Tàu' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Royal | 9 | 230.000đ | Khoang thương gia 9 chỗ, ghế không trọng lực, không gian riêng tư. Có trung chuyển đi kèm, trừ cuối tuần, lễ và Tết. | Cổng sạc USB; Điều hòa; Khăn lạnh',
+			'Luxury | 11 | 200.000đ | Limousine 11 chỗ, ghế da êm, massage, có sạc pin không dây và wifi. | Cổng sạc USB; Điều hòa; Wifi; Nước khoáng; Khăn lạnh',
+			'Economy | 9 | 220.000đ | Limousine 9 chỗ đủ tiện nghi cơ bản: ghế massage, wifi, nước khoáng và khăn lạnh. | Cổng sạc USB; Điều hòa; Wifi; Khăn lạnh',
+		) ),
+		'related'          => "Vũng Tàu đi Sài Gòn | vung-tau/quan-1-san-bay\nTân Sơn Nhất đi Vũng Tàu | tan-son-nhat/vung-tau\nVũng Tàu đi Tân Sơn Nhất | vung-tau/tan-son-nhat",
+		'reverse'          => 'Vũng Tàu đi Sài Gòn | vung-tau/quan-1-san-bay',
+		'round_trip_note'  => 'Đi cả hai chiều: đặt chiều đi trước, rồi tìm chuyến Vũng Tàu về Sài Gòn theo ngày về bạn muốn. Hai chiều có thể khác giờ và giá, hãy kiểm tra từng chiều trước khi thanh toán.',
+	),
+	'vung-tau/quan-1-san-bay' => array(
+		'seo_title'        => 'Xe Vũng Tàu đi Sài Gòn (Quận 1): giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe limousine Hải Vân từ Vũng Tàu về Quận 1 và sân bay Tân Sơn Nhất. Xe chạy từ 2h đến 21h45, chọn ghế và giữ vé trên điện thoại.',
+		'h1'               => 'Xe Vũng Tàu đi Sài Gòn (Quận 1)',
+		'intro'            => 'Từ bến Vũng Tàu, limousine Hải Vân chạy từ 2 giờ sáng đến 21 giờ 45, khoảng 15 đến 30 phút một chuyến, về Quận 1 và sân bay Tân Sơn Nhất. Chọn ghế và giữ vé điện tử trên điện thoại.',
+		'schedule_text'    => '<p>Bảng dưới liệt kê các chuyến rời Vũng Tàu theo ngày bạn chọn. Giá của chiều về có thể khác chiều đi, hãy xem giá từng chuyến. Cần đổi giờ hay huỷ vé, gọi 1900 6763 trước giờ xe chạy ít nhất một tiếng.</p>',
+		'content_html'     => '<h2>Về Sài Gòn thuận tiện hơn thế nào?</h2>' . $ul( array(
+			'Chuyến đầu lúc 2h sáng giúp khách cần về sớm để đi làm, bắt chuyến bay hoặc đi khám bệnh.',
+			'Đón gần nơi lưu trú trong khu vực phục vụ; khách ở Bà Rịa lên xe tại 54 Lê Thành Duy, phường Phước Trung.',
+			'Xe về điểm trung tâm Quận 1, sau đó có trung chuyển tiếp ra bệnh viện như Chợ Rẫy, Từ Dũ, Nhi Đồng 2, Ung Bướu.',
+			'Khách ra sân bay Tân Sơn Nhất xuống ngay quầy Hải Vân ở nhà ga T1, T2, T3.',
+		) ) . '<h2>Trước giờ xe chạy</h2><p>Xác nhận điểm hẹn và giờ có mặt ghi trên vé, nhất là khi lên xe gần khách sạn hoặc resort. Chặng Vũng Tàu – Sài Gòn dự trù khoảng 3 giờ nên hãy chừa thêm thời gian nếu bạn có chuyến bay.</p>',
+		'faq'              => implode( "\n", array_merge( array(
+			'Xe Vũng Tàu về Sài Gòn chạy từ mấy giờ đến mấy giờ? | Bến Vũng Tàu mở từ 2h sáng, chuyến cuối xuất bến lúc 21h45, trung bình 15 đến 30 phút một chuyến.',
+			'Lên xe ở đâu tại Vũng Tàu? | Phòng chờ 156B Lê Hồng Phong, TP. Vũng Tàu. Có thể đón gần nơi lưu trú trong khu vực phục vụ, hãy ghi địa chỉ khi đặt vé.',
+			'Đi xe Vũng Tàu về Sài Gòn mất bao lâu? | Khoảng 3 giờ, tuỳ điểm đón, trung chuyển và giao thông. Xem giờ đến dự kiến của chuyến để sắp xếp lịch tiếp theo.',
+			'Khách ở Bà Rịa lên xe ở đâu? | Điểm đón ở Bà Rịa là 54 Lê Thành Duy, phường Phước Trung. Chọn đúng điểm này khi đặt vé và kiểm tra giờ đón trên vé.',
+			'Xe có đưa khách ra sân bay Tân Sơn Nhất không? | Có. Hải Vân có quầy ở các nhà ga T1, T2, T3; nhân viên hỗ trợ hành lý và xe vào rước tận quầy.',
+		), $sg_vt_common_faq ) ),
+		'pickup_points'    => implode( "\n", array(
+			'Phòng chờ 156B Lê Hồng Phong | TP. Vũng Tàu | Có thể đón gần nơi lưu trú trong khu vực phục vụ',
+			'54 Lê Thành Duy | Phường Phước Trung, Bà Rịa | Điểm đón của khách Bà Rịa',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Phòng chờ 156B Lê Hồng Phong | TP. Vũng Tàu | Phòng chờ 7:00 – 21:00, xe chạy 2:00 – 21:45 | Hotline 1900 6763 | ' . $map( '156B Lê Hồng Phong, Vũng Tàu' ),
+			'Phòng chờ 34 Nguyễn Thái Bình | Phường Bến Thành, Quận 1, TP. Hồ Chí Minh | Phòng chờ 7:00 – 21:00, xe chạy 5:00 – 0:00 | Điểm trả chính ở Quận 1 | ' . $map( '34 Nguyễn Thái Bình, Bến Thành, Quận 1, Hồ Chí Minh' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Royal | 9 | | Khoang thương gia 9 chỗ, ghế không trọng lực, không gian riêng tư. | Cổng sạc USB; Điều hòa; Khăn lạnh',
+			'Luxury | 11 | | Limousine 11 chỗ, ghế da êm, massage, wifi, nước khoáng và khăn lạnh. | Cổng sạc USB; Điều hòa; Wifi; Nước khoáng; Khăn lạnh',
+			'Economy | 9 | | Limousine 9 chỗ đủ tiện nghi cơ bản: ghế massage, wifi, nước khoáng. | Cổng sạc USB; Điều hòa; Wifi; Nước khoáng',
+		) ),
+		'related'          => "Sài Gòn đi Vũng Tàu | quan-1/vung-tau\nVũng Tàu đi Tân Sơn Nhất | vung-tau/tan-son-nhat\nTân Sơn Nhất đi Vũng Tàu | tan-son-nhat/vung-tau",
+		'reverse'          => 'Sài Gòn đi Vũng Tàu | quan-1/vung-tau',
+		'round_trip_note'  => 'Đi cả hai chiều: sau khi giữ vé chiều về, tìm thêm chuyến Sài Gòn đi Vũng Tàu cho ngày đi. Mỗi chiều chọn giờ, hạng xe và ghế riêng.',
+	),
+	'my-dinh/dien-bien' => array(
+		'seo_title'        => 'Xe đi Điện Biên từ Mỹ Đình: giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe giường nằm Hải Vân Hà Nội đi Điện Biên: xe chạy đêm từ Bến xe Mỹ Đình, 3 hạng Eco, Luxury, Royal Cabin. Chọn giường, giữ vé online.',
+		'h1'               => 'Đặt vé xe Hà Nội đi Điện Biên',
+		'intro'            => 'Xe giường nằm Hải Vân rời Bến xe Mỹ Đình buổi tối và tới Điện Biên vào sáng hôm sau. Chọn một trong ba hạng xe, chọn giường trên sơ đồ và nhận vé điện tử trên điện thoại.',
+		'schedule_text'    => '<p>Xe chạy qua đêm nên hãy xem kỹ ngày đến của chuyến. Mỗi hạng một mức giá, giá chính xác hiện trên từng giường khi bạn mở sơ đồ. Giờ xuất bến cụ thể nằm ở bảng bên dưới.</p>',
+		'content_html'     => '<h2>Lên Tây Bắc bằng xe giường nằm</h2><p>Chặng Hà Nội – Điện Biên dài hơn mười tiếng đường đèo, vì vậy Hải Vân chạy giường nằm buổi tối để bạn ngủ một giấc là tới nơi. Mỗi chuyến do tài xế quen tuyến cầm lái.</p>' . $ul( array(
+			'Ba hạng: Eco (giường da, chăn gối, sạc USB), Luxury (rèm che riêng, màn hình) và Royal Cabin (cabin riêng).',
+			'Mỗi khách một giường đánh số; Hải Vân không bán ghế phụ, không cho nằm sàn.',
+			'Tới sớm ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng, ngay cạnh Bến xe Mỹ Đình: điều hòa, trà bánh, chỗ để hành lý.',
+			'Khách từ Điện Biên, Sơn La xuống Hà Nội khám bệnh được xe trung chuyển miễn phí từ văn phòng 01 Nguyễn Hoàng tới các bệnh viện lớn; đăng ký với tổng đài hoặc lái xe khi đặt vé.',
+		) ) . '<h2>Điểm đón và trả</h2><p>Đầu Hà Nội xuất bến ở Bến xe Mỹ Đình; đầu Điện Biên đón trả ở Bến xe khách thành phố Điện Biên Phủ. Bản Phủ và Mường Chà chỉ có trên một số chuyến, hãy chọn đúng điểm có trong chuyến bạn đặt hoặc gọi 1900 6763 để xác nhận.</p><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>',
+		'faq'              => implode( "\n", array(
+			'Xe Hà Nội đi Điện Biên chạy mất bao lâu? | Hơn mười tiếng đường đèo; xe rời bến buổi tối và tới nơi vào sáng hôm sau. Giờ cụ thể xem ở bảng chuyến.',
+			'Đi Điện Biên nên chọn hạng xe nào? | Eco có giường da, chăn gối và sạc USB; Luxury thêm rèm che và màn hình riêng; Royal Cabin là cabin riêng rộng rãi. Chọn theo ngân sách và mức riêng tư bạn cần.',
+			'Chờ xe ở Hà Nội ở đâu cho thoải mái? | Phòng chờ Hải Vân ở 01 Nguyễn Hoàng, phường Mỹ Đình, cạnh Bến xe Mỹ Đình, có điều hòa, chỗ ngồi, trà bánh và trái cây.',
+			'Xe có nhồi nhét hay bán ghế phụ không? | Không. Mỗi khách một giường đã đánh số trên sơ đồ, xe không nhận thêm khách dọc đường và chạy đúng tuyến đã đăng ký.',
+			'Xuống Hà Nội khám bệnh có xe trung chuyển không? | Có. Khách từ Điện Biên, Sơn La được trung chuyển miễn phí từ văn phòng 01 Nguyễn Hoàng tới các bệnh viện lớn. Đăng ký với tổng đài 1900 6763 hoặc lái xe khi đặt vé.',
+			'Có gửi hàng theo tuyến Hà Nội đến Điện Biên không? | Có. Hải Vân nhận gửi hàng hai chiều, hàng đi Tây Bắc thường tới nơi sau 4 đến 12 tiếng. Báo loại hàng và khối lượng cho tổng đài để được tư vấn cước.',
+			'Làm sao biết đúng điểm đón và trả của tôi? | Đối chiếu tên điểm đón và giờ có mặt ghi trên vé. Điểm Bản Phủ và Mường Chà chỉ có ở một số chuyến, gọi 1900 6763 để xác nhận chỗ đứng đợi.',
+		) ),
+		'pickup_points'    => implode( "\n", array(
+			'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Có mặt trước giờ xe chạy',
+			'Phòng chờ 01 Nguyễn Hoàng | Phường Mỹ Đình, Hà Nội | Ngay cạnh Bến xe Mỹ Đình',
+			'Bến xe khách thành phố Điện Biên Phủ | 79 Quốc lộ 12, phường Điện Biên Phủ | Điểm đón trả chính ở Điện Biên',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Phòng chờ 01 Nguyễn Hoàng | 01 Nguyễn Hoàng, phường Mỹ Đình, Hà Nội | Mở theo giờ xe, hỏi 1900 6763 | Đặt vé, gửi nhận hàng, xe trung chuyển bệnh viện | ' . $map( '01 Nguyễn Hoàng, Mỹ Đình, Hà Nội' ),
+			'Văn phòng Hải Vân Điện Biên | 300 Nguyễn Hữu Thọ, phường Mường Thanh, Điện Biên Phủ | Gọi 1900 6763 trước khi tới | Hỗ trợ đặt vé và hỏi đáp chuyến | ' . $map( '300 Nguyễn Hữu Thọ, Mường Thanh, Điện Biên Phủ' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Eco | | | Giường da, chăn gối, tủ lạnh nước uống và cổng sạc USB tại giường. | Điều hòa; Giường da, chăn gối; Cổng sạc USB; Nước uống ướp lạnh',
+			'Luxury | 34 | | Khoang mobihome, giường có rèm che riêng tư, màn hình và bàn nhỏ để đồ. | Điều hòa; Chăn gối; Rèm che riêng tư; Màn hình riêng',
+			'Royal Cabin | | | Cabin riêng rộng rãi, chăn ga trắng, màn hình và bảng điều khiển tại giường. | Điều hòa; Cabin riêng; Chăn ga gối trắng; Màn hình và bảng điều khiển',
+		) ),
+		'related'          => "Yên Nghĩa đi Điện Biên | yen-nghia/dien-bien\nMỹ Đình đi Bản Phủ | my-dinh/ban-phu\nMỹ Đình đi Mường Chà | my-dinh/muong-cha\nMỹ Đình đi Sơn La | my-dinh/son-la",
+		'reverse'          => 'Điện Biên về Hà Nội | dien-bien/my-dinh',
+		'round_trip_note'  => 'Đi khứ hồi: chọn chuyến, hạng xe và giường riêng cho từng chiều. Chuyến qua đêm có thể tới nơi vào hôm sau, hãy đối chiếu ngày đến của chiều đi trước khi chọn ngày về. Gọi 1900 6763 nếu cần hỗ trợ.',
+	),
+	'my-dinh/son-la' => array(
+		'seo_title'        => 'Xe đi Sơn La từ Mỹ Đình: giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe Hà Nội đi Sơn La của Hải Vân: giường nằm và limousine, xe xuất bến từ Bến xe Mỹ Đình nhiều giờ trong ngày. Chọn chỗ, giữ vé online.',
+		'h1'               => 'Đặt vé xe Hà Nội đi Sơn La',
+		'intro'            => 'Hải Vân Xuân Tráng chạy Hà Nội – Sơn La bằng limousine và giường nằm, xuất bến từ Bến xe Mỹ Đình nhiều khung giờ trong ngày. Chọn chuyến, chọn chỗ và giữ vé điện tử trên điện thoại.',
+		'schedule_text'    => '<p>Hạng vé, số giường và giá thay đổi theo chuyến; mở một chuyến để xem ảnh xe và chọn chỗ. Chuyến rời bến muộn có thể tới Sơn La vào sáng hôm sau, hãy xem kỹ ngày đến.</p>',
+		'content_html'     => '<h2>Đi Sơn La nhiều giờ, hai dòng xe</h2><p>Theo nhà xe, cứ khoảng 30 phút đến một giờ có một chuyến xuất bến. Hành trình dự kiến khoảng 6 đến 8 tiếng, thay đổi theo chuyến, giao thông và thời tiết.</p>' . $ul( array(
+			'Limousine cao cấp: ghế massage, điều hòa, cổng sạc USB, wifi.',
+			'Xe giường nằm: chăn ga gối, màn hình, rèm che riêng tư.',
+			'Phòng vé ở Mỹ Đình, Mộc Châu và Sơn La; đặt qua ứng dụng, website hoặc tổng đài 1900 6763 và 1900 9398.',
+		) ) . '<h2>Điểm đón và trả</h2><p>Đầu Hà Nội có ba điểm cố định: Bến xe Mỹ Đình, số 35 Nguyễn Tuân và số 10 Châu Văn Liêm. Đầu Sơn La đón trả tận nơi trong khu vực trung tâm thành phố: ghi địa chỉ khi đặt vé hoặc gọi 1900 6763 để xác nhận điểm hẹn.</p>',
+		'faq'              => implode( "\n", array(
+			'Xe Hà Nội đi Sơn La đón và trả khách ở đâu? | Đầu Hà Nội có Bến xe Mỹ Đình, 35 Nguyễn Tuân và 10 Châu Văn Liêm. Đầu Sơn La đón trả tận nơi trong khu vực trung tâm thành phố, ghi địa chỉ khi đặt vé.',
+			'Xe Hà Nội đi Sơn La mất bao lâu? | Khoảng 6 đến 8 tiếng, thay đổi theo chuyến, giao thông và thời tiết. Chuyến rời bến muộn có thể tới nơi vào sáng hôm sau.',
+			'Bao lâu có một chuyến? | Theo nhà xe, khoảng 30 phút đến một giờ có một chuyến xuất bến. Giờ chính xác xem ở bảng chuyến theo ngày bạn chọn.',
+			'Giá vé được tính thế nào? | Giá tuỳ chuyến, loại xe (limousine hoặc giường nằm) và hạng vé. Giá chính xác hiện trên từng chỗ khi bạn mở sơ đồ.',
+			'Có gửi hàng theo tuyến này không? | Có. Trạm dừng nghỉ Hải Vân Xuân Tráng ở Tổ dân phố 70, phường Vân Sơn, Mộc Châu là phòng chờ và điểm giao nhận hàng. Gọi 1900 6763 hoặc 1900 9398 để hỏi cước và thời gian.',
+			'Cần hỗ trợ đặt vé thì liên hệ ai? | Gọi tổng đài 1900 6763 hoặc 1900 9398 để được hỗ trợ chọn chuyến, xác nhận điểm đón trả và các việc về vé.',
+		) ),
+		'pickup_points'    => implode( "\n", array(
+			'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Nơi xe xuất bến ở đầu Hà Nội',
+			'35 Nguyễn Tuân | Quận Thanh Xuân, Hà Nội | Văn phòng nhà xe, hỏi giờ làm việc qua 1900 6763',
+			'10 Châu Văn Liêm | Quận Nam Từ Liêm, Hà Nội | Gọi để xác nhận chuyến có dừng tại đây',
+			'Trung tâm thành phố Sơn La | Đón trả tận nơi | Ghi địa chỉ khi đặt vé',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Văn phòng 35 Nguyễn Tuân | Số 35 Nguyễn Tuân, quận Thanh Xuân, Hà Nội | Hỏi giờ làm việc qua 1900 6763 hoặc 1900 9398 | Văn phòng nhà xe ở Hà Nội | ' . $map( '35 Nguyễn Tuân, Thanh Xuân, Hà Nội' ),
+			'Trạm dừng nghỉ Mộc Châu | Tổ dân phố 70, phường Vân Sơn, Mộc Châu, Sơn La | Gọi 1900 6763 để hỏi giờ | Phòng chờ và điểm giao nhận hàng | ' . $map( 'Tổ dân phố 70, Vân Sơn, Mộc Châu, Sơn La' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Cao cấp | 24 | 320.000đ | Xe giường nằm 24 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Màn hình LCD riêng; Cổng sạc USB; Khăn ướt',
+			'Phổ thông | 34 | 300.000đ | Xe giường nằm 34 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+		) ),
+		'related'          => "Mỹ Đình đi Điện Biên | my-dinh/dien-bien\nMỹ Đình đi Mộc Châu | my-dinh/moc-chau\nYên Nghĩa đi Điện Biên | yen-nghia/dien-bien",
+		'reverse'          => 'Sơn La về Hà Nội | son-la/my-dinh',
+		'round_trip_note'  => 'Trang này bán vé một chiều Hà Nội đi Sơn La. Muốn đi khứ hồi, đặt riêng chuyến Sơn La về Hà Nội ở bước tìm vé và kiểm tra giờ đến của chiều đi.',
+	),
+
+	// ---- Hà Nội ⇄ Mộc Châu, Sơn La ⇄ Hà Nội, Điện Biên ⇄ Hà Nội (dữ kiện: mua-ve-xe-ha-noi-moc-chau, mua-ve-xe-moc-chau-ha-noi, mua-ve-xe-son-la-ha-noi, mua-ve-xe-dien-bien-ha-noi). ----
+	// Hai chiều cố ý khác nhau: chiều đi mở bằng điểm đón ở Hà Nội và FAQ xoay quanh giá/giờ xuất bến; chiều về mở bằng điểm đón ở tỉnh và FAQ xoay quanh giờ đến Hà Nội, khám bệnh, nối chuyến.
+	'my-dinh/moc-chau' => array(
+		'seo_title'        => 'Xe đi Mộc Châu từ Mỹ Đình: giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe Hải Vân Xuân Tráng từ Bến xe Mỹ Đình đi Mộc Châu: limousine và giường nằm, nhiều chuyến mỗi ngày. Chọn chỗ, giữ vé điện tử.',
+		'h1'               => 'Đặt vé xe Hà Nội đi Mộc Châu (Mỹ Đình)',
+		'intro'            => 'Hải Vân Xuân Tráng chạy limousine và giường nằm Hà Nội – Mộc Châu, xuất bến từ Bến xe Mỹ Đình nhiều giờ trong ngày, hành trình khoảng 4 giờ 15 đến 4 giờ 35 phút tuỳ chuyến. Chọn chuyến, chọn chỗ và giữ vé điện tử trên điện thoại.',
+		'schedule_text'    => '<p>Bảng dưới liệt kê các chuyến rời Hà Nội theo ngày bạn chọn, kèm giờ đến và ngày đến dự kiến. Chuyến tối hoặc đêm có thể tới Mộc Châu vào hôm sau. Giá đổi theo hạng xe và chỗ ngồi, giá chính xác hiện khi bạn mở sơ đồ.</p>',
+		'content_html'     => '<h2>Đi Mộc Châu từ Mỹ Đình</h2><p>Mộc Châu là cao nguyên đồi chè, đẹp nhất vào mùa hoa mận, hoa đào. Theo nhà xe, cứ khoảng 30 phút đến một giờ có một chuyến xuất bến, có cả chuyến tối và đêm nên bạn dễ chọn lịch hợp với ngày nghỉ.</p>' . $ul( array(
+			'Hai dòng xe: limousine (ghế massage, điều hòa, cổng sạc USB, wifi) và xe giường nằm (chăn ga gối, màn hình, rèm che riêng tư).',
+			'Đón ở Hà Nội tại Bến xe Mỹ Đình, 35 Nguyễn Tuân hoặc 10 Châu Văn Liêm; chọn điểm khi đặt vé.',
+			'Trả ở Mộc Châu tại tám điểm: Nông trường Mộc Châu, khách sạn Mường Thanh, khách sạn Trường Giang, Bến xe Mộc Châu, văn phòng 254 Trần Huy Liệu, Bản Áng, ngã ba Pa Háng và cây xăng Mường Sang.',
+			'Mỗi chuyến chỉ phục vụ một số điểm trong danh sách, hãy chọn đúng điểm có trên chuyến bạn đặt.',
+		) ) . '<h2>Trạm dừng nghỉ và gửi hàng</h2><p>Hải Vân Xuân Tráng có trạm dừng nghỉ ở Tổ dân phố 70, phường Vân Sơn, Mộc Châu: phòng chờ đồng thời là điểm giao nhận hàng. Xem thêm <a href="/diem-den/moc-chau">kinh nghiệm du lịch Mộc Châu</a> trước chuyến đi.</p>',
+		'faq'              => implode( "\n", array(
+			'Vé xe Hà Nội đi Mộc Châu giá bao nhiêu? | Giá phụ thuộc hạng xe, chuyến và chỗ. Chọn ngày đi rồi xem bảng chuyến, mỗi chuyến hiện giá thấp nhất; giá chính xác từng chỗ hiện khi mở sơ đồ. Giá chiều ngược lại có thể khác.',
+			'Xe Hà Nội đi Mộc Châu mất bao lâu? | Hành trình dự kiến khoảng 4 giờ 15 đến 4 giờ 35 phút tuỳ chuyến, thay đổi theo giao thông và thời tiết. Chuyến tối hoặc đêm có thể tới nơi vào hôm sau, hãy xem ngày đến trước khi đặt.',
+			'Xe đi Mộc Châu đón khách ở đâu tại Hà Nội? | Ba điểm cố định: Bến xe Mỹ Đình (số 20 đường Phạm Hùng), 35 Nguyễn Tuân (quận Thanh Xuân) và 10 Châu Văn Liêm (quận Nam Từ Liêm). Chọn điểm khi đặt vé và đối chiếu giờ có mặt ghi trên vé.',
+			'Nên chọn limousine hay giường nằm đi Mộc Châu? | Tuỳ chuyến là limousine hoặc giường nằm ở các hạng Royal, Cao cấp, Trung cấp, Phổ thông. So ảnh xe, sơ đồ chỗ và giá của đúng chuyến bạn định đi.',
+			'Có chọn nhiều chỗ cho cả nhóm được không? | Được, chọn một hoặc nhiều chỗ còn trống trên sơ đồ. Muốn ngồi gần nhau thì kiểm tra vị trí trước khi tiếp tục; hệ thống không mặc định cả nhóm có chỗ liền nhau.',
+			'Hải Vân Xuân Tráng có nhận gửi hàng đi Mộc Châu không? | Có. Trạm dừng nghỉ ở Tổ dân phố 70, phường Vân Sơn, Mộc Châu là điểm giao nhận hàng. Gọi 1900 6763 hoặc 1900 9398 để báo loại hàng, khối lượng và hỏi điểm nhận tại Hà Nội.',
+			'Văn phòng nhà xe ở Hà Nội nằm ở đâu? | Số 35 Nguyễn Tuân, quận Thanh Xuân, Hà Nội. Gọi 1900 6763 hoặc 1900 9398 để hỏi giờ làm việc.',
+			'Bao lâu có một chuyến và đặt bằng cách nào? | Khoảng 30 phút đến một giờ có một chuyến xuất bến. Đặt qua ứng dụng Hải Vân, website haivan.com, tổng đài 1900 6763 hoặc các phòng vé ở Mỹ Đình, Mộc Châu và Sơn La.',
+		) ),
+		'pickup_points'    => implode( "\n", array(
+			'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Điểm đón cố định ở đầu Hà Nội',
+			'35 Nguyễn Tuân | Quận Thanh Xuân, Hà Nội | Điểm đón cố định, cũng là văn phòng nhà xe',
+			'10 Châu Văn Liêm | Quận Nam Từ Liêm, Hà Nội | Điểm đón cố định ở đầu Hà Nội',
+			'Nông trường Mộc Châu | Thị trấn Nông trường Mộc Châu, huyện Mộc Châu, Sơn La | Điểm trả ở Mộc Châu',
+			'Khách sạn Mường Thanh | Đường Hoàng Quốc Việt, Phiêng Luông, Mộc Châu | Điểm trả ở Mộc Châu',
+			'Khách sạn Trường Giang | Đường Hoàng Quốc Việt, Phiêng Luông, Mộc Châu | Điểm trả ở Mộc Châu',
+			'Bến xe Mộc Châu | Quốc lộ 6, thị trấn Mộc Châu, Sơn La | Điểm trả ở Mộc Châu',
+			'Văn phòng 254 Trần Huy Liệu | 254 Trần Huy Liệu, thị trấn Mộc Châu, Sơn La | Điểm trả ở Mộc Châu',
+			'Bản Áng | Xã Đông Sang, Mộc Châu, Sơn La | Điểm trả ở Mộc Châu',
+			'Ngã ba Pa Háng | Thị trấn Mộc Châu, Sơn La | Điểm trả ở Mộc Châu',
+			'Cây xăng Mường Sang | Xã Mường Sang, Mộc Châu, Sơn La | Điểm trả ở Mộc Châu',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Văn phòng 35 Nguyễn Tuân | Số 35 Nguyễn Tuân, quận Thanh Xuân, Hà Nội | Gọi 1900 6763 hoặc 1900 9398 để hỏi giờ làm việc | Văn phòng nhà xe ở Hà Nội | ' . $map( '35 Nguyễn Tuân, Thanh Xuân, Hà Nội' ),
+			'Trạm dừng nghỉ Mộc Châu | Tổ dân phố 70, phường Vân Sơn, Mộc Châu, Sơn La | Gọi 1900 6763 để hỏi giờ | Phòng chờ và điểm giao nhận hàng | ' . $map( 'Tổ dân phố 70, Vân Sơn, Mộc Châu, Sơn La' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Royal | | 300.000đ | Limousine cao cấp: ghế massage, ngả và nâng hạ tuỳ chỉnh, điều hòa, wifi. Số chỗ theo sơ đồ từng chuyến. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+			'Cao cấp | 24 | 320.000đ | Xe giường nằm 24 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Màn hình LCD riêng; Cổng sạc USB; Khăn ướt',
+			'Trung cấp | | 270.000đ | Limousine, số chỗ theo sơ đồ từng chuyến. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+			'Phổ thông | 34 | 300.000đ | Xe giường nằm 34 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+		) ),
+		'related'          => "Mộc Châu về Hà Nội | moc-chau/my-dinh\nMỹ Đình đi Sơn La | my-dinh/son-la\nMỹ Đình đi Điện Biên | my-dinh/dien-bien",
+		'reverse'          => 'Mộc Châu về Hà Nội | moc-chau/my-dinh',
+		'round_trip_note'  => 'Trang này bán vé một chiều Hà Nội đi Mộc Châu. Muốn đi khứ hồi, đặt riêng chuyến Mộc Châu về Hà Nội ở trang chiều về, rồi kiểm tra ngày đến của chiều đi trước khi chọn ngày về.',
+	),
+	'moc-chau/my-dinh' => array(
+		'seo_title'        => 'Xe Mộc Châu về Hà Nội (Mỹ Đình): giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe Hải Vân Xuân Tráng từ Mộc Châu về Bến xe Mỹ Đình, Hà Nội: limousine và giường nằm. Xem giờ đến, giá vé, chọn chỗ trống.',
+		'h1'               => 'Đặt vé xe Mộc Châu về Hà Nội (Mỹ Đình)',
+		'intro'            => 'Từ Mộc Châu, Hải Vân Xuân Tráng chạy limousine và giường nằm về Bến xe Mỹ Đình nhiều giờ trong ngày, hành trình khoảng 4 giờ 20 phút đến 5 giờ 5 phút tuỳ chuyến. Xem giờ đến của từng chuyến rồi chọn chỗ.',
+		'schedule_text'    => '<p>Bảng dưới liệt kê các chuyến rời Mộc Châu theo ngày bạn chọn, kèm giờ đến Hà Nội. Giờ và giá của chiều về có thể khác chiều đi, hãy xem từng chuyến. Chuyến tối hoặc đêm có thể về tới Hà Nội vào hôm sau.</p>',
+		'content_html'     => '<h2>Về Hà Nội từ Mộc Châu</h2><p>Chọn chuyến theo giờ bạn cần có mặt ở Hà Nội: đi làm, nối chuyến hay khám bệnh. Theo nhà xe, cứ khoảng 30 phút đến một giờ có một chuyến xuất bến, gồm cả chuyến tối và đêm.</p>' . $ul( array(
+			'Lên xe ở Mộc Châu tại Nông trường Mộc Châu, khách sạn Mường Thanh, khách sạn Trường Giang, Bến xe Mộc Châu, văn phòng 254 Trần Huy Liệu, Bản Áng, ngã ba Pa Háng hoặc cây xăng Mường Sang.',
+			'Xuống ở Hà Nội tại Bến xe Mỹ Đình, 35 Nguyễn Tuân hoặc 10 Châu Văn Liêm.',
+			'Hai dòng xe: limousine và giường nằm; hạng vé hiện ngay trên từng chuyến.',
+			'Hải Vân Xuân Tráng phối hợp chính quyền địa phương trao thẻ đi xe miễn phí tuyến Mộc Châu – Hà Nội cho người bệnh có hoàn cảnh khó khăn, theo bài đăng chính thức của chương trình.',
+		) ) . '<h2>Trước giờ xe chạy</h2><p>Ghi rõ điểm hẹn ở Mộc Châu khi đặt vé hoặc gọi 1900 6763 để xác nhận chỗ đứng đợi. Trạm dừng nghỉ ở Tổ dân phố 70, phường Vân Sơn là phòng chờ và điểm giao nhận hàng. Xem thêm <a href="/diem-den/moc-chau">kinh nghiệm du lịch Mộc Châu</a>.</p>',
+		'faq'              => implode( "\n", array(
+			'Xe Mộc Châu về Hà Nội mất bao lâu, tới Mỹ Đình lúc nào? | Hành trình dự kiến khoảng 4 giờ 20 phút đến 5 giờ 5 phút tuỳ chuyến. Bảng chuyến hiện giờ đến và ngày đến dự kiến của từng chuyến; chuyến tối hoặc đêm có thể tới Hà Nội vào hôm sau, thời gian thực tế đổi theo giao thông và thời tiết.',
+			'Xe từ Mộc Châu đón khách ở đâu? | Tám điểm: Nông trường Mộc Châu, khách sạn Mường Thanh, khách sạn Trường Giang, Bến xe Mộc Châu, văn phòng 254 Trần Huy Liệu, Bản Áng, ngã ba Pa Háng, cây xăng Mường Sang. Mỗi chuyến chỉ phục vụ một số điểm, hãy chọn đúng điểm trên chuyến bạn đặt.',
+			'Xe về Hà Nội trả khách ở đâu? | Bến xe Mỹ Đình, 35 Nguyễn Tuân hoặc 10 Châu Văn Liêm. Chọn điểm trả khi đặt vé và đối chiếu giờ đến ghi trên vé.',
+			'Tôi cần về Hà Nội đúng giờ khám bệnh hoặc nối chuyến thì chọn chuyến nào? | Chọn ngày về rồi xem giờ đến của từng chuyến trong bảng, chừa thêm thời gian di chuyển từ điểm trả tới nơi hẹn. Chuyến đêm có thể đến vào sáng hôm sau.',
+			'Có thẻ đi xe miễn phí cho người bệnh Mộc Châu không? | Hải Vân Xuân Tráng phối hợp UBND phường Mộc Châu trao thẻ đi xe miễn phí tuyến Mộc Châu – Hà Nội cho người bệnh có hoàn cảnh khó khăn; danh sách do phường rà soát tại các bản. Xem bài đăng chính thức của chương trình hoặc gọi 1900 6763.',
+			'Mua vé ở đâu khi đang ở Mộc Châu? | Đặt qua ứng dụng Hải Vân, website haivan.com, tổng đài 1900 6763 / 1900 9398 hoặc phòng vé Hải Vân Xuân Tráng ở Mộc Châu.',
+			'Gửi hàng từ Mộc Châu về Hà Nội được không? | Được. Trạm dừng nghỉ ở Tổ dân phố 70, phường Vân Sơn, Mộc Châu là điểm giao nhận hàng. Báo loại hàng, khối lượng và nơi nhận qua 1900 6763 hoặc 1900 9398 để được tư vấn cước.',
+			'Giá vé chiều về có giống chiều đi không? | Không chắc. Hai chiều có thể khác giờ, hạng xe và giá, hãy xem giá từng chuyến trong bảng trước khi thanh toán.',
+		) ),
+		'pickup_points'    => implode( "\n", array(
+			'Nông trường Mộc Châu | Thị trấn Nông trường Mộc Châu, huyện Mộc Châu, Sơn La | Điểm đón ở Mộc Châu',
+			'Khách sạn Mường Thanh | Đường Hoàng Quốc Việt, Phiêng Luông, Mộc Châu | Điểm đón ở Mộc Châu',
+			'Khách sạn Trường Giang | Đường Hoàng Quốc Việt, Phiêng Luông, Mộc Châu | Điểm đón ở Mộc Châu',
+			'Bến xe Mộc Châu | Quốc lộ 6, thị trấn Mộc Châu, Sơn La | Điểm đón ở Mộc Châu',
+			'Văn phòng 254 Trần Huy Liệu | 254 Trần Huy Liệu, thị trấn Mộc Châu, Sơn La | Điểm đón ở Mộc Châu',
+			'Bản Áng | Xã Đông Sang, Mộc Châu, Sơn La | Điểm đón ở Mộc Châu',
+			'Ngã ba Pa Háng | Thị trấn Mộc Châu, Sơn La | Điểm đón ở Mộc Châu',
+			'Cây xăng Mường Sang | Xã Mường Sang, Mộc Châu, Sơn La | Điểm đón ở Mộc Châu',
+			'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Điểm trả ở Hà Nội',
+			'35 Nguyễn Tuân | Quận Thanh Xuân, Hà Nội | Điểm trả ở Hà Nội, cũng là văn phòng nhà xe',
+			'10 Châu Văn Liêm | Quận Nam Từ Liêm, Hà Nội | Điểm trả ở Hà Nội',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Trạm dừng nghỉ Mộc Châu | Tổ dân phố 70, phường Vân Sơn, Mộc Châu, Sơn La | Gọi 1900 6763 để hỏi giờ | Phòng chờ và điểm giao nhận hàng | ' . $map( 'Tổ dân phố 70, Vân Sơn, Mộc Châu, Sơn La' ),
+			'Văn phòng 35 Nguyễn Tuân | Số 35 Nguyễn Tuân, quận Thanh Xuân, Hà Nội | Gọi 1900 6763 hoặc 1900 9398 để hỏi giờ làm việc | Văn phòng nhà xe ở Hà Nội | ' . $map( '35 Nguyễn Tuân, Thanh Xuân, Hà Nội' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Trung cấp | | 270.000đ | Limousine, số chỗ theo sơ đồ từng chuyến. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+			'Phổ thông | 34 | 300.000đ | Xe giường nằm 34 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+			'Royal | | 300.000đ | Limousine cao cấp: ghế massage, ngả và nâng hạ tuỳ chỉnh, điều hòa, wifi. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+			'Cao cấp | 24 | 320.000đ | Xe giường nằm 24 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Màn hình LCD riêng; Cổng sạc USB; Khăn ướt',
+		) ),
+		'related'          => "Hà Nội đi Mộc Châu | my-dinh/moc-chau\nSơn La về Hà Nội | son-la/my-dinh\nĐiện Biên về Hà Nội | dien-bien/my-dinh",
+		'reverse'          => 'Hà Nội đi Mộc Châu | my-dinh/moc-chau',
+		'round_trip_note'  => 'Trang này bán vé một chiều Mộc Châu về Hà Nội. Nếu đã có chiều đi, chọn ngày về sau giờ đến của chiều đi; chiều ngược lại có trang riêng.',
+	),
+	'son-la/my-dinh' => array(
+		'seo_title'        => 'Xe Sơn La về Hà Nội (Mỹ Đình): giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe Hải Vân Xuân Tráng từ Sơn La về Bến xe Mỹ Đình, Hà Nội: giường nằm và limousine. Xem giờ đến, giá vé, chọn chỗ trên sơ đồ.',
+		'h1'               => 'Đặt vé xe Sơn La về Hà Nội',
+		'intro'            => 'Hải Vân Xuân Tráng đón khách ở Sơn La và đưa về Bến xe Mỹ Đình bằng limousine hoặc giường nằm, nhiều khung giờ trong ngày. Hành trình khoảng 6 đến 8 tiếng, hãy xem giờ đến của từng chuyến trước khi đặt.',
+		'schedule_text'    => '<p>Bảng dưới liệt kê các chuyến rời Sơn La theo ngày bạn chọn, kèm giờ và ngày đến Hà Nội. Chuyến rời bến muộn buổi tối có thể về tới Hà Nội vào sáng hôm sau. Giá chiều về có thể khác chiều đi.</p>',
+		'content_html'     => '<h2>Về Hà Nội từ Sơn La</h2><p>Theo nhà xe, cứ khoảng 30 phút đến một giờ có một chuyến xuất bến. Mỗi chuyến do tài xế quen tuyến cầm lái, mỗi khách một chỗ có số trên sơ đồ.</p>' . $ul( array(
+			'Đầu Sơn La đón trả tận nơi trong khu vực trung tâm thành phố: ghi địa chỉ khi đặt vé hoặc gọi 1900 6763 để xác nhận điểm hẹn; có thể lên xe ở Bến xe Sơn La.',
+			'Đầu Hà Nội xuống ở Bến xe Mỹ Đình, 35 Nguyễn Tuân hoặc 10 Châu Văn Liêm.',
+			'Hai dòng xe: limousine (ghế massage, điều hòa, cổng sạc USB, wifi) và giường nằm (chăn ga gối, màn hình, rèm che riêng tư).',
+			'Khách xuống Hà Nội khám bệnh có thể hỏi xe trung chuyển miễn phí tới các bệnh viện lớn, đăng ký với tổng đài hoặc lái xe khi đặt vé.',
+		) ) . '<h2>Nơi mua vé và gửi hàng</h2><p>Hải Vân Xuân Tráng có phòng vé ở Sơn La, Mộc Châu và Mỹ Đình; trạm dừng nghỉ ở Mộc Châu nhận giao nhận hàng. Đọc thêm <a href="/diem-den/son-la">kinh nghiệm du lịch Sơn La</a>.</p>',
+		'faq'              => implode( "\n", array(
+			'Xe Sơn La về Hà Nội đón khách ở đâu? | Đón trả tận nơi trong khu vực trung tâm thành phố Sơn La, ghi địa chỉ khi đặt vé; cũng có điểm ở Bến xe Sơn La. Gọi 1900 6763 để xác nhận chỗ đứng đợi trước ngày đi.',
+			'Xe về tới Hà Nội lúc mấy giờ? | Hành trình khoảng 6 đến 8 tiếng, thay đổi theo chuyến, giao thông và thời tiết. Bảng chuyến hiện giờ và ngày đến dự kiến; chuyến rời muộn buổi tối có thể tới nơi vào sáng hôm sau.',
+			'Về Hà Nội khám bệnh có xe trung chuyển không? | Có. Khách từ Sơn La, Điện Biên xuống Hà Nội khám bệnh được trung chuyển miễn phí từ văn phòng 01 Nguyễn Hoàng tới các bệnh viện lớn. Đăng ký với tổng đài 1900 6763 hoặc báo lái xe khi đặt vé.',
+			'Xe trả khách ở đâu tại Hà Nội? | Bến xe Mỹ Đình (số 20 đường Phạm Hùng), 35 Nguyễn Tuân hoặc 10 Châu Văn Liêm. Đối chiếu tên điểm trả và giờ trên vé.',
+			'Giá vé giường nằm, limousine Sơn La đi Hà Nội thế nào? | Giá tuỳ chuyến, loại xe và hạng vé (Cao cấp, Phổ thông, Tiết kiệm hoặc Siêu rẻ). Chọn ngày đi rồi xem giá từng chuyến; giá chính xác hiện khi mở sơ đồ.',
+			'Mua vé ở đâu khi đang ở Sơn La? | Đặt qua ứng dụng Hải Vân, website haivan.com, tổng đài 1900 6763 / 1900 9398 hoặc phòng vé Hải Vân Xuân Tráng ở Sơn La.',
+			'Ở Hà Nội có văn phòng nhà xe không? | Có, tại số 35 Nguyễn Tuân, quận Thanh Xuân. Gọi 1900 6763 hoặc 1900 9398 để hỏi giờ làm việc và đường tới văn phòng.',
+			'Có gửi hàng từ Sơn La về Hà Nội không? | Có. Hải Vân Xuân Tráng nhận gửi hàng trên tuyến Hà Nội – Mộc Châu – Sơn La, trạm dừng nghỉ ở Mộc Châu là điểm giao nhận. Gọi 1900 6763 hoặc nhắn Zalo để báo loại hàng và khối lượng.',
+		) ),
+		'pickup_points'    => implode( "\n", array(
+			'Trung tâm thành phố Sơn La | Đón trả tận nơi | Ghi địa chỉ khi đặt vé',
+			'Bến xe Sơn La | Thành phố Sơn La | Điểm đón bổ sung, gọi 1900 6763 để xác nhận trước ngày đi',
+			'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Nơi xe trả khách ở đầu Hà Nội',
+			'35 Nguyễn Tuân | Quận Thanh Xuân, Hà Nội | Văn phòng nhà xe ở Hà Nội',
+			'10 Châu Văn Liêm | Quận Nam Từ Liêm, Hà Nội | Gọi để xác nhận chuyến có dừng tại đây',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Trạm dừng nghỉ Mộc Châu | Tổ dân phố 70, phường Vân Sơn, Mộc Châu, Sơn La | Gọi 1900 6763 để hỏi giờ | Phòng chờ và điểm giao nhận hàng trên tuyến | ' . $map( 'Tổ dân phố 70, Vân Sơn, Mộc Châu, Sơn La' ),
+			'Văn phòng 35 Nguyễn Tuân | Số 35 Nguyễn Tuân, quận Thanh Xuân, Hà Nội | Gọi 1900 6763 hoặc 1900 9398 để hỏi giờ làm việc | Văn phòng nhà xe ở Hà Nội | ' . $map( '35 Nguyễn Tuân, Thanh Xuân, Hà Nội' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Phổ thông | 34 | 300.000đ | Xe giường nằm 34 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Cổng sạc USB; Khăn ướt; Nước đóng chai',
+			'Cao cấp | 24 | 320.000đ | Xe giường nằm 24 chỗ, tiện nghi hiển thị ở chi tiết từng chuyến. | Màn hình LCD riêng; Cổng sạc USB; Khăn ướt',
+		) ),
+		'related'          => "Hà Nội đi Sơn La | my-dinh/son-la\nMộc Châu về Hà Nội | moc-chau/my-dinh\nĐiện Biên về Hà Nội | dien-bien/my-dinh",
+		'reverse'          => 'Hà Nội đi Sơn La | my-dinh/son-la',
+		'round_trip_note'  => 'Trang này bán vé một chiều Sơn La về Hà Nội. Nếu đã có chiều đi, chọn ngày về sau giờ đến của chiều đi; chiều ngược lại có trang riêng.',
+	),
+	'dien-bien/my-dinh' => array(
+		'seo_title'        => 'Xe Điện Biên về Hà Nội (Mỹ Đình): giờ chạy, giá vé | Hải Vân',
+		'meta_description' => 'Đặt vé xe giường nằm Hải Vân từ Điện Biên, Bản Phủ hoặc Mường Chà về Bến xe Mỹ Đình, Hà Nội. Chọn điểm đón, xem ngày đến, chọn giường.',
+		'h1'               => 'Đặt vé xe Điện Biên về Hà Nội',
+		'intro'            => 'Xe giường nằm Hải Vân rời Điện Biên buổi tối và về tới Hà Nội vào sáng hôm sau. Chọn điểm đón ở Điện Biên, Bản Phủ hoặc Mường Chà, chọn hạng xe và giường trên sơ đồ, nhận vé điện tử trên điện thoại.',
+		'schedule_text'    => '<p>Xe chạy qua đêm nên hãy xem kỹ ngày đến Hà Nội của chuyến. Mỗi hạng một mức giá, giá chính xác hiện trên từng giường khi bạn mở sơ đồ. Bản Phủ và Mường Chà chỉ có trên một số chuyến.</p>',
+		'content_html'     => '<h2>Ngủ một giấc, sáng về Hà Nội</h2><p>Chặng Điện Biên – Hà Nội dài hơn mười tiếng đường đèo, vì vậy Hải Vân chạy giường nằm buổi tối để bạn nghỉ trên xe và tới nơi vào buổi sáng.</p>' . $ul( array(
+			'Lên xe ở Bến xe khách thành phố Điện Biên Phủ (79 Quốc lộ 12), hoặc ở Bản Phủ, Mường Chà trên một số chuyến.',
+			'Ba hạng giường nằm: Eco, Luxury và Royal Cabin; mỗi khách một giường đánh số, không ghế phụ, không nằm sàn.',
+			'Xuống ở Bến xe Mỹ Đình; ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng cạnh bến nếu bạn cần chờ thêm.',
+			'Khách xuống Hà Nội khám bệnh được xe trung chuyển miễn phí từ văn phòng 01 Nguyễn Hoàng tới các bệnh viện lớn như Nhi Trung ương, Bạch Mai, Việt Đức, K, Phụ sản Trung ương, Mắt Trung ương, Đại học Y, Quân đội 108 và Quân y 103. Đăng ký khi đặt vé.',
+		) ) . '<h2>Văn phòng và điểm hẹn</h2><p>Văn phòng Hải Vân ở Điện Biên: 300 Nguyễn Hữu Thọ, phường Mường Thanh, Điện Biên Phủ. Với Bản Phủ và Mường Chà, gọi 1900 6763 để xác nhận chỗ đứng đợi. Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>',
+		'faq'              => implode( "\n", array(
+			'Xe Điện Biên về Hà Nội tới Mỹ Đình lúc mấy giờ? | Xe rời bến buổi tối và tới nơi vào sáng hôm sau; giờ và ngày đến cụ thể xem ở bảng chuyến. Giờ đến dự kiến có thể đổi theo giao thông và thời tiết.',
+			'Tôi xuống Hà Nội khám bệnh, có kịp giờ và có xe đưa tới bệnh viện không? | Chuyến đêm về tới Hà Nội vào buổi sáng, hãy xem giờ đến dự kiến để sắp xếp lịch khám. Khách từ Điện Biên, Sơn La được trung chuyển miễn phí từ văn phòng 01 Nguyễn Hoàng tới 10 bệnh viện lớn; đăng ký với tổng đài 1900 6763 hoặc lái xe khi đặt vé.',
+			'Lên xe ở đâu tại Điện Biên? | Bến xe khách thành phố Điện Biên Phủ (79 Quốc lộ 12, phường Điện Biên Phủ) là điểm chính. Bản Phủ và Mường Chà chỉ có trên một số chuyến, chưa có địa chỉ cố định trên hệ thống nên hãy gọi 1900 6763 để xác nhận chỗ đứng đợi.',
+			'Đi khứ hồi Mỹ Đình – Điện Biên cần lưu ý gì? | Chọn chuyến, hạng xe và giường riêng cho từng chiều. Chuyến qua đêm có thể đến vào hôm sau, hãy đối chiếu ngày đến của chiều đi trước khi chọn ngày về.',
+			'Chọn hạng Eco, Luxury hay Royal Cabin? | Eco có giường da, chăn gối, sạc USB; Luxury thêm rèm che và màn hình riêng; Royal Cabin là cabin riêng rộng rãi. Chọn theo ngân sách và mức riêng tư bạn cần.',
+			'Văn phòng Hải Vân ở Điện Biên nằm đâu? | 300 Nguyễn Hữu Thọ, phường Mường Thanh, Điện Biên Phủ. Gọi 1900 6763 trước khi tới để được hướng dẫn.',
+			'Xe có nhồi nhét hay bán ghế phụ không? | Không. Mỗi khách một giường đánh số trên sơ đồ, xe không nhận thêm khách dọc đường và chạy đúng tuyến đã đăng ký.',
+			'Có gửi hàng từ Điện Biên về Hà Nội không? | Có. Hải Vân nhận gửi hàng hai chiều, hàng đi Tây Bắc thường tới nơi sau 4 đến 12 tiếng. Giao nhận tại văn phòng 01 Nguyễn Hoàng, báo loại hàng và khối lượng qua 1900 6763 hoặc Zalo.',
+		) ),
+		'pickup_points'    => implode( "\n", array(
+			'Bến xe khách thành phố Điện Biên Phủ | 79 Quốc lộ 12, phường Điện Biên Phủ | Điểm đón chính ở Điện Biên',
+			'Bản Phủ | Chưa có địa chỉ cố định | Chỉ một số chuyến, gọi 1900 6763 để xác nhận chỗ đứng đợi',
+			'Mường Chà | Chưa có địa chỉ cố định | Chỉ một số chuyến, gọi 1900 6763 để xác nhận chỗ đứng đợi',
+			'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Nơi xe trả khách ở đầu Hà Nội',
+			'Phòng chờ 01 Nguyễn Hoàng | Phường Mỹ Đình, Hà Nội | Cạnh Bến xe Mỹ Đình, xe trung chuyển bệnh viện xuất phát từ đây',
+		) ),
+		'offices'          => implode( "\n", array(
+			'Văn phòng Hải Vân Điện Biên | 300 Nguyễn Hữu Thọ, phường Mường Thanh, Điện Biên Phủ | Gọi 1900 6763 trước khi tới | Hỗ trợ đặt vé và hỏi đáp chuyến | ' . $map( '300 Nguyễn Hữu Thọ, Mường Thanh, Điện Biên Phủ' ),
+			'Phòng chờ 01 Nguyễn Hoàng | 01 Nguyễn Hoàng, phường Mỹ Đình, Hà Nội | Mở theo giờ xe, hỏi 1900 6763 | Đặt vé, gửi nhận hàng, xe trung chuyển bệnh viện | ' . $map( '01 Nguyễn Hoàng, Mỹ Đình, Hà Nội' ),
+		) ),
+		'vehicle_classes'  => implode( "\n", array(
+			'Eco | | | Giường da, chăn gối, tủ lạnh nước uống và cổng sạc USB tại giường. | Điều hòa; Giường da, chăn gối; Cổng sạc USB; Nước uống ướp lạnh',
+			'Luxury | | | Khoang mobihome, giường có rèm che riêng tư, màn hình và bàn nhỏ để đồ. | Điều hòa; Chăn gối; Rèm che riêng tư; Màn hình riêng',
+			'Royal Cabin | | | Cabin riêng rộng rãi, chăn ga trắng, màn hình và bảng điều khiển tại giường. | Điều hòa; Cabin riêng; Chăn ga gối trắng; Màn hình và bảng điều khiển',
+		) ),
+		'related'          => "Hà Nội đi Điện Biên | my-dinh/dien-bien\nSơn La về Hà Nội | son-la/my-dinh\nMộc Châu về Hà Nội | moc-chau/my-dinh",
+		'reverse'          => 'Hà Nội đi Điện Biên | my-dinh/dien-bien',
+		'round_trip_note'  => 'Trang này bán vé một chiều Điện Biên về Hà Nội. Nếu đã có chiều đi, chọn ngày về sau giờ đến của chiều đi vì chuyến qua đêm có thể đến vào hôm sau.',
+	),
+);

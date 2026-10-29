@@ -1,0 +1,12 @@
+/*
+Theme Name: Hải Vân Web (Flatsome child)
+Theme URI: https://haivan.com/
+Description: Giao diện nội dung haivan.com: header/footer dùng chung với app Next.js (REST haivan-web/v1/layout), shortcode tìm vé [haivan_search], tokens thiết kế Hải Vân. Mọi logic là PHP/JS thuần, không gọi hàm của Flatsome nên có thể đổi theme cha chỉ bằng dòng Template.
+Author: Hải Vân
+Template: flatsome
+Version: 1.0.0
+Text Domain: haivan-web
+Requires PHP: 8.1
+*/
+
+/* Style thực nằm trong assets/css/site.css (được enqueue trong functions.php). */

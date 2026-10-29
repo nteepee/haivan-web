@@ -1,0 +1,64 @@
+/* v4. Bài đọc hai cột (bài điểm đến, tin), trang điểm đến, khối tuyến liên quan, dải CTA đặt vé. */
+.hv-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-8); }
+.hv-cols > * { min-width: 0; }
+.hv-cols__main { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-4); align-content: start; }
+.hv-tags { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); }
+.hv-tags__item { display: inline-flex; align-items: center; min-height: var(--s-8); padding: var(--s-1) var(--s-3); border-radius: var(--r-1); background: var(--color-paper-3); font-size: var(--fs-14); font-weight: var(--weight-strong); line-height: var(--lh-14); }
+.hv-side { display: grid; gap: var(--s-4); align-content: start; }
+.hv-side__title { font-size: var(--fs-20); line-height: var(--lh-20); padding-bottom: var(--s-3); border-bottom: var(--hairline); max-width: none; }
+.hv-side__list { display: grid; gap: var(--s-4); }
+.hv-side__item { display: grid; gap: var(--s-1); }
+.hv-side__item a { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-3); align-items: start; text-decoration: none; }
+.hv-side__item a:not(:has(img)) { grid-template-columns: minmax(0, 1fr); }
+.hv-side__img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--r-2); box-shadow: var(--shadow-1); }
+.hv-side__name { font-weight: var(--weight-strong); }
+.hv-side__item a:hover .hv-side__name { text-decoration: underline; text-decoration-thickness: var(--line-strong); text-decoration-color: var(--color-accent); }
+.hv-side__date { padding-left: calc(33.333% + var(--s-1)); color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+@media (min-width: 60rem) { .hv-cols { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); gap: var(--s-12); align-items: start; } }
+/* Danh sách bài của điểm đến */
+.hv-postlist { display: grid; gap: var(--s-6); }
+.hv-postrow { position: relative; display: grid; gap: var(--s-3); padding-bottom: var(--s-6); border-bottom: var(--hairline); }
+.hv-postrow__thumb { display: block; aspect-ratio: 3 / 2; border-radius: var(--r-2); overflow: hidden; background: var(--color-paper-3); box-shadow: var(--shadow-1); }
+.hv-postrow__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.hv-postrow__body { display: grid; gap: var(--s-1); align-content: start; }
+.hv-postrow__title { font-size: var(--fs-20); line-height: var(--lh-20); }
+.hv-postrow__title a { display: flex; align-items: center; min-height: var(--tap-min); text-decoration: none; }
+/* Cả dòng là vùng chạm: liên kết tiêu đề phủ kín dòng bài. */
+.hv-postrow__title a::after { content: ""; position: absolute; inset: 0; }
+.hv-postrow:has(.hv-postrow__title a:focus-visible) { outline: var(--line-strong) solid var(--color-focus); outline-offset: var(--line-strong); }
+.hv-postrow__title a:focus-visible { outline: 0; }
+.hv-postrow__title a:hover { text-decoration: underline; text-decoration-thickness: var(--line-strong); text-decoration-color: var(--color-accent); }
+.hv-postrow__date { color: var(--color-muted); font-size: var(--fs-14); line-height: var(--lh-14); }
+.hv-postrow__excerpt { color: var(--color-text); }
+@media (min-width: 40rem) { .hv-postrow { grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-6); } .hv-postrow--noimg { grid-template-columns: minmax(0, 1fr); } }
+/* Khối "Xe Hải Vân đi {X}" trên trang điểm đến */
+.hv-dest-routes { display: grid; gap: var(--s-4); margin-block: var(--s-6); padding: var(--card-pad); background: var(--color-surface); border-radius: var(--r-3); box-shadow: var(--shadow-1); }
+.hv-dest-routes__list { display: grid; gap: var(--s-3); }
+.hv-dest-route { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); padding-block: var(--s-3); border-top: var(--hairline); }
+.hv-dest-route h3 { font-size: var(--fs-18); line-height: var(--lh-18); }
+.hv-dest-route p { font-size: var(--fs-14); line-height: var(--lh-14); }
+/* Dải CTA [haivan_cta]: thẻ r-3 bóng cấp 1 (không viền), một nút vàng + nút gọi xám */
+.hv-cta { display: grid; gap: var(--s-4); padding: var(--card-pad); background: var(--color-surface); border-radius: var(--r-3); box-shadow: var(--shadow-1); margin-block: var(--s-6); font-size: var(--fs-16); line-height: var(--lh-16); }
+.hv-cta-text { display: grid; gap: var(--s-1); }
+.hv-cta-title { color: var(--color-ink); font-size: var(--fs-24); font-weight: var(--weight-display); line-height: var(--lh-24); }
+.hv-cta-actions { display: flex; flex-wrap: wrap; gap: var(--s-3); }
+.hv-entry .hv-cta a.hv-btn { color: var(--color-accent-ink); text-decoration: none; font-weight: var(--weight-display); }
+@media (min-width: 60rem) { .hv-cta { grid-template-columns: minmax(0, 1fr) auto; align-items: center; } }
+/* Mục lục bài (inc/toc.php): hộp thẻ r-3 bóng cấp 1; mỗi dòng là một khối cùng nhịp (đệm dọc s-3, cao dòng 1.4, không đặt chiều cao cứng) nên một dòng và hai dòng cách đều nhau; số mục xám; h3 thụt vào sau vạch trái. Trong bài ở khổ nhỏ, trong cột phải (dính, cuộn riêng, mờ dần ở đáy) từ 64rem. */
+.hv-toc__box { padding: var(--s-2) var(--card-pad) var(--s-3); border-radius: var(--r-3); background: var(--color-surface); box-shadow: var(--shadow-1); font-size: var(--fs-16); line-height: 1.4; }
+.hv-toc summary { display: flex; align-items: center; min-height: var(--tap-min); color: var(--color-ink); font-weight: var(--weight-display); cursor: pointer; }
+.hv-toc__list, .hv-entry .hv-toc__list { display: block; margin: 0; padding: 0; list-style: none; counter-reset: hv-toc; }
+.hv-toc__list > li { counter-increment: hv-toc; }
+.hv-toc__list ol, .hv-entry .hv-toc__list ol { display: block; margin: 0 0 var(--s-1) var(--s-8); padding: 0 0 0 var(--s-3); border-left: var(--line) solid var(--color-rule); list-style: none; }
+.hv-toc a, .hv-entry .hv-toc a { display: flex; align-items: flex-start; gap: var(--s-2); margin: 0; padding: var(--s-3) var(--s-2); border-radius: var(--r-1); color: var(--color-ink); font-weight: inherit; line-height: 1.4; text-decoration: none; }
+.hv-toc__list ol a { color: var(--color-text); font-size: var(--fs-14); }
+.hv-toc a:hover { text-decoration: underline; text-decoration-thickness: var(--line-strong); text-decoration-color: var(--color-accent); }
+.hv-toc__list > li > a::before { content: counter(hv-toc) "."; flex: none; min-width: var(--s-6); color: var(--color-muted); font-variant-numeric: tabular-nums; }
+.hv-toc a[aria-current="true"] { background: var(--color-accent-soft); }
+.hv-toc--side { display: none; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+@media (min-width: 64rem) {
+  .hv-toc--inline { display: none; }
+  .hv-toc--side { display: block; }
+  .hv-side--toc { position: sticky; top: calc(var(--header-h) + var(--s-6)); max-height: calc(100vh - var(--header-h) - var(--s-12)); padding: var(--s-1) var(--s-1) var(--s-12); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; -webkit-mask-image: linear-gradient(to bottom, black calc(100% - var(--s-12)), transparent); mask-image: linear-gradient(to bottom, black calc(100% - var(--s-12)), transparent); }
+}

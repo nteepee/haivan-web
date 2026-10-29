@@ -1,0 +1,30 @@
+/* Admin: danh sách và form banner / ưu đãi. Màu lấy từ tokens.css (nạp trước). */
+.column-hv_thumb { width: 8.5rem; }
+.column-menu_order { width: 5rem; }
+.column-hv_status { width: 12rem; white-space: nowrap; }
+.hv-thumb { display: block; width: 7.5rem; max-width: 100%; height: auto; background: var(--color-paper-2); border-radius: var(--r-1); }
+.hv-thumb--designed { position: relative; display: grid; grid-template-columns: 1fr 1fr; align-items: center; min-height: 3.5rem; padding: var(--s-2); overflow: hidden; background: var(--c); color: var(--on); font-size: var(--fs-14); line-height: var(--lh-14); }
+.hv-thumb--designed img { width: 100%; height: auto; }
+.hv-thumb--offer { display: grid; place-items: center; width: 7.5rem; height: 5.5rem; padding: var(--s-2); overflow: hidden; background: var(--c); }
+.hv-thumb--offer img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-1); }
+.hv-tone-blue { --c: var(--color-promo-blue); --on: var(--color-on-blue); }
+.hv-tone-orange { --c: var(--color-promo-orange); --on: var(--color-on-orange); }
+.hv-tone-teal { --c: var(--color-promo-teal); --on: var(--color-on-teal); }
+.hv-tone-coral { --c: var(--color-promo-coral); --on: var(--color-on-coral); }
+.hv-tone-leaf { --c: var(--color-promo-leaf); --on: var(--color-on-leaf); }
+.hv-swatch { display: inline-block; width: 1.5rem; height: 1.5rem; vertical-align: middle; border-radius: var(--r-1); border: var(--line) solid var(--color-rule); }
+.hv-swatch--blue { background: var(--color-promo-blue); } .hv-swatch--orange { background: var(--color-promo-orange); }
+.hv-swatch--teal { background: var(--color-promo-teal); } .hv-swatch--coral { background: var(--color-promo-coral); }
+.hv-swatch--leaf { background: var(--color-promo-leaf); }
+.hv-status { display: inline-block; padding: 0 var(--s-2); border-radius: var(--r-1); font-weight: var(--weight-display); border: var(--line) solid currentColor; }
+.hv-status--active { color: var(--color-success); } .hv-status--upcoming { color: var(--color-ink); } .hv-status--expired, .hv-status--draft { color: var(--color-muted); }
+.hv-kind { margin: 0 0 var(--s-4); padding: 0; border: 0; }
+.hv-kind-box { margin-bottom: var(--s-4); padding: var(--s-3) var(--s-4); border: var(--line) solid var(--color-rule); border-radius: var(--r-1); background: var(--color-paper); }
+.hv-kind-box h4 { margin: 0 0 var(--s-2); }
+.hv-kind-box[hidden] { display: none; }
+/* Admin tuyến chính / chương trình giảm giá: hai cột, ô điểm đón/trả viết đơn dòng. */
+.hv-grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--s-1) var(--s-6); }
+.hv-end { margin: 0; padding: 0; border: 0; }
+#hv-promo-rules h4 { margin: var(--s-4) 0 var(--s-1); }
+.column-hv_cid, .column-hv_pcode { width: 9rem; }
+.column-hv_cstops, .column-hv_cstate, .column-hv_pstate { width: 12rem; }
