@@ -924,9 +924,113 @@
   .hv-home-news-copy > span {
     text-transform: none;
   }
+  /* Reference UI/copywriting direction: cinematic hero, restrained sections, human voice. */
+  .hv-home-hero {
+    min-height: min(45rem, 78vh);
+    padding-block: clamp(5rem, 11vw, 9rem) 2rem;
+    color: #fff;
+    background: linear-gradient(90deg, rgb(24 25 25 / 0.94) 0%, rgb(24 25 25 / 0.78) 42%, rgb(24 25 25 / 0.08) 100%), url('/assets/design/ref-haivan-hero.png') center / cover;
+  }
+  .hv-home-hero::before {
+    content: "01 / TỬ TẾ TỪ TÂM";
+    color: var(--color-accent);
+  }
+  .hv-home-hero-grid {
+    display: block;
+    min-height: 28rem;
+  }
+  .hv-home-hero-media {
+    display: none;
+  }
+  .hv-home-hero-copy {
+    max-width: 42rem;
+    padding-top: clamp(4rem, 8vw, 7rem);
+    padding-bottom: 3rem;
+  }
+  .hv-home-hero-copy .hv-home-eyebrow,
+  .hv-home-hero-copy h1,
+  .hv-home-hero-copy .hv-home-lead {
+    color: #fff;
+  }
+  .hv-home-hero-copy .hv-home-eyebrow {
+    color: rgb(255 255 255 / 0.76);
+  }
+  .hv-home-hero-copy h1 {
+    max-width: 9ch;
+    font-size: clamp(4.5rem, 8vw, 8.5rem);
+    line-height: 0.86;
+  }
+  .hv-home-hero-copy h1 span:first-child::after {
+    content: ",";
+  }
+  .hv-home-hero-copy h1 span:last-child {
+    color: var(--color-accent);
+  }
+  .hv-home-hero-copy h1 span:last-child::after {
+    display: none;
+  }
+  .hv-home-statement > span {
+    background: var(--color-accent);
+  }
+  .hv-home-search-wrap {
+    margin-top: -5rem;
+  }
+  .hv-home-search-head {
+    background: #fff;
+  }
+  .hv-home-search-head .hv-home-eyebrow {
+    color: #353535;
+  }
+  .hv-home-search-head p:last-child {
+    color: #777;
+  }
+  .hv-home-trust {
+    background: var(--color-ink);
+    color: #fff;
+  }
+  .hv-home-trust-grid {
+    border-color: rgb(255 255 255 / 0.28);
+  }
+  .hv-home-trust-item {
+    border-color: rgb(255 255 255 / 0.22);
+  }
+  .hv-home-trust-item h2,
+  .hv-home-trust-item p {
+    color: #fff;
+  }
+  .hv-home-trust-item p {
+    opacity: 0.72;
+  }
+  .hv-home-trust-item > svg {
+    color: var(--color-accent);
+  }
+  .hv-home-offers {
+    background: var(--color-accent);
+    color: #353535;
+  }
+  .hv-home-offers h2,
+  .hv-home-offers .hv-lead {
+    color: #353535;
+  }
+  .hv-home-lounges {
+    background: #f2f2f2;
+    color: #353535;
+  }
+  .hv-home-lounge-copy h2,
+  .hv-home-lounge-copy .hv-lead {
+    color: #353535;
+  }
+  .hv-home-lounge-copy .hv-home-eyebrow {
+    color: #777;
+  }
+  .hv-home-lounge-points span {
+    border-color: #353535;
+  }
   @media (max-width: 59.99rem) {
     .hv-home-hero {
-      padding-top: 4rem;
+      min-height: 38rem;
+      padding-top: 3.5rem;
+      background-position: 64% center;
     }
     .hv-home-hero-grid {
       display: flex;

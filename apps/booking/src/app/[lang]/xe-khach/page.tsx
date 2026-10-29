@@ -65,12 +65,12 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
   const isVi = locale === "vi";
   const homeCopy = isVi
     ? {
-        eyebrow: "Hành trình tử tế",
-        title: "Tử tế từ tâm, an tâm từng chuyến",
-        lead: "Đặt vé Hải Vân nhanh chóng, minh bạch và luôn có người đồng hành khi bạn cần.",
-        search: "Tìm chuyến phù hợp",
-        searchHint: "Chọn hành trình của bạn, chúng tôi lo phần còn lại.",
-        routesHint: "Những hành trình được khách hàng lựa chọn nhiều nhất.",
+        eyebrow: "Tử tế từ Tâm",
+        title: "Đi xa hơn, tử tế hơn.",
+        lead: "Mỗi hành trình là một lần chúng tôi được đồng hành, chăm sóc và trao đi những điều tốt đẹp.",
+        search: "Tìm chuyến đi của bạn",
+        searchHint: "Chọn hành trình. Phần còn lại, để Hải Vân lo.",
+        routesHint: "Những nơi bạn muốn đến, những cung đường chúng tôi đi cùng bạn.",
         trust: [
           ["An toàn là ưu tiên", "Đội ngũ chuyên nghiệp, phương tiện được kiểm tra định kỳ."],
           ["Đón trả thuận tiện", "Điểm đón rõ ràng và hỗ trợ trung chuyển theo từng tuyến."],
