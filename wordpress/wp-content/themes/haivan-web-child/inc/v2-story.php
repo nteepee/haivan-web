@@ -367,11 +367,11 @@ function hv2_story_pairs( $key, $col_a, $col_b ) {
 	echo '</div>';
 }
 
-/** Thẻ giá trên nền than (nhãn | tên | giá | mô tả), thẻ đầu vàng — cùng kiểu thẻ ưu đãi. */
+/** Thẻ giá trên nền than (nhãn | tên | giá | mô tả), các thẻ như nhau — cùng kiểu thẻ ưu đãi. */
 function hv2_story_prices( $key, $note_key ) {
 	echo '<ul class="hv2-offers hv2-offers--dark">';
 	foreach ( hv2_s_lines( $key ) as $i => $r ) {
-		echo '<li class="hv2-offer' . ( 0 === $i ? ' hv2-offer--lead' : '' ) . '"><span class="hv2-offer-tag">' . esc_html( $r[0] ) . '</span><h3>' . esc_html( $r[1] ?? '' ) . '</h3><p class="hv2-offer-price"><strong>' . esc_html( $r[2] ?? '' ) . '</strong></p><p class="hv2-offer-cond">' . esc_html( $r[3] ?? '' ) . '</p></li>';
+		echo '<li class="hv2-offer"><span class="hv2-offer-tag">' . esc_html( $r[0] ) . '</span><h3>' . esc_html( $r[1] ?? '' ) . '</h3><p class="hv2-offer-price"><strong>' . esc_html( $r[2] ?? '' ) . '</strong></p><p class="hv2-offer-cond">' . esc_html( $r[3] ?? '' ) . '</p></li>';
 	}
 	echo '</ul><p class="hv2-milestone">' . esc_html( hv2_s( $note_key ) ) . '</p>';
 }

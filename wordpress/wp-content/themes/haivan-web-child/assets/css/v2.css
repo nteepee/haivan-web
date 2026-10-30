@@ -531,3 +531,8 @@ body.hv2 { background: var(--hv2-paper); color: var(--hv2-ink); }
 .hv2 .hv-dest-routes .hv2-routes { margin: 0; }
 .hv2 .hv-dest-routes .hv2-route-name { font-size: clamp(1.125rem, 1rem + .5vw, 1.375rem); }
 .hv2 .hv-dest-routes__all { margin: 4px 0 0; }
+
+/* Thẻ ưu đãi trên nền than: mọi thẻ như nhau (không thẻ vàng nổi bật dễ bị hiểu là đang chọn); vàng chỉ ở vạch trên, nhãn và mũi tên */
+.hv2-offers:not(.hv2-offers--light) .hv2-offer { border-top: 5px solid var(--hv2-yellow); }
+.hv2-offers:not(.hv2-offers--light) .hv2-offer-tag { padding: 5px 9px; background: var(--hv2-yellow); color: var(--hv2-ink); font-size: 12px; }
+.hv2-offers:not(.hv2-offers--light) .hv2-offer-go span { color: var(--hv2-yellow); }

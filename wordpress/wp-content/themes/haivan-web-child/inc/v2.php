@@ -104,7 +104,7 @@ function hv2_offer_group( array $o ) {
 }
 
 /**
- * Thẻ ưu đãi v2 (trang chủ khối 05 và trang /uu-dai dùng chung). $variant: 'dark' = trên nền than (thẻ đầu vàng),
+ * Thẻ ưu đãi v2 (trang chủ khối 05 và trang /uu-dai dùng chung). $variant: 'dark' = trên nền than (mọi thẻ như nhau, không thẻ nào nổi bật kẻo trông như đang được chọn),
  * 'light' = trên nền giấy (thẻ trắng vạch vàng, có ngày kết thúc và nhóm tuyến để lọc). Rỗng = ''.
  */
 function hv2_offer_cards( array $offers, $variant = 'dark', $until = '' ) {
@@ -115,7 +115,7 @@ function hv2_offer_cards( array $offers, $variant = 'dark', $until = '' ) {
 	foreach ( $offers as $i => $o ) {
 		$link = '' !== $o['link'] ? hv_link_for_lang( $o['link'] ) : '';
 		$cta  = '' !== $o['cta'] ? $o['cta'] : hv_t( 'booking_label' );
-		$h   .= '<li class="hv2-offer' . ( 0 === $i && 'dark' === $variant ? ' hv2-offer--lead' : '' ) . '" data-group="' . esc_attr( hv2_offer_group( $o ) ?: 'chung' ) . '">';
+		$h   .= '<li class="hv2-offer" data-group="' . esc_attr( hv2_offer_group( $o ) ?: 'chung' ) . '">';
 		if ( 'light' === $variant && ! empty( $o['image']['url'] ) ) {
 			$h .= '<span class="hv2-offer-img"><img src="' . esc_url( $o['image']['url'] ) . '" width="' . (int) $o['image']['w'] . '" height="' . (int) $o['image']['h'] . '" loading="lazy" decoding="async" alt=""></span>';
 		}

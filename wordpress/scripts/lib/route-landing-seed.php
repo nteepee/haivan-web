@@ -175,7 +175,7 @@ return array(
 	'my-dinh/moc-chau' => array(
 		'seo_title'        => 'Xe đi Mộc Châu từ Mỹ Đình: giờ chạy, giá vé | Hải Vân',
 		'meta_description' => 'Đặt vé xe Hải Vân Xuân Tráng từ Bến xe Mỹ Đình đi Mộc Châu: limousine và giường nằm, nhiều chuyến mỗi ngày. Chọn chỗ, giữ vé điện tử.',
-		'h1'               => 'Đặt vé xe Hà Nội đi Mộc Châu (Mỹ Đình)',
+		'h1'               => 'Đặt vé xe Hà Nội đi Mộc Châu',
 		'intro'            => 'Hải Vân Xuân Tráng chạy limousine và giường nằm Hà Nội – Mộc Châu, xuất bến từ Bến xe Mỹ Đình nhiều giờ trong ngày, hành trình khoảng 4 giờ 15 đến 4 giờ 35 phút tuỳ chuyến. Chọn chuyến, chọn chỗ và giữ vé điện tử trên điện thoại.',
 		'schedule_text'    => '<p>Bảng dưới liệt kê các chuyến rời Hà Nội theo ngày bạn chọn, kèm giờ đến và ngày đến dự kiến. Chuyến tối hoặc đêm có thể tới Mộc Châu vào hôm sau. Giá đổi theo hạng xe và chỗ ngồi, giá chính xác hiện khi bạn mở sơ đồ.</p>',
 		'content_html'     => '<h2>Đi Mộc Châu từ Mỹ Đình</h2><p>Mộc Châu là cao nguyên đồi chè, đẹp nhất vào mùa hoa mận, hoa đào. Theo nhà xe, cứ khoảng 30 phút đến một giờ có một chuyến xuất bến, có cả chuyến tối và đêm nên bạn dễ chọn lịch hợp với ngày nghỉ.</p>' . $ul( array(
@@ -222,9 +222,9 @@ return array(
 		'round_trip_note'  => 'Trang này bán vé một chiều Hà Nội đi Mộc Châu. Muốn đi khứ hồi, đặt riêng chuyến Mộc Châu về Hà Nội ở trang chiều về, rồi kiểm tra ngày đến của chiều đi trước khi chọn ngày về.',
 	),
 	'moc-chau/my-dinh' => array(
-		'seo_title'        => 'Xe Mộc Châu về Hà Nội (Mỹ Đình): giờ chạy, giá vé | Hải Vân',
+		'seo_title'        => 'Xe Mộc Châu về Hà Nội: giờ chạy, giá vé | Hải Vân',
 		'meta_description' => 'Đặt vé xe Hải Vân Xuân Tráng từ Mộc Châu về Bến xe Mỹ Đình, Hà Nội: limousine và giường nằm. Xem giờ đến, giá vé, chọn chỗ trống.',
-		'h1'               => 'Đặt vé xe Mộc Châu về Hà Nội (Mỹ Đình)',
+		'h1'               => 'Đặt vé xe Mộc Châu về Hà Nội',
 		'intro'            => 'Từ Mộc Châu, Hải Vân Xuân Tráng chạy limousine và giường nằm về Bến xe Mỹ Đình nhiều giờ trong ngày, hành trình khoảng 4 giờ 20 phút đến 5 giờ 5 phút tuỳ chuyến. Xem giờ đến của từng chuyến rồi chọn chỗ.',
 		'schedule_text'    => '<p>Bảng dưới liệt kê các chuyến rời Mộc Châu theo ngày bạn chọn, kèm giờ đến Hà Nội. Giờ và giá của chiều về có thể khác chiều đi, hãy xem từng chuyến. Chuyến tối hoặc đêm có thể về tới Hà Nội vào hôm sau.</p>',
 		'content_html'     => '<h2>Về Hà Nội từ Mộc Châu</h2><p>Chọn chuyến theo giờ bạn cần có mặt ở Hà Nội: đi làm, nối chuyến hay khám bệnh. Theo nhà xe, cứ khoảng 30 phút đến một giờ có một chuyến xuất bến, gồm cả chuyến tối và đêm.</p>' . $ul( array(
