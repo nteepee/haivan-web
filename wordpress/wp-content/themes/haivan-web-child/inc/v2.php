@@ -78,11 +78,11 @@ function hv2_section_label( array $trail = array() ) {
 }
 
 /**
- * Đầu trang nội dung theo bản mẫu: dòng "01 · Mục", H1 lớn nét mảnh, đoạn dẫn (tuỳ chọn), rồi ảnh/phần thêm (HTML đã escape).
+ * Đầu trang nội dung theo bản mẫu: dòng nhãn mục (chỉ trang kể chuyện nhiều khối mới đánh số, truyền $no = '01'), H1 lớn nét mảnh, đoạn dẫn (tuỳ chọn), rồi ảnh/phần thêm (HTML đã escape).
  * Mọi template (page, lưu trữ, tìm kiếm, ưu đãi, sân bay, 404) dùng chung hàm này để giữ một kiểu. $title_b = vế sau tô vàng.
  */
-function hv2_page_head( $label, $title, $lead = '', $after = '', $title_b = '' ) {
-	echo '<header class="hv2-page-head"><p class="hv2-eyebrow"><span>01</span>' . esc_html( $label ) . '</p>';
+function hv2_page_head( $label, $title, $lead = '', $after = '', $title_b = '', $no = '' ) {
+	echo '<header class="hv2-page-head"><p class="hv2-eyebrow">' . ( '' !== $no ? '<span>' . esc_html( $no ) . '</span>' : '' ) . esc_html( $label ) . '</p>';
 	echo '<h1>' . esc_html( $title ) . ( '' !== $title_b ? ' <em>' . esc_html( $title_b ) . '</em>' : '' ) . '</h1>';
 	if ( '' !== trim( (string) $lead ) ) {
 		echo '<p class="hv2-page-lead">' . esc_html( $lead ) . '</p>';

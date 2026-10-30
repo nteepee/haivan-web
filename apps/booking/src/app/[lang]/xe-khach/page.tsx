@@ -74,7 +74,6 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
           <div className="hv-container hv-rhero">
             <div className="hv-rhero-text">
               <p className="hv-eyebrow">
-                <span>01</span>
                 {t("route.crumb_coach")}
               </p>
               <h1 id="xe-khach-h1">{t("xe_khach.h1")}</h1>

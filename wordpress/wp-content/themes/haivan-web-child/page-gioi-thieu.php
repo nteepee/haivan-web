@@ -18,7 +18,7 @@ $hv2_nav   = hv_page_subnav( get_post() );
 ?>
 <div class="hv2-wrap hv-page hv2-story-page">
 	<?php hv_breadcrumb_trail( $hv2_trail ); ?>
-	<?php hv2_page_head( hv2_section_label( $hv2_trail ), hv2_s( 'h1_a' ), hv2_s( 'lead' ), '', hv2_s( 'h1_b' ) ); ?>
+	<?php hv2_page_head( hv2_section_label( $hv2_trail ), hv2_s( 'h1_a' ), hv2_s( 'lead' ), '', hv2_s( 'h1_b' ), '01' ); ?>
 	<?php if ( $hv2_nav ) : ?>
 		<nav class="hv2-tabs" aria-label="<?php echo esc_attr( hv_t( 'subnav' ) ); ?>">
 			<ul class="hv-subnav">

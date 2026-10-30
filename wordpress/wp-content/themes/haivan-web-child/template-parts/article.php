@@ -18,7 +18,7 @@ $hv_tags    = ! empty( $args['tags'] ) ? get_the_terms( get_the_ID(), 'hv_tag' )
 	<div class="hv-cols">
 		<div class="hv-cols__main">
 			<?php $hv2_tr = $hv_trail; ?>
-			<p class="hv2-eyebrow"><span>01</span><?php echo esc_html( count( $hv2_tr ) > 2 ? $hv2_tr[ count( $hv2_tr ) - 2 ][0] : hv2_section_label( $hv2_tr ) ); ?></p>
+			<p class="hv2-eyebrow"><?php echo esc_html( count( $hv2_tr ) > 2 ? $hv2_tr[ count( $hv2_tr ) - 2 ][0] : hv2_section_label( $hv2_tr ) ); ?></p>
 			<h1><?php echo esc_html( get_the_title() ); ?></h1>
 			<p class="hv-meta"><time datetime="<?php echo esc_attr( get_the_date( 'c' ) ); ?>"><?php echo esc_html( hv_post_datetime() ); ?></time></p>
 			<div class="hv-entry hv-news"><?php the_content(); ?></div>

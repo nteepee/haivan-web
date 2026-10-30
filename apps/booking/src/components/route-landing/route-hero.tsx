@@ -56,7 +56,6 @@ export function RouteHero({ view, locale, art, reverse, children }: { view: Rout
         <div className="hv-container hv-rhero">
           <div className="hv-rhero-text">
             <p className="hv-eyebrow">
-              <span>01</span>
               {t("route.eyebrow")}
             </p>
             <h1 id="route-h1">{splitH1(view.h1, view.end)}</h1>

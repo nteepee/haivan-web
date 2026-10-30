@@ -31,7 +31,7 @@ Thông số nhịp và khung:
 ## Thành phần
 
 - **Đầu khối** `hv2_head()`: dòng `01 · NHÃN` rồi H2 hai vế. Vế sau tô vàng, viết dạng `<em>`, mỗi vế một dòng. Bên phải có thể đặt đoạn dẫn hoặc link.
-- **Đầu trang** `hv2_page_head()`: dòng `01 · Mục` (tên trang cha), H1 lớn nét mảnh, đoạn dẫn (lấy từ excerpt), sau đó là ảnh hoặc nút. Dùng ở page, lưu trữ, tìm kiếm, ưu đãi, sân bay, 404.
+- **Đầu trang** `hv2_page_head()`: dòng nhãn mục (tên trang cha), không đánh số; chỉ trang kể chuyện nhiều khối (trang chủ, Giới thiệu, Khuyến mãi) mới đánh số 01, 02…, H1 lớn nét mảnh, đoạn dẫn (lấy từ excerpt), sau đó là ảnh hoặc nút. Dùng ở page, lưu trữ, tìm kiếm, ưu đãi, sân bay, 404.
 - **Link chữ** `.hv2-textlink`: chữ đậm, gạch chân, mũi tên ↗ màu vàng.
 - **Nút** `.hv2-btn`:
   - nền than, mũi tên vàng;
