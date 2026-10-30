@@ -90,19 +90,14 @@ function hv_render_dest_routes( $name, $slug, $post_id ) {
 		return;
 	}
 	$prefix = hv_lang_prefix();
-	echo '<section class="hv-dest-routes" aria-labelledby="hv-dest-routes"><h2 id="hv-dest-routes">' . esc_html( sprintf( hv_t( 'dest_routes' ), $name ) ) . '</h2><ul class="hv-dest-routes__list">';
+	// Hàng tuyến v2 (cả hàng là liên kết, mũi tên ↗), chỉ tên + thời gian chạy; không in giá nhập tay (đã cũ).
+	echo '<section class="hv-dest-routes" aria-labelledby="hv-dest-routes"><h2 id="hv-dest-routes">' . esc_html( sprintf( hv_t( 'dest_routes' ), $name ) ) . '</h2><ul class="hv2-routes hv2-routes--compact">';
 	foreach ( $routes as $r ) {
-		$id    = $r['post']->ID;
-		$price = trim( preg_replace( '/^\s*Từ\s*/iu', '', (string) get_post_meta( $id, 'hv_route_price', true ) ) );
-		$time  = hv_route_time_label( get_post_meta( $id, 'hv_route_time', true ) );
+		$time  = hv_route_time_label( get_post_meta( $r['post']->ID, 'hv_route_time', true ) );
 		$label = hv_route_label( get_the_title( $r['post'] ) );
-		echo '<li class="hv-dest-route"><div><h3>' . esc_html( $label ) . '</h3><p class="hv-muted">';
-		echo '' !== $time ? esc_html( $time ) : '';
-		echo '' !== $time && '' !== $price ? ' · ' : '';
-		echo '' !== $price ? esc_html( hv_t( 'from_price' ) . ' ' . $price ) : '';
-		echo '</p></div><a class="hv-btn hv-btn--sm" href="' . esc_url( $prefix . '/xe-khach/' . $r['path'] ) . '" aria-label="' . esc_attr( sprintf( hv_t( 'book_route_aria' ), $label ) ) . '">' . esc_html( hv_t( 'booking_label' ) ) . '</a></li>';
+		echo '<li><a class="hv2-route" href="' . esc_url( $prefix . '/xe-khach/' . $r['path'] ) . '" aria-label="' . esc_attr( sprintf( hv_t( 'book_route_aria' ), $label ) ) . '"><span class="hv2-route-name">' . esc_html( $label ) . '</span><span class="hv2-route-time">' . esc_html( $time ) . '</span><span class="hv2-route-go" aria-hidden="true">↗</span></a></li>';
 	}
-	echo '</ul><p><a class="hv-link" href="' . esc_url( $prefix . '/xe-khach' ) . '">' . esc_html( hv_t( 'dest_routes_all' ) ) . '</a></p></section>';
+	echo '</ul><p class="hv-dest-routes__all">' . hv2_link( $prefix . '/xe-khach', hv_t( 'dest_routes_all' ) ) . '</p></section>'; // phpcs:ignore WordPress.Security.EscapeOutput -- hv2_link() tự escape.
 }
 
 /* Meta box ghi đè trên bài Điểm đến ------------------------------------- */

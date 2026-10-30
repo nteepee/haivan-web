@@ -85,15 +85,11 @@ function hv_render_corridor_cards() {
 		$post  = get_posts( array( 'post_type' => 'hv_corridor', 'post_status' => 'publish', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => 'hv_corridor_id', 'meta_value' => $c['id'], 'suppress_filters' => true ) ); // phpcs:ignore WordPress.DB.SlowDBQuery
 		$img   = $post ? hv_card_image( $post[0], 'medium_large', '' ) : '';
 		$route = $c['landing']['ab'] ? hv_route_find( $c['landing']['ab'] ) : null;
-		$price = $route ? trim( preg_replace( '/^\s*Từ\s*/iu', '', (string) get_post_meta( $route->ID, 'hv_route_price', true ) ) ) : '';
 		$time  = $route ? hv_route_time_label( get_post_meta( $route->ID, 'hv_route_time', true ) ) : '';
 		$href  = $c['landing']['ab'] ? $prefix . '/xe-khach/' . $c['landing']['ab'] : hv_corridor_search_url( $c, 'ab' );
 		$out  .= '<li class="hv-rcard"><div class="hv-rcard-img">' . $img . '</div><div class="hv-rcard-body"><h3>' . esc_html( $name ) . '</h3>'; // phpcs:ignore WordPress.Security.EscapeOutput
 		if ( '' !== $time ) {
 			$out .= '<p class="hv-rcard-time">' . hv_icon( 'clock', 'hv-ic--sm' ) . '<span class="hv-num">' . esc_html( $time ) . '</span></p>';
-		}
-		if ( '' !== $price ) {
-			$out .= '<p class="hv-rcard-price"><small>' . esc_html( hv_t( 'from_price' ) ) . '</small> <strong class="hv-num">' . esc_html( $price ) . '</strong></p>';
 		}
 		$out .= '<a class="hv-btn hv-btn--sm hv-rcard-go" href="' . esc_url( $href ) . '" aria-label="' . esc_attr( sprintf( hv_t( 'book_route_aria' ), $name ) ) . '">' . esc_html( hv_t( 'booking_label' ) ) . '</a></div></li>';
 	}
@@ -138,16 +134,12 @@ function hv_render_route_cards( $limit = 9, $filter = '' ) {
 		if ( substr_count( $out, '<li class="hv-rcard">' ) >= max( 1, (int) $limit ) ) {
 			break;
 		}
-		$price = trim( preg_replace( '/^\s*Từ\s*/iu', '', (string) get_post_meta( $id, 'hv_route_price', true ) ) );
 		$time  = hv_route_time_label( get_post_meta( $id, 'hv_route_time', true ) );
 		$name  = hv_route_label( get_the_title() );
 		$img   = hv_card_image( $id, 'medium_large', '' );
 		$out  .= '<li class="hv-rcard"><div class="hv-rcard-img">' . $img . '</div><div class="hv-rcard-body"><h3>' . esc_html( $name ) . '</h3>'; // phpcs:ignore WordPress.Security.EscapeOutput
 		if ( '' !== $time ) {
 			$out .= '<p class="hv-rcard-time">' . hv_icon( 'clock', 'hv-ic--sm' ) . '<span class="hv-num">' . esc_html( $time ) . '</span></p>';
-		}
-		if ( '' !== $price ) {
-			$out .= '<p class="hv-rcard-price"><small>' . esc_html( hv_t( 'from_price' ) ) . '</small> <strong class="hv-num">' . esc_html( $price ) . '</strong></p>';
 		}
 		$out .= '<a class="hv-btn hv-btn--sm hv-rcard-go" href="' . esc_url( $prefix . '/xe-khach/' . $path ) . '" aria-label="' . esc_attr( sprintf( hv_t( 'book_route_aria' ), $name ) ) . '">' . esc_html( hv_t( 'booking_label' ) ) . '</a></div></li>';
 	}

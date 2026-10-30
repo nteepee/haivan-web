@@ -88,9 +88,8 @@ function hv_popular_routes_shortcode( $atts = array() ) {
 		if ( ! hv_valid_route_path( $path ) ) {
 			continue;
 		}
-		$price = (string) get_post_meta( $id, 'hv_route_price', true );
-		$time  = (string) get_post_meta( $id, 'hv_route_time', true );
-		$meta  = trim( $price . ( '' !== $price && '' !== $time ? ' · ' : '' ) . $time );
+		// Không in giá: giá nhập tay trong bài tuyến đã cũ, giá thật hiện trên trang tuyến theo ngày.
+		$meta = trim( (string) get_post_meta( $id, 'hv_route_time', true ) );
 		echo '<li class="hv-route"><a href="' . esc_url( $prefix . '/xe-khach/' . $path ) . '">';
 		if ( has_post_thumbnail( $id ) ) {
 			echo wp_get_attachment_image( get_post_thumbnail_id( $id ), 'medium_large', false, array( 'class' => 'hv-route__img', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => hv_image_alt( $id ) ) );

@@ -524,3 +524,10 @@ body.hv2 { background: var(--hv2-paper); color: var(--hv2-ink); }
 @media (min-width: 75rem) { .hv2-leadform { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .hv2-leadform-copy { grid-column: 1 / -1; width: 100%; padding: 12px; border: 1px solid var(--hv2-line); background: #f7f7f5; font: inherit; font-size: 15px; }
 .hv2-leadform-copy[hidden] { display: none; }
+
+/* Hàng tuyến gọn (tên · thời gian · ↗), không cột giá: trang chủ 06 và khối "Xe Hải Vân đi…" ở trang điểm đến */
+@media (min-width: 48rem) { .hv2-routes--compact .hv2-route { grid-template-columns: 1fr auto 40px; gap: 4px 32px; } }
+.hv2 .hv-dest-routes { gap: 20px; }
+.hv2 .hv-dest-routes .hv2-routes { margin: 0; }
+.hv2 .hv-dest-routes .hv2-route-name { font-size: clamp(1.125rem, 1rem + .5vw, 1.375rem); }
+.hv2 .hv-dest-routes__all { margin: 4px 0 0; }

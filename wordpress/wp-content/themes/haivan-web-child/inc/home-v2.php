@@ -177,7 +177,7 @@ function hv2_render_offers() {
 	return hv2_offer_cards( array_slice( hv_active_offers(), 0, 6 ) );
 }
 
-/** 06 · Tuyến chính dạng hàng ngang; giá và thời gian lấy từ bài hv_route của landing chiều đi. */
+/** 06 · Tuyến chính dạng hàng ngang (tên, thời gian chạy). Không in giá: giá nhập tay đã cũ, giá thật xem trên trang tuyến. */
 function hv2_render_routes() {
 	$lang   = hv_lang();
 	$prefix = hv_lang_prefix( $lang );
@@ -186,13 +186,12 @@ function hv2_render_routes() {
 		$name  = (string) ( $c['label'][ $lang ] ?: $c['label']['vi'] );
 		$parts = preg_split( '/\s+[–-]\s+/u', $name, 2 );
 		$route = $c['landing']['ab'] ? hv_route_find( $c['landing']['ab'] ) : null;
-		$price = $route ? trim( preg_replace( '/^\s*(Từ|From)\s*/iu', '', (string) get_post_meta( $route->ID, 'hv_route_price', true ) ) ) : '';
 		$time  = $route ? hv_route_time_label( get_post_meta( $route->ID, 'hv_route_time', true ) ) : '';
 		$href  = $c['landing']['ab'] ? $prefix . '/xe-khach/' . $c['landing']['ab'] : hv_corridor_search_url( $c, 'ab' );
 		$rows .= '<li><a class="hv2-route" href="' . esc_url( $href ) . '"><span class="hv2-route-name">' . esc_html( $parts[0] ) . ( isset( $parts[1] ) ? '<b aria-hidden="true">→</b><span class="hv-sr"> – </span>' . esc_html( $parts[1] ) : '' ) . '</span>';
-		$rows .= '<span class="hv2-route-time">' . esc_html( $time ) . '</span><span class="hv2-route-price">' . ( '' !== $price ? esc_html( hv2_t( 'rt_from' ) ) . ' <strong>' . esc_html( $price ) . '</strong>' : '' ) . '</span><span class="hv2-route-go" aria-hidden="true">↗</span></a></li>';
+		$rows .= '<span class="hv2-route-time">' . esc_html( $time ) . '</span><span class="hv2-route-go" aria-hidden="true">↗</span></a></li>';
 	}
-	return '' !== $rows ? '<ul class="hv2-routes">' . $rows . '</ul>' : '';
+	return '' !== $rows ? '<ul class="hv2-routes hv2-routes--compact">' . $rows . '</ul>' : '';
 }
 
 /** 07 · Phòng chờ: ảnh thật + danh sách địa chỉ (Cài đặt trang chủ → Địa chỉ), mỗi địa chỉ có link chỉ đường. */

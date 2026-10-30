@@ -10,14 +10,16 @@ interface Fact {
   value: string;
 }
 
-/** Tách phụ đề "Từ 485.000đ · 11h · 500 km" thành ba số liệu có nhãn (giá, giờ, km); khoản nào thiếu thì bỏ. */
+/**
+ * Tách phụ đề "Từ 485.000đ · 11h · 500 km" thành số liệu có nhãn (giờ, km); khoản nào thiếu thì bỏ.
+ * Không in giá: giá trung bình của CMS đã cũ, giá thật theo ngày nằm ở bảng giờ chạy ngay dưới.
+ */
 function facts(view: RouteLandingView, t: (key: string, vars?: Record<string, string | number>) => string): Fact[] {
   const out: Fact[] = [];
   for (const part of (view.subline ?? "").split(" · ")) {
     const hour = part.match(/^(\d+(?:[.,]\d+)?)h$/);
     if (hour) out.push({ label: t("route.fact_time"), value: t("route.hours_value", { n: hour[1] }) });
     else if (/km$/i.test(part)) out.push({ label: t("route.fact_distance"), value: part });
-    else if (part) out.push({ label: t("route.fact_price"), value: part.replace(/^\s*từ\s+/i, "") });
   }
   return out;
 }
