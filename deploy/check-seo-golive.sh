@@ -138,6 +138,16 @@ fi
 
 # ---- Mã khuyến mãi ẩn không được lộ ra công khai ----------------------------------------------------------
 echo "[promo] route riêng + booking-config công khai"
+# Giá "từ" hôm nay: WP lấy từ Next (/api/hv/route-price). Không có giá = WP không gọi được Next (HV_NEXT_INTERNAL_URL) hoặc API chuyến lỗi.
+echo "[giá từ hôm nay]"
+if [[ -s "$TMP/home.body" ]] && grep -q 'hv2-route-price">' "$TMP/home.body"; then
+  if grep -q 'hv2-route-price">[^<]' "$TMP/home.body"; then ok "trang chủ có giá \"từ\" của tuyến"
+  else warn "trang chủ không có giá \"từ\": WP có tới được Next không (HV_NEXT_INTERNAL_URL, xem deployment-guide)?"; fi
+fi
+code="$(fetch "$BASE/api/hv/route-price?path=quan-1/vung-tau" rprice)"
+if [[ "$code" == "200" ]] && grep -q '"quan-1/vung-tau":[0-9]' "$TMP/rprice.body"; then ok "/api/hv/route-price trả giá"
+else warn "/api/hv/route-price HTTP $code, không có giá (API chuyến lỗi hoặc HV_LIVE_BACKEND tắt?)"; fi
+
 code="$(fetch "$BASE/wp-json/haivan-web/v1/promo-codes" promo)"
 case "$code" in
   401|403|404) ok "promo-codes không bí mật -> HTTP $code" ;;

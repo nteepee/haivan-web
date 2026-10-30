@@ -21,16 +21,35 @@ const PAGE_TIMEOUT_MS = 8000;
 /** Số trang đọc song song mỗi lượt cho một tuyến: tránh dội hàng chục request cùng lúc lên apigw (gây hết giờ). */
 const PAGE_BATCH = 3;
 
-/** Giá thấp nhất khách thực trả (sau giảm, đã gồm VAT; như thẻ chuyến) trong các chuyến; chuyến lỗi dữ liệu hoặc ẩn giá bị bỏ. */
+/**
+ * Giá thấp nhất khách thực trả (sau giảm, đã gồm VAT; như thẻ chuyến) trong các chuyến còn đặt được.
+ * API chỉ trả chuyến chưa chạy nhưng có trả chuyến hết chỗ: bỏ chuyến hết chỗ, chuyến ẩn giá/giá 0 và dữ liệu lỗi.
+ */
 export function minTripPrice(items: readonly unknown[]): number | null {
   let min: number | null = null;
   for (const item of items) {
     const parsed = tripSchema.safeParse(item);
-    if (!parsed.success) continue;
+    if (!parsed.success || parsed.data.available_seats <= 0) continue;
     const price = displayPrice(parsed.data);
     if (price !== null && price > 0 && (min === null || price < min)) min = price;
   }
   return min;
+}
+
+/** Tối đa số request `el/trips` đang chạy cùng lúc trong cả tiến trình (lúc build mọi trang tuyến hỏi giá một lượt). */
+const MAX_INFLIGHT = 6;
+let inflight = 0;
+const waiting: Array<() => void> = [];
+
+async function limited<T>(task: () => Promise<T>): Promise<T> {
+  if (inflight >= MAX_INFLIGHT) await new Promise<void>((resolve) => waiting.push(resolve));
+  inflight += 1;
+  try {
+    return await task();
+  } finally {
+    inflight -= 1;
+    waiting.shift()?.();
+  }
 }
 
 async function tripsPage(from: LatLng, to: LatLng, date: string, page: number) {
@@ -43,9 +62,11 @@ async function tripsPage(from: LatLng, to: LatLng, date: string, page: number) {
     sort_mode: "asc",
     ...(page > 1 ? { page: String(page) } : {}),
   });
-  const res = await callApigw({ method: "GET", path: "el/trips", search: `?${query}`, timeoutMs: PAGE_TIMEOUT_MS });
-  if (!res.ok) throw new Error(`el/trips HTTP ${res.status}`);
-  const body = tripsResponseSchema.parse(await res.json());
+  const body = await limited(async () => {
+    const res = await callApigw({ method: "GET", path: "el/trips", search: `?${query}`, timeoutMs: PAGE_TIMEOUT_MS });
+    if (!res.ok) throw new Error(`el/trips HTTP ${res.status}`);
+    return tripsResponseSchema.parse(await res.json());
+  });
   return { items: body.data, last: body.meta?.last_page ?? 1 };
 }
 

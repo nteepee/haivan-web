@@ -51,6 +51,9 @@ services:
     depends_on:
       db: {condition: service_healthy}
     environment: *wp-env
+    # Linux: tên host.docker.internal chỉ có khi khai báo (Docker Desktop tự có); WP gọi Next lấy giá "từ" hôm nay qua tên này.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./data/wp:/var/www/html
       - ./wp-content/themes/haivan-web-child:/var/www/html/wp-content/themes/haivan-web-child
