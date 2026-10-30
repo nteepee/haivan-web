@@ -14,7 +14,7 @@
  * Luật (theo design.md v4):
  *   error: HTTP ≥ 400, lỗi JS/console, tài nguyên cùng origin lỗi, tràn ngang, ảnh hỏng,
  *          khoảng trống giữa hai khối liền nhau, số H1 ≠ 1
- *   warn:  hai khối liền nhau cùng nền, đệm khối ≠ --section-pad, bo góc ngoài {0,4,8,16,24,50%},
+ *   warn:  hai khối liền nhau cùng nền, đệm khối ≠ --section-pad (trang v2: --hv2-pad), bo góc ngoài {0,4,8,16,24,50%},
  *          viền tối ≥ 2px, chữ < 16px trên kính, vùng chạm < 44px (khổ điện thoại), nhảy cấp heading,
  *          chữ bị cắt, đoạn <p> rỗng
  */
@@ -148,7 +148,9 @@ function inspectPage({ mobile }) {
     }
     return bodyBg;
   };
-  const pad = px(css(document.documentElement).getPropertyValue("--section-pad")) ||
+  // Trang v2 (body.hv2): nhịp khối là --hv2-pad (72/96/110px theo khổ), đọc trên body vì biến khai báo ở .hv2.
+  const v2pad = document.body.classList.contains("hv2") ? px(css(document.body).getPropertyValue("--hv2-pad")) : 0;
+  const pad = v2pad || px(css(document.documentElement).getPropertyValue("--section-pad")) ||
     (() => { const t = document.createElement("div"); t.style.padding = "var(--section-pad)"; document.body.append(t); const v = px(css(t).paddingTop); t.remove(); return v; })();
   for (let i = 0; i < blocks.length; i++) {
     const b = blocks[i], s = css(b);
