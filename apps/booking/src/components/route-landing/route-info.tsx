@@ -5,13 +5,14 @@ import { Rail } from "@/components/ui/rail";
 import { translate, type Locale } from "@/i18n/t";
 import type { RouteLandingView } from "@/lib/route-landing-build";
 import { HtmlBlock } from "./html-block";
-import { artAlt, classArt } from "./route-art";
+import { artAlt, classArt, v2Image } from "./route-art";
 import { SectionCard } from "./section-card";
 
 type T = (key: string, vars?: Record<string, string | number>) => string;
 
 function ClassCard({ v, t, locale, south, price }: { v: RouteLandingView["vehicleClasses"][number]; t: T; locale: Locale; south: boolean; price: number | null }) {
-  const photo = classArt(v.name, south);
+  const own = v.image ? { art: { src: v2Image(v.image), width: 800, height: 600, alt: `${v.name}` }, cut: false } : null;
+  const photo = own ?? classArt(v.name, south);
   // Giá "từ" = giá thấp nhất của hạng này trong các chuyến hôm nay (không dùng giá nhập tay của WP vì đã cũ).
   const meta = [v.seats ? t("route.seats", { n: v.seats }) : null].filter(Boolean).join(", ");
   return (

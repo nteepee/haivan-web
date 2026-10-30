@@ -72,6 +72,8 @@ export const routeLandingSchema = z.looseObject({
         price_from: opt(z.string()),
         text: opt(z.string()),
         amenities: opt(z.array(z.string())),
+        /** Ảnh thật của hạng xe trên tuyến này; trống = ảnh mặc định theo tên hạng. */
+        image: opt(imageRef),
       }),
     ),
   ),

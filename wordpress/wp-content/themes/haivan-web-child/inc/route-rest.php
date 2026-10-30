@@ -112,7 +112,7 @@ function hv_route_payload( WP_Post $post ) {
 		}
 		$seats = isset( $p[1] ) && ctype_digit( $p[1] ) && (int) $p[1] > 0 ? (int) $p[1] : null;
 		$amen  = array_values( array_filter( array_map( 'trim', explode( ';', $p[4] ?? '' ) ), static fn( $v ) => '' !== $v ) );
-		return array_filter( array( 'name' => $p[0], 'seats' => $seats, 'price_from' => $p[2] ?? '', 'text' => $p[3] ?? '', 'amenities' => $amen ), static fn( $v ) => null !== $v && '' !== $v && array() !== $v );
+		return array_filter( array( 'name' => $p[0], 'seats' => $seats, 'price_from' => $p[2] ?? '', 'text' => $p[3] ?? '', 'amenities' => $amen, 'image' => hv_route_image( $p[5] ?? '' ) ), static fn( $v ) => null !== $v && '' !== $v && array() !== $v );
 	} );
 	$related = $list( 'hv_route_related', 'hv_route_link_from' );
 	foreach ( array( 'faq' => $faq, 'pickup_points' => $pickup, 'offices' => $offices, 'vehicle_classes' => $classes, 'related_routes' => $related, 'facts' => $facts, 'stops' => $stops, 'reviews' => $reviews, 'stats' => $stats ) as $k => $v ) {

@@ -18,7 +18,7 @@ $sg_vt_common_faq = array(
 	'Xe có bán ghế phụ hay cho nằm sàn không? | Không. Mỗi khách một chỗ đã đánh số trên sơ đồ, xe không nhận thêm khách dọc đường và chạy đúng tuyến đã đăng ký.',
 );
 
-return array(
+$routes = array(
 	'quan-1/vung-tau' => array(
 		'seo_title'        => 'Xe Sài Gòn đi Vũng Tàu: giờ chạy, giá vé hôm nay | Hải Vân',
 		'meta_description' => 'Đặt vé xe limousine Hải Vân Sài Gòn đi Vũng Tàu: chạy 5h–0h, 15–30 phút một chuyến, đón Quận 1 và sân bay Tân Sơn Nhất, trả gần khách sạn.',
@@ -415,3 +415,13 @@ return array(
 		'round_trip_note'  => 'Trang này bán vé một chiều Điện Biên về Hà Nội. Nếu đã có chiều đi, chọn ngày về sau giờ đến của chiều đi vì chuyến qua đêm có thể đến vào hôm sau.',
 	),
 );
+
+// Khối v2 (vì sao chọn, phòng chờ có ảnh, danh bạ trạm, bằng chứng) cho các tuyến còn lại: gộp đè từng trường.
+foreach ( require __DIR__ . '/route-landing-seed-v2.php' as $path => $extra ) {
+	if ( isset( $extra['faq_extra'] ) ) { // câu hỏi thêm: nối sau FAQ sẵn có của tuyến
+		$extra['faq'] = trim( ( $routes[ $path ]['faq'] ?? '' ) . "\n" . $extra['faq_extra'] );
+		unset( $extra['faq_extra'] );
+	}
+	$routes[ $path ] = array_merge( $routes[ $path ] ?? array(), $extra );
+}
+return $routes;

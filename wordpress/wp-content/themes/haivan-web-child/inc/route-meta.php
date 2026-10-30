@@ -31,7 +31,7 @@ function hv_route_fields() {
 		'hv_route_reviews'          => array( 'Lời khách (trích nguyên văn)', 'textarea', 'Mỗi dòng: <code>lời khách | người viết</code>. Hiện tối đa 3.' ),
 		'hv_route_stats'            => array( 'Số liệu doanh nghiệp', 'textarea', 'Mỗi dòng: <code>số | nhãn</code>, vd. <code>30+ | năm vận tải</code>. Chỉ số liệu có nguồn.' ),
 		'hv_route_story'            => array( 'Chuyện có thật', 'textarea', 'Một câu chuyện ngắn có thật, văn bản thuần.' ),
-		'hv_route_vehicle_classes'  => array( 'Hạng xe', 'textarea', 'Mỗi dòng: <code>tên | số chỗ | giá từ (vd. 485.000đ) | mô tả | tiện ích 1; tiện ích 2</code>.' ),
+		'hv_route_vehicle_classes'  => array( 'Hạng xe', 'textarea', 'Mỗi dòng: <code>tên | số chỗ | (để trống: giá tự lấy theo chuyến hôm nay) | mô tả | tiện ích 1; tiện ích 2 | ảnh</code>. Ảnh như ô phòng chờ; trống = ảnh mặc định theo tên hạng.' ),
 		'hv_route_related'          => array( 'Tuyến liên quan', 'textarea', 'Mỗi dòng: <code>nhãn | đường dẫn a/b</code> (vd. <code>Mỹ Đình đi Sơn La | my-dinh/son-la</code>).' ),
 		'hv_route_reverse'          => array( 'Chiều ngược lại', 'text', '<code>nhãn | đường dẫn a/b</code>.' ),
 		'hv_route_round_trip_note'  => array( 'Ghi chú khứ hồi', 'textarea', 'Khối "Đặt vé khứ hồi", văn bản thuần.' ),

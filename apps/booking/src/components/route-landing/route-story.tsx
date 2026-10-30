@@ -58,8 +58,8 @@ export function RouteLounges({ view, locale }: { view: RouteLandingView; locale:
               <div className="hv2r-lounge-img">
                 <V2Photo src={o.image} alt={`${o.name}, ${o.address}`} />
               </div>
-            ) : view.offices.some((x) => x.image) ? (
-              // Giữ các thẻ cùng chiều cao khi có thẻ khác có ảnh; không dùng ảnh nơi khác thay cho địa điểm này.
+            ) : view.offices.filter((x) => x.image).length * 2 >= view.offices.length ? (
+              // Phần lớn thẻ có ảnh thì giữ các thẻ cùng chiều cao bằng ô ghim; không dùng ảnh nơi khác thay cho địa điểm này.
               <div className="hv2r-lounge-img hv2r-lounge-img--empty" aria-hidden="true">
                 <MapPin className="size-10" />
               </div>
@@ -138,7 +138,14 @@ export function RouteProof({ view, locale }: { view: RouteLandingView; locale: L
   const { rating, reviews, stats, story } = view;
   if (!rating && !reviews.length && !stats.length && !story) return null;
   return (
-    <SectionCard id="route-proof" tone="dark" eyebrow={t("route.proof_eyebrow")} title={t("route.proof_title_a")} titleB={t("route.proof_title_b")}>
+    <SectionCard
+      id="route-proof"
+      tone="dark"
+      // Chưa có đánh giá thì tiêu đề nói về việc đồng hành (số liệu, câu chuyện), không nhắc "lời khen".
+      eyebrow={t(rating || reviews.length ? "route.proof_eyebrow" : "route.proof_alt_eyebrow")}
+      title={t(rating || reviews.length ? "route.proof_title_a" : "route.proof_alt_title_a")}
+      titleB={t(rating || reviews.length ? "route.proof_title_b" : "route.proof_alt_title_b")}
+    >
       {stats.length ? (
         <dl className="hv2r-stats">
           {stats.map((s) => (
