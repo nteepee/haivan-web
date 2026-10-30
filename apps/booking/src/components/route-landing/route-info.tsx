@@ -11,7 +11,8 @@ type T = (key: string, vars?: Record<string, string | number>) => string;
 
 function ClassCard({ v, t, locale }: { v: RouteLandingView["vehicleClasses"][number]; t: T; locale: Locale }) {
   const photo = classArt(v.name);
-  const meta = [v.seats ? t("route.seats", { n: v.seats }) : null, v.price_from ? t("route.price_from", { price: v.price_from }) : null].filter(Boolean).join(", ");
+  // Không in giá "Từ …" nhập tay của WP (đã cũ); giá thật theo ngày nằm ở bảng giờ chạy.
+  const meta = [v.seats ? t("route.seats", { n: v.seats }) : null].filter(Boolean).join(", ");
   return (
     <li className="hv-ccard">
       {photo ? (

@@ -213,3 +213,31 @@ a.hv-tab:hover { background: transparent; color: var(--hv2-ink); }
   .hv-app-band .hv-app { grid-template-columns: 1fr auto; gap: 80px; }
   .hv-app-band .hv-qr-card { justify-self: end; }
 }
+
+/* ---------- Trang tuyến: thêm vàng thương hiệu (đầu trang vàng, vạch vàng tiêu đề khối, khứ hồi vàng, CTA than nút vàng) ---------- */
+.hv-section-yellow.hv-rhead { background: var(--hv2-yellow); color: var(--hv2-ink); }
+.hv-rhead .hv-crumbs, .hv-rhead .hv-crumbs a, .hv-rhead .hv-eyebrow { color: var(--hv2-ink); }
+.hv-rhead h1 em { color: var(--hv2-ink); font-weight: 800; }
+.hv-rhead .hv-lead, .hv-rhead .hv-lead.text-ink { color: #2f2e2b; }
+.hv-rhead .hv-link { text-decoration-color: var(--hv2-ink); }
+.hv-rhead .hv-facts { border-top-color: rgb(0 0 0 / 0.2); }
+.hv-rhead .hv-facts > div + div { border-left-color: rgb(0 0 0 / 0.2); }
+.hv-rhead .hv-facts dt { color: #3a3a38; }
+.hv-rhead .hv-rhero { padding-bottom: 112px; }
+/* Thẻ tìm vé đè lên mép dưới dải vàng (như hero trang chủ) */
+.hv-rplate-bleed { position: relative; z-index: 2; margin-top: -80px; padding-top: 0; background: transparent; }
+/* Vạch vàng trên mỗi tiêu đề khối */
+.hv-ground .hv-head-block h2::before, .hv-section:has(#route-cta) h2::before { content: ""; display: block; width: 48px; height: 5px; margin-bottom: 20px; background: var(--hv2-yellow); }
+/* Thẻ loại xe: vạch vàng trên phần chữ */
+.hv-ccard-body { border-top: 5px solid var(--hv2-yellow); }
+/* Biểu tượng (ghim điểm đón, tiện ích, câu hỏi) màu vàng đậm */
+.hv-ground .hv-ruled svg, .hv-ground .hv-amenity svg, .hv-faq summary svg { color: var(--hv2-gold); }
+/* Đặt vé khứ hồi: dải vàng, nút than */
+.hv-section:has(#route-round-trip) { background: var(--hv2-yellow) !important; --rail-bg: var(--hv2-yellow); }
+.hv-section:has(#route-round-trip) h2::before { background: var(--hv2-ink); }
+.hv-section:has(#route-round-trip) .hv-btn-outline { border-color: var(--hv2-ink); background: var(--hv2-ink); color: #fff; }
+/* CTA cuối trang: nền than, nút vàng */
+.hv-section:has(#route-cta) { background: var(--hv2-ink) !important; color: #fff; }
+.hv-section:has(#route-cta) h2, .hv-section:has(#route-cta) .hv-lead { color: #fff; }
+.hv-section:has(#route-cta) .hv-btn-primary { background: var(--hv2-yellow); color: var(--hv2-ink); }
+.hv-section:has(#route-cta) .hv-btn-primary:hover { background: #f2b600; }
