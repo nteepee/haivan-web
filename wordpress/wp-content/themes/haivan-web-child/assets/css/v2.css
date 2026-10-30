@@ -492,3 +492,35 @@ body.hv2 { background: var(--hv2-paper); color: var(--hv2-ink); }
 .hv2-reading > .hv-photo-strip { margin-bottom: 16px; }
 .hv2-reading > .hv-photo-strip:not(.hv-photo-strip--1) img { aspect-ratio: 4 / 3; }
 @media (min-width: 60rem) { .hv2-reading { margin-top: 64px; } .hv2-reading > .hv-photo-strip:not(.hv-photo-strip--1) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* ---- Trang dịch vụ (Xe hợp đồng, Gửi hàng): nút đầu trang, thẻ 4 cột, form báo giá qua Zalo ---- */
+.hv2-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+.hv2-cards4 .hv2-card-body p { margin-top: 8px; }
+.hv2-ship-at { font-size: 15px !important; color: var(--hv2-ink) !important; }
+.hv2-ship-at strong { font-weight: 800; }
+@media (min-width: 48rem) { .hv2-cards4 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 75rem) { .hv2-cards4 { grid-template-columns: repeat(4, 1fr); } }
+.hv2-biz { margin-top: 32px; max-width: 46rem; padding-left: 20px; border-left: 5px solid var(--hv2-yellow); font-size: 1.0625rem; line-height: 1.6; }
+/* Form báo giá */
+.hv2-leadform { display: grid; gap: 20px; padding: 28px 22px; background: var(--hv2-surface); border-top: 5px solid var(--hv2-yellow); }
+.hv2-leadform-field { display: grid; gap: 8px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.hv2-leadform-field > label, .hv2-leadform-field > legend { padding: 0; color: #666; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.hv2-leadform-field > legend { margin-bottom: 8px; }
+.hv2-leadform :is(input, select) { width: 100%; min-height: 48px; padding: 0 13px; border: 1px solid #e6e6e3; border-radius: 0; background: #f7f7f5; color: var(--hv2-ink); font: inherit; font-size: 16px; }
+.hv2-leadform :is(input, select):focus-visible { outline: 2px solid var(--hv2-ink); outline-offset: 0; }
+.hv2-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.hv2-chip { position: relative; cursor: pointer; }
+.hv2-chip input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.hv2-chip span { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border: 1px solid #d0cfca; background: #fff; font-size: 15px; font-weight: 600; }
+.hv2-chip input:checked + span { border-color: var(--hv2-ink); background: var(--hv2-ink); color: #fff; }
+.hv2-chip input:focus-visible + span { outline: 2px solid var(--hv2-yellow); outline-offset: 2px; }
+.hv2-leadform-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
+.hv2-leadform-note { font-size: 14px; color: var(--hv2-muted); }
+.hv2-leadform-note.is-done { color: var(--hv2-ink); font-weight: 700; }
+@media (min-width: 48rem) {
+  .hv2-leadform { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 36px 40px; }
+  .hv2-leadform-field--wide, .hv2-leadform-foot, .hv2-leadform-note { grid-column: 1 / -1; }
+}
+@media (min-width: 75rem) { .hv2-leadform { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.hv2-leadform-copy { grid-column: 1 / -1; width: 100%; padding: 12px; border: 1px solid var(--hv2-line); background: #f7f7f5; font: inherit; font-size: 15px; }
+.hv2-leadform-copy[hidden] { display: none; }

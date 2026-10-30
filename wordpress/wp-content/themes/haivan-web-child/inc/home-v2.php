@@ -133,7 +133,7 @@ function hv2_render_services() {
 	$cards = array(
 		array( 'svc_1', 'svc-lien-tinh.webp', $p . '/xe-khach' ),
 		array( 'svc_2', 'svc-san-bay.webp', $p . '/xe-san-bay' ),
-		array( 'svc_3', 'svc-hop-dong.webp', $p . '/dich-vu/xe-hop-dong/phuong-tien' ),
+		array( 'svc_3', 'svc-hop-dong.webp', $p . '/dich-vu/xe-hop-dong' ),
 	);
 	echo '<ul class="hv2-svc">';
 	foreach ( $cards as $i => $c ) {
@@ -142,7 +142,7 @@ function hv2_render_services() {
 		echo '<span class="hv2-more">' . esc_html( hv2_t( 'svc_more' ) ) . '<span aria-hidden="true">↗</span></span></span></a></li>';
 	}
 	echo '</ul>';
-	echo '<p class="hv2-svc-extra"><a class="hv2-textlink" href="' . esc_url( $p . '/dich-vu/hang-hoa/tra-cuu-don' ) . '">' . esc_html( hv2_t( 'svc_cargo' ) ) . '<span aria-hidden="true">→</span></a></p>';
+	echo '<p class="hv2-svc-extra"><a class="hv2-textlink" href="' . esc_url( $p . '/dich-vu/hang-hoa' ) . '">' . esc_html( hv2_t( 'svc_cargo' ) ) . '<span aria-hidden="true">→</span></a></p>';
 }
 
 /** 04 · 5 chặng của một chuyến đi + một chuyện có thật. */

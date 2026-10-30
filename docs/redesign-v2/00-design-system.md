@@ -83,6 +83,16 @@ Thông số nhịp và khung:
 - **Thẻ ưu đãi:** MKT quản lý ở WP → Ưu đãi (tên, giá, điều kiện, ảnh, lịch, thứ tự).
 - **Chữ trên trang:** sửa ở WP → Ưu đãi → Trang Ưu đãi (v2).
 
+## Trang dịch vụ, lead về Zalo
+
+- **Xe hợp đồng** `/dich-vu/xe-hop-dong` dùng `page-xe-hop-dong.php`. **Gửi hàng** `/dich-vu/hang-hoa` (4 tuyến Điện Biên, Mộc Châu, Sơn La, Vũng Tàu) dùng `page-hang-hoa.php`. Chữ của cả hai sửa trong hộp "Nội dung trang (v2)".
+- **Form báo giá:** `hv2_zalo_lead()` trong `inc/v2.php`, phần chạy ở `assets/js/v2.js`.
+  - Form ghép các ô thành tin nhắn, chép vào bộ nhớ tạm rồi mở OA theo vùng. Miền Bắc mở `zalo.me/haivanxuantrang`, miền Nam mở `zalo.me/708526450733753395` (`hv2_zalo_urls()`).
+  - Không lưu dữ liệu. Nếu trình duyệt không cho chép, form hiện sẵn tin nhắn để khách tự chép.
+- **Khối dùng chung cho trang kể chuyện** (`inc/v2-story.php`):
+  - `hv2_story_top`, `hv2_story_pairs`, `hv2_story_prices`, `hv2_story_howto`;
+  - `hv2_hub_nav`: tab "Tổng quan" cùng các trang con.
+
 ## Chưa làm
 
 - Chữ của các trang nội dung, trừ trang chủ và Giới thiệu, vẫn là chữ cũ. Sẽ viết lại từng trang một theo khung kể chuyện (`inc/v2-story.php`).

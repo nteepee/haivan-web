@@ -72,6 +72,72 @@ function hv2_story_schemas() {
 			'nx_intro'    => array( 'Đoạn dẫn', 'textarea', 'Mỗi chuyến đi là một lần chúng tôi được làm tốt hơn. Bạn có thể bắt đầu theo cách của mình.', 'Every trip is a chance for us to do better. Start in whichever way suits you.', '09 · Hành trình tiếp theo' ),
 			'nx_items'    => array( 'Lối vào (chữ | đường dẫn)', 'lines', "Đặt chuyến đi | /xe-khach\nCùng làm việc với Hải Vân | /chung-toi/tuyen-dung\nTrở thành đối tác | /chung-toi/doi-tac", "Book a trip | /xe-khach\nWork with Hai Van | /chung-toi/tuyen-dung\nBecome a partner | /chung-toi/doi-tac", '09 · Hành trình tiếp theo' ),
 		),
+		'xe-hop-dong' => array(
+			'h1_a' => array( 'H1 · vế 1', 'text', 'Xe hợp đồng.', 'Private hire.', '01 · Đầu trang' ),
+			'h1_b' => array( 'H1 · vế 2 (tô vàng)', 'text', 'Chuyến đi riêng, theo nhịp của bạn.', 'Your own trip, at your own pace.', '01 · Đầu trang' ),
+			'lead' => array( 'Đoạn dẫn', 'textarea', 'Thuê nguyên xe có tài xế cho gia đình, nhóm bạn hay công ty. Hải Vân có gần 250 xe từ 7 đến 45 chỗ, đón tận nơi và đi theo lịch trình bạn chọn.', 'Hire a whole vehicle with a driver for your family, friends or company. Hai Van runs nearly 250 vehicles from 7 to 45 seats, picks you up at your door and follows your schedule.', '01 · Đầu trang' ),
+			'cta' => array( 'Chữ nút chính', 'text', 'Nhắn Zalo nhận báo giá', 'Get a quote on Zalo', '01 · Đầu trang' ),
+			'hero_img' => array( 'Ảnh lớn', 'image', 'hd-limo-cabin.webp', '', '01 · Đầu trang' ),
+			'hero_alt' => array( 'Mô tả ảnh lớn', 'text', 'Khoang Limousine Hải Vân với ghế da và đèn trần', 'A Hai Van limousine cabin with leather seats', '01 · Đầu trang' ),
+			'nd_eyebrow' => array( 'Nhãn khối', 'text', 'Khi nào nên thuê xe riêng', 'When to hire a vehicle', '02 · Nhu cầu' ),
+			'nd_h2_a' => array( 'H2 · vế 1', 'text', 'Có những chuyến đi', 'Some journeys', '02 · Nhu cầu' ),
+			'nd_h2_b' => array( 'H2 · vế 2', 'text', 'không nên đi chung.', 'are better on your own.', '02 · Nhu cầu' ),
+			'nd_items' => array( 'Thẻ (tiêu đề | mô tả | ảnh)', 'lines', "Gia đình có người già, trẻ nhỏ | Không gian riêng, dừng nghỉ khi cần, đồ đạc để thoải mái trong khoang hành lý. | hd-limo-seats.webp\nCông ty đưa đón khách, đối tác | Xe sạch, tài xế đúng giờ, đón tại sân bay, khách sạn hay văn phòng. | hd-fleet-street.webp\nĐoàn du lịch, cưới hỏi, sự kiện | Từ xe 7 chỗ đến 45 chỗ, đi một chiều, khứ hồi hay nhiều ngày theo lịch của đoàn. | hd-van-mountain.webp", "Families with elderly people or small children | A private space, stops when you need them, room for all your luggage. | hd-limo-seats.webp\nCompanies moving guests and partners | Clean vehicles and punctual drivers, pick-up at the airport, hotel or office. | hd-fleet-street.webp\nTours, weddings and events | From 7 to 45 seats, one way, return or multi-day on your group's schedule. | hd-van-mountain.webp", '02 · Nhu cầu' ),
+			'th_eyebrow' => array( 'Nhãn khối', 'text', 'Điều bạn nhận được', 'What you get', '03 · Tâm và Hành' ),
+			'th_h2_a' => array( 'H2 · vế 1', 'text', 'Tử tế từ Tâm.', 'Kindness at heart.', '03 · Tâm và Hành' ),
+			'th_h2_b' => array( 'H2 · vế 2', 'text', 'Chu đáo từ Hành.', 'Care in every act.', '03 · Tâm và Hành' ),
+			'th_rows' => array( 'Các cặp (Tâm | Hành)', 'lines', "Đi theo lịch của bạn | Tài xế có mặt đúng giờ hẹn, đón tận nơi, dừng nghỉ theo yêu cầu của đoàn\nGiá trọn gói, nói trước | Báo giá đã gồm xăng dầu, phí cầu đường và tài xế; không phụ thu ẩn\nXe đúng hạng bạn chọn | Từ xe 7 chỗ đến 45 chỗ; Limousine 9–11 chỗ ghế da, có sạc USB\nTài xế được tuyển chọn | Gần 1.000 lái xe được đào tạo về an toàn và cách phục vụ hành khách\nCó người lo suốt chuyến | Tổng đài 1900 6763 hỗ trợ 24/7 trong suốt hành trình", "Your schedule, not ours | The driver arrives on time, picks you up at your door and stops when your group needs\nAll-in price, agreed upfront | Quotes include fuel, tolls and the driver; no hidden surcharges\nThe vehicle class you choose | From 7 to 45 seats; 9–11 seat limousines with leather seats and USB charging\nCarefully selected drivers | Nearly 1,000 drivers trained in safety and passenger care\nSomeone looks after you | Our 1900 6763 hotline supports you 24/7 throughout the trip", '03 · Tâm và Hành' ),
+			'pr_eyebrow' => array( 'Nhãn khối', 'text', 'Giá tham khảo', 'Indicative prices', '04 · Giá tham khảo' ),
+			'pr_h2_a' => array( 'H2 · vế 1', 'text', 'Giá trọn gói,', 'All-in prices,', '04 · Giá tham khảo' ),
+			'pr_h2_b' => array( 'H2 · vế 2', 'text', 'biết trước khi đi.', 'known before you go.', '04 · Giá tham khảo' ),
+			'pr_note' => array( 'Ghi chú dưới bảng giá', 'textarea', 'Giá tham khảo tuyến Sài Gòn – Vũng Tàu, xe Limousine 9 chỗ, đã gồm xăng dầu, phí cầu đường và tài xế. Tuyến khác hoặc xe lớn hơn: gửi lịch trình để nhận báo giá.', 'Indicative prices for Saigon – Vung Tau in a 9-seat limousine, including fuel, tolls and the driver. Other routes or larger vehicles: send your schedule for a quote.', '04 · Giá tham khảo' ),
+			'pr_items' => array( 'Gói (nhãn | tên | giá | mô tả)', 'lines', "1 chiều | Sài Gòn ↔ Vũng Tàu | 2.200.000đ | Đón tận nhà, trả tận nơi.\nKhứ hồi trong ngày | Đi và về trong ngày | 3.800.000đ | Xe chờ đoàn trong ngày, đưa về lại Sài Gòn.\n2 ngày 1 đêm | Nghỉ dưỡng Vũng Tàu | 4.800.000đ | Tài xế phục vụ đoàn đi ăn, tham quan theo lịch riêng.", "One way | Saigon ↔ Vung Tau | 2,200,000đ | Door-to-door pick-up and drop-off.\nSame-day return | There and back in a day | 3,800,000đ | The vehicle waits for your group and brings you back to Saigon.\n2 days 1 night | A Vung Tau getaway | 4,800,000đ | The driver takes your group to meals and sights on your own schedule.", '04 · Giá tham khảo' ),
+			'ld_eyebrow' => array( 'Nhãn khối', 'text', 'Nhận báo giá', 'Get a quote', '05 · Form báo giá' ),
+			'ld_h2_a' => array( 'H2 · vế 1', 'text', 'Gửi lịch trình,', 'Send your plan,', '05 · Form báo giá' ),
+			'ld_h2_b' => array( 'H2 · vế 2', 'text', 'nhận báo giá trọn gói.', 'get an all-in quote.', '05 · Form báo giá' ),
+			'ld_intro' => array( 'Đoạn dẫn', 'textarea', 'Điền vài thông tin, bấm nút: Zalo Hải Vân sẽ mở với nội dung đã chép sẵn, bạn chỉ cần dán và gửi.', 'Fill in a few details and tap the button: Hai Van on Zalo opens with your message copied, just paste and send.', '05 · Form báo giá' ),
+			'ld_note' => array( 'Dòng ghi chú dưới nút', 'text', 'Tin nhắn được chép sẵn để bạn dán vào Zalo. Hải Vân không lưu thông tin này trên web.', 'Your message is copied for you to paste into Zalo. Hai Van does not store it on the website.', '05 · Form báo giá' ),
+			'ld_copied' => array( 'Báo đã chép', 'text', 'Đã chép tin nhắn. Zalo đang mở, bạn dán vào khung chat và gửi nhé.', 'Message copied. Zalo is opening, paste it into the chat and send.', '05 · Form báo giá' ),
+			'how_eyebrow' => array( 'Nhãn khối', 'text', 'Cách đặt xe', 'How to book', '06 · Cách đặt' ),
+			'how_h2_a' => array( 'H2 · vế 1', 'text', 'Ba bước,', 'Three steps,', '06 · Cách đặt' ),
+			'how_h2_b' => array( 'H2 · vế 2', 'text', 'xe tới tận cửa.', 'to your door.', '06 · Cách đặt' ),
+			'how_steps' => array( 'Các bước (tiêu đề | mô tả)', 'lines', "Gửi lịch trình qua Zalo | Điểm đón, điểm đến, ngày đi, số người: điền form ở trên hoặc nhắn thẳng.\nNhận báo giá trọn gói | Nhân viên báo giá đã gồm xăng, phí cầu đường, tài xế và loại xe phù hợp.\nXác nhận, tài xế đón đúng giờ | Bạn nhận tên, số điện thoại tài xế và biển số xe trước chuyến đi.", "Send your plan on Zalo | Pick-up, destination, date, number of people: use the form above or message us directly.\nGet an all-in quote | We quote fuel, tolls, the driver and the right vehicle in one price.\nConfirm, and the driver arrives on time | You get the driver's name, phone and plate number before the trip.", '06 · Cách đặt' ),
+		),
+		'hang-hoa' => array(
+			'h1_a' => array( 'H1 · vế 1', 'text', 'Gửi hàng cùng chuyến xe.', 'Send parcels with our coaches.', '01 · Đầu trang' ),
+			'h1_b' => array( 'H1 · vế 2 (tô vàng)', 'text', 'Đến nơi ngay trong ngày.', 'Delivered the same day.', '01 · Đầu trang' ),
+			'lead' => array( 'Đoạn dẫn', 'textarea', 'Hải Vân nhận gửi hàng hai chiều trên 4 tuyến: Sài Gòn – Vũng Tàu và Hà Nội – Điện Biên, Mộc Châu, Sơn La. Hàng đi ngay chuyến xe gần nhất, người nhận lấy tại văn phòng đầu bên kia.', 'Hai Van carries parcels both ways on 4 routes: Saigon – Vung Tau and Hanoi – Dien Bien, Moc Chau, Son La. Your parcel goes on the next coach and is collected at our office at the other end.', '01 · Đầu trang' ),
+			'cta' => array( 'Chữ nút chính', 'text', 'Nhắn Zalo báo cước', 'Ask for a rate on Zalo', '01 · Đầu trang' ),
+			'track' => array( 'Chữ link tra cứu đơn', 'text', 'Tra cứu đơn hàng', 'Track a parcel', '01 · Đầu trang' ),
+			'hero_img' => array( 'Ảnh lớn', 'image', 'gh-office-boxes.webp', '', '01 · Đầu trang' ),
+			'hero_alt' => array( 'Mô tả ảnh lớn', 'text', 'Nhân viên Hải Vân nhận và xếp kiện hàng tại văn phòng', 'Hai Van staff receiving and stacking parcels at the office', '01 · Đầu trang' ),
+			'rt_eyebrow' => array( 'Nhãn khối', 'text', 'Tuyến gửi hàng', 'Routes', '02 · Bốn tuyến' ),
+			'rt_h2_a' => array( 'H2 · vế 1', 'text', 'Bốn tuyến,', 'Four routes,', '02 · Bốn tuyến' ),
+			'rt_h2_b' => array( 'H2 · vế 2', 'text', 'một cách gửi dễ dàng.', 'one easy way to send.', '02 · Bốn tuyến' ),
+			'rt_items' => array( 'Tuyến (tên | thời gian | điểm gửi | ảnh | vùng bac/nam)', 'lines', "Sài Gòn ↔ Vũng Tàu | Xe Limousine 15 phút một chuyến, hàng lên ngay chuyến gần nhất | 34 Nguyễn Thái Bình, 307 Nguyễn Văn Trỗi, 607 Điện Biên Phủ (Sài Gòn) · 156B Lê Hồng Phong (Vũng Tàu) | dest-vung-tau.webp | nam\nHà Nội ↔ Điện Biên | Theo chuyến xe trong ngày, thường tới nơi sau 4–12 tiếng | 01 Nguyễn Hoàng, cạnh bến xe Mỹ Đình | dest-dien-bien.webp | bac\nHà Nội ↔ Mộc Châu | Theo chuyến xe trong ngày, thường tới nơi sau 4–12 tiếng | 01 Nguyễn Hoàng (Mỹ Đình) · 254 Trần Huy Liệu (Mộc Châu) | dest-moc-chau.webp | bac\nHà Nội ↔ Sơn La | Theo chuyến xe trong ngày, thường tới nơi sau 4–12 tiếng | 01 Nguyễn Hoàng, cạnh bến xe Mỹ Đình | dest-son-la.webp | bac", "Saigon ↔ Vung Tau | Limousines every 15 minutes, your parcel goes on the next one | 34 Nguyen Thai Binh, 307 Nguyen Van Troi, 607 Dien Bien Phu (Saigon) · 156B Le Hong Phong (Vung Tau) | dest-vung-tau.webp | nam\nHanoi ↔ Dien Bien | On the day's coaches, usually delivered in 4–12 hours | 01 Nguyen Hoang, next to My Dinh bus station | dest-dien-bien.webp | bac\nHanoi ↔ Moc Chau | On the day's coaches, usually delivered in 4–12 hours | 01 Nguyen Hoang (My Dinh) · 254 Tran Huy Lieu (Moc Chau) | dest-moc-chau.webp | bac\nHanoi ↔ Son La | On the day's coaches, usually delivered in 4–12 hours | 01 Nguyen Hoang, next to My Dinh bus station | dest-son-la.webp | bac", '02 · Bốn tuyến' ),
+			'rt_go' => array( 'Chữ nút mỗi tuyến', 'text', 'Nhắn Zalo tuyến này', 'Message us for this route', '02 · Bốn tuyến' ),
+			'rt_send' => array( 'Chữ "Gửi tại"', 'text', 'Gửi và nhận tại', 'Drop off and collect at', '02 · Bốn tuyến' ),
+			'th_eyebrow' => array( 'Nhãn khối', 'text', 'Hàng của bạn', 'Your parcel', '03 · Tâm và Hành' ),
+			'th_h2_a' => array( 'H2 · vế 1', 'text', 'Giữ hàng của bạn', 'We look after your parcel', '03 · Tâm và Hành' ),
+			'th_h2_b' => array( 'H2 · vế 2', 'text', 'như giữ hàng của mình.', 'like it were our own.', '03 · Tâm và Hành' ),
+			'th_rows' => array( 'Các cặp (Tâm | Hành)', 'lines', "Giấy tờ gấp phải đến đúng tay | Nhận hồ sơ, tài liệu quan trọng: niêm phong, ký biên nhận ở cả hai đầu\nHàng tươi phải còn tươi | Hải sản, thực phẩm đóng thùng xốp dán kín, đi khoang hành lý riêng\nTừ phong bì đến hàng tấn | Nhận từ kiện nhỏ tới hàng cồng kềnh; doanh nghiệp có thể đặt xe tải tới 8 tấn\nCó trách nhiệm đến cùng | Mỗi kiện có biên nhận; hư hại hay thất lạc do nhà xe được bồi thường theo quy định\nNói rõ điều không nhận | Không nhận hóa chất độc hại, chất dễ cháy nổ, hàng cấm và động vật sống", "Urgent papers reach the right hands | Important documents are sealed and signed for at both ends\nFresh goods stay fresh | Seafood and food travel in sealed foam boxes in a separate luggage hold\nFrom an envelope to tonnes | Small parcels to bulky goods; businesses can book trucks of up to 8 tonnes\nResponsible to the end | Every parcel has a receipt; loss or damage caused by us is compensated as regulated\nClear about what we can't take | No toxic chemicals, flammables or explosives, prohibited goods or live animals", '03 · Tâm và Hành' ),
+			'pr_eyebrow' => array( 'Nhãn khối', 'text', 'Cước Sài Gòn – Vũng Tàu', 'Saigon – Vung Tau rates', '04 · Cước' ),
+			'pr_h2_a' => array( 'H2 · vế 1', 'text', 'Cước rõ ràng,', 'Clear rates,', '04 · Cước' ),
+			'pr_h2_b' => array( 'H2 · vế 2', 'text', 'biết trước khi gửi.', 'known before you send.', '04 · Cước' ),
+			'pr_note' => array( 'Ghi chú dưới bảng cước', 'textarea', 'Cước niêm yết tuyến Sài Gòn – Vũng Tàu, đã gồm VAT. Hàng đi Điện Biên, Mộc Châu, Sơn La: báo loại hàng và khối lượng qua Zalo hoặc tổng đài để được báo cước.', 'Listed rates for Saigon – Vung Tau, VAT included. For Dien Bien, Moc Chau and Son La: tell us the type and weight on Zalo or the hotline for a rate.', '04 · Cước' ),
+			'pr_items' => array( 'Mức cước (nhãn | tên | giá | mô tả)', 'lines', "Tài liệu | Bì thư, hồ sơ | Từ 30.000đ | Mỗi bưu gửi.\nKiện vừa | Kiện 40×60 | Từ 40.000đ | Thùng xốp, thùng carton, vali.\nKiện lớn | Kiện 50×70 | Từ 50.000đ | Hàng cồng kềnh, ngoại cỡ: báo giá riêng.", "Documents | Envelopes, files | From 30,000đ | Per item.\nMedium parcel | 40×60 box | From 40,000đ | Foam box, carton or suitcase.\nLarge parcel | 50×70 box | From 50,000đ | Bulky or oversized goods: quoted separately.", '04 · Cước' ),
+			'ld_eyebrow' => array( 'Nhãn khối', 'text', 'Báo cước nhanh', 'Quick rate', '05 · Form báo cước' ),
+			'ld_h2_a' => array( 'H2 · vế 1', 'text', 'Cho Hải Vân biết', 'Tell us', '05 · Form báo cước' ),
+			'ld_h2_b' => array( 'H2 · vế 2', 'text', 'bạn cần gửi gì.', 'what you need to send.', '05 · Form báo cước' ),
+			'ld_intro' => array( 'Đoạn dẫn', 'textarea', 'Chọn tuyến và loại hàng, bấm nút: Zalo của tuyến đó sẽ mở với nội dung đã chép sẵn, bạn chỉ cần dán và gửi.', 'Pick the route and parcel type, then tap the button: that route\'s Zalo opens with your message copied, just paste and send.', '05 · Form báo cước' ),
+			'ld_note' => array( 'Dòng ghi chú dưới nút', 'text', 'Tin nhắn được chép sẵn để bạn dán vào Zalo. Hải Vân không lưu thông tin này trên web.', 'Your message is copied for you to paste into Zalo. Hai Van does not store it on the website.', '05 · Form báo cước' ),
+			'ld_copied' => array( 'Báo đã chép', 'text', 'Đã chép tin nhắn. Zalo đang mở, bạn dán vào khung chat và gửi nhé.', 'Message copied. Zalo is opening, paste it into the chat and send.', '05 · Form báo cước' ),
+			'how_eyebrow' => array( 'Nhãn khối', 'text', 'Cách gửi', 'How it works', '06 · Cách gửi' ),
+			'how_h2_a' => array( 'H2 · vế 1', 'text', 'Ba bước,', 'Three steps,', '06 · Cách gửi' ),
+			'how_h2_b' => array( 'H2 · vế 2', 'text', 'hàng lên xe.', 'and it is on its way.', '06 · Cách gửi' ),
+			'how_steps' => array( 'Các bước (tiêu đề | mô tả)', 'lines', "Mang hàng ra văn phòng | Gửi tại văn phòng Hải Vân gần nhất trên tuyến; hàng tươi đóng thùng xốp dán kín.\nNhận biên nhận | Nhân viên kiểm tra, niêm phong và lập biên nhận; bạn báo người nhận thông tin đơn.\nNgười nhận lấy hàng | Người nhận lấy tại văn phòng đầu bên kia khi xe tới. Theo dõi đơn ở trang Tra cứu đơn hàng.", "Bring it to our office | Drop it off at the nearest Hai Van office on the route; fresh goods in sealed foam boxes.\nGet a receipt | Staff check, seal and issue a receipt; pass the details to your recipient.\nThe recipient collects | They pick it up at the office at the other end when the coach arrives. Follow it on the Track a parcel page.", '06 · Cách gửi' ),
+			'biz_text' => array( 'Dòng dành cho doanh nghiệp', 'textarea', 'Doanh nghiệp, hộ kinh doanh cần gửi định kỳ hoặc thuê xe tải riêng (tới 8 tấn): gọi 1900 6763 để được tư vấn.', 'Businesses sending regularly or needing a dedicated truck (up to 8 tonnes): call 1900 6763 for advice.', '06 · Cách gửi' ),
+		),
 		// Trang lưu trữ /uu-dai (không phải trang WP): chữ lưu ở option, sửa tại Ưu đãi → Trang Ưu đãi (v2).
 		'uu-dai'     => array(
 			'h1_a'        => array( 'H1 · vế 1', 'text', 'Đi cùng nhau.', 'Travel together.', '01 · Đầu trang' ),
@@ -287,4 +353,59 @@ function hv2_uu_dai_settings_page() {
 	}
 	submit_button( 'Lưu' );
 	echo '</form></div>';
+}
+
+/* ---- Khối hiển thị dùng chung cho trang kể chuyện (Xe hợp đồng, Gửi hàng…) ---- */
+
+/** Bảng cặp Tâm | Hành từ trường lines; $col_a/$col_b = tiêu đề hai cột. */
+function hv2_story_pairs( $key, $col_a, $col_b ) {
+	echo '<div class="hv2-pairs" role="table" aria-label="' . esc_attr( $col_a . ' – ' . $col_b ) . '"><div class="hv2-pairs-head" role="row"><span role="columnheader">' . esc_html( $col_a ) . '</span><span role="columnheader">' . esc_html( $col_b ) . '</span></div>';
+	foreach ( hv2_s_lines( $key ) as $i => $r ) {
+		echo '<div class="hv2-pairs-row" role="row"><p role="cell"><span class="hv2-no">' . esc_html( sprintf( '%02d', $i + 1 ) ) . '</span>' . esc_html( $r[0] ) . '</p><p role="cell">' . esc_html( $r[1] ?? '' ) . '</p></div>';
+	}
+	echo '</div>';
+}
+
+/** Thẻ giá trên nền than (nhãn | tên | giá | mô tả), thẻ đầu vàng — cùng kiểu thẻ ưu đãi. */
+function hv2_story_prices( $key, $note_key ) {
+	echo '<ul class="hv2-offers hv2-offers--dark">';
+	foreach ( hv2_s_lines( $key ) as $i => $r ) {
+		echo '<li class="hv2-offer' . ( 0 === $i ? ' hv2-offer--lead' : '' ) . '"><span class="hv2-offer-tag">' . esc_html( $r[0] ) . '</span><h3>' . esc_html( $r[1] ?? '' ) . '</h3><p class="hv2-offer-price"><strong>' . esc_html( $r[2] ?? '' ) . '</strong></p><p class="hv2-offer-cond">' . esc_html( $r[3] ?? '' ) . '</p></li>';
+	}
+	echo '</ul><p class="hv2-milestone">' . esc_html( hv2_s( $note_key ) ) . '</p>';
+}
+
+/** Ba bước (tiêu đề | mô tả). */
+function hv2_story_howto( $key ) {
+	echo '<ol class="hv2-howto">';
+	foreach ( hv2_s_lines( $key ) as $i => $r ) {
+		echo '<li><span class="hv2-howto-n">' . esc_html( sprintf( '%02d', $i + 1 ) ) . '</span><h3>' . esc_html( $r[0] ) . '</h3><p>' . esc_html( $r[1] ?? '' ) . '</p></li>';
+	}
+	echo '</ol>';
+}
+
+/** Đầu trang dịch vụ: đường dẫn, nhãn, H1 hai vế, đoạn dẫn, nút (HTML đã escape), tab cùng mục, ảnh rộng. */
+function hv2_story_top( $actions_html ) {
+	$trail = hv_page_trail( get_post() );
+	echo '<div class="hv2-wrap hv-page hv2-story-page">';
+	hv_breadcrumb_trail( $trail );
+	hv2_page_head( hv2_section_label( $trail ), hv2_s( 'h1_a' ), hv2_s( 'lead' ), $actions_html, hv2_s( 'h1_b' ) );
+	hv2_subnav_tabs( hv2_hub_nav( get_post() ) );
+	echo '<figure class="hv2-wide-photo">' . hv2_story_img( hv2_s( 'hero_img' ), hv2_s( 'hero_alt' ), 'fetchpriority="high" decoding="async"' ) . '</figure></div>'; // phpcs:ignore WordPress.Security.EscapeOutput -- img dựng và escape trong hv2_story_img().
+}
+
+/**
+ * Tab của trang dịch vụ có trang con (Xe hợp đồng, Gửi hàng): chính trang đó ("Tổng quan") + các trang con; không có
+ * trang con thì dùng các trang cùng mục như mọi trang khác.
+ */
+function hv2_hub_nav( $post ) {
+	$kids = get_pages( array( 'parent' => $post->ID, 'sort_column' => 'menu_order,ID', 'post_status' => 'publish' ) );
+	if ( ! $kids ) {
+		return hv_page_subnav( $post );
+	}
+	$nav = array( array( 'en' === hv_lang() ? 'Overview' : 'Tổng quan', get_permalink( $post ), true ) );
+	foreach ( $kids as $k ) {
+		$nav[] = array( get_the_title( $k ), get_permalink( $k ), false );
+	}
+	return $nav;
 }

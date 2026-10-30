@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HV_WEB_VERSION', '1.9.5' );
+define( 'HV_WEB_VERSION', '1.10.5' );
 define( 'HV_WEB_DIR', get_stylesheet_directory() );
 define( 'HV_WEB_URI', get_stylesheet_directory_uri() );
 
@@ -73,9 +73,8 @@ add_action(
 				wp_enqueue_style( 'hv-offers-page', $css . 'offers-page.css', array( 'hv-home-rails' ), HV_WEB_VERSION );
 			}
 		}
-		if ( is_post_type_archive( 'uu_dai' ) ) { // lọc ưu đãi theo tuyến (assets/js/v2.js).
-			wp_enqueue_script( 'hv-v2', HV_WEB_URI . '/assets/js/v2.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
-		}
+		// JS dùng chung v2 (lọc ưu đãi, form báo giá qua Zalo): nhỏ, tải sau, chỉ chạy khi trang có thành phần tương ứng.
+		wp_enqueue_script( 'hv-v2', HV_WEB_URI . '/assets/js/v2.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
 		// Design system v2 nạp sau cùng cho mọi trang: phủ lớp v4 bằng một bộ biến + thành phần (assets/css/v2.css).
 		wp_enqueue_style( 'hv-v2', $css . 'v2.css', array( 'hv-footer' ), HV_WEB_VERSION );
 		wp_enqueue_script( 'hv-site', HV_WEB_URI . '/assets/js/site.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );

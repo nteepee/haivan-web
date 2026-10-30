@@ -126,15 +126,15 @@
           },
           {
             "label": "Xe hợp đồng",
-            "href": "/dich-vu/xe-hop-dong/phuong-tien"
+            "href": "/dich-vu/xe-hop-dong"
           },
           {
             "label": "Xe sân bay",
             "href": "/xe-san-bay"
           },
           {
-            "label": "Tra cứu hàng hoá",
-            "href": "/dich-vu/hang-hoa/tra-cuu-don"
+            "label": "Gửi hàng",
+            "href": "/dich-vu/hang-hoa"
           }
         ]
       },
@@ -252,7 +252,7 @@
           },
           {
             "label": "Xe hợp đồng",
-            "href": "/dich-vu/xe-hop-dong/phuong-tien"
+            "href": "/dich-vu/xe-hop-dong"
           }
         ]
       },
@@ -384,15 +384,15 @@
           },
           {
             "label": "Rental cars",
-            "href": "/en/dich-vu/xe-hop-dong/phuong-tien"
+            "href": "/en/dich-vu/xe-hop-dong"
           },
           {
             "label": "Airport transfer",
             "href": "/en/xe-san-bay"
           },
           {
-            "label": "Parcel tracking",
-            "href": "/en/dich-vu/hang-hoa/tra-cuu-don"
+            "label": "Parcel delivery",
+            "href": "/en/dich-vu/hang-hoa"
           }
         ]
       },
@@ -510,7 +510,7 @@
           },
           {
             "label": "Rental Cars",
-            "href": "/en/dich-vu/xe-hop-dong/phuong-tien"
+            "href": "/en/dich-vu/xe-hop-dong"
           }
         ]
       },

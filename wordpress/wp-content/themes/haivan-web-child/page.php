@@ -18,7 +18,17 @@ while ( have_posts() ) :
 <article <?php post_class( 'hv2-wrap hv-page hv2-content-page' ); ?>>
 	<?php hv_breadcrumb_trail( $hv_trail ); ?>
 	<?php hv2_page_head( hv2_section_label( $hv_trail ), get_the_title(), has_excerpt() ? get_the_excerpt() : '' ); ?>
-	<?php hv2_subnav_tabs( hv_page_subnav( get_post() ) ); ?>
+	<?php
+	// Trang con của một trang dịch vụ kể chuyện (vd. Xe hợp đồng → Lái xe): tab đầu là "Tổng quan" về trang cha.
+	$hv_nav    = hv_page_subnav( get_post() );
+	$hv_pid    = (int) wp_get_post_parent_id( get_the_ID() );
+	$hv_parent = $hv_pid > 0 ? get_post( $hv_pid ) : null;
+	if ( $hv_parent && 'publish' === $hv_parent->post_status && hv2_story_schema( $hv_parent ) ) {
+		$hv_nav = $hv_nav ? $hv_nav : array( array( get_the_title(), get_permalink(), true ) ); // hub chỉ có một trang con
+		array_unshift( $hv_nav, array( 'en' === hv_lang() ? 'Overview' : 'Tổng quan', get_permalink( $hv_parent ), false ) );
+	}
+	hv2_subnav_tabs( $hv_nav );
+	?>
 	<?php if ( has_post_thumbnail() ) : ?>
 		<figure class="hv2-wide-photo"><?php the_post_thumbnail( 'full', array( 'fetchpriority' => 'high', 'alt' => hv_image_alt( get_post() ) ) ); ?></figure>
 	<?php endif; ?>

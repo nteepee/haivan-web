@@ -143,6 +143,57 @@ function hv2_subnav_tabs( array $nav ) {
 	echo '</ul></nav>';
 }
 
+/** OA Zalo theo vùng: 'nam' = Hải Vân (Sài Gòn, Vũng Tàu), 'bac' = Hải Vân Xuân Tráng (Hà Nội, Tây Bắc). */
+function hv2_zalo_urls() {
+	return array(
+		'nam' => 'https://zalo.me/708526450733753395',
+		'bac' => 'https://zalo.me/haivanxuantrang',
+	);
+}
+
+/**
+ * Form nhận báo giá qua Zalo (dùng chung cho Xe hợp đồng, Gửi hàng…). Không lưu dữ liệu: v2.js ghép các ô thành tin
+ * nhắn, chép vào bộ nhớ tạm rồi mở OA Zalo đúng vùng (lựa chọn mang data-zalo="bac|nam"); không có JS thì nút vẫn mở Zalo.
+ *
+ * @param string $id     Id form.
+ * @param array  $fields Mỗi ô: ['key','label','type' (chips|select|text|tel|date|number), 'options' => [[nhãn, vùng|''],…], 'placeholder'].
+ * @param array  $o      'prefix' (câu mở đầu tin nhắn), 'submit', 'note', 'copied' (báo đã chép), 'zalo' ('nam'|'bac' mặc định).
+ */
+function hv2_zalo_lead( $id, array $fields, array $o ) {
+	$urls = hv2_zalo_urls();
+	$def  = isset( $urls[ $o['zalo'] ?? '' ] ) ? $o['zalo'] : 'nam';
+	list( $hot, $tel ) = hv2_hotline();
+	echo '<form class="hv2-leadform" id="' . esc_attr( $id ) . '" action="' . esc_url( $urls[ $def ] ) . '" method="get" target="_blank" data-hv2-lead data-zalo-nam="' . esc_url( $urls['nam'] ) . '" data-zalo-bac="' . esc_url( $urls['bac'] ) . '" data-zalo="' . esc_attr( $def ) . '" data-prefix="' . esc_attr( $o['prefix'] ) . '" data-copied="' . esc_attr( $o['copied'] ) . '" data-fail="' . esc_attr( 'en' === hv_lang() ? 'Could not copy automatically. Copy the message below and paste it into Zalo.' : 'Chưa chép tự động được. Bạn chép đoạn tin nhắn bên dưới rồi dán vào Zalo nhé.' ) . '">';
+	foreach ( $fields as $n => $f ) {
+		$fid = $id . '-' . $f['key'];
+		$req = ! empty( $f['required'] ) ? ' required' : '';
+		if ( 'chips' === $f['type'] ) {
+			echo '<fieldset class="hv2-leadform-field hv2-leadform-field--wide"><legend>' . esc_html( $f['label'] ) . '</legend><div class="hv2-chips">';
+			foreach ( $f['options'] as $k => $opt ) {
+				echo '<label class="hv2-chip"><input type="radio" name="' . esc_attr( $fid ) . '" value="' . esc_attr( $opt[0] ) . '"' . ( '' !== ( $opt[1] ?? '' ) ? ' data-zalo="' . esc_attr( $opt[1] ) . '"' : '' ) . ( 0 === $k ? ' checked' : '' ) . ' data-label="' . esc_attr( $f['label'] ) . '"><span>' . esc_html( $opt[0] ) . '</span></label>';
+			}
+			echo '</div></fieldset>';
+			continue;
+		}
+		echo '<div class="hv2-leadform-field' . ( ! empty( $f['wide'] ) ? ' hv2-leadform-field--wide' : '' ) . '"><label for="' . esc_attr( $fid ) . '">' . esc_html( $f['label'] ) . '</label>';
+		if ( 'select' === $f['type'] ) {
+			echo '<select id="' . esc_attr( $fid ) . '" data-label="' . esc_attr( $f['label'] ) . '">';
+			foreach ( $f['options'] as $opt ) {
+				echo '<option value="' . esc_attr( $opt[0] ) . '"' . ( '' !== ( $opt[1] ?? '' ) ? ' data-zalo="' . esc_attr( $opt[1] ) . '"' : '' ) . '>' . esc_html( $opt[0] ) . '</option>';
+			}
+			echo '</select>';
+		} else {
+			$type = in_array( $f['type'], array( 'tel', 'date', 'number' ), true ) ? $f['type'] : 'text';
+			echo '<input id="' . esc_attr( $fid ) . '" type="' . esc_attr( $type ) . '" data-label="' . esc_attr( $f['label'] ) . '"' . ( 'number' === $type ? ' min="1" inputmode="numeric"' : '' ) . ( 'tel' === $type ? ' autocomplete="tel" inputmode="tel"' : '' ) . ' placeholder="' . esc_attr( $f['placeholder'] ?? '' ) . '"' . $req . '>';
+		}
+		echo '</div>';
+	}
+	echo '<div class="hv2-leadform-foot"><button class="hv2-btn hv2-btn--yellow" type="submit">' . esc_html( $o['submit'] ) . '</button>';
+	echo '<a class="hv2-textlink" href="' . esc_url( $tel ) . '">' . esc_html( $hot ) . '<span aria-hidden="true">↗</span></a></div>';
+	echo '<p class="hv2-leadform-note" role="status" aria-live="polite">' . esc_html( $o['note'] ) . '</p>';
+	echo '<textarea class="hv2-leadform-copy" rows="6" readonly hidden aria-label="' . esc_attr( 'en' === hv_lang() ? 'Message to paste into Zalo' : 'Tin nhắn để dán vào Zalo' ) . '"></textarea></form>';
+}
+
 /** Mọi trang WP mang lớp .hv2: biến, reset và thành phần của v2.css áp chung (trang chủ chỉ thêm home-v2.css). */
 add_filter(
 	'body_class',
