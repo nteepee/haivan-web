@@ -29,6 +29,15 @@ export interface RouteLandingView {
   faq: Array<{ q: string; a: string }>;
   pickupPoints: NonNullable<RouteLandingWp["pickup_points"]>;
   offices: NonNullable<RouteLandingWp["offices"]>;
+  /** Số liệu đầu trang do WP nhập (ngoài giá); rỗng = dùng giờ chạy + km. */
+  facts: NonNullable<RouteLandingWp["facts"]>;
+  reasons: RouteLandingWp["reasons"] | null;
+  stops: NonNullable<RouteLandingWp["stops"]>;
+  stopsIntro: string | null;
+  rating: RouteLandingWp["rating"] | null;
+  reviews: NonNullable<RouteLandingWp["reviews"]>;
+  stats: NonNullable<RouteLandingWp["stats"]>;
+  story: string | null;
   vehicleClasses: NonNullable<RouteLandingWp["vehicle_classes"]>;
   amenities: Array<{ name: string; icon: string | null }>;
   relatedRoutes: RouteLink[];
@@ -110,6 +119,14 @@ export function buildRouteLanding(wp: RouteLandingWp | null, cms: RouteListing, 
     faq: faq.filter((x) => x.q.trim() && x.a.trim()),
     pickupPoints: pickups,
     offices: wp?.offices ?? [],
+    facts: wp?.facts ?? [],
+    reasons: wp?.reasons?.items.length ? wp.reasons : null,
+    stops: wp?.stops ?? [],
+    stopsIntro: text(wp?.stops_intro),
+    rating: wp?.rating ?? null,
+    reviews: (wp?.reviews ?? []).filter((r) => r.quote.trim()),
+    stats: wp?.stats ?? [],
+    story: text(wp?.story),
     vehicleClasses: wp?.vehicle_classes ?? [],
     amenities: (cms.services ?? []).map((s) => ({ name: s.name, icon: s.image && /^https?:\/\//i.test(s.image) ? s.image : null })),
     relatedRoutes: wp?.related_routes ?? [],

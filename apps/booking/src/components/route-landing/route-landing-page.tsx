@@ -7,14 +7,19 @@ import { JsonLd } from "./json-ld";
 import { RouteCta } from "./route-cta";
 import { RouteFaqLinks } from "./route-faq-links";
 import { RouteHero } from "./route-hero";
-import { ROUTE_HERO_ART } from "./route-art";
-import { RouteInfo } from "./route-info";
+import { isSouthRoute, ROUTE_HERO_ART, routeHeroPhoto } from "./route-art";
+import { RouteAbout, RouteInfo } from "./route-info";
 import { RoutePlaces as RoutePlacesSection } from "./route-places";
 import { RouteSchedule } from "./route-schedule";
 import { RouteStopMap } from "./route-stop-map";
+import { RouteLounges, RouteProof, RouteReasons, RouteStops } from "./route-story";
+import { formatMoney } from "@/lib/format";
+import { classPrice, type RoutePrices } from "@/server/route-price";
 
 interface Props {
   view: RouteLandingView;
+  /** Giá hôm nay (chung + theo hạng xe) từ API danh sách chuyến; rỗng khi lỗi. */
+  prices: RoutePrices;
   locale: Locale;
   places: RoutePlaces;
   origin: string;
@@ -25,10 +30,11 @@ interface Props {
 }
 
 /**
- * Landing tuyến (server): banner + thẻ tìm vé → giờ chạy & giá → nội dung → hạng xe/tiện ích → sơ đồ điểm dừng →
- * điểm đón/văn phòng → khứ hồi → FAQ → tuyến liên quan → dải đặt vé (dải tải app nằm ở layout). Khối nào không có dữ liệu thì bỏ.
+ * Landing tuyến (server), mạch như trang chủ: banner ảnh + thẻ tìm vé → giờ chạy & giá → vì sao chọn → hạng xe/tiện ích →
+ * phòng chờ & quầy → danh bạ trạm → sơ đồ điểm dừng → bằng chứng (đánh giá, số liệu, câu chuyện) → khứ hồi → FAQ → tuyến liên quan →
+ * cẩm nang tuyến → dải đặt vé (dải tải app nằm ở layout). Khối nào không có dữ liệu thì bỏ.
  */
-export function RouteLandingPage({ view, locale, places, origin, reversePath = null, start, end }: Props) {
+export function RouteLandingPage({ view, prices, locale, places, origin, reversePath = null, start, end }: Props) {
   const t = (key: string, vars?: Record<string, string | number>) => translate(locale, key, vars);
   const reverse = reversePath
     ? {
@@ -37,28 +43,38 @@ export function RouteLandingPage({ view, locale, places, origin, reversePath = n
       }
     : null;
   const heroArt = ROUTE_HERO_ART[`${start}/${end}`];
+  const south = isSouthRoute(`${start}/${end}`);
+  const priceOf = (name: string) => classPrice(prices, name);
   return (
     <>
       {routeJsonLd(view, { origin, locale, start, end }).map((data, i) => (
         <JsonLd key={i} data={data} />
       ))}
-      <RouteHero view={view} locale={locale} art={heroArt} reverse={reverse}>
+      <RouteHero view={view} locale={locale} photo={routeHeroPhoto(`${start}/${end}`)} reverse={reverse}>
         <RouteSearchForm places={places} landing={`${start}/${end}`} />
       </RouteHero>
       <RouteSchedule view={view} locale={locale}>
         <RouteFareTable
           places={places}
           landing={`${start}/${end}`}
-          classes={view.vehicleClasses.map((c) => ({ name: c.name, price_from: c.price_from }))}
+          classes={view.vehicleClasses.map((c) => {
+            const live = priceOf(c.name);
+            return { name: c.name, price_from: live ? formatMoney(live) : null };
+          })}
           hours={view.runHours}
           title={t("route.fare_caption", { a: view.start, b: view.end })}
         />
         <RouteTripList places={places} landing={`${start}/${end}`} />
       </RouteSchedule>
-      <RouteInfo view={view} locale={locale} />
+      <RouteReasons view={view} />
+      <RouteInfo view={view} locale={locale} south={south} classPrice={priceOf} />
+      <RouteLounges view={view} locale={locale} />
+      <RouteStops view={view} locale={locale} />
       {heroArt ? <RouteStopMap locale={locale} /> : null}
+      <RouteProof view={view} locale={locale} />
       <RoutePlacesSection view={view} locale={locale} />
       <RouteFaqLinks view={view} locale={locale} />
+      <RouteAbout view={view} locale={locale} />
       <RouteCta view={view} locale={locale} />
     </>
   );

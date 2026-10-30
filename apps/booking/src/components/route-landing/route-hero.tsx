@@ -11,11 +11,13 @@ interface Fact {
 }
 
 /**
- * Số liệu có nhãn: giá "từ" (giá thấp nhất các chuyến hôm nay, chỉ khi lấy được), rồi giờ và km tách từ phụ đề "11h · 500 km";
- * khoản nào thiếu thì bỏ.
+ * Số liệu có nhãn: giá "từ" (giá thấp nhất các chuyến hôm nay, chỉ khi lấy được), rồi số liệu WP nhập (tối đa 3);
+ * không có thì giờ và km tách từ phụ đề "11h · 500 km". Khoản nào thiếu thì bỏ.
  */
 function facts(view: RouteLandingView, t: (key: string, vars?: Record<string, string | number>) => string): Fact[] {
   const out: Fact[] = view.priceLabel ? [{ label: t("route.fact_price"), value: view.priceLabel }] : [];
+  // Số liệu WP nhập (vd "15–30 phút · Một chuyến") thay cho giờ chạy + km của CMS.
+  if (view.facts.length) return [...out, ...view.facts.slice(0, 3).map((f) => ({ label: f.label, value: f.value }))];
   for (const part of (view.subline ?? "").split(" · ")) {
     const hour = part.match(/^(\d+(?:[.,]\d+)?)h$/);
     if (hour) out.push({ label: t("route.fact_time"), value: t("route.hours_value", { n: hour[1] }) });
@@ -38,49 +40,45 @@ function splitH1(h1: string, end: string): ReactNode {
 }
 
 /**
- * Đầu trang tuyến (v2): đường dẫn, dòng "01 · Nhãn", H1 hai vế, đoạn dẫn, ba số liệu ngăn bằng vạch mảnh, ảnh xe riêng của tuyến (nếu có);
- * thẻ tìm vé (children) nằm đè mép dưới. `#tim-ve` là đích của nút CTA cuối trang.
+ * Đầu trang tuyến (v2, như banner trang chủ): ảnh nền tối dần sang trái, đường dẫn, nhãn, H1 (điểm đến tô vàng), đoạn dẫn,
+ * số liệu ngăn bằng vạch mảnh, liên kết chiều ngược. Banner thấp hơn trang chủ để thẻ tìm vé (children, đè mép dưới)
+ * lọt màn hình đầu. `#tim-ve` là đích của nút CTA cuối trang.
  */
-export function RouteHero({ view, locale, art, reverse, children }: { view: RouteLandingView; locale: Locale; art?: Art; reverse?: { href: string; text: string } | null; children: ReactNode }) {
+export function RouteHero({ view, locale, photo, reverse, children }: { view: RouteLandingView; locale: Locale; photo: Art; reverse?: { href: string; text: string } | null; children: ReactNode }) {
   const t = (key: string, vars?: Record<string, string | number>) => translate(locale, key, vars);
   const items = facts(view, t);
   const prefix = localePrefix(locale);
   return (
-    <section aria-labelledby="route-h1">
-      <div className="hv-section-yellow hv-rhead">
-        <div className="hv-container">
+    <section aria-labelledby="route-h1" className="hv-rhero2-wrap">
+      <div className="hv-rhero2">
+        <Image src={photo.src} alt={artAlt(photo, locale)} width={photo.width} height={photo.height} priority unoptimized className="hv-rhero2-img" />
+        <div className="hv-container hv-rhero2-copy">
           <nav className="hv-crumbs" aria-label={t("route.crumb_label")}>
             <Link href={prefix || "/"}>{t("route.crumb_home")}</Link>
             <span aria-hidden="true">/</span>
             <Link href={`${prefix}/xe-khach`}>{t("route.crumb_coach")}</Link>
           </nav>
-        </div>
-        <div className="hv-container hv-rhero">
-          <div className="hv-rhero-text">
-            <p className="hv-eyebrow">
-              {t("route.eyebrow")}
+          <p className="hv-rhero2-eyebrow">{t("route.eyebrow")}</p>
+          <h1 id="route-h1">{splitH1(view.h1, view.end)}</h1>
+          {view.intro ? <p className="hv-rhero2-lead">{view.intro}</p> : null}
+          {items.length ? (
+            <dl className="hv-rhero2-facts">
+              {items.map((f) => (
+                <div key={f.label}>
+                  <dd>{f.value}</dd>
+                  <dt>{f.label}</dt>
+                </div>
+              ))}
+            </dl>
+          ) : null}
+          {reverse ? (
+            <p className="hv-rhero2-links">
+              <Link href={reverse.href}>
+                {reverse.text}
+                <span aria-hidden="true">↗</span>
+              </Link>
             </p>
-            <h1 id="route-h1">{splitH1(view.h1, view.end)}</h1>
-            {reverse ? (
-              <p>
-                <Link href={reverse.href} className="hv-link">
-                  {reverse.text}
-                </Link>
-              </p>
-            ) : null}
-            {view.intro ? <p className="hv-lead text-ink">{view.intro}</p> : null}
-            {items.length ? (
-              <dl className="hv-facts">
-                {items.map((f) => (
-                  <div key={f.label}>
-                    <dd>{f.value}</dd>
-                    <dt>{f.label}</dt>
-                  </div>
-                ))}
-              </dl>
-            ) : null}
-          </div>
-          {art ? <Image src={art.src} alt={artAlt(art, locale)} width={art.width} height={art.height} priority unoptimized className="hv-rhero-art" /> : null}
+          ) : null}
         </div>
       </div>
       <div className="hv-rplate-bleed">

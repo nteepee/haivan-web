@@ -21,19 +21,39 @@ const PAGE_TIMEOUT_MS = 8000;
 /** Số trang đọc song song mỗi lượt cho một tuyến: tránh dội hàng chục request cùng lúc lên apigw (gây hết giờ). */
 const PAGE_BATCH = 3;
 
+export interface RoutePrices {
+  /** Giá thấp nhất mọi hạng; null = không có giá. */
+  min: number | null;
+  /** Giá thấp nhất theo tên hạng xe của chuyến (`product.name`, vd "Luxury"). */
+  byClass: Record<string, number>;
+}
+
 /**
- * Giá thấp nhất khách thực trả (sau giảm, đã gồm VAT; như thẻ chuyến) trong các chuyến còn đặt được.
+ * Giá thấp nhất khách thực trả (sau giảm, đã gồm VAT; như thẻ chuyến) trong các chuyến còn đặt được, chung và theo hạng xe.
  * API chỉ trả chuyến chưa chạy nhưng có trả chuyến hết chỗ: bỏ chuyến hết chỗ, chuyến ẩn giá/giá 0 và dữ liệu lỗi.
  */
-export function minTripPrice(items: readonly unknown[]): number | null {
-  let min: number | null = null;
+export function tripPrices(items: readonly unknown[]): RoutePrices {
+  const out: RoutePrices = { min: null, byClass: {} };
   for (const item of items) {
     const parsed = tripSchema.safeParse(item);
     if (!parsed.success || parsed.data.available_seats <= 0) continue;
     const price = displayPrice(parsed.data);
-    if (price !== null && price > 0 && (min === null || price < min)) min = price;
+    if (price === null || price <= 0) continue;
+    if (out.min === null || price < out.min) out.min = price;
+    const name = parsed.data.product.name.trim();
+    if (name && !(out.byClass[name] <= price)) out.byClass[name] = price;
   }
-  return min;
+  return out;
+}
+
+export const minTripPrice = (items: readonly unknown[]): number | null => tripPrices(items).min;
+
+/** Giá hôm nay của một hạng xe theo tên WP ("Royal", "Luxury", "Economy"/"Eco"): khớp không phân biệt hoa thường, theo từ đầu. */
+export function classPrice(prices: RoutePrices, name: string): number | null {
+  const key = name.trim().toLowerCase().split(/\s+/)[0]?.replace(/^eco$/, "economy");
+  if (!key) return null;
+  const hit = Object.entries(prices.byClass).find(([k]) => k.toLowerCase().startsWith(key) || key.startsWith(k.toLowerCase()));
+  return hit ? hit[1] : null;
 }
 
 /** Tối đa số request `el/trips` đang chạy cùng lúc trong cả tiến trình (lúc build mọi trang tuyến hỏi giá một lượt). */
@@ -82,7 +102,7 @@ function secondsToVnMidnight(now = Date.now()): number {
  * Thay cho giá nhập tay đã cũ (vd. 140.000đ Sài Gòn – Vũng Tàu). Cache 1 giờ nhưng không quá nửa đêm (cả hạn dùng bản cũ),
  * nên sang ngày mới không còn giá hôm qua. Lỗi trang 1 → null (trang ẩn giá), cache 1 phút; lỗi trang sau → giữ giá các trang đọc được.
  */
-export async function routeMinPriceToday(from: LatLng, to: LatLng): Promise<number | null> {
+export async function routePricesToday(from: LatLng, to: LatLng): Promise<RoutePrices> {
   "use cache";
   const ttl = Math.min(3600, secondsToVnMidnight());
   try {
@@ -97,12 +117,17 @@ export async function routeMinPriceToday(from: LatLng, to: LatLng): Promise<numb
     const items = [...first.items, ...rest.flatMap((r) => (r.status === "fulfilled" ? r.value.items : []))];
     const complete = rest.every((r) => r.status === "fulfilled");
     cacheLife(complete ? { stale: 60, revalidate: ttl, expire: ttl } : { stale: 60, revalidate: Math.min(ttl, 300), expire: ttl });
-    return minTripPrice(items);
+    return tripPrices(items);
   } catch (error) {
     cacheLife({ stale: 60, revalidate: 60, expire: Math.min(ttl, 600) });
     console.warn("[route-price] không lấy được giá hôm nay:", String(error));
-    return null;
+    return { min: null, byClass: {} };
   }
+}
+
+/** Chỉ giá thấp nhất mọi hạng (dùng chung bản cache của `routePricesToday`). */
+export async function routeMinPriceToday(from: LatLng, to: LatLng): Promise<number | null> {
+  return (await routePricesToday(from, to)).min;
 }
 
 /** Trang tuyến được phép hỏi giá: tuyến phổ biến + trang tuyến hai chiều của các tuyến chính (chặn slug tuỳ ý gọi CMS/apigw). */

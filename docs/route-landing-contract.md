@@ -18,12 +18,21 @@ WP chỉ cần trả JSON đúng mẫu; Next tự gộp với CMS và mẫu chu�
 | `content_html` | HTML | khối nội dung chính (h2/h3, danh sách, link) |
 | `faq` | `[{q,a}]` | `a` là văn bản thuần; sinh FAQPage JSON-LD |
 | `pickup_points` | `[{name,address,note?}]` | điểm đón đầu tiên vào meta description mẫu |
-| `offices` | `[{name,address,hours?,note?,map_url?}]` | `map_url` bắt buộc http(s) |
+| `offices` | `[{name,address,hours?,note?,map_url?,tag?,image?}]` | phòng chờ / quầy vé; `map_url` bắt buộc http(s); `tag` nhãn nhỏ ("Quận 1 · Phòng chờ chính"); `image` xem dưới |
+| `facts` | `[{value,label}]` | tối đa 3 số liệu đầu trang sau "Giá từ" (giá tự lấy theo chuyến hôm nay); trống = giờ chạy + km CMS |
+| `reasons` | `{eyebrow?,title_a,title_b?,intro?,items:[{title,text,image?}]}` | khối "Vì sao chọn" (thẻ ảnh) |
+| `stops` | `[{area,name,address?}]` | danh bạ trạm theo khu vực; có thì ẩn khối `pickup_points` |
+| `stops_intro` | string | đoạn dẫn danh bạ trạm |
+| `rating` | `{score,count?,url?}` | điểm Google (chỉ số thật) |
+| `reviews` | `[{quote,author?}]` | lời khách trích nguyên văn, hiện tối đa 3 |
+| `stats` | `[{value,label}]` | số liệu doanh nghiệp có nguồn |
+| `story` | string | một câu chuyện có thật |
 | `vehicle_classes` | `[{name,seats?,price_from?,text?,amenities?[]}]` | `price_from` chuỗi hiển thị ("485.000đ") |
 | `related_routes` | `[{label,path}]` | `path` dạng `a/b`; Next dựng link `/xe-khach/a/b` (+`/en`) |
 | `reverse_route` | `{label,path}` | chiều ngược lại |
 | `round_trip_note` | string | khối "Đặt vé khứ hồi" |
 | `updated_at` | ISO 8601 có múi giờ | `lastmod` của `/xe-khach/sitemap.xml` |
+`image`: tên tệp trong `apps/booking/public/assets/design/v2` (`[a-z0-9-]+.(webp|jpg|png)`) hoặc URL `https://`.
 Chỉ tiếng Việt. Bản `/en` dùng mẫu + CMS, `noindex,follow`, không có hreflang `en` cho tới khi có hợp đồng en.
 
 ## Thứ tự ưu tiên (từng trường)

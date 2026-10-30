@@ -4,7 +4,7 @@
  * Điền nội dung landing (meta hv_route_*) cho các hướng đã có bài hv_route (lib/route-landing-seed.php, 8 hướng: Sài Gòn ⇄ Vũng Tàu, Hà Nội ⇄ Điện Biên / Sơn La / Mộc Châu).
  * Idempotent và an toàn với MKT: bài đã có dấu hv_route_landing_seed (đã seed) hoặc đã có bất kỳ trường landing nào thì GIỮ NGUYÊN.
  * Hướng chưa có bài hv_route bị bỏ qua và liệt kê (seed-route-posts.php tạo bài còn thiếu).
- * Biến: HV_DRY_RUN=1 chỉ báo cáo; HV_FORCE=1 ghi đè.
+ * Biến: HV_DRY_RUN=1 chỉ báo cáo; HV_FORCE=1 ghi đè; HV_ONLY=a/b chỉ xử lý một hướng.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -18,9 +18,15 @@ $keys  = array(
 	'schedule_text' => 'hv_route_schedule_text', 'content_html' => 'hv_route_content_html', 'faq' => 'hv_route_faq',
 	'pickup_points' => 'hv_route_pickup_points', 'offices' => 'hv_route_offices', 'vehicle_classes' => 'hv_route_vehicle_classes',
 	'related' => 'hv_route_related', 'reverse' => 'hv_route_reverse', 'round_trip_note' => 'hv_route_round_trip_note',
+	'facts' => 'hv_route_facts', 'reasons_head' => 'hv_route_reasons_head', 'reasons' => 'hv_route_reasons', 'stops_intro' => 'hv_route_stops_intro',
+	'stops' => 'hv_route_stops', 'rating' => 'hv_route_rating', 'reviews' => 'hv_route_reviews', 'stats' => 'hv_route_stats', 'story' => 'hv_route_story',
 );
+$only = (string) ( getenv( 'HV_ONLY' ) ?: '' ); // chỉ một hướng, vd HV_ONLY=quan-1/vung-tau
 $n = 0;
 foreach ( $seed as $path => $d ) {
+	if ( '' !== $only && $only !== $path ) {
+		continue;
+	}
 	$post = hv_route_find( $path );
 	if ( ! $post ) {
 		WP_CLI::warning( "{$path}: chưa có bài hv_route xuất bản, bỏ qua" );

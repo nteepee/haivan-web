@@ -11,6 +11,9 @@ const httpUrl = z.url({ protocol: /^https?$/ });
 const slugPair = z.string().regex(/^[a-z0-9-]+\/[a-z0-9-]+$/, "path dạng a/b (slug CMS)");
 
 const routeLink = z.object({ label: z.string(), path: slugPair });
+/** Ảnh: tên tệp trong public/assets/design/v2 (vd "lounge-q1.webp") hoặc URL https. */
+const imageRef = z.string().regex(/^(?:[a-z0-9-]+\.(?:webp|jpg|jpeg|png)|https:\/\/\S+)$/i, "tên tệp ảnh v2 hoặc https");
+const fact = z.object({ value: z.string(), label: z.string() });
 
 export const routeLandingSchema = z.looseObject({
   path: slugPair,
@@ -25,8 +28,41 @@ export const routeLandingSchema = z.looseObject({
   faq: opt(z.array(z.object({ q: z.string(), a: z.string() }))),
   pickup_points: opt(z.array(z.object({ name: z.string(), address: z.string(), note: opt(z.string()) }))),
   offices: opt(
-    z.array(z.object({ name: z.string(), address: z.string(), hours: opt(z.string()), note: opt(z.string()), map_url: opt(httpUrl) })),
+    z.array(
+      z.object({
+        name: z.string(),
+        address: z.string(),
+        hours: opt(z.string()),
+        note: opt(z.string()),
+        map_url: opt(httpUrl),
+        /** Nhãn nhỏ trên tên, vd "Quận 1 · Phòng chờ chính". */
+        tag: opt(z.string()),
+        image: opt(imageRef),
+      }),
+    ),
   ),
+  /** Số liệu đầu trang ngoài giá (vd "15–30 phút" / "Một chuyến"); trống thì dùng giờ chạy + km của CMS. */
+  facts: opt(z.array(fact)),
+  /** Khối "Vì sao chọn": tiêu đề hai vế + thẻ có ảnh. */
+  reasons: opt(
+    z.object({
+      eyebrow: opt(z.string()),
+      title_a: z.string(),
+      title_b: opt(z.string()),
+      intro: opt(z.string()),
+      items: z.array(z.object({ title: z.string(), text: z.string(), image: opt(imageRef) })),
+    }),
+  ),
+  /** Danh bạ trạm đón trả theo khu vực. */
+  stops: opt(z.array(z.object({ area: z.string(), name: z.string(), address: opt(z.string()) }))),
+  stops_intro: opt(z.string()),
+  /** Đánh giá Google của tuyến: điểm, số đánh giá, liên kết và vài lời khách (trích nguyên văn). */
+  rating: opt(z.object({ score: z.string(), count: opt(z.number().int().nonnegative()), url: opt(httpUrl) })),
+  reviews: opt(z.array(z.object({ quote: z.string(), author: opt(z.string()) }))),
+  /** Số liệu doanh nghiệp có nguồn (vd "30+" / "năm vận tải"). */
+  stats: opt(z.array(fact)),
+  /** Một câu chuyện có thật (văn bản thuần). */
+  story: opt(z.string()),
   vehicle_classes: opt(
     z.array(
       z.object({

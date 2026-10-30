@@ -14,10 +14,10 @@ const trip = (time: string, product: string, min: number, duration = "02h40"): T
 });
 
 describe("buildFareRows: chỉ dữ liệu thật", () => {
-  it("chưa có chuyến: hạng từ bài WP (bỏ giá nhập tay đã cũ), giờ chạy CMS, không có giờ xuất bến", () => {
+  it("chưa có chuyến: hạng từ bài WP, giá = giá hôm nay server truyền vào (price_from), giờ chạy CMS, không có giờ xuất bến", () => {
     const rows = buildFareRows([{ name: "Royal", price_from: "485.000đ" }, { name: "Luxury" }], [], { complete: false, hours: "11" });
     expect(rows).toEqual([
-      { name: "Royal", times: [], timesPartial: true, duration: "11h", minPrice: null, priceLabel: null },
+      { name: "Royal", times: [], timesPartial: true, duration: "11h", minPrice: null, priceLabel: "485.000đ" },
       { name: "Luxury", times: [], timesPartial: true, duration: "11h", minPrice: null, priceLabel: null },
     ]);
   });

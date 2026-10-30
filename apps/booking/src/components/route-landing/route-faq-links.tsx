@@ -34,7 +34,7 @@ export function RouteFaqLinks({ view, locale }: { view: RouteLandingView; locale
   return (
     <>
       {view.faq.length ? (
-        <SectionCard id="route-faq" title={t("list_trip.FAQ")}>
+        <SectionCard id="route-faq" eyebrow={t("route.faq_eyebrow")} title={t("route.faq_title", { a: view.start, b: view.end })}>
           <div className="hv-ruled">
             {view.faq.slice(0, FAQ_OPEN).map((f) => (
               <FaqItem key={f.q} f={f} open />
@@ -53,7 +53,7 @@ export function RouteFaqLinks({ view, locale }: { view: RouteLandingView; locale
         </SectionCard>
       ) : null}
       {links.length ? (
-        <SectionCard id="route-related" title={t("route.related_title")}>
+        <SectionCard id="route-related" eyebrow={t("route.related_eyebrow")} title={t("route.related_title")}>
           <ul className="flex flex-wrap gap-3">
             {links.map((l) => (
               <li key={l.path}>

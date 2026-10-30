@@ -10,14 +10,14 @@ import { SectionCard } from "./section-card";
 const hasWaitingRoom = (view: RouteLandingView) =>
   [...view.pickupPoints, ...view.offices].some((p) => /phòng chờ|nguyễn hoàng/i.test(`${p.name} ${p.address}`));
 
-/** Điểm đón trả, văn phòng (giờ làm việc + bản đồ) và ghi chú khứ hồi. */
+/** Điểm đón trả (khi chưa có danh bạ trạm) và ghi chú khứ hồi; văn phòng/phòng chờ nằm ở `RouteLounges`. */
 export function RoutePlaces({ view, locale }: { view: RouteLandingView; locale: Locale }) {
   const t = (key: string, vars?: Record<string, string | number>) => translate(locale, key, vars);
   const p = localePrefix(locale);
   return (
     <>
-      {view.pickupPoints.length ? (
-        <SectionCard id="route-pickup" title={t("route.pickup_title")}>
+      {view.pickupPoints.length && !view.stops.length ? (
+        <SectionCard id="route-pickup" eyebrow={t("route.stops_eyebrow")} title={t("route.pickup_title")}>
           <div className={hasWaitingRoom(view) ? "hv-two" : undefined}>
             <ul className="hv-addrs">
               {view.pickupPoints.map((pt) => (
@@ -43,34 +43,8 @@ export function RoutePlaces({ view, locale }: { view: RouteLandingView; locale: 
           </div>
         </SectionCard>
       ) : null}
-      {view.offices.length ? (
-        <SectionCard id="route-offices" title={t("route.offices_title")}>
-          <ul className="hv-addrs">
-            {view.offices.map((o) => (
-              <li key={`${o.name}-${o.address}`} className="hv-addr">
-                <MapPin className="mt-1 size-icon" aria-hidden />
-                <div>
-                  <h3 className="text-16">{o.name}</h3>
-                  <p>{o.address}</p>
-                  {o.hours ? (
-                    <p>
-                      {t("route.hours")}: {o.hours}
-                    </p>
-                  ) : null}
-                  {o.note ? <p>{o.note}</p> : null}
-                  {o.map_url ? (
-                    <a href={o.map_url} target="_blank" rel="noopener" className="hv-link">
-                      {t("route.map_link")}
-                    </a>
-                  ) : null}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </SectionCard>
-      ) : null}
       {view.roundTripNote ? (
-        <SectionCard id="route-round-trip" title={t("route.round_trip_title")}>
+        <SectionCard id="route-round-trip" eyebrow={t("route.round_trip_eyebrow")} title={t("route.round_trip_title")}>
           <p className="max-w-[68ch] text-18">{view.roundTripNote}</p>
           {view.reverseRoute ? (
             <Link href={`${p}/xe-khach/${view.reverseRoute.path}`} className="hv-btn hv-btn-outline mt-4">

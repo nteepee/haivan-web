@@ -39,6 +39,13 @@ export const ROUTE_HERO_ART: Record<string, Art> = {
   "my-dinh/muong-cha": DIEN_BIEN_BUS,
 };
 
+/** Ảnh nền banner trang tuyến (như banner trang chủ): tuyến Sài Gòn / Tân Sơn Nhất / Vũng Tàu dùng ảnh xe ven biển Vũng Tàu, còn lại ảnh xe Tây Bắc. */
+const HERO_SOUTH = art("v2/hero-bien-vung-tau.webp", 1672, 941, "Xe limousine Hải Vân tuyến Tân Sơn Nhất – Vũng Tàu chạy trên đường ven biển Vũng Tàu", "Hai Van Tan Son Nhat - Vung Tau limousines on the Vung Tau seaside road");
+const HERO_NORTH = art("v2/hero-tay-bac.webp", 1672, 941, "Xe giường nằm Hải Vân chạy trên đèo Tây Bắc", "Hai Van sleeper coach on a northwest mountain pass");
+export function routeHeroPhoto(slug: string): Art {
+  return isSouthRoute(slug) ? HERO_SOUTH : HERO_NORTH;
+}
+
 /** Sơ đồ điểm dừng thật của tuyến Tây Bắc (chung cho các tuyến trên). */
 export const ROUTE_STOP_MAP: Art = art(
   "route-map-tay-bac.webp",
@@ -48,13 +55,28 @@ export const ROUTE_STOP_MAP: Art = art(
   "Route map from Yen Nghia or Xuan Mai via Hoa Binh and Tuan Giao to Dien Bien, Muong Cha, Muong Lay and Ban Phu",
 );
 
-/** Ảnh nội thất theo tên hạng xe của WP (Royal, Luxury/Limousine, Economy); tên khác thì không gán ảnh. */
-export function classArt(name: string): { art: Art; cut: boolean } | null {
-  if (/royal/i.test(name)) return { art: art("xe-royal.webp", 900, 436, "Xe Royal Cabin vàng của Hải Vân", "Yellow Hai Van Royal Cabin coach"), cut: true };
-  if (/luxury|limousine/i.test(name)) return { art: art("xe-luxury.webp", 900, 436, "Xe Luxury trắng của Hải Vân", "White Hai Van Luxury coach"), cut: true };
+/**
+ * Ảnh thật theo tên hạng xe của WP. Tuyến phía Nam (limousine Sài Gòn – Vũng Tàu): nội thất Royal / Luxury / Economy.
+ * Tuyến Tây Bắc (giường nằm): cabin Royal, xe Luxury, xe Economy. Tên khác thì không gán ảnh.
+ */
+export function classArt(name: string, south = false): { art: Art; cut: boolean } | null {
+  if (south) {
+    if (/royal/i.test(name)) return { art: art("v2/fleet-royal.webp", 1200, 900, "Nội thất xe limousine Royal 9 chỗ của Hải Vân, ghế da rộng", "Inside a Hai Van Royal 9-seat limousine with wide leather seats"), cut: false };
+    if (/luxury|limousine/i.test(name)) return { art: art("v2/fleet-luxury.webp", 1200, 900, "Nội thất xe limousine Luxury 11 chỗ của Hải Vân, trần đèn LED", "Inside a Hai Van Luxury 11-seat limousine with an LED ceiling"), cut: false };
+    if (/economy|\beco\b/i.test(name)) return { art: art("v2/fleet-economy.webp", 1200, 801, "Nội thất xe limousine Economy 9 chỗ của Hải Vân", "Inside a Hai Van Economy 9-seat limousine"), cut: false };
+    return null;
+  }
+  if (/royal/i.test(name)) return { art: art("v2/cabin-royal.webp", 1400, 1050, "Cabin giường nằm Royal của Hải Vân", "Hai Van Royal sleeper cabin"), cut: false };
+  if (/luxury|limousine/i.test(name)) return { art: art("phuong_tien_6.jpg", 815, 400, "Xe Luxury Hải Vân màu đen", "Black Hai Van Luxury coach"), cut: false };
   if (/economy|\beco\b/i.test(name)) return { art: art("class-economy.jpg", 815, 400, "Xe giường nằm Economy của Hải Vân", "Hai Van Economy sleeper coach"), cut: false };
   return null;
 }
+
+/** Tuyến phía Nam (Sài Gòn, Tân Sơn Nhất, Vũng Tàu, Bà Rịa) theo slug `a/b`. */
+export const isSouthRoute = (slug: string): boolean => /(vung-tau|tan-son-nhat|quan-1|sai-gon|ba-ria)/.test(slug);
+
+/** Ảnh v2 do WP chỉ định: tên tệp trong public/assets/design/v2 hoặc URL https (đã kiểm ở schema). */
+export const v2Image = (ref: string): string => (/^https:\/\//i.test(ref) ? ref : `${DIR}/v2/${ref}`);
 
 /** Ảnh phòng chờ Hà Nội, chỉ hiện khi điểm đón/văn phòng của tuyến thật sự là phòng chờ đó. */
 export const WAITING_ROOM_ART: Art[] = [

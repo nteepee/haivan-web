@@ -24,7 +24,8 @@ const hhmm = (t: Trip) => (t.from.reached_at?.slice(11, 16) || t.time.slice(0, 5
 
 /**
  * Gộp hạng xe của bài WP với chuyến đã tải từ apigw. Thứ tự: hạng của WP trước, hạng chỉ có trong chuyến sau.
- * Giá "từ": giá thấp nhất của hạng đó CHỈ khi đã tải hết chuyến (`complete`); giá nhập tay của WP (price_from) đã cũ nên bỏ.
+ * Giá "từ": giá thấp nhất của hạng đó khi đã tải hết chuyến (`complete`); chưa đủ thì dùng `price_from` server truyền vào
+ * (giá thật thấp nhất hôm nay theo hạng, xem server/route-price.ts; trang tuyến không truyền giá nhập tay của WP vì đã cũ).
  * `hours` = số giờ chạy của tuyến (CMS) dùng làm thời gian khi hạng chưa có chuyến nào.
  */
 export function buildFareRows(classes: readonly WpClass[], trips: readonly Trip[], opts: { complete: boolean; hours: string | null }): FareRow[] {
@@ -40,7 +41,7 @@ export function buildFareRows(classes: readonly WpClass[], trips: readonly Trip[
       timesPartial: !opts.complete,
       duration: own.find((t) => t.duration?.trim())?.duration?.trim() ?? (opts.hours ? `${opts.hours}h` : null),
       minPrice: opts.complete && prices.length ? Math.min(...prices) : null,
-      priceLabel: null, // giá nhập tay của WP (price_from) đã cũ: ô chưa có giá thật hiện "—"
+      priceLabel: classes.find((c) => c.name === name)?.price_from?.trim() || null,
     };
   });
 }

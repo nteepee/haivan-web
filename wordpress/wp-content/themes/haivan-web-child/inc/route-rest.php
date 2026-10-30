@@ -27,6 +27,15 @@ function hv_route_http( $u ) {
 	return esc_url_raw( trim( (string) $u ), array( 'http', 'https' ) );
 }
 
+/** Ảnh v2: tên tệp (thư mục ảnh v2 của app Next) hoặc URL https; khác thì bỏ. */
+function hv_route_image( $v ) {
+	$v = trim( (string) $v );
+	if ( 1 === preg_match( '/^[a-z0-9-]+\.(?:webp|jpe?g|png)$/i', $v ) ) {
+		return $v;
+	}
+	return 0 === stripos( $v, 'https://' ) && ! preg_match( '/\s/', $v ) ? esc_url_raw( $v, array( 'https' ) ) : '';
+}
+
 /** @return array{label:string,path:string}|null */
 function hv_route_link_from( $line ) {
 	$p = hv_route_cells( $line, 2 );
@@ -76,7 +85,25 @@ function hv_route_payload( WP_Post $post ) {
 		if ( ! $p || '' === $p[1] ) {
 			return null;
 		}
-		return array_filter( array( 'name' => $p[0], 'address' => $p[1], 'hours' => $p[2] ?? '', 'note' => $p[3] ?? '', 'map_url' => hv_route_http( $p[4] ?? '' ) ), static fn( $v ) => '' !== $v );
+		return array_filter( array( 'name' => $p[0], 'address' => $p[1], 'hours' => $p[2] ?? '', 'note' => $p[3] ?? '', 'map_url' => hv_route_http( $p[4] ?? '' ), 'tag' => $p[5] ?? '', 'image' => hv_route_image( $p[6] ?? '' ) ), static fn( $v ) => '' !== $v );
+	} );
+	$pair = static function ( $l ) {
+		$p = hv_route_cells( $l, 2 );
+		return $p && '' !== $p[1] ? array( 'value' => $p[0], 'label' => $p[1] ) : null;
+	};
+	$facts   = array_slice( $list( 'hv_route_facts', $pair ), 0, 3 );
+	$stats   = $list( 'hv_route_stats', $pair );
+	$reasons = $list( 'hv_route_reasons', static function ( $l ) {
+		$p = hv_route_cells( $l, 2 );
+		return $p && '' !== $p[1] ? array_filter( array( 'title' => $p[0], 'text' => $p[1], 'image' => hv_route_image( $p[2] ?? '' ) ), static fn( $v ) => '' !== $v ) : null;
+	} );
+	$stops = $list( 'hv_route_stops', static function ( $l ) {
+		$p = hv_route_cells( $l, 2 );
+		return $p && '' !== $p[1] ? array_filter( array( 'area' => $p[0], 'name' => $p[1], 'address' => $p[2] ?? '' ), static fn( $v ) => '' !== $v ) : null;
+	} );
+	$reviews = $list( 'hv_route_reviews', static function ( $l ) {
+		$p = hv_route_cells( $l, 1 );
+		return $p ? array_filter( array( 'quote' => $p[0], 'author' => $p[1] ?? '' ), static fn( $v ) => '' !== $v ) : null;
 	} );
 	$classes = $list( 'hv_route_vehicle_classes', static function ( $l ) {
 		$p = hv_route_cells( $l, 1 );
@@ -88,10 +115,23 @@ function hv_route_payload( WP_Post $post ) {
 		return array_filter( array( 'name' => $p[0], 'seats' => $seats, 'price_from' => $p[2] ?? '', 'text' => $p[3] ?? '', 'amenities' => $amen ), static fn( $v ) => null !== $v && '' !== $v && array() !== $v );
 	} );
 	$related = $list( 'hv_route_related', 'hv_route_link_from' );
-	foreach ( array( 'faq' => $faq, 'pickup_points' => $pickup, 'offices' => $offices, 'vehicle_classes' => $classes, 'related_routes' => $related ) as $k => $v ) {
+	foreach ( array( 'faq' => $faq, 'pickup_points' => $pickup, 'offices' => $offices, 'vehicle_classes' => $classes, 'related_routes' => $related, 'facts' => $facts, 'stops' => $stops, 'reviews' => $reviews, 'stats' => $stats ) as $k => $v ) {
 		if ( $v ) {
 			$out[ $k ] = $v;
 		}
+	}
+	$head = hv_route_cells( $m( 'hv_route_reasons_head' ), 2 );
+	if ( $reasons && $head && '' !== $head[1] ) {
+		$out['reasons'] = array_filter( array( 'eyebrow' => $head[0], 'title_a' => $head[1], 'title_b' => $head[2] ?? '', 'intro' => $head[3] ?? '', 'items' => $reasons ), static fn( $v ) => '' !== $v );
+	}
+	foreach ( array( 'stops_intro', 'story' ) as $k ) {
+		if ( '' !== trim( $m( 'hv_route_' . $k ) ) ) {
+			$out[ $k ] = trim( $m( 'hv_route_' . $k ) );
+		}
+	}
+	$rate = hv_route_cells( $m( 'hv_route_rating' ), 1 );
+	if ( $rate ) {
+		$out['rating'] = array_filter( array( 'score' => $rate[0], 'count' => isset( $rate[1] ) && ctype_digit( $rate[1] ) ? (int) $rate[1] : null, 'url' => hv_route_http( $rate[2] ?? '' ) ), static fn( $v ) => null !== $v && '' !== $v );
 	}
 	$rev = '' !== trim( $m( 'hv_route_reverse' ) ) ? hv_route_link_from( trim( $m( 'hv_route_reverse' ) ) ) : null;
 	if ( $rev ) {
