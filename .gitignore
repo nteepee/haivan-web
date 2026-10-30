@@ -35,3 +35,8 @@ docs/design/ref/*.png
 docs/design/ref/*.jpg
 docs/design/comps/shots/
 docs/screenshots/
+
+# Bản xuất cho audit (HTML + dàn ý), chỉ lưu ở máy
+exports/
+# Ảnh gen thử, bản nháp thiết kế (chỉ lưu ở máy; ảnh được chọn mới đưa vào theme)
+design-work/
