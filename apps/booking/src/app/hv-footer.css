@@ -56,11 +56,11 @@
     min-width: var(--tap-min);
     min-height: var(--tap-min);
     align-items: center;
-    text-decoration: underline !important;
-    text-decoration-color: var(--color-muted-on-dark);
+    /* v2: footer nền sáng, liên kết không gạch chân; rê chuột mới gạch chân vàng (khớp footer WP v2). */
+    text-decoration: none;
   }
   .hv-footer-link:hover {
-    color: var(--color-accent);
+    text-decoration: underline;
     text-decoration-color: var(--color-accent);
   }
   /* Điện thoại: danh sách liên kết hai cột cho gọn; từ 40rem chỉ cột tuyến xe (nav thứ hai) chia hai. */

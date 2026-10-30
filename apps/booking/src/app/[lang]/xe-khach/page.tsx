@@ -65,9 +65,18 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
   return (
     <>
       <section aria-labelledby="xe-khach-h1">
-        <div className="hv-section-yellow">
+        <div className="hv-section-yellow hv-rhead">
+          <div className="hv-container">
+            <nav className="hv-crumbs" aria-label={t("route.crumb_label")}>
+              <Link href={p || "/"}>{t("route.crumb_home")}</Link>
+            </nav>
+          </div>
           <div className="hv-container hv-rhero">
             <div className="hv-rhero-text">
+              <p className="hv-eyebrow">
+                <span>01</span>
+                {t("route.crumb_coach")}
+              </p>
               <h1 id="xe-khach-h1">{t("xe_khach.h1")}</h1>
             </div>
           </div>

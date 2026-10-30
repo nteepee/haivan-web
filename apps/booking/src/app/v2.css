@@ -1,0 +1,215 @@
+/* Design system v2 cho app Next: cùng bộ biến và cùng cách ánh xạ lớp v4 → v2 như wordpress/.../assets/css/v2.css.
+   Không lớp (unlayered) và nạp sau cùng nên thắng mọi `@layer components`/utilities. Chỉ đổi giao diện: góc vuông, vạch mảnh #D7D6D1,
+   nền giấy #F6F6F4, header trắng, footer sáng, nút than mũi tên vàng. Muốn đổi kiểu: sửa biến ở đây. */
+:root {
+  --hv2-ink: #333333;
+  --hv2-yellow: #ffc20e;
+  --hv2-gold: #8a6500;
+  --hv2-paper: #f6f6f4;
+  --hv2-tint: #efeee9;
+  --hv2-surface: #ffffff;
+  --hv2-muted: #5e5d5a;
+  --hv2-line: #d7d6d1;
+  --hv2-max: 1256px;
+  --hv2-gut: 20px;
+  --hv2-pad: 72px;
+
+  /* Token nền tảng: mọi thành phần đọc các biến này nên đổi một chỗ là đổi tất cả. */
+  --color-paper: var(--hv2-paper);
+  --color-paper-2: var(--hv2-tint);
+  --color-paper-3: #e7e6e0;
+  --color-surface: var(--hv2-surface);
+  --color-tint-warm: var(--hv2-tint);
+  --color-rule: var(--hv2-line);
+  --color-rule-2: #e6e5e0;
+  --color-muted: var(--hv2-muted);
+  --color-text: #333333;
+  --color-accent-soft: #fff3cd;
+  --color-field: var(--hv2-paper);
+  --r-1: 0;
+  --r-2: 0;
+  --r-3: 0;
+  --r-4: 0;
+  --r-round: 0;
+  /* Thẻ/hàng: vạch mảnh thay cho bóng. */
+  --shadow-1: 0 0 0 1px var(--hv2-line);
+  --shadow-2: 0 0 0 1px var(--hv2-line), 0 14px 36px rgb(0 0 0 / 0.08);
+  --glass-edge: inset 0 0 0 1px rgb(255 255 255 / 0.6);
+  --header-h: 72px;
+  --container: calc(var(--hv2-max) + 2 * var(--hv2-gut));
+  --gutter: var(--hv2-gut);
+  --section-pad: var(--hv2-pad);
+}
+@media (min-width: 48rem) {
+  :root { --hv2-gut: 40px; --hv2-pad: 96px; }
+}
+@media (min-width: 75rem) {
+  :root { --hv2-pad: 110px; }
+}
+body { background: var(--hv2-paper); color: var(--hv2-ink); }
+
+/* ---------- Header: trắng, vạch mảnh, menu xám đậm, gạch vàng khi hover/đang xem ---------- */
+.hv-header,
+.hv-header.glass-yellow { background: rgb(255 255 255 / 0.96); color: var(--hv2-ink); box-shadow: 0 1px 0 var(--hv2-line); -webkit-backdrop-filter: saturate(1.2) blur(10px); backdrop-filter: saturate(1.2) blur(10px); }
+.hv-header[data-scrolled="true"] { box-shadow: 0 1px 0 var(--hv2-line), 0 10px 30px rgb(0 0 0 / 0.06); }
+.hv-header-row { min-height: 72px; }
+.hv-nav-link { color: #4a4a4a; font-size: 14px; font-weight: 600; }
+.hv-nav-link:hover,
+.hv-nav-link[aria-expanded="true"],
+.hv-nav-link[aria-current="page"],
+.hv-nav-link[aria-current="true"] { background: transparent; color: var(--hv2-ink); box-shadow: inset 0 -2px 0 var(--hv2-yellow); font-weight: 600; }
+.hv-nav-link:active { background: transparent; }
+.hv-dropdown,
+.hv-menu-panel { border: 1px solid var(--hv2-line); box-shadow: 0 18px 50px rgb(0 0 0 / 0.1); }
+.hv-menu-link:hover,
+.hv-menu-link[aria-current="page"] { background: var(--hv2-paper); }
+.hv-menu-link:active { background: var(--hv2-tint); }
+.hv-header-call { font-size: 14px; font-weight: 700; }
+.hv-header-call:hover,
+.hv-lang:hover,
+.hv-menu-btn:hover,
+.hv-header-call:active,
+.hv-menu-btn:active { background: transparent; color: var(--hv2-gold); }
+.hv-header .hv-btn-ghost { min-height: 42px; padding: 0 20px; border: 1px solid #bbb; background: transparent; box-shadow: none; color: var(--hv2-ink); font-size: 13px; font-weight: 700; }
+.hv-header .hv-btn-ghost:hover { background: var(--hv2-paper); border-color: var(--hv2-ink); }
+.hv-lang { font-size: 13px; color: #4a4a4a; }
+.hv-call-fab,
+.hv-fab { background: var(--hv2-ink); color: var(--hv2-yellow); box-shadow: 0 10px 30px rgb(0 0 0 / 0.18); }
+
+/* ---------- Nút: chính = than + chữ trắng; phụ = viền mảnh; tìm vé có mũi tên vàng ---------- */
+.hv-btn { font-size: 14px; font-weight: 700; }
+.hv-btn-primary { background: var(--hv2-ink); color: #fff; }
+.hv-btn-primary:hover:not(:disabled):not([aria-disabled="true"]) { background: #222; }
+.hv-btn-outline { border: 0; background: transparent; box-shadow: inset 0 0 0 1px #bbb; }
+.hv-btn-outline:hover:not(:disabled):not([aria-disabled="true"]) { background: var(--hv2-paper); box-shadow: inset 0 0 0 1px var(--hv2-ink); }
+.hv-plate-go::after { content: "→"; margin-left: 14px; color: var(--hv2-yellow); font-size: 18px; line-height: 1; }
+.hv-link { text-decoration-color: var(--hv2-yellow); text-decoration-thickness: 2px; text-underline-offset: 0.2em; }
+
+/* ---------- Đầu trang: đường dẫn + "01 · Nhãn" + H1 nét mảnh hai vế ---------- */
+.hv-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-top: 28px; color: var(--hv2-muted); font-size: 13px; }
+.hv-crumbs a:hover { color: var(--hv2-ink); }
+.hv-eyebrow { display: flex; align-items: baseline; gap: 12px; margin: 0; font-size: 13px; line-height: 1.4; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hv2-muted); }
+.hv-eyebrow span { color: var(--hv2-gold); font-variant-numeric: tabular-nums; }
+.hv-section-yellow.hv-rhead { background: var(--hv2-paper); color: var(--hv2-ink); }
+.hv-rhead .hv-rhero { padding-block: 24px 56px; align-items: end; }
+.hv-rhead .hv-rhero-text { gap: 18px; }
+.hv-rhead h1 { font-size: clamp(2.25rem, 1.5rem + 3vw, 4.5rem); line-height: 1.04; font-weight: 400; letter-spacing: -0.045em; text-wrap: balance; }
+.hv-rhead h1 em { font-style: normal; color: var(--hv2-gold); }
+.hv-rhead .hv-lead { max-width: 36rem; font-size: 1.0625rem; line-height: 1.65; color: var(--hv2-muted); }
+.hv-rhead .hv-lead.text-ink { color: var(--hv2-muted); }
+.hv-rhead .hv-link { font-weight: 700; color: var(--hv2-ink); }
+.hv-rhead .hv-rhero-art { max-width: 34rem; }
+/* Ba số liệu: hàng ngăn bằng vạch mảnh */
+.hv-facts { gap: 0; margin-top: 12px; border-top: 1px solid var(--hv2-line); }
+.hv-facts > div { padding: 18px 28px 0 0; }
+.hv-facts > div + div { padding-left: 28px; border-left: 1px solid var(--hv2-line); }
+.hv-facts dd { color: var(--hv2-ink); font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); font-weight: 400; letter-spacing: -0.03em; line-height: 1.1; }
+.hv-facts dt { color: var(--hv2-muted); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+/* Thẻ tìm vé đè mép: dải xám ấm, thẻ trắng vuông nổi */
+.hv-rplate-bleed { margin-top: 0; padding-block: 48px; background: var(--hv2-tint); }
+.hv-rplate { background: var(--hv2-surface); box-shadow: 0 18px 50px rgb(0 0 0 / 0.08); }
+.hv-plate, .hv-plate-solid, .hv-plate.glass { background: var(--hv2-surface); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* ---------- Form tìm vé: nhãn nhỏ hoa, ô xám vuông, tuyến = tab gạch chân ---------- */
+.hv-plate .hv-label { color: #777; font-size: 11px; line-height: 1.3; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.hv-plate .hv-field { background: #f7f7f5; border-color: #e6e6e3; }
+.hv-field:hover:not(:disabled) { background: #f1f1ee; }
+.hv-field:focus-visible { background: #fff; }
+.hv-counter { border-color: #e6e6e3; background: #f7f7f5; }
+.hv-swap { background: transparent; box-shadow: none; color: #999; }
+.hv-swap:hover:not(:disabled) { background: transparent; color: var(--hv2-ink); }
+.hv-corr-btns { gap: 0 24px; border-bottom: 1px solid #dedede; }
+.hv-corr-btn,
+.hv-corr-btn:hover { margin-bottom: -1px; border-bottom: 2px solid transparent; background: transparent; color: #6b6b6b; }
+.hv-corr-btn:hover { color: var(--hv2-ink); }
+.hv-corr-btn[aria-pressed="true"] { background: transparent; box-shadow: none; border-bottom-color: var(--hv2-yellow); color: var(--hv2-ink); }
+.hv-corr-btn { padding-inline: 0 var(--s-6); min-height: 48px; justify-content: flex-start; }
+@media (min-width: 40rem) {
+  .hv-corr-btns { grid-template-columns: repeat(4, max-content); }
+  .hv-corr-btn { justify-content: flex-start; padding-inline: 0; font-size: 14px; }
+}
+.hv-tabs { background: transparent; padding: 0; gap: 24px; box-shadow: inset 0 -1px 0 #dedede; }
+.hv-tab { color: #6b6b6b; padding-inline: 0 !important; }
+.hv-tab[aria-current="page"] { background: transparent; box-shadow: inset 0 -2px 0 var(--hv2-yellow); color: var(--hv2-ink); }
+a.hv-tab:hover { background: transparent; color: var(--hv2-ink); }
+
+/* ---------- Thẻ, hàng chuyến, chip: vuông, vạch mảnh, chip = ô xám ---------- */
+.hv-card, .hv-trip, .hv-filters { background: var(--hv2-surface); }
+.hv-trip:hover { box-shadow: var(--shadow-2); }
+.hv-rcard { background: var(--hv2-surface); box-shadow: none; }
+.hv-rcard-body { border-top: 5px solid var(--hv2-yellow); }
+.hv-rcard h3 { font-weight: 400; letter-spacing: -0.02em; }
+.hv-chip, .hv-today-chips > * { background: var(--hv2-tint); }
+.hv-filters { box-shadow: 0 0 0 1px var(--hv2-line); }
+
+/* ---------- Khối nội dung: đầu khối nét mảnh, bảng, FAQ ---------- */
+.hv-section-white, .hv-ground, .hv-ground:nth-child(3n + 1 of .hv-ground) { background: var(--hv2-paper); --rail-bg: var(--hv2-paper); }
+.hv-section-warm, .hv-section-soft, .hv-section-grey, .hv-band,
+.hv-ground:nth-child(3n + 2 of .hv-ground) { background: var(--hv2-tint); --rail-bg: var(--hv2-tint); }
+.hv-ground:nth-child(3n + 3 of .hv-ground) { background: var(--hv2-surface); --rail-bg: var(--hv2-surface); }
+.hv-section-dark { background: var(--hv2-ink); }
+.hv-section h2 { font-size: clamp(2rem, 1.5rem + 2.2vw, 3.5rem); line-height: 1.05; font-weight: 400; letter-spacing: -0.04em; }
+.hv-section-dark h2 { color: #fff; }
+.hv-section h3 { font-weight: 700; letter-spacing: -0.01em; }
+.hv-fare-table thead th { font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; }
+.hv-fare-wrap { box-shadow: none; }
+.hv-page-title h1, main h1 { letter-spacing: -0.03em; }
+.hv-page-title h1 { font-weight: 400; }
+.hv-qr, .hv-badges img { box-shadow: none; }
+
+/* ---------- Dải tải app: khối vàng như trang chủ ---------- */
+.hv-app-band { background: var(--hv2-yellow); padding-block: var(--hv2-pad); }
+.hv-app-band .hv-app-title { font-size: clamp(2.25rem, 1.6rem + 2.6vw, 4rem); line-height: 1.02; font-weight: 400; letter-spacing: -0.045em; }
+
+/* ---------- Footer: xám giấy, chữ than, tiêu đề cột hoa nhỏ ---------- */
+.hv-footer { background: #ededE9; color: var(--hv2-ink); }
+.hv-footer :focus-visible { outline-color: var(--hv2-ink); }
+.hv-footer-tier { border-bottom-color: var(--hv2-line); }
+.hv-footer-logo { filter: brightness(0); opacity: 0.85; }
+.hv-footer-call { color: var(--hv2-ink); font-weight: 400; letter-spacing: -0.02em; }
+.hv-footer-call .hv-ic, .hv-footer-call svg { color: var(--hv2-gold); }
+.hv-footer-head { color: var(--hv2-ink); font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.hv-footer-group .hv-footer-head { color: var(--hv2-muted); font-size: 12px; font-weight: 800; }
+.hv-footer-link { color: #4a4a4a; font-size: 15px; text-decoration: none !important; }
+.hv-footer-link:hover { color: var(--hv2-ink); text-decoration: underline !important; text-decoration-color: var(--hv2-yellow); }
+.hv-footer .hv-chips li, .hv-footer-icons a { box-shadow: inset 0 0 0 1px var(--hv2-line); }
+.hv-footer-legal { color: var(--hv2-muted); }
+.hv-footer-legal strong, .hv-footer-legal a { color: var(--hv2-ink); }
+.hv-footer-copy { border-top-color: var(--hv2-line); color: var(--hv2-muted); }
+
+/* ---------- Thanh dính, hộp thoại, trạng thái: vuông ---------- */
+[data-slot="dialog-content"], [data-slot="popover-content"], [data-slot="select-content"] { border-radius: 0; }
+
+/* ---------- Đầu trang kết quả / thanh toán: nền giấy thay dải vàng, bước = ô xám, tiêu đề lớn nét mảnh ---------- */
+.hv-rs-top { background: var(--hv2-paper); color: var(--hv2-ink); padding-block: 40px; }
+.hv-rs-top .hv-step { background: var(--hv2-tint); color: var(--hv2-muted); }
+.hv-rs-top .hv-step[aria-current="step"] { background: var(--hv2-surface); box-shadow: inset 0 -2px 0 var(--hv2-yellow), 0 0 0 1px var(--hv2-line); color: var(--hv2-ink); }
+.hv-rs-top .hv-step[data-done="true"] { color: var(--hv2-ink); }
+.hv-rs-top .hv-page-title p { color: var(--hv2-muted); }
+.hv-page-title h1 { font-size: clamp(2rem, 1.5rem + 2.5vw, 3.5rem); line-height: 1.05; letter-spacing: -0.04em; }
+.hv-step[aria-current="step"] { box-shadow: inset 0 -2px 0 var(--hv2-yellow), 0 0 0 1px var(--hv2-line); }
+/* Đầu trang không có ảnh xe (trang /xe-khach): chữ chiếm cả bề ngang. */
+.hv-rhead .hv-rhero:not(:has(.hv-rhero-art)) { grid-template-columns: minmax(0, 1fr); }
+.hv-facts dd, .hv-facts dt { white-space: nowrap; }
+@media (max-width: 39.99rem) {
+  .hv-facts > div { padding: 14px 12px 0 0; }
+  .hv-facts > div + div { padding-left: 12px; }
+  .hv-facts dt { font-size: 11px; letter-spacing: 0.04em; }
+}
+
+/* ---------- Dải tải app: khớp hv2_render_app() của WP (cột trái chữ + huy hiệu, cột phải QR trắng vuông) ---------- */
+.hv-app-band .hv-app { display: grid; gap: 32px; align-items: center; grid-template-columns: minmax(0, 1fr); }
+.hv-app-band .hv-app-text { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+.hv-app-band .hv-eyebrow { color: var(--hv2-ink); }
+.hv-app-band .hv-app-title { margin-top: 18px; margin-bottom: 20px; color: var(--hv2-ink); font-size: clamp(2.375rem, 1.6rem + 3.4vw, 4.75rem); line-height: 1; font-weight: 400; letter-spacing: -0.045em; text-wrap: balance; }
+.hv-app-band .hv-app-title em { display: block; font-style: normal; font-weight: 800; color: var(--hv2-ink); }
+.hv-app-band .hv-app-lead { max-width: 34rem; font-size: 1.0625rem; line-height: 1.65; color: var(--hv2-ink); }
+.hv-app-band .hv-badges { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.hv-app-band .hv-badges img { height: 44px; width: auto; border-radius: 0; }
+.hv-app-band .hv-qr-card { justify-self: start; margin: 0; padding: 16px; background: #fff; }
+.hv-app-band .hv-qr-card .hv-qr { width: 160px; height: 160px; padding: 0; border-radius: 0; box-shadow: none; background: transparent; }
+.hv-app-band .hv-qr-card figcaption { margin-top: 10px; text-align: center; font-size: 14px; font-weight: 800; }
+@media (min-width: 60rem) {
+  .hv-app-band .hv-app { grid-template-columns: 1fr auto; gap: 80px; }
+  .hv-app-band .hv-qr-card { justify-self: end; }
+}

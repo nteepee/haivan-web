@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { translate, type Locale } from "@/i18n/t";
+import { localePrefix, translate, type Locale } from "@/i18n/t";
 import type { RouteLandingView } from "@/lib/route-landing-build";
 import { artAlt, type Art } from "./route-art";
 
@@ -22,19 +22,44 @@ function facts(view: RouteLandingView, t: (key: string, vars?: Record<string, st
   return out;
 }
 
+/** H1 hai vế (v2): vế điểm đến tô vàng đậm bằng <em>; chữ H1 giữ nguyên, nếu không thấy điểm đến thì in nguyên chuỗi. */
+function splitH1(h1: string, end: string): ReactNode {
+  const at = end ? h1.indexOf(end) : -1;
+  if (at < 0) return h1;
+  return (
+    <>
+      {h1.slice(0, at)}
+      <em>{end}</em>
+      {h1.slice(at + end.length)}
+    </>
+  );
+}
+
 /**
- * Banner trang tuyến (v3): dải vàng thương hiệu có H1, ba số liệu, ảnh xe riêng của tuyến (nếu có); thẻ tìm vé (children) nằm đè mép dưới.
- * `#tim-ve` là đích của nút CTA cuối trang.
+ * Đầu trang tuyến (v2): đường dẫn, dòng "01 · Nhãn", H1 hai vế, đoạn dẫn, ba số liệu ngăn bằng vạch mảnh, ảnh xe riêng của tuyến (nếu có);
+ * thẻ tìm vé (children) nằm đè mép dưới. `#tim-ve` là đích của nút CTA cuối trang.
  */
 export function RouteHero({ view, locale, art, reverse, children }: { view: RouteLandingView; locale: Locale; art?: Art; reverse?: { href: string; text: string } | null; children: ReactNode }) {
   const t = (key: string, vars?: Record<string, string | number>) => translate(locale, key, vars);
   const items = facts(view, t);
+  const prefix = localePrefix(locale);
   return (
     <section aria-labelledby="route-h1">
-      <div className="hv-section-yellow">
+      <div className="hv-section-yellow hv-rhead">
+        <div className="hv-container">
+          <nav className="hv-crumbs" aria-label={t("route.crumb_label")}>
+            <Link href={prefix || "/"}>{t("route.crumb_home")}</Link>
+            <span aria-hidden="true">/</span>
+            <Link href={`${prefix}/xe-khach`}>{t("route.crumb_coach")}</Link>
+          </nav>
+        </div>
         <div className="hv-container hv-rhero">
           <div className="hv-rhero-text">
-            <h1 id="route-h1">{view.h1}</h1>
+            <p className="hv-eyebrow">
+              <span>01</span>
+              {t("route.eyebrow")}
+            </p>
+            <h1 id="route-h1">{splitH1(view.h1, view.end)}</h1>
             {reverse ? (
               <p>
                 <Link href={reverse.href} className="hv-link">

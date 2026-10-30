@@ -1,19 +1,10 @@
-import { Check } from "lucide-react";
 import Image from "next/image";
-import { localePrefix, translate, type Locale } from "@/i18n/t";
+import { translate, type Locale } from "@/i18n/t";
 import type { SiteLayout } from "@/schemas/layout";
 
-/** Ý của dải app như WP: ý cuối là liên kết sang chương trình khách hàng thân thiết. */
-const TICKS = [
-  { key: "footer.app_tick_1" },
-  { key: "footer.app_tick_2" },
-  { key: "footer.app_tick_3" },
-  { key: "footer.app_tick_4", href: "/chung-toi/chuong-trinh-khach-hang-than-thiet" },
-] as const;
-
 /**
- * Dải tải app nền vàng thương hiệu, cùng markup và lớp với WP (`hv_render_app_band`): tiêu đề, bốn ý, QR, huy hiệu cửa hàng, ảnh điện thoại.
- * Nằm ngay trước footer ở mọi trang (layout); không có dữ liệu app thì ẩn.
+ * Dải tải app v2 (khối vàng như trang chủ WP): dòng nhỏ, tiêu đề hai vế, đoạn dẫn, huy hiệu cửa hàng; QR bên phải.
+ * Tiêu đề là <p> dáng H2 (không thêm heading lặp ở mọi trang). Nằm ngay trước footer (layout); không có dữ liệu app thì ẩn.
  */
 export function AppBand({ locale, site }: { locale: Locale; site: SiteLayout }) {
   const t = (key: string) => translate(locale, key);
@@ -23,43 +14,30 @@ export function AppBand({ locale, site }: { locale: Locale; site: SiteLayout }) 
     <section aria-labelledby="app-band-title" className="hv-section hv-section-yellow hv-app-band">
       <div className="hv-container hv-app">
         <div className="hv-app-text">
+          <p className="hv-eyebrow">{t("footer.app_eyebrow")}</p>
           <p id="app-band-title" className="hv-app-title">
-            {t("footer.app_title")}
+            {t("footer.app_h2_a")} <em>{t("footer.app_h2_b")}</em>
           </p>
-          <ul className="hv-ticks">
-            {TICKS.map((tick) => (
-              <li key={tick.key}>
-                <Check className="hv-ic size-6 shrink-0" aria-hidden />
-                {"href" in tick ? (
-                  <a className="hv-ticks__link" href={localePrefix(locale) + tick.href}>
-                    {t(tick.key)}
-                  </a>
-                ) : (
-                  t(tick.key)
-                )}
-              </li>
-            ))}
+          <p className="hv-app-lead">{t("footer.app_lead")}</p>
+          <ul className="hv-badges">
+            <li>
+              <a href={apps.ios} target="_blank" rel="noopener" aria-label={t("footer.app_store")}>
+                <Image src={badges.appstore} alt="" width={140} height={44} unoptimized />
+              </a>
+            </li>
+            <li>
+              <a href={apps.android} target="_blank" rel="noopener" aria-label={t("footer.play_store")}>
+                <Image src={badges.playstore} alt="" width={140} height={44} unoptimized />
+              </a>
+            </li>
           </ul>
-          <div className="hv-app-qr">
-            {qr ? <Image src={qr} alt={t("footer.qr_alt")} width={128} height={128} unoptimized className="hv-qr" /> : <span />}
-            <div>
-              <p>{t("footer.qr_scan")}</p>
-              <ul className="hv-badges">
-                <li>
-                  <a href={apps.ios} target="_blank" rel="noopener" aria-label={t("footer.app_store")}>
-                    <Image src={badges.appstore} alt="" width={140} height={44} unoptimized />
-                  </a>
-                </li>
-                <li>
-                  <a href={apps.android} target="_blank" rel="noopener" aria-label={t("footer.play_store")}>
-                    <Image src={badges.playstore} alt="" width={140} height={44} unoptimized />
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
         </div>
-        <Image src="/assets/design/app-phone.webp" alt={t("footer.app_phone_alt")} width={640} height={656} unoptimized className="hv-app-phone" />
+        {qr ? (
+          <figure className="hv-qr-card">
+            <Image src={qr} alt={t("footer.qr_alt")} width={160} height={160} unoptimized className="hv-qr" />
+            <figcaption>{t("footer.app_scan")}</figcaption>
+          </figure>
+        ) : null}
       </div>
     </section>
   );
