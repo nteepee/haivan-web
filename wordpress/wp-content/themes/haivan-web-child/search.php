@@ -14,7 +14,7 @@ $hv_title = sprintf( hv_t( 'search_results' ), get_search_query() );
 ?>
 <div class="hv-container hv-page">
 	<?php hv_breadcrumb_trail( array( array( hv_t( 'home' ), home_url( hv_lang_prefix() . '/' ) ), array( $hv_title, '' ) ) ); ?>
-	<header class="hv-page-head"><h1><?php echo esc_html( $hv_title ); ?></h1></header>
+	<?php hv2_page_head( hv2_section_label(), $hv_title ); ?>
 	<?php if ( have_posts() ) : ?>
 		<?php get_template_part( 'template-parts/post-cards' ); ?>
 		<?php the_posts_pagination( array( 'mid_size' => 1 ) ); ?>

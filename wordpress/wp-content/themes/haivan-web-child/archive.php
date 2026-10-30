@@ -19,7 +19,7 @@ $hv_trail[] = array( $hv_name, '' );
 ?>
 <div class="hv-container hv-page">
 	<?php hv_breadcrumb_trail( $hv_trail ); ?>
-	<header class="hv-page-head"><h1><?php echo esc_html( 'diem_den' === $hv_type || 'tin_tuc' === $hv_type ? $hv_name : wp_strip_all_tags( get_the_archive_title() ) ); ?></h1></header>
+	<?php hv2_page_head( count( $hv_trail ) > 2 ? $hv_trail[1][0] : ( 'diem_den' === $hv_type ? ( 'en' === hv_lang() ? 'Explore' : 'Khám phá' ) : ( 'en' === hv_lang() ? 'Hai Van' : 'Hải Vân' ) ), 'diem_den' === $hv_type || 'tin_tuc' === $hv_type ? $hv_name : wp_strip_all_tags( get_the_archive_title() ) ); ?>
 	<?php if ( have_posts() ) : ?>
 		<?php get_template_part( 'template-parts/post-cards' ); ?>
 		<?php the_posts_pagination( array( 'mid_size' => 1 ) ); ?>

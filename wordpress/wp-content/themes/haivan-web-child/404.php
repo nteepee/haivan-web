@@ -11,8 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 ?>
 <div class="hv-container hv-404">
-	<h1><?php echo esc_html( hv_t( 'not_found_title' ) ); ?></h1>
-	<p><?php echo esc_html( hv_t( 'not_found_text' ) ); ?></p>
-	<a class="hv-btn" href="<?php echo esc_url( hv_lang_prefix() . '/' ); ?>"><?php echo esc_html( hv_t( 'back_home' ) ); ?></a>
+	<?php hv2_page_head( '404', hv_t( 'not_found_title' ), hv_t( 'not_found_text' ), '<p class="hv-actions"><a class="hv2-btn" href="' . esc_url( hv_lang_prefix() . '/' ) . '">' . esc_html( hv_t( 'back_home' ) ) . '</a></p>' ); ?>
 </div>
 <?php get_footer(); ?>

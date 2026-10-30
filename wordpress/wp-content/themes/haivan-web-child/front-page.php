@@ -1,8 +1,8 @@
 <?php
 /**
- * Trang chủ v3 (kiểu ứng dụng): dải vàng (H1 display + banner carousel) → thẻ tìm vé nổi → dải 4 cam kết →
- * Ưu đãi hôm nay → Tuyến phổ biến → Điểm đến → Tin tức → dải app vàng → phòng chờ. Mọi khối lấy từ CPT/cài đặt
- * của MKT (docs/wordpress.md); khối không có dữ liệu bị ẩn hẳn, nền các khối xen kẽ tự điều chỉnh.
+ * Trang chủ v2 "Tử tế từ Tâm – Chu đáo từ Hành": 12 khối, mỗi khối một câu Tâm + bằng chứng Hành.
+ * Lời hứa → Đặt vé → Dịch vụ → 5 chặng của một chuyến đi → Ưu đãi → Tuyến → Phòng chờ → Con số → Phụng sự
+ * → Điểm đến → Ứng dụng → Tin. Chữ đã duyệt: docs/redesign-v2/01-trang-chu.md; render: inc/home-v2.php.
  *
  * @package HaiVanWeb
  */
@@ -12,70 +12,123 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 get_header();
 the_post();
-$hv_set      = hv_home_settings();
-$hv_vi       = 'vi' === hv_lang();
-$hv_h1       = $hv_vi ? $hv_set['h1'] : hv_t( 'hero_title' );
-$hv_lead     = $hv_vi ? $hv_set['lead'] : hv_t( 'hero_lead' );
-$hv_carousel = hv_render_banner_carousel();
-$hv_prefix   = hv_lang_prefix();
-
-// Các khối cuộn ngang: [id, tiêu đề, liên kết "tất cả", nhãn liên kết, HTML thẻ, lớp rail, rail thành lưới khi đủ chỗ].
-$hv_blocks = array_filter(
-	array(
-		array( 'offers', hv_t( 'offers_title' ), '' !== $hv_set['offers_url'] ? $hv_prefix . $hv_set['offers_url'] : '', hv_t( 'all_offers' ), hv_render_offer_cards(), 'hv-hrail--offers', false ),
-		array( 'routes', hv_t( 'popular_routes' ), $hv_prefix . '/xe-khach', hv_t( 'all_routes' ), hv_render_route_cards(), 'hv-hrail--routes', false ),
-		array( 'dest', hv_t( 'destinations' ), get_post_type_archive_link( 'diem_den' ) ?: home_url( '/diem-den' ), hv_t( 'all_destinations' ), hv_render_dest_rail(), 'hv-hrail--dest', false ),
-		array( 'news', hv_t( 'news' ), get_post_type_archive_link( 'tin_tuc' ) ?: home_url( '/chung-toi/bao-chi-tin-tuc' ), hv_t( 'all_news' ), hv_render_news_cards(), 'hv-hrail--grid3', true ),
-	),
-	static fn( $b ) => '' !== $b[4]
-);
-// Nền xen kẽ trắng → xám → ấm, không bao giờ hai nền giống nhau liền nhau (trước đó là dải cam kết nền ấm, trước nữa là dải "Chuyến hôm nay" nền trắng).
-$hv_grounds = array( 'white', 'grey', 'warm' );
+$hv2_p                     = hv_lang_prefix();
+list( $hv2_hot, $hv2_tel ) = hv2_hotline();
+$hv2_offers                = hv2_render_offers();
+$hv2_routes                = hv2_render_routes();
+$hv2_dests                 = hv2_render_destinations();
+$hv2_news                  = hv2_render_news();
 ?>
-<section class="hv-hero<?php echo '' === $hv_carousel ? ' hv-hero--plain' : ''; ?>" aria-label="<?php echo esc_attr( hv_t( 'booking_label' ) ); ?>">
-	<div class="hv-brand-band">
-		<div class="hv-container">
-			<div class="hv-lede"><h1><?php echo esc_html( $hv_h1 ); ?></h1><?php echo '' !== $hv_lead ? '<p class="hv-lead">' . esc_html( $hv_lead ) . '</p>' : ''; ?></div>
+<div class="hv2">
+
+<section class="hv2-hero" aria-labelledby="hv2-h1">
+	<?php echo hv2_img_tag( 'hero-tay-bac.webp', hv2_t( 'hero_alt' ), 'class="hv2-hero-img" fetchpriority="high" decoding="async"' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+	<div class="hv2-hero-copy">
+		<p class="hv2-eyebrow hv2-eyebrow--light"><span>01</span><?php echo esc_html( hv2_t( 'hero_kicker' ) ); ?></p>
+		<h1 id="hv2-h1"><span class="hv2-h1-brand"><?php echo esc_html( hv2_t( 'hero_h1_a' ) ); ?></span> <em><?php echo esc_html( hv2_t( 'hero_h1_b' ) ); ?><br><?php echo esc_html( hv2_t( 'hero_h1_c' ) ); ?></em></h1>
+		<p class="hv2-hero-lead"><?php echo esc_html( hv2_t( 'hero_lead' ) ); ?></p>
+		<p class="hv2-hero-links">
+			<a href="#hv2-book"><?php echo esc_html( hv2_t( 'hero_find' ) ); ?><span aria-hidden="true">↗</span></a>
+			<a href="<?php echo esc_url( $hv2_p . '/chung-toi/gioi-thieu' ); ?>"><?php echo esc_html( hv2_t( 'hero_story' ) ); ?><span aria-hidden="true">↗</span></a>
+		</p>
+	</div>
+	<p class="hv2-hero-foot" aria-hidden="true"><span><?php echo esc_html( hv2_t( 'hero_foot_a' ) ); ?></span><span><?php echo esc_html( hv2_t( 'hero_foot_b' ) ); ?></span></p>
+</section>
+
+<section class="hv2-book" id="hv2-book" aria-labelledby="hv2-book-h">
+	<div class="hv2-wrap">
+		<div class="hv2-book-card">
+			<div class="hv2-book-top">
+				<div><p class="hv2-eyebrow"><span>02</span><?php echo esc_html( hv2_t( 'book_eyebrow' ) ); ?></p><h2 id="hv2-book-h"><?php echo esc_html( hv2_t( 'book_h2' ) ); ?></h2></div>
+				<?php /* Bật bằng home-v2.js: bấm "Khứ hồi" = bấm "Thêm ngày về" của form, "Một chiều" = bỏ ngày về. */ ?>
+				<div class="hv2-trip" role="group" aria-label="<?php echo esc_attr( hv2_t( 'trip_label' ) ); ?>" data-hv2-trip hidden>
+					<button type="button" data-trip="ow" aria-pressed="true"><?php echo esc_html( hv2_t( 'trip_ow' ) ); ?></button>
+					<button type="button" data-trip="rt" aria-pressed="false"><?php echo esc_html( hv2_t( 'trip_rt' ) ); ?></button>
+				</div>
+			</div>
+			<?php echo do_shortcode( '[haivan_search today="strip"]' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+			<p class="hv2-book-help"><?php echo wp_kses( sprintf( esc_html( hv2_t( 'book_help' ) ), '<a href="' . esc_url( $hv2_tel ) . '">' . esc_html( $hv2_hot ) . '</a>' ), array( 'a' => array( 'href' => true ) ) ); ?></p>
 		</div>
 	</div>
-	<?php /* Banner tràn mép; thẻ tìm vé (kính từ 40rem) nằm đáy banner, phần trên để trống cho tiêu đề của slide. */ ?>
-	<div class="hv-hero-stage<?php echo '' !== $hv_carousel ? ' hv-hero-stage--banner' : ''; ?>">
-		<?php echo $hv_carousel; // phpcs:ignore WordPress.Security.EscapeOutput -- dựng và escape trong hv_render_banner_carousel(). ?>
-		<div class="hv-container hv-hero-card-wrap">
-			<div class="hv-hero-card"><?php echo do_shortcode( '[haivan_search today="strip"]' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></div>
-		</div>
+	<?php echo hv_search_today_strip(); // phpcs:ignore WordPress.Security.EscapeOutput -- dựng và escape trong hv_search_shortcode(). ?>
+</section>
+
+<section class="hv2-sec" aria-labelledby="hv2-svc">
+	<div class="hv2-wrap">
+		<?php hv2_head( '03', 'hv2-svc', hv2_t( 'svc_eyebrow' ), hv2_t( 'svc_h2_a' ), hv2_t( 'svc_h2_b' ), '<p class="hv2-intro">' . esc_html( hv2_t( 'svc_intro' ) ) . '</p>' ); ?>
+		<?php hv2_render_services(); ?>
 	</div>
 </section>
 
-<?php echo hv_search_today_strip(); // phpcs:ignore WordPress.Security.EscapeOutput -- dựng và escape trong hv_search_shortcode(). ?>
-
-<section class="hv-section hv-section--warm hv-after-hero" aria-labelledby="hv-trust">
-	<div class="hv-container">
-		<h2 class="hv-sr" id="hv-trust"><?php echo esc_html( hv_t( 'trust_heading' ) ); ?></h2>
-		<?php hv_render_trust(); ?>
+<section class="hv2-sec hv2-sec--tint" aria-labelledby="hv2-jr">
+	<div class="hv2-wrap">
+		<?php hv2_head( '04', 'hv2-jr', hv2_t( 'jr_eyebrow' ), hv2_t( 'jr_h2_a' ), hv2_t( 'jr_h2_b' ), '<p class="hv2-intro">' . esc_html( hv2_t( 'jr_intro' ) ) . '</p>' ); ?>
+		<?php hv2_render_journey(); ?>
 	</div>
 </section>
 
-<?php foreach ( array_values( $hv_blocks ) as $hv_i => $hv_b ) : ?>
-<section class="hv-section hv-section--<?php echo esc_attr( $hv_grounds[ $hv_i % 3 ] ); ?>" aria-labelledby="hv-<?php echo esc_attr( $hv_b[0] ); ?>">
-	<div class="hv-container">
-		<?php hv_block_head( 'hv-' . $hv_b[0], $hv_b[1], $hv_b[2], $hv_b[3], 'hv-rail-' . $hv_b[0], $hv_b[6] ); ?>
-		<?php hv_rail( 'hv-rail-' . $hv_b[0], $hv_b[1], $hv_b[4], $hv_b[5] ); ?>
+<?php if ( '' !== $hv2_offers ) : ?>
+<section class="hv2-sec hv2-sec--dark" aria-labelledby="hv2-off">
+	<div class="hv2-wrap">
+		<?php hv2_head( '05', 'hv2-off', hv2_t( 'off_eyebrow' ), hv2_t( 'off_h2_a' ), hv2_t( 'off_h2_b' ), hv2_link( $hv2_p . '/uu-dai', hv2_t( 'off_all' ) ) ); ?>
+		<?php echo $hv2_offers; // phpcs:ignore WordPress.Security.EscapeOutput -- escape trong hv2_render_offers(). ?>
 	</div>
 </section>
-<?php endforeach; ?>
+<?php endif; ?>
 
-<?php hv_render_app_band(); ?>
-
-<section class="hv-section hv-section--white" aria-labelledby="hv-rooms">
-	<div class="hv-container">
-		<div class="hv-section-head"><h2 id="hv-rooms"><?php echo esc_html( hv_t( 'rooms_title' ) ); ?></h2></div>
-		<?php hv_render_rooms(); ?>
+<?php if ( '' !== $hv2_routes ) : ?>
+<section class="hv2-sec" aria-labelledby="hv2-rt">
+	<div class="hv2-wrap">
+		<?php hv2_head( '06', 'hv2-rt', hv2_t( 'rt_eyebrow' ), hv2_t( 'rt_h2_a' ), hv2_t( 'rt_h2_b' ), hv2_link( $hv2_p . '/xe-khach', hv2_t( 'rt_all' ) ) ); ?>
+		<?php echo $hv2_routes; // phpcs:ignore WordPress.Security.EscapeOutput -- escape trong hv2_render_routes(). ?>
 	</div>
 </section>
+<?php endif; ?>
+
+<section class="hv2-sec hv2-sec--tint" aria-labelledby="hv2-lg">
+	<div class="hv2-wrap">
+		<?php hv2_head( '07', 'hv2-lg', hv2_t( 'lg_eyebrow' ), hv2_t( 'lg_h2_a' ), hv2_t( 'lg_h2_b' ), '<p class="hv2-intro">' . esc_html( hv2_t( 'lg_intro' ) ) . '</p>' ); ?>
+		<?php hv2_render_lounges(); ?>
+	</div>
+</section>
+
+<section class="hv2-sec hv2-sec--dark hv2-sec--stats" aria-labelledby="hv2-st">
+	<div class="hv2-wrap hv2-stats-wrap">
+		<?php hv2_head( '08', 'hv2-st', hv2_t( 'st_eyebrow' ), hv2_t( 'st_h2_a' ), hv2_t( 'st_h2_b' ) ); ?>
+		<?php hv2_render_stats(); ?>
+	</div>
+</section>
+
+<section class="hv2-sec" aria-labelledby="hv2-csr">
+	<div class="hv2-wrap">
+		<?php hv2_head( '09', 'hv2-csr', hv2_t( 'csr_eyebrow' ), hv2_t( 'csr_h2_a' ), hv2_t( 'csr_h2_b' ), '<div class="hv2-head-end"><p class="hv2-intro">' . esc_html( hv2_t( 'csr_intro' ) ) . '</p>' . hv2_link( $hv2_p . '/chung-toi/phat-trien-ben-vung', hv2_t( 'csr_more' ) ) . '</div>' ); ?>
+		<?php hv2_render_csr(); ?>
+	</div>
+</section>
+
+<?php if ( '' !== $hv2_dests ) : ?>
+<section class="hv2-sec hv2-sec--tint" aria-labelledby="hv2-ds">
+	<div class="hv2-wrap">
+		<?php hv2_head( '10', 'hv2-ds', hv2_t( 'ds_eyebrow' ), hv2_t( 'ds_h2_a' ), hv2_t( 'ds_h2_b' ), hv2_link( get_post_type_archive_link( 'diem_den' ) ?: home_url( '/diem-den' ), hv2_t( 'ds_all' ) ) ); ?>
+		<?php echo $hv2_dests; // phpcs:ignore WordPress.Security.EscapeOutput -- escape trong hv2_render_destinations(). ?>
+	</div>
+</section>
+<?php endif; ?>
+
+<?php hv2_render_app(); ?>
+
+<?php if ( '' !== $hv2_news ) : ?>
+<section class="hv2-sec" aria-labelledby="hv2-nw">
+	<div class="hv2-wrap">
+		<?php hv2_head( '12', 'hv2-nw', hv2_t( 'nw_eyebrow' ), hv2_t( 'nw_h2_a' ), hv2_t( 'nw_h2_b' ), hv2_link( get_post_type_archive_link( 'tin_tuc' ) ?: home_url( '/chung-toi/bao-chi-tin-tuc' ), hv2_t( 'nw_all' ) ) ); ?>
+		<?php echo $hv2_news; // phpcs:ignore WordPress.Security.EscapeOutput -- escape trong hv2_render_news(). ?>
+	</div>
+</section>
+<?php endif; ?>
 
 <?php if ( '' !== trim( get_the_content() ) ) : ?>
-<section class="hv-section hv-section--warm"><div class="hv-container hv-entry"><?php the_content(); ?></div></section>
+<section class="hv2-sec hv2-sec--tint"><div class="hv2-wrap hv-entry"><?php the_content(); ?></div></section>
 <?php endif; ?>
+</div>
 <?php echo hv_render_popup_template(); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 <?php get_footer(); ?>

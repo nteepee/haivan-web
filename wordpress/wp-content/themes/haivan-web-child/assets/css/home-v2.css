@@ -1,0 +1,116 @@
+/* Trang chủ v2 (inc/home-v2.php): chỉ phần riêng của trang chủ. Biến và thành phần dùng chung nằm ở v2.css. */
+/* 01 · Hero: chép đúng số đo bản mẫu v0 (ảnh tràn, phủ than từ trái .94 → .77 → .13, chữ lệch trái 11vw, dòng chân hero). */
+.hv2-hero { position: relative; min-height: min(650px, 72vh); padding: clamp(60px, 9vw, 130px) clamp(24px, 11vw, 180px) 96px; overflow: hidden; background: #2b2b2b; color: #fff; isolation: isolate; }
+.hv2-hero-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
+.hv2-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(35 35 35 / .94) 0%, rgb(35 35 35 / .77) 42%, rgb(35 35 35 / .13) 100%); }
+.hv2-hero-copy { max-width: 820px; padding: 0; margin: 0; }
+.hv2-hero-copy > :not(h1) { max-width: 620px; }
+.hv2-hero h1 { margin: 25px 0; font-size: clamp(50px, 7vw, 96px); line-height: .91; font-weight: 400; letter-spacing: -.05em; }
+.hv2-h1-brand { display: block; margin-bottom: .3em; color: #fff; font-size: .36em; line-height: 1.1; letter-spacing: -.03em; font-weight: 700; }
+.hv2-hero h1 em { display: block; font-style: normal; color: var(--hv2-yellow); }
+.hv2-hero-lead { max-width: 390px; color: #e5e5e5; font-size: 15px; line-height: 1.7; }
+.hv2-hero-links { display: flex; flex-wrap: wrap; gap: 12px 30px; margin-top: 42px; }
+.hv2-hero-links a { display: inline-flex; align-items: center; min-height: 44px; padding-bottom: 0; border-bottom: 1px solid rgb(255 255 255 / .45); font-size: 13px; font-weight: 700; }
+.hv2-hero-links span { margin-left: 14px; color: var(--hv2-yellow); }
+.hv2-hero-foot { position: absolute; left: clamp(24px, 11vw, 180px); right: clamp(24px, 11vw, 180px); bottom: 70px; display: flex; justify-content: space-between; gap: 16px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #ddd; }
+@media (max-width: 50rem) {
+  .hv2-hero { min-height: 570px; padding: 80px 24px 96px; }
+  .hv2-hero::before { background: linear-gradient(90deg, rgb(35 35 35 / .94) 0%, rgb(35 35 35 / .8) 60%, rgb(35 35 35 / .45) 100%); }
+  .hv2-hero h1 { font-size: 52px; }
+  .hv2-hero-foot { left: 24px; right: 24px; bottom: 56px; }
+  .hv2-hero-foot span + span { display: none; }
+}
+
+/* 02 · Thẻ đặt vé: đè mép dưới hero (-48px), nền trắng góc vuông, bóng 0 18 50 .1. Form thật [haivan_search] được đổi lớp ngoài
+   cho giống bản mẫu: nhãn nhỏ viết hoa, ô nền xám viền mảnh góc vuông, một hàng ngang từ 60rem, nút than có mũi tên vàng. */
+/* Khối bọc không có nền: margin âm của thẻ đè lên mép dưới ảnh hero (nền giấy của body nằm sau), thẻ nối liền với banner như bản mẫu. */
+.hv2-book { position: relative; z-index: 2; background: transparent; }
+.hv2-book > .hv2-wrap { max-width: 1280px; padding-inline: 24px; }
+.hv2-book-card { margin-top: -48px; padding: 25px 20px; background: #fff; box-shadow: 0 18px 50px rgb(0 0 0 / .10); }
+.hv2-book-top { display: flex; flex-direction: column; gap: 22px; }
+.hv2-book-card h2 { margin: 8px 0 0; font-size: 24px; font-weight: 400; letter-spacing: -.04em; }
+.hv2-trip { display: flex; gap: 24px; border-bottom: 1px solid #dedede; }
+.hv2-trip[hidden] { display: none; }
+.hv2-trip button { min-height: 44px; padding: 0 0 10px; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: transparent; color: #6b6b6b; font: inherit; font-size: 13px; cursor: pointer; }
+.hv2-trip button[aria-pressed="true"] { border-bottom-color: var(--hv2-yellow); color: var(--hv2-ink); font-weight: 700; }
+.hv2-book-help { margin-top: 16px; color: #6a6a6a; font-size: 13px; }
+.hv2-book-help a { color: var(--hv2-ink); font-weight: 700; border-bottom: 1px solid currentColor; }
+@media (min-width: 50.01rem) {
+  .hv2-book-card { padding: 32px 38px; }
+  .hv2-book-top { flex-direction: row; align-items: flex-end; justify-content: space-between; }
+  .hv2-book-card h2 { font-size: 27px; }
+}
+
+/* Khi công tắc Một chiều/Khứ hồi đã bật (có JS), ô "Ngày về" chỉ hiện ở chế độ khứ hồi; khi đó hàng form còn 6 cột. Kiểu form: v2.css (.hv2 .hv-search). */
+@media (min-width: 60rem) { .hv2-book-card:has([data-hv2-trip]:not([hidden])) .hv-search__form--corridor:has(.hv-search__retbox[hidden]) { grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr) minmax(0, .9fr) 120px 150px; } }
+.hv2-book-card:has([data-hv2-trip]:not([hidden])) .hv-search__field--cret:has(.hv-search__retbox[hidden]) { display: none; }
+.hv2-book .hv-today { background: transparent; padding-block: 40px 0; }
+.hv2-book .hv-today .hv-container { max-width: 1280px; padding-inline: 24px; }
+
+/* 04 · 5 chặng */
+.hv2-steps { display: grid; gap: 28px; counter-reset: step; }
+.hv2-step { position: relative; display: grid; grid-template-columns: 112px 1fr; gap: 6px 18px; align-content: start; }
+.hv2-step-media { grid-row: span 3; aspect-ratio: 4 / 5; overflow: hidden; background: var(--hv2-ink); }
+.hv2-step-media img { width: 100%; height: 100%; object-fit: cover; }
+.hv2-step-k { display: flex; gap: 10px; font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--hv2-muted); }
+.hv2-step-k span { color: var(--hv2-gold); }
+.hv2-step h3 { font-size: 1.25rem; line-height: 1.3; font-weight: 700; letter-spacing: -.015em; }
+.hv2-step p:last-child { font-size: 1rem; line-height: 1.6; color: var(--hv2-muted); }
+.hv2-ticket { display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 12px; color: #fff; font-size: 11px; letter-spacing: .06em; }
+.hv2-ticket-k { color: var(--hv2-yellow); font-weight: 800; text-transform: uppercase; }
+.hv2-ticket strong { margin-top: 6px; font-size: 13px; }
+.hv2-ticket i { font-style: normal; color: var(--hv2-yellow); }
+.hv2-ticket-seat { margin-top: 8px; color: var(--hv2-muted-dark); }
+.hv2-ticket-qr { width: 46px; aspect-ratio: 1; margin-top: 10px; background:
+  conic-gradient(from 90deg at 50% 50%, #fff 25%, transparent 0 50%, #fff 0 75%, transparent 0) 0 0 / 12px 12px; outline: 3px solid #fff; outline-offset: 2px; opacity: .9; }
+@media (min-width: 60rem) {
+  .hv2-steps { grid-template-columns: repeat(5, 1fr); gap: 20px; }
+  .hv2-steps::before { content: ""; grid-column: 1 / -1; grid-row: 1; align-self: start; height: 0; }
+  .hv2-step { grid-template-columns: 1fr; gap: 10px; }
+  .hv2-step-media { grid-row: auto; margin-bottom: 14px; }
+  .hv2-ticket { padding: 22px; font-size: 12px; }
+  .hv2-ticket strong { font-size: 17px; }
+  .hv2-ticket-qr { width: 64px; background-size: 16px 16px; }
+}
+.hv2-story { margin-top: 56px; padding: 32px 24px; border-left: 5px solid var(--hv2-yellow); background: var(--hv2-surface); }
+.hv2-story figcaption { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--hv2-gold); }
+.hv2-story blockquote p { margin-top: 12px; max-width: 52rem; font-size: clamp(1.125rem, 1rem + .6vw, 1.5rem); line-height: 1.55; letter-spacing: -.01em; }
+@media (min-width: 48rem) { .hv2-story { padding: 40px 48px; } }
+
+/* 07 · Phòng chờ */
+.hv2-lounge { display: grid; gap: 24px; }
+.hv2-lounge-photo { overflow: hidden; aspect-ratio: 4 / 3; }
+.hv2-lounge-photo img { width: 100%; height: 100%; object-fit: cover; }
+.hv2-addrs { border-top: 1px solid var(--hv2-line); }
+.hv2-addrs li { display: grid; grid-template-columns: 36px 1fr; gap: 4px 12px; align-items: center; padding: 16px 4px; border-bottom: 1px solid var(--hv2-line); }
+.hv2-addrs h3 { font-size: 1.125rem; font-weight: 700; }
+.hv2-addrs p { font-size: 15px; color: var(--hv2-muted); }
+.hv2-addrs .hv2-textlink { grid-column: 2; justify-self: start; min-height: 44px; border: 0; font-size: 14px; }
+@media (min-width: 60rem) {
+  .hv2-lounge { grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: start; }
+  .hv2-lounge-photo { aspect-ratio: auto; height: 100%; min-height: 520px; }
+  .hv2-addrs li { grid-template-columns: 36px 1fr auto; }
+  .hv2-addrs .hv2-textlink { grid-column: 3; }
+}
+
+/* 10 · Điểm đến */
+.hv2-dests { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
+.hv2-dest { position: relative; display: block; aspect-ratio: 3 / 4; overflow: hidden; background: var(--hv2-ink); color: #fff; }
+.hv2-dest img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--hv2-ease); }
+.hv2-dest:hover img { transform: scale(1.04); }
+.hv2-dest::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgb(0 0 0 / .66) 0%, rgb(0 0 0 / 0) 55%); }
+.hv2-dest-name { position: absolute; left: 18px; bottom: 16px; z-index: 1; font-size: clamp(1.25rem, 1rem + 1vw, 1.75rem); font-weight: 800; letter-spacing: -.02em; }
+.hv2-dest-go { position: absolute; right: 18px; bottom: 18px; z-index: 1; color: var(--hv2-yellow); font-size: 20px; }
+@media (min-width: 48rem) { .hv2-dests { grid-template-columns: repeat(3, 1fr); } .hv2-dest { aspect-ratio: 4 / 3; } }
+
+/* 12 · Tin */
+.hv2-newslist { display: grid; gap: 1px; background: var(--hv2-line); border: 1px solid var(--hv2-line); }
+.hv2-news { display: flex; flex-direction: column; min-height: 220px; height: 100%; padding: 26px; background: var(--hv2-paper); transition: background .2s var(--hv2-ease); }
+.hv2-news:hover { background: var(--hv2-surface); }
+.hv2-news-k { font-size: 13px; font-weight: 800; letter-spacing: .08em; color: var(--hv2-muted); }
+.hv2-news h3 { margin-top: 28px; font-size: 1.375rem; line-height: 1.3; font-weight: 400; letter-spacing: -.02em; }
+@media (min-width: 48rem) { .hv2-newslist { grid-template-columns: repeat(3, 1fr); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hv2 * { transition: none !important; }
+}

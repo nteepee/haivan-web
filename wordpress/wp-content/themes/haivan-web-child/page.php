@@ -17,12 +17,10 @@ while ( have_posts() ) :
 	?>
 <article <?php post_class( 'hv-container hv-page' ); ?>>
 	<?php hv_breadcrumb_trail( hv_page_trail( get_post() ) ); ?>
-	<header class="hv-page-head">
-		<h1><?php echo esc_html( get_the_title() ); ?></h1>
-		<?php if ( has_post_thumbnail() ) : ?>
-			<?php echo hv_featured_photo(); // phpcs:ignore WordPress.Security.EscapeOutput ?>
-		<?php endif; ?>
-	</header>
+	<?php
+	$hv_trail = hv_page_trail( get_post() );
+	hv2_page_head( hv2_section_label( $hv_trail ), get_the_title(), has_excerpt() ? get_the_excerpt() : '', has_post_thumbnail() ? hv_featured_photo() : '' );
+	?>
 	<div class="hv-doc-grid<?php echo $hv_nav ? ' hv-doc-grid--nav' : ''; ?>">
 		<?php if ( $hv_nav ) : ?>
 			<nav aria-label="<?php echo esc_attr( hv_t( 'subnav' ) ); ?>">

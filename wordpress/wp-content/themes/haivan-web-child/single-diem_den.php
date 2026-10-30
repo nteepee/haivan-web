@@ -30,12 +30,7 @@ while ( have_posts() ) :
 	<?php
 	hv_breadcrumb_trail( hv_post_trail() );
 	?>
-	<header class="hv-page-head">
-		<h1><?php echo esc_html( sprintf( hv_t( 'destination_title' ), $hv_name ) ); ?></h1>
-		<?php if ( 1 === $hv_page && has_post_thumbnail() ) : ?>
-			<?php echo hv_featured_photo(); // phpcs:ignore WordPress.Security.EscapeOutput ?>
-		<?php endif; ?>
-	</header>
+	<?php hv2_page_head( hv2_section_label( hv_post_trail() ), sprintf( hv_t( 'destination_title' ), $hv_name ), '', 1 === $hv_page && has_post_thumbnail() ? hv_featured_photo() : '' ); ?>
 	<?php if ( 1 === $hv_page && '' !== trim( wp_strip_all_tags( get_the_content() ) ) ) : ?>
 		<div class="hv-entry"><?php the_content(); ?></div>
 	<?php endif; ?>

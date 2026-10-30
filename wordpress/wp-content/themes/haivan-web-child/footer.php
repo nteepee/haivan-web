@@ -18,7 +18,7 @@ $hv_cert = $hv_site['certificate'] ?? null;
 </main>
 <?php
 if ( ! is_front_page() ) {
-	hv_render_app_band( hv_app_band_ground() );
+	hv2_render_app( '' ); // cùng khối ứng dụng với trang chủ (inc/home-v2.php).
 }
 ?>
 <footer class="hv-footer">

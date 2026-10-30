@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HV_WEB_VERSION', '1.6.0' );
+define( 'HV_WEB_VERSION', '1.9.3' );
 define( 'HV_WEB_DIR', get_stylesheet_directory() );
 define( 'HV_WEB_URI', get_stylesheet_directory_uri() );
 
@@ -21,7 +21,7 @@ foreach (
 	array(
 		'i18n', 'i18n-labels', 'tokens', 'icons', 'admin-fields', 'layout', 'layout-admin', 'template-tags', 'chrome',
 		'content-types', 'search-shortcode', 'home-settings', 'mkt-shared', 'banners', 'banners-render', 'offers', 'offers-render',
-		'corridors', 'promos', 'booking-config', 'mkt-admin', 'home-rest', 'home', 'home-blocks', 'cta', 'entry-tables',
+		'corridors', 'promos', 'booking-config', 'mkt-admin', 'home-rest', 'home', 'home-blocks', 'v2', 'v2-story', 'home-v2', 'cta', 'entry-tables',
 		'route-meta', 'route-rest', 'dest-routes', 'content-fixes', 'toc', 'redirects', 'seo', 'schema', 'hardening',
 	) as $hv_inc
 ) {
@@ -58,7 +58,9 @@ add_action(
 			wp_enqueue_style( 'hv-home', $css . 'home.css', array( 'hv-promo-tones' ), HV_WEB_VERSION );
 			wp_enqueue_style( 'hv-home-rails', $css . 'home-rails.css', array( 'hv-home' ), HV_WEB_VERSION );
 			wp_enqueue_style( 'hv-home-blocks', $css . 'home-blocks.css', array( 'hv-home-rails' ), HV_WEB_VERSION );
+			wp_enqueue_style( 'hv-home-v2', $css . 'home-v2.css', array( 'hv-home-blocks', 'hv-v2' ), HV_WEB_VERSION ); // trang chủ v2 (inc/home-v2.php).
 			wp_enqueue_script( 'hv-home', HV_WEB_URI . '/assets/js/home.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
+			wp_enqueue_script( 'hv-home-v2', HV_WEB_URI . '/assets/js/home-v2.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
 		} else {
 			wp_enqueue_style( 'hv-content', $css . 'content.css', array( 'hv-footer' ), HV_WEB_VERSION );
 			wp_enqueue_style( 'hv-article', $css . 'article.css', array( 'hv-content' ), HV_WEB_VERSION );
@@ -71,6 +73,11 @@ add_action(
 				wp_enqueue_style( 'hv-offers-page', $css . 'offers-page.css', array( 'hv-home-rails' ), HV_WEB_VERSION );
 			}
 		}
+		if ( is_post_type_archive( 'uu_dai' ) ) { // lọc ưu đãi theo tuyến (assets/js/v2.js).
+			wp_enqueue_script( 'hv-v2', HV_WEB_URI . '/assets/js/v2.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
+		}
+		// Design system v2 nạp sau cùng cho mọi trang: phủ lớp v4 bằng một bộ biến + thành phần (assets/css/v2.css).
+		wp_enqueue_style( 'hv-v2', $css . 'v2.css', array( 'hv-footer' ), HV_WEB_VERSION );
 		wp_enqueue_script( 'hv-site', HV_WEB_URI . '/assets/js/site.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
 		wp_add_inline_script( 'hv-site', 'window.HV_SITE=' . wp_json_encode( hv_site_js_config() ) . ';', 'before' );
 	},

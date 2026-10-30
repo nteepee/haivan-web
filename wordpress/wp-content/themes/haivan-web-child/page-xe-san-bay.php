@@ -17,13 +17,10 @@ $hv_routes = hv_render_airport_route_cards();
 ?>
 <article <?php post_class( 'hv-container hv-page' ); ?>>
 	<?php hv_breadcrumb_trail( hv_page_trail( get_post() ) ); ?>
-	<header class="hv-page-head hv-airport-head">
-		<h1><?php echo esc_html( get_the_title() ); ?></h1>
-		<p class="hv-lead"><?php echo esc_html( hv_t( 'airport_intro' ) ); ?></p>
-		<?php if ( '' !== $hv_tel ) : ?>
-			<p class="hv-actions"><a class="hv-btn hv-btn--lg" href="tel:<?php echo esc_attr( $hv_tel ); ?>"><?php echo hv_icon( 'phone' ); // phpcs:ignore WordPress.Security.EscapeOutput -- icon là hằng số. ?><?php echo esc_html( sprintf( hv_t( 'cta_call' ), $hv_set['hotline'] ) ); ?></a></p>
-		<?php endif; ?>
-	</header>
+	<?php
+	$hv_actions = '' !== $hv_tel ? '<p class="hv-actions"><a class="hv2-btn" href="tel:' . esc_attr( $hv_tel ) . '">' . esc_html( sprintf( hv_t( 'cta_call' ), $hv_set['hotline'] ) ) . '</a></p>' : '';
+	hv2_page_head( hv2_section_label( hv_page_trail( get_post() ) ), get_the_title(), hv_t( 'airport_intro' ), $hv_actions );
+	?>
 	<?php if ( '' !== trim( wp_strip_all_tags( get_the_content() ) ) ) : ?>
 		<div class="hv-entry"><?php the_content(); ?></div>
 	<?php endif; ?>
