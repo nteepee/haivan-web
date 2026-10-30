@@ -1,6 +1,6 @@
 <?php
 /**
- * Xe hợp đồng (/dich-vu/xe-hop-dong) v2: Nhu cầu → Tâm và Hành → Giá tham khảo → Form báo giá qua Zalo → Cách đặt.
+ * Xe hợp đồng (/dich-vu/xe-hop-dong) v2: Nhu cầu → Tâm và Hành → (Giá tham khảo, đang ẩn) → Form báo giá qua Zalo → Cách đặt.
  * Mục tiêu: đẩy lead về Zalo (hv2_zalo_lead; khu vực Bắc/Nam chọn đúng OA). Chữ sửa trong hộp "Nội dung trang (v2)".
  *
  * @package HaiVanWeb
@@ -37,12 +37,14 @@ hv2_story_top( '<p class="hv-actions hv2-actions"><a class="hv2-btn" href="#hv2-
 	</div>
 </section>
 
+<?php if ( '1' === hv2_s( 'pr_show' ) ) : // Bảng giá đang ẩn tới khi chốt giá; MKT bật lại bằng ô "Hiện bảng giá?" trong WP. ?>
 <section class="hv2-sec hv2-sec--dark" aria-labelledby="hv2-pr">
 	<div class="hv2-wrap">
 		<?php hv2_head( '', 'hv2-pr', hv2_s( 'pr_eyebrow' ), hv2_s( 'pr_h2_a' ), hv2_s( 'pr_h2_b' ), hv2_link( '#hv2-lead', hv2_s( 'cta' ) ) ); ?>
 		<?php hv2_story_prices( 'pr_items', 'pr_note' ); ?>
 	</div>
 </section>
+<?php endif; ?>
 
 <section class="hv2-sec" id="hv2-lead" aria-labelledby="hv2-ld">
 	<div class="hv2-wrap hv2-lead-wrap">
