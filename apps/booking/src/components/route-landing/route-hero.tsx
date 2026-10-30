@@ -11,11 +11,11 @@ interface Fact {
 }
 
 /**
- * Tách phụ đề "Từ 485.000đ · 11h · 500 km" thành số liệu có nhãn (giờ, km); khoản nào thiếu thì bỏ.
- * Không in giá: giá trung bình của CMS đã cũ, giá thật theo ngày nằm ở bảng giờ chạy ngay dưới.
+ * Số liệu có nhãn: giá "từ" (giá thấp nhất các chuyến hôm nay, chỉ khi lấy được), rồi giờ và km tách từ phụ đề "11h · 500 km";
+ * khoản nào thiếu thì bỏ.
  */
 function facts(view: RouteLandingView, t: (key: string, vars?: Record<string, string | number>) => string): Fact[] {
-  const out: Fact[] = [];
+  const out: Fact[] = view.priceLabel ? [{ label: t("route.fact_price"), value: view.priceLabel }] : [];
   for (const part of (view.subline ?? "").split(" · ")) {
     const hour = part.match(/^(\d+(?:[.,]\d+)?)h$/);
     if (hour) out.push({ label: t("route.fact_time"), value: t("route.hours_value", { n: hour[1] }) });

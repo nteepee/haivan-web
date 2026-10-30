@@ -79,6 +79,7 @@ function hv_popular_routes_shortcode( $atts = array() ) {
 		return '';
 	}
 	$prefix = hv_lang_prefix();
+	$prices = hv_route_live_prices( array_map( static fn( $p ) => (string) get_post_meta( $p->ID, 'hv_route_path', true ), $q->posts ) );
 	ob_start();
 	echo '<ul class="hv-routes">';
 	while ( $q->have_posts() ) {
@@ -88,8 +89,10 @@ function hv_popular_routes_shortcode( $atts = array() ) {
 		if ( ! hv_valid_route_path( $path ) ) {
 			continue;
 		}
-		// Không in giá: giá nhập tay trong bài tuyến đã cũ, giá thật hiện trên trang tuyến theo ngày.
-		$meta = trim( (string) get_post_meta( $id, 'hv_route_time', true ) );
+		// Giá "từ" = giá thật thấp nhất hôm nay (không dùng giá nhập tay trong bài tuyến vì đã cũ); không có thì chỉ in giờ chạy.
+		$time  = trim( (string) get_post_meta( $id, 'hv_route_time', true ) );
+		$price = isset( $prices[ $path ] ) ? hv_t( 'from_price' ) . ' ' . hv_money( $prices[ $path ] ) : '';
+		$meta  = trim( $price . ( '' !== $price && '' !== $time ? ' · ' : '' ) . $time );
 		echo '<li class="hv-route"><a href="' . esc_url( $prefix . '/xe-khach/' . $path ) . '">';
 		if ( has_post_thumbnail( $id ) ) {
 			echo wp_get_attachment_image( get_post_thumbnail_id( $id ), 'medium_large', false, array( 'class' => 'hv-route__img', 'loading' => 'lazy', 'decoding' => 'async', 'alt' => hv_image_alt( $id ) ) );

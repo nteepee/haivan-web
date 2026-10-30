@@ -90,12 +90,13 @@ function hv_render_dest_routes( $name, $slug, $post_id ) {
 		return;
 	}
 	$prefix = hv_lang_prefix();
-	// Hàng tuyến v2 (cả hàng là liên kết, mũi tên ↗), chỉ tên + thời gian chạy; không in giá nhập tay (đã cũ).
+	// Hàng tuyến v2 (cả hàng là liên kết, mũi tên ↗): tên, thời gian chạy, giá "từ" hôm nay (giá thật; giá nhập tay đã cũ nên không dùng).
+	$prices = hv_route_live_prices( array_column( $routes, 'path' ) );
 	echo '<section class="hv-dest-routes" aria-labelledby="hv-dest-routes"><h2 id="hv-dest-routes">' . esc_html( sprintf( hv_t( 'dest_routes' ), $name ) ) . '</h2><ul class="hv2-routes hv2-routes--compact">';
 	foreach ( $routes as $r ) {
 		$time  = hv_route_time_label( get_post_meta( $r['post']->ID, 'hv_route_time', true ) );
 		$label = hv_route_label( get_the_title( $r['post'] ) );
-		echo '<li><a class="hv2-route" href="' . esc_url( $prefix . '/xe-khach/' . $r['path'] ) . '" aria-label="' . esc_attr( sprintf( hv_t( 'book_route_aria' ), $label ) ) . '"><span class="hv2-route-name">' . esc_html( $label ) . '</span><span class="hv2-route-time">' . esc_html( $time ) . '</span><span class="hv2-route-go" aria-hidden="true">↗</span></a></li>';
+		echo '<li><a class="hv2-route" href="' . esc_url( $prefix . '/xe-khach/' . $r['path'] ) . '" aria-label="' . esc_attr( sprintf( hv_t( 'book_route_aria' ), $label ) ) . '"><span class="hv2-route-name">' . esc_html( $label ) . '</span><span class="hv2-route-time">' . esc_html( $time ) . '</span>' . hv2_route_price( $prices[ $r['path'] ] ?? 0 ) . '<span class="hv2-route-go" aria-hidden="true">↗</span></a></li>'; // phpcs:ignore WordPress.Security.EscapeOutput -- hv2_route_price() tự escape.
 	}
 	echo '</ul><p class="hv-dest-routes__all">' . hv2_link( $prefix . '/xe-khach', hv_t( 'dest_routes_all' ) ) . '</p></section>'; // phpcs:ignore WordPress.Security.EscapeOutput -- hv2_link() tự escape.
 }

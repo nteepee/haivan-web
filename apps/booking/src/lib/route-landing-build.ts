@@ -1,3 +1,4 @@
+import { formatMoney } from "@/lib/format";
 import type { RouteListing } from "@/lib/route-listing";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import type { RouteLandingWp } from "@/schemas/route-landing";
@@ -15,9 +16,9 @@ export interface RouteLandingView {
   title: string;
   description: string;
   h1: string;
-  /** "Từ 485.000đ" như CMS trả (dòng phụ đề). */
+  /** Giá thấp nhất các chuyến hôm nay ("200.000đ"); null khi chưa lấy được giá thật. */
   priceLabel: string | null;
-  /** Số VND cho schema Offer.price; null khi không đọc được giá. */
+  /** Cùng giá đó (VND) cho schema Offer.price; null khi không có giá thật. */
   priceValue: number | null;
   subline: string | null;
   /** Số giờ chạy từ CMS ("11"), null nếu không có. */
@@ -79,28 +80,28 @@ function cmsDescription(cms: RouteListing): string | null {
  * Gộp theo thứ tự ưu tiên WP > CMS > mẫu (hàm thuần, không I/O). `wp` null khi WP chưa có bài hoặc sập.
  * Tiêu đề/mô tả của WP và CMS dùng nguyên văn; chỉ mẫu bị giới hạn độ dài.
  */
-export function buildRouteLanding(wp: RouteLandingWp | null, cms: RouteListing, tpl: RouteTemplate): RouteLandingView {
+export function buildRouteLanding(wp: RouteLandingWp | null, cms: RouteListing, tpl: RouteTemplate, livePrice: number | null = null): RouteLandingView {
   const [start, end] = routeEndpoints(cms);
   const way = cms.data.wayroad;
-  // Giá trung bình của CMS đã cũ (vd. 140.000đ Sài Gòn – Vũng Tàu) nên không đưa vào tiêu đề, mô tả hay JSON-LD;
-  // giá thật theo ngày nằm ở bảng giờ chạy (route-fare-table).
-  const priceLabel = text(way?.price_avg);
+  // Giá "từ" chỉ lấy từ chuyến thật hôm nay (`livePrice`, xem server/route-price.ts); giá trung bình của CMS đã cũ
+  // (vd. 140.000đ Sài Gòn – Vũng Tàu) nên không dùng. Không có giá hôm nay → tiêu đề, mô tả, JSON-LD và đầu trang đều không có giá.
+  const priceLabel = livePrice !== null && livePrice > 0 ? formatMoney(livePrice) : null;
   const runHours = hours(way?.run_time);
   const pickups = wp?.pickup_points ?? [];
   const useCms = tpl.cmsMeta;
 
   const faq = wp?.faq?.length ? wp.faq : useCms ? (cms.questions_wayroad ?? []).map((x) => ({ q: x.question, a: x.answer })) : [];
-  const subline = [priceLabel, runHours ? `${runHours}h` : null, way?.distance ? `${way.distance} km` : null].filter(Boolean).join(" · ");
+  const subline = [runHours ? `${runHours}h` : null, way?.distance ? `${way.distance} km` : null].filter(Boolean).join(" · ");
 
   return {
     start,
     end,
-    title: text(wp?.seo_title) ?? (useCms ? cmsTitle(cms) : null) ?? tpl.title(start, end, null),
+    title: text(wp?.seo_title) ?? (useCms ? cmsTitle(cms) : null) ?? tpl.title(start, end, priceLabel),
     description:
-      text(wp?.meta_description) ?? (useCms ? cmsDescription(cms) : null) ?? tpl.description(start, end, { price: null, hours: runHours, pickup: pickups[0]?.name }),
+      text(wp?.meta_description) ?? (useCms ? cmsDescription(cms) : null) ?? tpl.description(start, end, { price: priceLabel, hours: runHours, pickup: pickups[0]?.name }),
     h1: text(wp?.h1) ?? tpl.h1(start, end),
     priceLabel,
-    priceValue: null,
+    priceValue: priceLabel ? livePrice : null,
     subline: subline || null,
     runHours,
     scheduleHtml: sanitizeHtml(wp?.schedule_text),

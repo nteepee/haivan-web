@@ -9,7 +9,9 @@ import { Rail } from "@/components/ui/rail";
 import { isLocale, localePrefix, translate } from "@/i18n/t";
 import { getBookingConfig } from "@/lib/booking-config-source";
 import { corridorSearchHref, localized } from "@/lib/corridors";
+import { formatMoney } from "@/lib/format";
 import { isIndexableLocale } from "@/lib/route-landing-build";
+import { routePathMinPriceToday } from "@/server/route-price";
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/xe-khach">): Promise<Metadata> {
   const { lang } = await params;
@@ -28,7 +30,8 @@ interface Card {
   name: string;
   art: Art;
   runTime?: string | number;
-  price?: string;
+  /** Giá "từ" hôm nay (giá thật thấp nhất các chuyến hôm nay); null = ẩn. */
+  price?: number | null;
   href: string;
 }
 
@@ -40,9 +43,9 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
   const t = (key: string, vars?: Record<string, string | number>) => translate(locale, key, vars);
   const config = await getBookingConfig();
   // Thẻ tuyến = 4 tuyến chính từ cấu hình (như trang chủ WP): thẻ → trang tuyến chiều a → b, chưa có trang thì tìm chuyến sẵn theo tuyến.
-  // Giờ chạy/giá lấy từ danh sách tuyến phổ biến khi có trang tuyến tương ứng. Không có tuyến chính nào → danh sách tuyến phổ biến cũ.
+  // Giờ chạy lấy từ danh sách tuyến phổ biến khi có trang tuyến tương ứng; giá = giá thật thấp nhất hôm nay (price_avg đã cũ, không dùng). Không có tuyến chính nào → danh sách tuyến phổ biến cũ.
   const cards: Card[] = config.corridors.length
-    ? config.corridors.map((c) => {
+    ? await Promise.all(config.corridors.map(async (c) => {
         const slug = c.landing.ab;
         const known = slug ? popularRoutes.find((r) => r.slug === slug) : undefined;
         return {
@@ -50,18 +53,18 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
           name: localized(c.label, locale),
           art: (slug && ROUTE_CARD_ART[slug]) || FALLBACK_ROUTE_ART,
           runTime: known?.run_time,
-          price: known?.price_avg,
+          price: slug ? await routePathMinPriceToday(slug) : null,
           href: slug ? `${p}/xe-khach/${slug}` : corridorSearchHref(c, p),
         };
-      })
-    : popularRoutes.map((r) => ({
+      }))
+    : await Promise.all(popularRoutes.map(async (r) => ({
         key: r.slug,
         name: r.name.replace(" - ", ` ${t("route.to")} `),
         art: ROUTE_CARD_ART[r.slug] ?? FALLBACK_ROUTE_ART,
         runTime: r.run_time,
-        price: r.price_avg,
+        price: await routePathMinPriceToday(r.slug),
         href: `${p}/xe-khach/${r.slug}`,
-      }));
+      })));
   return (
     <>
       <section aria-labelledby="xe-khach-h1">
@@ -106,7 +109,7 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
                   ) : null}
                   {c.price ? (
                     <p className="hv-rcard-price">
-                      <small>{t("route.from")}</small> <strong>{c.price.replace(/^\s*từ\s+/i, "")}</strong>
+                      <small>{t("route.from")}</small> <strong>{formatMoney(c.price)}</strong>
                     </p>
                   ) : null}
                   <Link href={c.href} className="hv-btn hv-btn-primary hv-btn-sm hv-rcard-go" aria-label={`${t("route.book_ticket")} ${c.name}`}>

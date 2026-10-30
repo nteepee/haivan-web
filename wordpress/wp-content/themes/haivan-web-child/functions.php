@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HV_WEB_VERSION', '1.10.7' );
+define( 'HV_WEB_VERSION', '1.10.8' );
 define( 'HV_WEB_DIR', get_stylesheet_directory() );
 define( 'HV_WEB_URI', get_stylesheet_directory_uri() );
 

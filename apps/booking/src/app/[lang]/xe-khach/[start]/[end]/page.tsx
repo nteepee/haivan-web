@@ -10,6 +10,7 @@ import { getBookingConfig } from "@/lib/booking-config-source";
 import { corridorLanding, corridorListing } from "@/lib/corridor-landing";
 import { getRouteLanding } from "@/lib/route-landing";
 import { getRouteListing } from "@/lib/route-listing";
+import { routeMinPriceToday } from "@/server/route-price";
 
 export async function generateStaticParams() {
   // Tuyến phổ biến + trang tuyến của 4 tuyến chính trong cấu hình (kể cả chiều CMS không biết, vd my-dinh/moc-chau).
@@ -42,7 +43,10 @@ async function loadView(lang: string, start: string, end: string) {
     route = corridorListing(corridor, slug, locale);
   }
   if (!route) return null;
-  const view = buildRouteLanding(wp, route, routeTemplate(locale));
+  // Giá "từ" = giá thấp nhất các chuyến hôm nay (cache 1 giờ); chỉ truyền toạ độ để khoá cache gọn.
+  const { start_place: s, end_place: e } = route.data;
+  const livePrice = await routeMinPriceToday({ lat: s.lat, lng: s.lng }, { lat: e.lat, lng: e.lng });
+  const view = buildRouteLanding(wp, route, routeTemplate(locale), livePrice);
   // Nút "Xem chiều ngược lại": trang chiều ngược của tuyến chính nếu đã có; không thì liên kết reverse_route của bài WP.
   const reversePath = corridor?.reverseSlug ?? view.reverseRoute?.path ?? null;
   return { route, locale, view, corridor, reversePath };

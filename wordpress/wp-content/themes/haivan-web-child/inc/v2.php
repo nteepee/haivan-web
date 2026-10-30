@@ -47,6 +47,54 @@ function hv2_hotline() {
 	return array( $h, 'tel:' . preg_replace( '/\D+/', '', $h ) );
 }
 
+/**
+ * Giá "từ" hôm nay theo tuyến = giá thấp nhất trong các chuyến hôm nay (app Next đọc API danh sách chuyến, xem
+ * apps/booking/src/server/route-price.ts). Một request cho cả danh sách, cache transient 1 giờ (lỗi hoặc thiếu giá: 5 phút).
+ * Trả về [ 'quan-1/vung-tau' => 200000, ... ]; tuyến không có giá (lỗi API, hết chuyến) không có khoá → nơi gọi ẩn giá.
+ * Next nội bộ: biến môi trường HV_NEXT_INTERNAL_URL (mặc định Next local trên máy chủ Docker).
+ *
+ * @param string[] $paths Đường dẫn tuyến "start/end".
+ */
+function hv_route_live_prices( $paths ) {
+	$paths = array_values( array_unique( array_filter( array_map( 'strval', (array) $paths ), static fn( $p ) => 1 === preg_match( '#^[a-z0-9-]+/[a-z0-9-]+$#', $p ) ) ) );
+	if ( ! $paths ) {
+		return array();
+	}
+	sort( $paths );
+	$key = 'hv_rprice_' . md5( implode( '|', $paths ) . '|' . gmdate( 'Y-m-d', time() + 7 * HOUR_IN_SECONDS ) );
+	$hit = get_transient( $key );
+	if ( is_array( $hit ) ) {
+		return $hit;
+	}
+	$base = rtrim( (string) ( getenv( 'HV_NEXT_INTERNAL_URL' ) ?: 'http://host.docker.internal:3010' ), '/' );
+	$url  = $base . '/api/hv/route-price?' . implode( '&', array_map( static fn( $p ) => 'path=' . rawurlencode( $p ), $paths ) );
+	$res  = wp_remote_get( $url, array( 'timeout' => 12, 'redirection' => 0 ) );
+	$ok   = ! is_wp_error( $res ) && 200 === (int) wp_remote_retrieve_response_code( $res );
+	$out  = array();
+	if ( $ok ) {
+		$body = json_decode( (string) wp_remote_retrieve_body( $res ), true );
+		foreach ( $paths as $p ) {
+			$v = $body['prices'][ $p ] ?? null;
+			if ( is_numeric( $v ) && $v > 0 ) {
+				$out[ $p ] = (int) $v;
+			}
+		}
+	}
+	// Đủ giá mới giữ 1 giờ; thiếu tuyến nào (Next đang lỗi tạm hoặc vừa khởi động) thì 5 phút để sớm lấy lại.
+	set_transient( $key, $out, $ok && count( $out ) === count( $paths ) ? HOUR_IN_SECONDS : 5 * MINUTE_IN_SECONDS );
+	return $out;
+}
+
+/** 200000 → "200.000đ". */
+function hv_money( $n ) {
+	return number_format( (float) $n, 0, ',', '.' ) . 'đ';
+}
+
+/** Ô giá trong hàng tuyến v2 (`.hv2-route`): "Từ 200.000đ"; luôn in ô (rỗng khi không có giá) để các hàng cùng cột. */
+function hv2_route_price( $price ) {
+	return '<span class="hv2-route-price">' . ( $price > 0 ? esc_html( hv_t( 'from_price' ) ) . ' <strong>' . esc_html( hv_money( $price ) ) . '</strong>' : '' ) . '</span>';
+}
+
 /** Tiêu đề tin: bỏ emoji, câu viết hoa toàn bộ thì đưa về chữ thường (giữ tên riêng hay gặp). */
 function hv2_clean_title( $t ) {
 	$t = trim( (string) preg_replace( '/[\x{1F000}-\x{1FAFF}\x{2600}-\x{27BF}\x{FE0F}\x{200D}]/u', '', html_entity_decode( (string) $t, ENT_QUOTES, 'UTF-8' ) ) );

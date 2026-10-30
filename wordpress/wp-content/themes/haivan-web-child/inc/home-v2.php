@@ -177,19 +177,22 @@ function hv2_render_offers() {
 	return hv2_offer_cards( array_slice( hv_active_offers(), 0, 6 ) );
 }
 
-/** 06 · Tuyến chính dạng hàng ngang (tên, thời gian chạy). Không in giá: giá nhập tay đã cũ, giá thật xem trên trang tuyến. */
+/** 06 · Tuyến chính dạng hàng ngang: tên, thời gian chạy, giá "từ" hôm nay (giá thật từ chuyến; không có thì ẩn). */
 function hv2_render_routes() {
-	$lang   = hv_lang();
-	$prefix = hv_lang_prefix( $lang );
-	$rows   = '';
-	foreach ( hv_corridors_enabled() as $c ) {
+	$lang      = hv_lang();
+	$prefix    = hv_lang_prefix( $lang );
+	$rows      = '';
+	$corridors = hv_corridors_enabled();
+	$prices    = hv_route_live_prices( array_filter( array_map( static fn( $c ) => (string) $c['landing']['ab'], $corridors ) ) );
+	foreach ( $corridors as $c ) {
 		$name  = (string) ( $c['label'][ $lang ] ?: $c['label']['vi'] );
 		$parts = preg_split( '/\s+[–-]\s+/u', $name, 2 );
 		$route = $c['landing']['ab'] ? hv_route_find( $c['landing']['ab'] ) : null;
 		$time  = $route ? hv_route_time_label( get_post_meta( $route->ID, 'hv_route_time', true ) ) : '';
 		$href  = $c['landing']['ab'] ? $prefix . '/xe-khach/' . $c['landing']['ab'] : hv_corridor_search_url( $c, 'ab' );
 		$rows .= '<li><a class="hv2-route" href="' . esc_url( $href ) . '"><span class="hv2-route-name">' . esc_html( $parts[0] ) . ( isset( $parts[1] ) ? '<b aria-hidden="true">→</b><span class="hv-sr"> – </span>' . esc_html( $parts[1] ) : '' ) . '</span>';
-		$rows .= '<span class="hv2-route-time">' . esc_html( $time ) . '</span><span class="hv2-route-go" aria-hidden="true">↗</span></a></li>';
+		$price = $prices[ (string) $c['landing']['ab'] ] ?? 0;
+		$rows .= '<span class="hv2-route-time">' . esc_html( $time ) . '</span>' . hv2_route_price( $price ) . '<span class="hv2-route-go" aria-hidden="true">↗</span></a></li>';
 	}
 	return '' !== $rows ? '<ul class="hv2-routes hv2-routes--compact">' . $rows . '</ul>' : '';
 }

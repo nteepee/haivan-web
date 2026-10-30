@@ -61,8 +61,19 @@ describe("buildRouteLanding", () => {
     const v = buildRouteLanding({ path: "a/b", seo_title: "  ", h1: "", faq: [] }, cms(), tpl);
     expect(v.title).not.toContain("485.000đ");
     expect(v.h1).toBe("Đặt vé xe Mỹ Đình đi Điện Biên");
-    expect(v.subline).toBe("Từ 485.000đ · 11h · 500 km");
+    expect(v.subline).toBe("11h · 500 km");
+    expect(v.priceLabel).toBeNull();
     expect(v.priceValue).toBeNull();
+  });
+
+  it("giá thật hôm nay (livePrice) vào tiêu đề, mô tả, đầu trang và JSON-LD", () => {
+    const v = buildRouteLanding(null, cms(), tpl, 200000);
+    expect(v.priceLabel).toBe("200.000đ");
+    expect(v.priceValue).toBe(200000);
+    expect(v.title).toContain("200.000đ");
+    expect(v.description).toContain("200.000đ");
+    expect(v.title).not.toContain("485.000đ");
+    expect(buildRouteLanding(null, cms(), tpl, 0).priceValue).toBeNull();
   });
 
   it("bỏ phần thiếu: không giá, không giờ chạy", () => {
