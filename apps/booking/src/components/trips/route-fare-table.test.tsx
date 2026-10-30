@@ -34,12 +34,13 @@ describe("RouteFareTable", () => {
     expect(container.querySelector("table")).toBeNull();
   });
 
-  it("chỉ có dữ liệu WP: bảng 3 cột (hạng xe, thời gian, giá từ), không có cột giờ xuất bến", () => {
+  it("chỉ có dữ liệu WP: bảng 3 cột (hạng xe, thời gian, giá từ = —), không có cột giờ xuất bến", () => {
     renderTable([{ name: "Luxury", price_from: "350.000đ" }]);
     const table = screen.getByRole("table", { name: "Bảng giá vé" });
     expect(within(table).getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Hạng xe", "Thời gian", "Giá từ"]);
     expect(within(table).getByRole("rowheader", { name: "Luxury" })).toBeInTheDocument();
-    expect(within(table).getByText("350.000đ")).toBeInTheDocument();
+    expect(within(table).queryByText("350.000đ")).toBeNull(); // giá nhập tay của WP đã cũ: chưa có giá thật thì "—"
+    expect(within(table).getByText("—")).toBeInTheDocument();
     expect(within(table).getByText("4h")).toBeInTheDocument();
   });
 

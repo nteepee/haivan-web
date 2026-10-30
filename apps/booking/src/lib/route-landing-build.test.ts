@@ -52,17 +52,17 @@ describe("buildRouteLanding", () => {
 
   it("meta CMS chỉ lặp tên tuyến → dùng mẫu", () => {
     const v = buildRouteLanding(null, cms({ meta_title: "Mỹ Đình - Điện Biên", meta_desc: "Mỹ Đình - Điện Biên" }), tpl);
-    expect(v.title).toBe("Xe Mỹ Đình đi Điện Biên – Vé từ 485.000đ | Hải Vân");
+    expect(v.title).toBe("Xe Mỹ Đình đi Điện Biên | Hải Vân"); // không đưa giá CMS (đã cũ) vào tiêu đề
     expect(v.h1).toBe("Đặt vé xe Mỹ Đình đi Điện Biên");
-    expect(v.description).toBe("Đặt vé xe Hải Vân Mỹ Đình đi Điện Biên: giá từ 485.000đ, 11 giờ. Giữ chỗ online, thanh toán VNPay.");
+    expect(v.description).toBe("Đặt vé xe Hải Vân Mỹ Đình đi Điện Biên: 11 giờ. Giữ chỗ online, thanh toán VNPay.");
   });
 
-  it("chuỗi rỗng từ WP coi như vắng; phụ đề + giá số", () => {
+  it("chuỗi rỗng từ WP coi như vắng; không đưa giá CMS vào tiêu đề hay JSON-LD", () => {
     const v = buildRouteLanding({ path: "a/b", seo_title: "  ", h1: "", faq: [] }, cms(), tpl);
-    expect(v.title).toContain("Vé từ 485.000đ");
+    expect(v.title).not.toContain("485.000đ");
     expect(v.h1).toBe("Đặt vé xe Mỹ Đình đi Điện Biên");
     expect(v.subline).toBe("Từ 485.000đ · 11h · 500 km");
-    expect(v.priceValue).toBe(485000);
+    expect(v.priceValue).toBeNull();
   });
 
   it("bỏ phần thiếu: không giá, không giờ chạy", () => {
@@ -84,7 +84,7 @@ describe("buildRouteLanding", () => {
 
   it("bản en bỏ qua meta CMS (tiếng Việt) và dùng mẫu en", () => {
     const v = buildRouteLanding(null, cms({ meta_title: "Xe Quận 1 Đi Vũng Tàu | Hải Vân", meta_desc: "Mô tả CMS" }), routeTemplate("en"));
-    expect(v.title).toBe("Bus Mỹ Đình to Điện Biên – Tickets from 485.000đ | Hải Vân");
+    expect(v.title).toBe("Bus Mỹ Đình to Điện Biên | Hải Vân");
     expect(v.h1).toBe("Book bus tickets Mỹ Đình to Điện Biên");
     expect(v.description).toContain("Book Hải Vân bus tickets");
     expect(v.faq).toEqual([]);

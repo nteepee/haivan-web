@@ -27,8 +27,8 @@ describe("routeJsonLd", () => {
       "@type": "Service",
       provider: { "@type": "Organization", name: "Hải Vân", url: "https://haivan.com" },
       areaServed: ["Mỹ Đình", "Điện Biên"],
-      offers: { "@type": "Offer", price: 485000, priceCurrency: "VND" },
     });
+    expect(service).not.toHaveProperty("offers"); // giá CMS đã cũ: không khai báo Offer
     expect(faq["@type"]).toBe("FAQPage");
     expect((faq.mainEntity as unknown[]).length).toBe(2);
   });

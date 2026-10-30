@@ -24,7 +24,7 @@ const hhmm = (t: Trip) => (t.from.reached_at?.slice(11, 16) || t.time.slice(0, 5
 
 /**
  * Gộp hạng xe của bài WP với chuyến đã tải từ apigw. Thứ tự: hạng của WP trước, hạng chỉ có trong chuyến sau.
- * Giá "từ": chuỗi của WP nếu có (đã được MKT chốt); nếu không thì giá thấp nhất của hạng đó CHỈ khi đã tải hết chuyến (`complete`).
+ * Giá "từ": giá thấp nhất của hạng đó CHỈ khi đã tải hết chuyến (`complete`); giá nhập tay của WP (price_from) đã cũ nên bỏ.
  * `hours` = số giờ chạy của tuyến (CMS) dùng làm thời gian khi hạng chưa có chuyến nào.
  */
 export function buildFareRows(classes: readonly WpClass[], trips: readonly Trip[], opts: { complete: boolean; hours: string | null }): FareRow[] {
@@ -33,7 +33,6 @@ export function buildFareRows(classes: readonly WpClass[], trips: readonly Trip[
   const names = [...new Set([...classes.map((c) => c.name), ...byClass.keys()])];
   return names.map((name) => {
     const own = byClass.get(name) ?? [];
-    const wp = classes.find((c) => c.name === name);
     const prices = own.map(displayPrice).filter((p): p is number => p !== null);
     return {
       name,
@@ -41,7 +40,7 @@ export function buildFareRows(classes: readonly WpClass[], trips: readonly Trip[
       timesPartial: !opts.complete,
       duration: own.find((t) => t.duration?.trim())?.duration?.trim() ?? (opts.hours ? `${opts.hours}h` : null),
       minPrice: opts.complete && prices.length ? Math.min(...prices) : null,
-      priceLabel: wp?.price_from?.trim() || null,
+      priceLabel: null, // giá nhập tay của WP (price_from) đã cũ: ô chưa có giá thật hiện "—"
     };
   });
 }

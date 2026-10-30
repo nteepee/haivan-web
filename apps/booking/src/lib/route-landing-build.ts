@@ -82,8 +82,9 @@ function cmsDescription(cms: RouteListing): string | null {
 export function buildRouteLanding(wp: RouteLandingWp | null, cms: RouteListing, tpl: RouteTemplate): RouteLandingView {
   const [start, end] = routeEndpoints(cms);
   const way = cms.data.wayroad;
+  // Giá trung bình của CMS đã cũ (vd. 140.000đ Sài Gòn – Vũng Tàu) nên không đưa vào tiêu đề, mô tả hay JSON-LD;
+  // giá thật theo ngày nằm ở bảng giờ chạy (route-fare-table).
   const priceLabel = text(way?.price_avg);
-  const priceShort = priceLabel?.replace(/^\s*từ\s+/i, "") ?? null;
   const runHours = hours(way?.run_time);
   const pickups = wp?.pickup_points ?? [];
   const useCms = tpl.cmsMeta;
@@ -94,12 +95,12 @@ export function buildRouteLanding(wp: RouteLandingWp | null, cms: RouteListing, 
   return {
     start,
     end,
-    title: text(wp?.seo_title) ?? (useCms ? cmsTitle(cms) : null) ?? tpl.title(start, end, priceShort),
+    title: text(wp?.seo_title) ?? (useCms ? cmsTitle(cms) : null) ?? tpl.title(start, end, null),
     description:
-      text(wp?.meta_description) ?? (useCms ? cmsDescription(cms) : null) ?? tpl.description(start, end, { price: priceShort, hours: runHours, pickup: pickups[0]?.name }),
+      text(wp?.meta_description) ?? (useCms ? cmsDescription(cms) : null) ?? tpl.description(start, end, { price: null, hours: runHours, pickup: pickups[0]?.name }),
     h1: text(wp?.h1) ?? tpl.h1(start, end),
     priceLabel,
-    priceValue: parsePrice(priceLabel),
+    priceValue: null,
     subline: subline || null,
     runHours,
     scheduleHtml: sanitizeHtml(wp?.schedule_text),
