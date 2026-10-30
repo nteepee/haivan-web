@@ -131,6 +131,18 @@ function hv2_offer_cards( array $offers, $variant = 'dark', $until = '' ) {
 	return $h . '</ul>';
 }
 
+/** Hàng tab "cùng mục" dưới đầu trang (Giới thiệu và mọi trang nội dung dùng chung). $nav = hv_page_subnav(). */
+function hv2_subnav_tabs( array $nav ) {
+	if ( ! $nav ) {
+		return;
+	}
+	echo '<nav class="hv2-tabs" aria-label="' . esc_attr( hv_t( 'subnav' ) ) . '"><ul class="hv-subnav">';
+	foreach ( $nav as $i ) {
+		echo '<li><a href="' . esc_url( $i[1] ) . '"' . ( $i[2] ? ' aria-current="page"' : '' ) . '>' . esc_html( $i[0] ) . '</a></li>';
+	}
+	echo '</ul></nav>';
+}
+
 /** Mọi trang WP mang lớp .hv2: biến, reset và thành phần của v2.css áp chung (trang chủ chỉ thêm home-v2.css). */
 add_filter(
 	'body_class',

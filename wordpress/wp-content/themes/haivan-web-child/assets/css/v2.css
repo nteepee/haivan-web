@@ -485,3 +485,10 @@ body.hv2 { background: var(--hv2-paper); color: var(--hv2-ink); }
 @media (min-width: 48rem) { .hv2-howto { grid-template-columns: repeat(3, 1fr); } }
 .hv2-empty { display: grid; gap: 16px; max-width: 40rem; font-size: 1.125rem; }
 .hv2 .hv-subnav a { min-width: 44px; justify-content: center; }
+
+/* Trang nội dung (page.php) cùng bố cục Giới thiệu: tab cùng mục → ảnh rộng → cột đọc */
+.hv2-content-page { padding-bottom: var(--hv2-pad); }
+.hv2-reading { margin-top: 48px; }
+.hv2-reading > .hv-photo-strip { margin-bottom: 16px; }
+.hv2-reading > .hv-photo-strip:not(.hv-photo-strip--1) img { aspect-ratio: 4 / 3; }
+@media (min-width: 60rem) { .hv2-reading { margin-top: 64px; } .hv2-reading > .hv-photo-strip:not(.hv-photo-strip--1) { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
