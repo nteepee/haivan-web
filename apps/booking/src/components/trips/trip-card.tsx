@@ -5,8 +5,7 @@ import { useId } from "react";
 import { useBookingConfig } from "@/components/booking-config-provider";
 import { useLocale, useT } from "@/components/providers";
 import { formatMoney } from "@/lib/format";
-import { AUTO_COMBO_ENABLED } from "@/lib/promo-flags";
-import { comboPromoFor, comboTierFor, promoBadge } from "@/lib/promo-match";
+import { comboPromoFor, comboTierExact, promoBadge } from "@/lib/promo-match";
 import type { SearchParamsData } from "@/lib/search-url";
 import type { Trip } from "@/schemas/trip";
 import { PriceBox } from "./price-box";
@@ -74,16 +73,17 @@ export function TripCard({ trip, search, open, onToggle, priority = false }: Pro
   const locale = useLocale();
   const config = useBookingConfig();
   // Nhãn combo chỉ khi chuyến thuộc tuyến chính đang tìm và khớp chương trình đang chạy; không có chương trình thì không hiện gì.
-  const combo = AUTO_COMBO_ENABLED && search.corridor
+  const combo = search.corridor
     ? comboPromoFor(config, {
         corridorId: search.corridor.tuyen,
         chieu: search.corridor.chieu,
         travelDate: trip.date.slice(0, 10),
         departure: hhmm(trip.from.reached_at) || trip.time.slice(0, 5) || null,
         seatCount: search.numberGuest,
+        productName: trip.product.name,
       })
     : null;
-  const comboTier = combo ? comboTierFor(combo, trip.product.name, search.numberGuest) : null;
+  const comboTier = combo ? comboTierExact(combo, trip.product.name, search.numberGuest) : null;
   const panelId = useId();
   const seats = trip.available_seats;
   const soldOut = seats === 0;

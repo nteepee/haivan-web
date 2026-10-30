@@ -47,6 +47,10 @@ function hv_booking_config( $today = null, $with_codes = false ) {
 			if ( ( null !== $promo['book_from'] && $promo['book_from'] > $today ) || ( null !== $promo['book_to'] && $promo['book_to'] < $today ) ) {
 				continue;
 			}
+			// Hết ngày đi được áp thì không còn chuyến nào khớp: không quảng bá trên trang tuyến nữa.
+			if ( null !== $promo['travel_to'] && $promo['travel_to'] < $today ) {
+				continue;
+			}
 			if ( ! $with_codes ) {
 				unset( $promo['code'] );
 				$promo['has_code'] = true; // hv_promo_payload chỉ trả chương trình có mã hợp lệ.

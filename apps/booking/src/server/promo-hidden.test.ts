@@ -64,7 +64,7 @@ const order = (code: string, dep: typeof MY_DINH, dest: typeof MY_DINH, time: st
       user_created: { id: 827708 },
       departure: { name: "d", ...dep },
       destination: { name: "e", ...dest },
-      trip: { id: 1, departure_time: time },
+      trip: { id: 1, departure_time: time, product: { name: "Luxury" } },
       ...(opts.echo ? { promotion_code: opts.echo } : {}),
     })),
   },
@@ -236,10 +236,8 @@ describe("điều kiện phía server trước khi đổi token (không đủ �
     await expectRejected(await check(), /không áp dụng cho chuyến này/);
   });
 
-  it("chương trình đã tắt/không có trong cấu hình, hoặc không phải khứ hồi (combo tắt)", async () => {
+  it("chương trình đã tắt/không có trong cấu hình", async () => {
     state.promos = [];
-    await expectRejected(await check(), /không còn áp dụng/);
-    state.promos = [promo({ type: "combo" })];
     await expectRejected(await check(), /không còn áp dụng/);
   });
 
@@ -374,3 +372,53 @@ describe("kiểm tra chặt tham số và chủ đơn", () => {
   });
 });
 
+
+describe("combo bật trong WP: token mang mã chính đơn đang đặt, server kiểm chuyến/số vé rồi mới đổi mã", () => {
+  const COMBO_TOKEN = `@auto:${PROMO_ID}:${RET}`;
+  const combo = (patch: Record<string, unknown> = {}) => promo({ type: "combo", per_seat_vnd: null, tiers: [{ seats: 2, class: "Luxury", price_vnd: 419000 }], seats: { min: 2, max: 4 }, ...patch });
+  const expectRejected = async (res: Response, match: RegExp) => {
+    expect(res.status).toBe(422);
+    expect((await res.json()).message).toMatch(match);
+    expect(state.upstream).toHaveLength(0);
+  };
+
+  it("đơn 2 vé đúng tuyến/chiều: apigw nhận mã thật cho cả hai ghế, phản hồi không lộ mã", async () => {
+    state.promos = [combo()];
+    const res = await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN, COMBO_TOKEN]) });
+    expect(res.status).toBe(200);
+    expect(state.upstream[0].search).toBe(checkQuery([REAL, REAL]));
+    expect(await res.text()).not.toContain(REAL);
+  });
+
+  it("token gắn đơn khác đơn đang đặt → không xác minh được", async () => {
+    state.promos = [combo()];
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([`@auto:${PROMO_ID}:${OUT}`]) }), /xác minh/);
+  });
+
+  it("tổng số vé ngoài khoảng, sai chiều, hoặc đặt trước chưa đủ → 422", async () => {
+    state.promos = [combo({ seats: { min: 3, max: 4 } })];
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN]) }), /combo không áp dụng/);
+    state.promos = [combo({ direction: "ab" })];
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN]) }), /combo không áp dụng/);
+    state.promos = [combo({ book_ahead_minutes: 100000 })];
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN]) }), /combo không áp dụng/);
+  });
+
+  it("hạng xe của đơn không có bậc giá (đúng hạng, đúng số vé) → 422", async () => {
+    state.promos = [combo({ tiers: [{ seats: 2, class: "Royal", price_vnd: 459000 }] })];
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN]) }), /combo không áp dụng/);
+    state.promos = [combo({ tiers: [{ seats: 3, class: "Luxury", price_vnd: 599000 }] })];
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN]) }), /combo không áp dụng/);
+  });
+
+  it("hai combo cùng khớp: chỉ chương trình đứng trước trong cấu hình được áp (khách không chọn được chương trình khác)", async () => {
+    state.promos = [combo({ id: 9 }), combo()];
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN]) }), /combo không áp dụng/);
+  });
+
+  it("đơn đã huỷ → 422", async () => {
+    state.promos = [combo()];
+    state.orders[RET] = order(RET, MOC_CHAU, MY_DINH, "2026-11-02 09:00:00", { tickets: 2, cancelled: true });
+    await expectRejected(await post(["promotion", "check-promotions"], { search: checkQuery([COMBO_TOKEN]) }), /huỷ/);
+  });
+});

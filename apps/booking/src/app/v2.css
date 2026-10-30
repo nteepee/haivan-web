@@ -369,3 +369,20 @@ a.hv-tab:hover { background: transparent; color: var(--hv2-ink); }
 .hv2r-reading p, .hv2r-reading ul, .hv2r-reading ol { margin-top: 12px; }
 .hv2r-reading ul { padding-left: 1.25rem; list-style: disc; }
 .hv2r-reading a { color: var(--hv2-ink); text-decoration: underline; text-decoration-color: var(--hv2-yellow); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+
+/* Ưu đãi đang diễn ra (trang tuyến, nền than): thẻ chương trình WP — huy hiệu vàng, tiêu đề, bậc giá combo (giá gạch), điều kiện, nút về thẻ tìm vé. */
+.hv2r-promos { display: grid; gap: 12px; }
+.hv2r-promo { display: flex; flex-direction: column; gap: 12px; padding: 26px 26px 22px; background: #3f3f3f; border-top: 5px solid var(--hv2-yellow); color: #fff; }
+.hv2r-promo-tag { align-self: flex-start; padding: 4px 10px; background: var(--hv2-yellow); color: var(--hv2-ink); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.hv2r-promo h3 { color: #fff; font-size: 1.5rem; line-height: 1.25; font-weight: 400; letter-spacing: -.02em; }
+.hv2r-promo-tiers { display: grid; gap: 6px; }
+.hv2r-promo-tiers li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
+.hv2r-promo-tiers strong, .hv2r-promo-price strong { font-size: clamp(1.75rem, 1.4rem + 1vw, 2.25rem); font-weight: 800; letter-spacing: -.03em; color: var(--hv2-yellow); font-variant-numeric: tabular-nums; }
+.hv2r-promo-tiers s { color: #a9a8a3; font-size: 15px; }
+.hv2r-promo-tiers span, .hv2r-promo-price span { color: #e5e5e5; font-size: 15px; }
+.hv2r-promo-terms { display: grid; gap: 6px; padding-left: 1.1rem; list-style: disc; color: #c9c8c3; font-size: 14px; line-height: 1.55; }
+.hv2r-promo-more summary { cursor: pointer; color: #fff; font-size: 14px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.hv2r-promo-more[open] summary { margin-bottom: 8px; }
+.hv2r-promo-go { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; min-height: 44px; margin-top: auto; padding: 0 18px; background: var(--hv2-yellow); color: var(--hv2-ink); font-size: 14px; font-weight: 800; }
+@media (min-width: 48rem) { .hv2r-promos { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 64rem) { .hv2r-promos { grid-template-columns: repeat(3, 1fr); } }

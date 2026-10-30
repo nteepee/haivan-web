@@ -4,7 +4,6 @@ import type { BookingDraft, DraftSeat } from "@/stores/booking-draft";
 import { checkPromotionsQuery } from "./confirm-queries";
 import { ApiError, gw } from "./http";
 import { autoToken, autoTokenPromoId } from "./auto-promo-token";
-import { AUTO_COMBO_ENABLED } from "./promo-flags";
 import { comboPromoFor, roundtripPromoForReturnLeg } from "./promo-match";
 import { stringifyQuery } from "./qs";
 
@@ -41,7 +40,8 @@ export function applyCheckedCodes(seats: DraftSeat[], raw: unknown): DraftSeat[]
 }
 
 /**
- * Chương trình tự áp cho đơn đang xác nhận (hoặc null): khứ hồi chỉ ở chặng về (`chang=ve` kèm `don_di`); combo tạm tắt (`AUTO_COMBO_ENABLED`).
+ * Chương trình tự áp cho đơn đang xác nhận (hoặc null): combo khi chuyến/số vé khớp chương trình đang bật trong WP (ưu tiên),
+ * khứ hồi chỉ ở chặng về (`chang=ve` kèm `don_di`). Bật/tắt nằm ở WP: chương trình phải được bật và có mã ERP mới có trong cấu hình.
  * Đơn đã ở giá combo của hệ thống (`is_combo`) thì không tự áp — gắn mã sẽ làm mất giá combo đó. Cũng bỏ qua khi khách đã gắn mã.
  * Đây chỉ là gợi ý hiển thị: BFF kiểm lại toàn bộ điều kiện phía server trước khi đổi token thành mã thật.
  */
@@ -55,15 +55,17 @@ export function eligibleAutoPromo(config: BookingConfig, draft: BookingDraft, no
     seatCount: draft.seats.length,
     nowMs,
   };
-  if (AUTO_COMBO_ENABLED) {
-    const combo = comboPromoFor(config, { corridorId: own.tuyen, chieu: own.chieu, ...trip });
-    if (combo) return combo;
-  }
+  // Combo thắng khứ hồi khi cùng khớp (điều kiện combo: không cộng dồn với khứ hồi).
+  const combo = comboPromoFor(config, { corridorId: own.tuyen, chieu: own.chieu, productName: draft.trip_info.product.name, ...trip });
+  if (combo) return combo;
   return own.chang === "ve" && own.donDi ? roundtripPromoForReturnLeg(config, own.tuyen, own.chieu, trip) : null;
 }
 
-/** Token ẩn gắn vào ghế cho chương trình này: mã thật chỉ có phía server (xem lib/auto-promo-token.ts). */
-const tokenFor = (draft: BookingDraft, promo: Promo): string => autoToken(promo.id, draft.search.corridor?.donDi ?? "");
+/**
+ * Token ẩn gắn vào ghế cho chương trình này: mã thật chỉ có phía server (xem lib/auto-promo-token.ts).
+ * Khứ hồi gắn mã đơn chiều đi (server kiểm đơn đó); combo gắn mã chính đơn đang đặt (server kiểm chuyến, số vé của đơn này).
+ */
+const tokenFor = (draft: BookingDraft, promo: Promo): string => autoToken(promo.id, promo.type === "combo" ? draft.order_code : (draft.search.corridor?.donDi ?? ""));
 
 /** Gắn token chương trình cho các ghế đủ điều kiện (tối đa `seats.max`, ghế id nhỏ trước) rồi để server kiểm + tính giảm. */
 export async function applyAutoPromo(draft: BookingDraft, promo: Promo): Promise<DraftSeat[]> {

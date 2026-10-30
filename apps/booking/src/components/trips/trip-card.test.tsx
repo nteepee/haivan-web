@@ -18,9 +18,6 @@ const SEARCH: SearchParamsData = {
   type: 2,
 };
 
-// Combo đang tắt theo cờ (lib/promo-flags): các test nhãn combo bật cờ để kiểm tra đường mã còn giữ.
-vi.mock("@/lib/promo-flags", () => ({ AUTO_COMBO_ENABLED: true }));
-
 afterEach(cleanup);
 
 const renderCard = (trip: Trip, props: { open?: boolean; priority?: boolean } = {}) =>

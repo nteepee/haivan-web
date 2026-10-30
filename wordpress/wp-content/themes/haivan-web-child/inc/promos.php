@@ -208,6 +208,11 @@ function hv_promo_payload( $post_id ) {
 	}
 	$label_en = '' !== $m( 'label_en' ) ? $dec( $m( 'label_en' ) ) : ( '' !== $m( 'label_vi' ) ? $label_vi : ( $is_rt ? $per_k . 'k off per return seat' : 'Group combo' ) );
 	$badge_en = '' !== $m( 'badge_en' ) ? $dec( $m( 'badge_en' ) ) : ( '' !== $m( 'badge_vi' ) ? $badge_vi : ( $is_rt ? 'Return -' . $per_k . 'k' : 'Combo' ) );
+	// Khối "Ưu đãi" trên trang tuyến: tiêu đề + điều kiện (mỗi dòng một ý). Trống tiếng Anh = dùng tiếng Việt.
+	$lines    = static fn( $k ) => array_values( array_filter( array_map( static fn( $l ) => trim( html_entity_decode( $l, ENT_QUOTES, 'UTF-8' ) ), preg_split( '/\r\n|\r|\n/', (string) get_post_meta( $post_id, 'hv_promo_' . $k, true ) ) ?: array() ), static fn( $l ) => '' !== $l ) );
+	$head_vi  = $dec( $m( 'headline_vi' ) );
+	$terms_vi = $lines( 'terms_vi' );
+	$terms_en = $lines( 'terms_en' );
 	return array(
 		'id'                 => (int) $post_id,
 		'type'               => $type,
@@ -226,6 +231,9 @@ function hv_promo_payload( $post_id ) {
 		'code'               => $code,
 		'label'              => array( 'vi' => $label_vi, 'en' => $label_en ),
 		'badge'              => array( 'vi' => $badge_vi, 'en' => $badge_en ),
+		'headline'           => array( 'vi' => '' !== $head_vi ? $head_vi : $label_vi, 'en' => '' !== $m( 'headline_en' ) ? $dec( $m( 'headline_en' ) ) : ( '' !== $head_vi ? $head_vi : $label_en ) ),
+		'terms'              => array( 'vi' => $terms_vi, 'en' => $terms_en ? $terms_en : $terms_vi ),
+		'show_on_route'      => '0' !== $m( 'show_on_route' ),
 	);
 }
 
@@ -248,6 +256,7 @@ function hv_promo_box_help() {
 	echo '<p><strong>Chương trình không có mã thì không bật được</strong> và không hiện trên web.</p>';
 	echo '<p><strong>Lưu ý cho bộ phận IT:</strong> mã không hiện trên trang công khai, nhưng vẫn nằm trong yêu cầu đặt vé của khách (xem được bằng công cụ trình duyệt). Trước khi bật, hãy giới hạn mã trong ERP theo tuyến, ngày áp dụng và số lượng.</p>';
 	echo '<p><strong>Quyền:</strong> chỉ Biên tập viên trở lên (quyền sửa bài của người khác) mới bật chương trình hoặc đổi mã. Người khác lưu thì chương trình bị tắt và mã giữ nguyên.</p>';
+	echo '<p><strong>Combo</strong> chạy như khứ hồi: bật bài + có mã thì trang tuyến hiện khối ưu đãi, thẻ chuyến đủ điều kiện có nhãn Combo, và mã được tự gắn ở bước xác nhận sau khi server kiểm lại tuyến, chiều, ngày giờ, đặt trước và số vé.</p>';
 	echo '<p>Chương trình tự ẩn khi qua "Đến hết ngày" ở mục Thời gian chạy hoặc khi bài là Nháp. Mức giảm và số tiền ở đây là giá tham khảo chỉ để hiển thị (giá thật do ERP tính); phải khớp với ERP.</p>';
 }
 
@@ -313,6 +322,17 @@ function hv_promo_box_price( $post ) {
 		echo '<p><label><strong>' . esc_html( $label ) . '</strong><br><input class="widefat" type="text" name="hv_promo_' . esc_attr( $k ) . '" value="' . esc_attr( $g( $k ) ) . '" maxlength="80" placeholder="' . esc_attr( $ph[ $k ] ) . '"></label></p>';
 	}
 	echo '</div><p class="description">Nhãn hiện cạnh "Thêm ngày về" và trên thẻ chuyến. Để trống = tự dựng từ mức giảm ở trên. Chỉ ghi điều có thật trong ERP.</p>';
+	echo '<h4>Khối "Ưu đãi đang diễn ra" trên trang tuyến</h4>';
+	$on = '0' !== $g( 'show_on_route' );
+	echo '<p><label><input type="checkbox" name="hv_promo_show_on_route" value="1"' . checked( $on, true, false ) . '> Hiện trên trang tuyến (/xe-khach/...) khi chương trình đang bật</label></p>';
+	echo '<div class="hv-grid2">';
+	foreach ( array( 'headline_vi' => array( 'Tiêu đề (tiếng Việt)', 'Đi nhóm, đặt trước từ 1 tiếng?' ), 'headline_en' => array( 'Tiêu đề (tiếng Anh)', 'Travelling as a group?' ) ) as $k => $f ) {
+		echo '<p><label><strong>' . esc_html( $f[0] ) . '</strong><br><input class="widefat" type="text" name="hv_promo_' . esc_attr( $k ) . '" value="' . esc_attr( $g( $k ) ) . '" maxlength="120" placeholder="' . esc_attr( $f[1] ) . '"></label></p>';
+	}
+	foreach ( array( 'terms_vi' => 'Điều kiện áp dụng (tiếng Việt)', 'terms_en' => 'Điều kiện áp dụng (tiếng Anh)' ) as $k => $label ) {
+		echo '<p><label><strong>' . esc_html( $label ) . '</strong><br><textarea class="widefat" rows="6" name="hv_promo_' . esc_attr( $k ) . '">' . esc_textarea( $g( $k ) ) . '</textarea></label></p>';
+	}
+	echo '</div><p class="description">Mỗi dòng một điều kiện, vd. "Đặt trước giờ xe chạy ít nhất 1 tiếng". Tiêu đề trống = dùng Nhãn. Bậc giá combo (giá, giá gốc) hiện tự động trong khối.</p>';
 }
 
 /* ======================================================================
@@ -443,6 +463,22 @@ add_action(
 				$text     = '';
 			}
 			$set( $k, $text );
+		}
+
+		$set( 'show_on_route', isset( $_POST['hv_promo_show_on_route'] ) ? '1' : '0' );
+		foreach ( array( 'headline_vi', 'headline_en' ) as $k ) {
+			$set( $k, mb_substr( $p( $k ), 0, 120 ) );
+		}
+		foreach ( array( 'terms_vi', 'terms_en' ) as $k ) {
+			$text = isset( $_POST[ 'hv_promo_' . $k ] ) ? sanitize_textarea_field( wp_unslash( $_POST[ 'hv_promo_' . $k ] ) ) : '';
+			$set( $k, mb_substr( $text, 0, 2000 ) );
+		}
+		// Tiêu đề/điều kiện hiện công khai: không được chứa mã ERP.
+		foreach ( array( 'headline_vi', 'headline_en', 'terms_vi', 'terms_en' ) as $k ) {
+			if ( '' !== $code && false !== mb_stripos( (string) get_post_meta( $post_id, 'hv_promo_' . $k, true ), $code ) ) {
+				$errors[] = 'Tiêu đề/điều kiện không được chứa mã chương trình (mã không công khai); đã xoá ô "' . $k . '".';
+				$set( $k, '' );
+			}
 		}
 
 		// Bật chương trình: bắt buộc có mã ERP, tuyến, và mức giảm/bậc giá khớp loại.

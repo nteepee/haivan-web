@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { COMBO_PROMO, makePromo, ROUNDTRIP_PROMO, withPromos } from "../../test/booking-config";
-import { comboPromoFor, comboTierFor, roundtripPromoForOutbound, roundtripPromoForReturnLeg, type ComboContext, type TripWindow } from "./promo-match";
+import { comboPromoFor, comboTierExact, roundtripPromoForOutbound, roundtripPromoForReturnLeg, type ComboContext, type TripWindow } from "./promo-match";
 
 /** 2026-10-29 10:00 giờ VN (thứ năm). */
 const NOW = Date.parse("2026-10-29T03:00:00Z");
@@ -115,10 +115,11 @@ describe("combo", () => {
     expect(comboPromoFor(withPromos([]), ctx())).toBeNull();
   });
 
-  it("bậc giá 'từ': đúng hạng xe, ưu tiên đúng số vé, không có hạng khớp → null", () => {
-    expect(comboTierFor(COMBO_PROMO, "Luxury", 2)).toEqual({ seats: 2, price_vnd: 419000 });
-    expect(comboTierFor(COMBO_PROMO, "luxury", 3)).toEqual({ seats: 3, price_vnd: 599000 });
-    expect(comboTierFor(COMBO_PROMO, "Luxury", 4)).toEqual({ seats: 2, price_vnd: 419000 });
-    expect(comboTierFor(COMBO_PROMO, "Economy", 2)).toBeNull();
+  it("bậc giá: đúng hạng xe (không phân biệt hoa thường) và ĐÚNG số vé; không có bậc → null, combo không khớp khi biết hạng", () => {
+    expect(comboTierExact(COMBO_PROMO, "Luxury", 2)).toMatchObject({ seats: 2, price_vnd: 419000 });
+    expect(comboTierExact(COMBO_PROMO, "luxury", 3)).toMatchObject({ seats: 3, price_vnd: 599000 });
+    expect(comboTierExact(COMBO_PROMO, "Luxury", 4)).toBeNull();
+    expect(comboTierExact(COMBO_PROMO, "Economy", 2)).toBeNull();
+    expect(comboPromoFor(withPromos([COMBO_PROMO]), ctx({ productName: "Economy" }))).toBeNull();
   });
 });

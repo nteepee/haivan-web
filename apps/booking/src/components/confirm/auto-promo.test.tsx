@@ -256,14 +256,27 @@ describe("Tự áp mã chương trình ở bước xác nhận", () => {
     expect(calls).toHaveLength(1);
   });
 
-  it("combo tạm tắt: dù cấu hình có combo khớp tuyến, không tự áp và không gọi gì", async () => {
+  it("combo đang bật trong WP và chuyến khớp: tự gắn TOKEN mang mã chính đơn đang đặt (server kiểm rồi mới đổi mã)", async () => {
     const calls = mockCheck(discountAll(50000));
-    const combo = makePromo({ type: "combo", corridor: "hn-moc", direction: "both", id: 30 });
+    const combo = makePromo({ type: "combo", corridor: "hn-moc", direction: "both", id: 30, tiers: [{ seats: 2, class: "Luxury", price_vnd: 419000, was_vnd: null }], label: { vi: "Combo đi nhóm", en: "Group combo" } });
     await hydrate(makeDraft(own({ tuyen: "hn-moc", chieu: "ba" })));
     renderConfirm(withPromos([combo]));
+    expect(await screen.findByText("Đã áp Combo đi nhóm")).toBeInTheDocument();
+    expect(calls).toHaveLength(1);
+    const q = decodeURIComponent(calls[0].search);
+    expect(q).toContain(`codes[0][promotion]=@auto:30:${ORDER_CODE}`);
+    expect(q).toContain(`codes[1][promotion]=@auto:30:${ORDER_CODE}`);
+  });
+
+  it("combo không khớp (số vé ngoài khoảng, sai chiều) → không gọi check-promotions", async () => {
+    const calls = mockCheck(discountAll(50000));
+    await hydrate(makeDraft(own({ tuyen: "hn-moc", chieu: "ba" })));
+    renderConfirm(withPromos([makePromo({ type: "combo", corridor: "hn-moc", direction: "both", id: 31, seats: { min: 3, max: 4 } })]));
+    await screen.findByDisplayValue("Khach Test");
+    cleanup();
+    renderConfirm(withPromos([makePromo({ type: "combo", corridor: "hn-moc", direction: "ab", id: 32 })]));
     await screen.findByDisplayValue("Khach Test");
     expect(calls).toHaveLength(0);
-    expect(screen.queryByText(/Đã áp/)).not.toBeInTheDocument();
   });
 
   it("chặng về nhưng sai chiều so với chương trình → không áp", async () => {

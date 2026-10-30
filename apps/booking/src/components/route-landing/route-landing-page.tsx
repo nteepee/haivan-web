@@ -12,7 +12,9 @@ import { RouteAbout, RouteInfo } from "./route-info";
 import { RoutePlaces as RoutePlacesSection } from "./route-places";
 import { RouteSchedule } from "./route-schedule";
 import { RouteStopMap } from "./route-stop-map";
+import { RoutePromos } from "./route-promos";
 import { RouteLounges, RouteProof, RouteReasons, RouteStops } from "./route-story";
+import type { Promo } from "@/schemas/booking-config";
 import { formatMoney } from "@/lib/format";
 import { classPrice, type RoutePrices } from "@/server/route-price";
 
@@ -20,6 +22,8 @@ interface Props {
   view: RouteLandingView;
   /** Giá hôm nay (chung + theo hạng xe) từ API danh sách chuyến; rỗng khi lỗi. */
   prices: RoutePrices;
+  /** Chương trình giảm giá đang bật trong WP cho tuyến/chiều này (combo, khứ hồi). */
+  promos?: Promo[];
   locale: Locale;
   places: RoutePlaces;
   origin: string;
@@ -34,7 +38,7 @@ interface Props {
  * phòng chờ & quầy → danh bạ trạm → sơ đồ điểm dừng → bằng chứng (đánh giá, số liệu, câu chuyện) → khứ hồi → FAQ → tuyến liên quan →
  * cẩm nang tuyến → dải đặt vé (dải tải app nằm ở layout). Khối nào không có dữ liệu thì bỏ.
  */
-export function RouteLandingPage({ view, prices, locale, places, origin, reversePath = null, start, end }: Props) {
+export function RouteLandingPage({ view, prices, promos = [], locale, places, origin, reversePath = null, start, end }: Props) {
   const t = (key: string, vars?: Record<string, string | number>) => translate(locale, key, vars);
   const reverse = reversePath
     ? {
@@ -53,6 +57,7 @@ export function RouteLandingPage({ view, prices, locale, places, origin, reverse
       <RouteHero view={view} locale={locale} photo={routeHeroPhoto(`${start}/${end}`)} reverse={reverse}>
         <RouteSearchForm places={places} landing={`${start}/${end}`} />
       </RouteHero>
+      <RoutePromos promos={promos} locale={locale} />
       <RouteSchedule view={view} locale={locale}>
         <RouteFareTable
           places={places}

@@ -2,7 +2,7 @@ import "server-only";
 import { AUTO_PREFIX, maskedToken } from "@/lib/auto-promo-token";
 import { getBookingConfig } from "@/lib/booking-config-source";
 import { encodeQueryValue } from "@/lib/qs";
-import { REJECTION_MESSAGE, checkRoundtripEligibility, type OrderFacts, type Rejection } from "./promo-eligibility";
+import { REJECTION_MESSAGE, checkComboEligibility, checkRoundtripEligibility, type OrderFacts, type Rejection } from "./promo-eligibility";
 import { getPromoCodes, type MaskSet } from "./promo-secrets";
 import { callApigw } from "./upstream";
 
@@ -88,7 +88,7 @@ async function loadOrder(code: string, merchant: string, authorization: string):
     if (!data || typeof data !== "object") return { facts: null, error: false };
     const tickets = Array.isArray(data.tickets) ? (data.tickets as Array<Record<string, unknown>>) : [];
     const live = tickets.filter((t) => (t.status as { type?: number } | undefined)?.type !== 5);
-    const first = live[0] as { departure?: { lat?: unknown; lng?: unknown }; destination?: { lat?: unknown; lng?: unknown }; trip?: { departure_time?: unknown } } | undefined;
+    const first = live[0] as { departure?: { lat?: unknown; lng?: unknown }; destination?: { lat?: unknown; lng?: unknown }; trip?: { departure_time?: unknown; product?: { name?: unknown } } } | undefined;
     const num = (v: unknown) => (typeof v === "number" ? v : typeof v === "string" ? Number(v) : NaN);
     const dep = { lat: num(first?.departure?.lat), lng: num(first?.departure?.lng) };
     const dest = { lat: num(first?.destination?.lat), lng: num(first?.destination?.lng) };
@@ -104,6 +104,7 @@ async function loadOrder(code: string, merchant: string, authorization: string):
         cancelled: (data.status as { type?: number } | undefined)?.type === 3,
         customerKeys: [...new Set(keys)],
         liveTickets: live.length,
+        productName: typeof first?.trip?.product?.name === "string" && first.trip.product.name.trim() ? first.trip.product.name.trim() : null,
         trip: ok ? { dep, dest, departureTime } : null,
       },
     };
@@ -199,9 +200,10 @@ function locate(req: PromoRequest): Located | Rejection {
 /**
  * Trước khi chuyển lên apigw:
  * 1. Mã ẩn do khách GÕ TAY (ngoài token, không phân biệt hoa thường, đã giải mã) → 422: mã khứ hồi chỉ dùng được qua đường tự động.
- * 2. Token `@auto:<promoId>:<đơn chiều đi>` chỉ được ở `codes[i][promotion]` (check-promotions) / `seats[i].code` (bookings); chỗ khác, trùng
+ * 2. Token `@auto:<promoId>:<đơn chiều đi | đơn đang đặt (combo)>` chỉ được ở `codes[i][promotion]` (check-promotions) / `seats[i].code` (bookings); chỗ khác, trùng
  *    bookingCode/merchant_code, thiếu đơn chiều đi → 422 và không đổi gì.
- * 3. Kiểm điều kiện phía server (tuyến/chiều/ngày giờ, đơn chiều đi cùng khách, đã trả, chưa huỷ, đúng chiều ngược, số ghế) rồi mới đổi token
+ * 3. Kiểm điều kiện phía server (khứ hồi: tuyến/chiều/ngày giờ, đơn chiều đi cùng khách, đã trả, chưa huỷ, đúng chiều ngược, số ghế;
+ *    combo: đúng đơn đang đặt, tuyến/chiều/ngày giờ/đặt trước, tổng số vé trong khoảng của chương trình) rồi mới đổi token
  *    thành mã thật bằng thay thế đúng từng byte — apigw nhận y như khi khách tự gõ mã.
  * Không có token và không có mã ẩn → trả nguyên (đường nhập mã thường không đổi).
  */
@@ -221,13 +223,17 @@ export async function prepareAutoPromo(req: PromoRequest): Promise<PreparedPromo
   const promoId = tokens[0].promoId;
   if (!located.currentCode || !located.merchant) return reject("order_unknown");
 
-  const [config, current, outbound] = await Promise.all([
-    getBookingConfig(),
+  const config = await getBookingConfig();
+  // Combo: token mang mã chính đơn đang đặt, chỉ cần đọc đơn đó. Khứ hồi: thêm đơn chiều đi trong token.
+  const isCombo = config.promos.find((p) => p.id === promoId)?.type === "combo";
+  const [current, outbound] = await Promise.all([
     loadOrder(located.currentCode, located.merchant, req.authorization),
-    loadOrder(tokens[0].outbound, located.merchant, req.authorization),
+    isCombo ? Promise.resolve<Facts>({ facts: null, error: false }) : loadOrder(tokens[0].outbound, located.merchant, req.authorization),
   ]);
   if (current.error || outbound.error) return unavailable();
-  const verdict = checkRoundtripEligibility({ config, promoId, current: current.facts, outbound: outbound.facts, seats: tokens.length });
+  const verdict = isCombo
+    ? checkComboEligibility({ config, promoId, current: current.facts, tokenOrder: tokens[0].outbound, seats: tokens.length })
+    : checkRoundtripEligibility({ config, promoId, current: current.facts, outbound: outbound.facts, seats: tokens.length });
   if (verdict.rejection) return reject(verdict.rejection);
 
   const real = (await getPromoCodes()).get(String(promoId));

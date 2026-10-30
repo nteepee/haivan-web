@@ -19,6 +19,9 @@ export function makePromo(overrides: Partial<Promo> & Pick<Promo, "type" | "corr
     has_code: true,
     label: { vi: "Ưu đãi thử", en: "Test offer" },
     badge: { vi: "Ưu đãi", en: "Offer" },
+    headline: null,
+    terms: { vi: [], en: [] },
+    show_on_route: true,
     ...overrides,
   } as Promo;
 }

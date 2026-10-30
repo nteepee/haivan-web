@@ -4,9 +4,9 @@
  * Dữ liệu cho ô tìm vé theo tuyến, idempotent, không ghi đè việc của MKT:
  *  1. 4 tuyến chính (CPT hv_corridor: sg-vt, hn-db, hn-moc, hn-sl) từ lib/corridors-seed.php. Mã tuyến đã có (kể cả nháp)
  *     thì GIỮ NGUYÊN; đã vào thùng rác = MKT đã xoá, không tạo lại. Ảnh đại diện lấy từ bài hv_route/diem_den cùng tuyến (chỉ khi chưa có).
- *  2. 3 chương trình khứ hồi MẪU (CPT hv_promo), TẮT HẾT: giảm 20.000đ/ghế chiều về cho sg-vt, hn-moc, hn-sl, mã ERP lấy từ biến môi trường HV_SEED_ROUNDTRIP_CODE
+ *  2. Chương trình MẪU (CPT hv_promo), TẮT HẾT: 3 combo theo booking.haivan.com (chưa có mã ERP) và 3 khứ hồi: giảm 20.000đ/ghế chiều về cho sg-vt, hn-moc, hn-sl, mã ERP lấy từ biến môi trường HV_SEED_ROUNDTRIP_CODE
  *     (booking.haivan.com không giảm cho Điện Biên nên hn-db không có). Bật sau khi luồng áp mã ẩn của Next đã kiểm chứng.
- *     Không còn combo mẫu: combo trên booking.haivan.com là mẹo viết tay, không phải cơ chế ERP (loại Combo vẫn có trong CPT).
+ *     Combo mẫu cũ "combo-sg-vt" (chưa ai bật) bị bỏ; combo mới cần MÃ ERP RIÊNG do IT tạo trong hệ thống vé trước khi MKT bật.
  *     Khoá meta hv_promo_seed; đã có hoặc đã xoá thì không tạo lại. Chỉ bật được sau khi nhập mã ERP (xem inc/promos.php).
  * Chạy lại an toàn. Sau khi chạy: GET /wp-json/haivan-web/v1/booking-config.
  */
@@ -124,7 +124,44 @@ $seed_code   = trim( (string) ( getenv( 'HV_SEED_ROUNDTRIP_CODE' ) ?: '' ) );
 $promos      = array(
 	'roundtrip-sg-vt'  => array( 'title' => 'Khứ hồi giảm 20.000đ/ghế chiều về – Sài Gòn – Vũng Tàu (mẫu, tắt)', 'corridor' => 'sg-vt', 'type' => 'roundtrip', 'per_seat_vnd' => '20000', 'code' => $seed_code ),
 	'roundtrip-hn-moc' => array( 'title' => 'Khứ hồi giảm 20.000đ/ghế chiều về – Hà Nội – Mộc Châu (mẫu, tắt)', 'corridor' => 'hn-moc', 'type' => 'roundtrip', 'per_seat_vnd' => '20000', 'code' => $seed_code ),
-	'roundtrip-hn-sl'  => array( 'title' => 'Khứ hồi giảm 20.000đ/ghế chiều về – Hà Nội – Sơn La (mẫu, tắt)', 'corridor' => 'hn-sl', 'type' => 'roundtrip', 'per_seat_vnd' => '20000', 'code' => $seed_code ),
+	'roundtrip-hn-sl'  => array( 'title' => 'Khứ hồi giảm 20.000đ/ghế chiều về – Hà Nội – Sơn La (mẫu, tắt)', 'corridor' => 'hn-sl', 'type' => 'roundtrip', 'per_seat_vnd' => '20000', 'code' => $seed_code ),	// Combo theo trang booking.haivan.com (giá, điều kiện lấy từ docs/reference/route-landing). Mỗi combo cần MÃ ERP RIÊNG do IT tạo
+	// (không dùng mã khứ hồi): seed để trống mã nên không bật được cho tới khi MKT nhập mã. Tên hạng = tên hạng của hệ thống vé.
+	'combo-sg-vt-1h'   => array(
+		'title' => 'Combo đi nhóm đặt trước 1 tiếng – Sài Gòn – Vũng Tàu (mẫu, tắt)', 'corridor' => 'sg-vt', 'type' => 'combo', 'code' => '',
+		'tiers' => "2 | Luxury | 419000 | 520000\n3 | Luxury | 599000\n4 | Luxury | 789000", 'book_ahead_minutes' => '60', 'seats_min' => '2', 'seats_max' => '4',
+		'label_vi' => 'Combo đi nhóm từ 419k/2 vé', 'badge_vi' => 'Combo', 'show_on_route' => '1',
+		'headline_vi' => 'Đi nhóm, đặt trước từ 1 tiếng?',
+		'terms_vi' => implode( "\n", array(
+			'Đặt trước giờ xe chạy ít nhất 1 tiếng, thanh toán trước 100% bằng mã QR; quá hạn mã QR đơn tự huỷ.',
+			'Bận việc đột xuất được hỗ trợ dời ngày, giờ đi hoặc đổi tên người đi (gọi 1900 6763 trước giờ khởi hành). Vé combo không huỷ hoàn tiền.',
+			'Không áp dụng ghế 1–2. Combo 3 vé là trọn hàng cuối (Luxury ghế 9–10–11, Royal/Eco ghế 7–8–9).',
+			'Chỉ chuyến có nhãn Combo, số suất mỗi chuyến có hạn. Không cộng dồn với ưu đãi khứ hồi.',
+			'Không kèm trung chuyển tận nhà: đón và trả tại các điểm cố định của Hải Vân, gồm sân bay Tân Sơn Nhất.',
+		) ),
+	),
+	'combo-hn-db-3d'   => array(
+		'title' => 'Combo đặt trước 3 ngày – Hà Nội – Điện Biên (mẫu, tắt)', 'corridor' => 'hn-db', 'type' => 'combo', 'code' => '',
+		'tiers' => "2 | Tiết kiệm | 900000\n2 | Cao cấp | 1200000", 'book_ahead_minutes' => '4320', 'seats_min' => '2', 'seats_max' => '2',
+		'label_vi' => 'Đặt trước 3 ngày từ 900k/2 vé', 'badge_vi' => 'Đặt trước 3 ngày', 'show_on_route' => '1',
+		'headline_vi' => 'Đặt trước 3 ngày: 900.000đ / 2 vé',
+		'terms_vi' => implode( "\n", array(
+			'Đặt trước ít nhất 3 ngày, thanh toán trước bằng mã QR ngay khi đặt.',
+			'Xe Luxury (hạng Tiết kiệm) 900.000đ / 2 vé, Royal Cabin (hạng Cao cấp) 1.200.000đ / 2 vé.',
+			'Vé ưu đãi không hoàn tiền. Hỗ trợ đổi chuyến, đổi ngày qua 1900 6763.',
+			'Trẻ em dưới 5 tuổi nằm chung với người lớn miễn phí. Giá đã gồm VAT.',
+		) ),
+	),
+	'combo-hn-db-7d'   => array(
+		'title' => 'Combo đặt trước 7 ngày xe Eco – Hà Nội – Điện Biên (mẫu, tắt)', 'corridor' => 'hn-db', 'type' => 'combo', 'code' => '',
+		'tiers' => "2 | Siêu rẻ | 500000\n4 | Siêu rẻ | 800000", 'book_ahead_minutes' => '10080', 'seats_min' => '2', 'seats_max' => '4',
+		'label_vi' => 'Đặt trước 7 ngày từ 500k/2 vé', 'badge_vi' => 'Đặt trước 7 ngày', 'show_on_route' => '1',
+		'headline_vi' => 'Đặt trước 7 ngày: 500.000đ / 2 vé xe Eco',
+		'terms_vi' => implode( "\n", array(
+			'Áp dụng xe Eco 44 giường (hạng Siêu rẻ): 250k/vé khi đi 2 người, 200k/vé khi đi nhóm 4 người.',
+			'Đặt trước ít nhất 7 ngày, thanh toán trước bằng mã QR ngay khi đặt.',
+			'Vé ưu đãi không hoàn tiền. Hỗ trợ đổi chuyến, đổi ngày qua 1900 6763.',
+		) ),
+	),
 );
 foreach ( $promos as $seed_key => $p ) {
 	$exists = get_posts( array( 'post_type' => 'hv_promo', 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids', 'meta_key' => 'hv_promo_seed', 'meta_value' => $seed_key, 'suppress_filters' => true ) ); // phpcs:ignore WordPress.DB.SlowDBQuery
@@ -166,7 +203,7 @@ foreach ( $promos as $seed_key => $p ) {
 /* Combo mẫu cũ (chưa ai bật hoặc sửa): chuyển vào thùng rác. */
 foreach ( get_posts( array( 'post_type' => 'hv_promo', 'post_status' => 'publish', 'numberposts' => 5, 'fields' => 'ids', 'meta_key' => 'hv_promo_seed', 'meta_value' => 'combo-sg-vt', 'suppress_filters' => true ) ) as $cid ) { // phpcs:ignore WordPress.DB.SlowDBQuery
 	if ( '1' !== (string) get_post_meta( $cid, 'hv_promo_enabled', true ) ) {
-		$say( "- combo mẫu #{$cid}: bỏ (mẹo viết tay, không phải cơ chế ERP)" );
+		$say( "- combo mẫu cũ #{$cid}: bỏ (thay bằng combo-sg-vt-1h)" );
 		if ( ! $dry ) {
 			wp_trash_post( $cid );
 		}

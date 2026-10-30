@@ -120,24 +120,41 @@ export function roundtripPromoForReturnLeg(config: BookingConfig, corridorId: st
 export interface ComboContext extends TripWindow {
   corridorId: string;
   chieu: CorridorDirection;
+  /** Hạng xe của chuyến/đơn (`product.name`). Có thì combo phải có bậc giá đúng hạng này và đúng số vé (xem `comboTierExact`). */
+  productName?: string;
 }
 
-/** Combo: tuyến + chiều + ngày đi/thứ/khung giờ xuất bến + đặt trước tối thiểu + số ghế trong [min, max]. */
+/** Bậc giá combo đúng hạng xe (bậc không ghi hạng = mọi hạng) và ĐÚNG số vé; null = chương trình không bán cho tổ hợp này. */
+export function comboTierExact(promo: Promo, productName: string, seatCount: number): Promo["tiers"][number] | null {
+  const name = productName.trim().toLowerCase();
+  return promo.tiers.find((t) => t.seats === seatCount && (!t.class.trim() || t.class.trim().toLowerCase() === name)) ?? null;
+}
+
+/**
+ * Combo: tuyến + chiều + ngày đi/thứ/khung giờ xuất bến + đặt trước tối thiểu + số ghế trong [min, max] (+ bậc giá đúng hạng và số vé khi biết hạng).
+ * Nhiều chương trình cùng khớp → chương trình đứng trước trong cấu hình WP; server áp đúng quy tắc này nên client không tự chọn được chương trình khác.
+ */
 export function comboPromoFor(config: BookingConfig, ctx: ComboContext): Promo | null {
   const now = clock(ctx.nowMs);
-  return config.promos.find((p) => p.type === "combo" && p.corridor === ctx.corridorId && directionMatches(p, ctx.chieu) && running(p, now) && windowMatches(p, ctx, now)) ?? null;
-}
-
-/** Mức giá tham khảo "từ" của combo cho một chuyến: hạng xe khớp (hoặc bậc không ghi hạng); ưu tiên bậc đúng số vé đang tìm, không thì bậc rẻ nhất. */
-export function comboTierFor(promo: Promo, productName: string, seatCount: number): { seats: number; price_vnd: number } | null {
-  const name = productName.trim().toLowerCase();
-  const tiers = promo.tiers.filter((t) => !t.class.trim() || t.class.trim().toLowerCase() === name);
-  if (!tiers.length) return null;
-  const exact = tiers.filter((t) => t.seats === seatCount);
-  const pool = exact.length ? exact : tiers;
-  const best = pool.reduce((a, b) => (b.price_vnd < a.price_vnd ? b : a));
-  return { seats: best.seats, price_vnd: best.price_vnd };
+  return (
+    config.promos.find(
+      (p) =>
+        p.type === "combo" &&
+        p.corridor === ctx.corridorId &&
+        directionMatches(p, ctx.chieu) &&
+        running(p, now) &&
+        windowMatches(p, ctx, now) &&
+        (ctx.productName === undefined || comboTierExact(p, ctx.productName, ctx.seatCount) !== null),
+    ) ?? null
+  );
 }
 
 export const promoLabel = (promo: Promo, locale: Locale) => (locale === "en" ? promo.label.en : promo.label.vi);
 export const promoBadge = (promo: Promo, locale: Locale) => (locale === "en" ? promo.badge.en : promo.badge.vi);
+
+/**
+ * Chương trình hiện ở khối "Ưu đãi" của trang tuyến (chiều `chieu` của tuyến `corridorId`): WP cho hiện trên trang tuyến; combo đúng chiều;
+ * khứ hồi luôn liên quan (đặt hai chiều từ trang nào cũng được). Thời gian chạy do WP lọc (cấu hình cũ tối đa 5 phút).
+ */
+export const routePromos = (config: BookingConfig, corridorId: string, chieu: CorridorDirection): Promo[] =>
+  config.promos.filter((p) => p.corridor === corridorId && p.show_on_route && (p.type === "roundtrip" || directionMatches(p, chieu)));

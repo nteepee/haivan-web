@@ -40,7 +40,10 @@ Công khai (không có mã ERP, xem mục "Mã ERP" cuối), `Cache-Control: pub
       "tiers": [],                     // combo: [{ "seats": 2, "class": "Luxury", "price_vnd": 419000, "was_vnd": 520000 }] — chỉ để hiển thị
       "has_code": true,                // luôn true (chương trình không có mã thì không xuất). KHÔNG có trường "code" trong dữ liệu công khai
       "label": { "vi": "Giảm 20k/ghế chiều về", "en": "20k off per return seat" },
-      "badge": { "vi": "Khứ hồi -20k", "en": "Return -20k" }
+      "badge": { "vi": "Khứ hồi -20k", "en": "Return -20k" },
+      "headline": { "vi": "Đi nhóm, đặt trước từ 1 tiếng?", "en": "…" },   // tiêu đề khối "Ưu đãi" trang tuyến; trống WP = nhãn
+      "terms": { "vi": ["Đặt trước giờ xe chạy ít nhất 1 tiếng", "…"], "en": [] },  // điều kiện, mỗi dòng một ý
+      "show_on_route": true            // hiện khối "Ưu đãi đang diễn ra" trên /xe-khach/<tuyến> (mặc định true)
     }
   ]
 }
@@ -68,3 +71,11 @@ Cache-Control: no-store, private (cả 200 lẫn 403)
 - `ngay_ve`: lưu ý định khứ hồi; sau khi chiều đi thanh toán xong, trang thành công hiện "Đặt chiều về" → `tim-chuyen` chiều ngược, `date=ngay_ve`, đổi vai trạm, `chang=ve`.
 - `chang=ve`: chương trình roundtrip của tuyến/chiều này được tự áp ở xác nhận chiều về.
 - `gio=dawn|morning|noon|afternoon|evening`: bấm chip "Chuyến hôm nay" → chọn sẵn bộ lọc khung giờ ở kết quả; giá trị lạ bỏ qua.
+
+## Combo tự áp (từ 30/10/2026, bật/tắt trong WP)
+- Trước đây combo bị khoá bằng cờ cứng trong code; nay combo chạy khi bài `hv_promo` loại Combo được bật và có MÃ ERP riêng.
+- Client gắn token `@auto:<promoId>:<mã chính đơn đang đặt>`; BFF (`server/promo-eligibility.ts` `checkComboEligibility`) kiểm: token đúng đơn,
+  đơn chưa huỷ, đúng tuyến/chiều theo toạ độ vé, ngày/thứ/khung giờ/đặt trước theo giờ server, tổng vé trong [min,max], có bậc giá ĐÚNG hạng xe
+  (`tickets[].trip.product.name`) và ĐÚNG số vé, và là combo khớp ĐẦU TIÊN theo thứ tự cấu hình. Combo thắng khứ hồi khi cùng khớp (không cộng dồn).
+- `travel_to` đã qua → chương trình không xuất trong booking-config.
+- IT phải giới hạn mã combo trong ERP (tuyến, hạng, số vé, số lượng, mỗi số điện thoại) vì mã đi trong yêu cầu đặt vé.

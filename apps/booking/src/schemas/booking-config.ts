@@ -62,6 +62,10 @@ const promoBase = z.object({
   code: z.string().min(1).optional(),
   label: localized,
   badge: localized,
+  /** Khối "Ưu đãi" trên trang tuyến (WP: tiêu đề, điều kiện, có hiện hay không). WP cũ chưa gửi thì dùng nhãn, không điều kiện. */
+  headline: localized.nullish(),
+  terms: z.object({ vi: z.array(z.string()), en: z.array(z.string()) }).default({ vi: [], en: [] }),
+  show_on_route: z.boolean().default(true),
 });
 const promoRaw = z.discriminatedUnion("type", [promoBase.extend({ type: z.literal("roundtrip") }), promoBase.extend({ type: z.literal("combo") })]);
 /** Chương trình công khai: không có mã (loại `code` nếu WP vẫn gửi) và phải có mã thật phía WP (`has_code` hoặc `code`). */

@@ -1,6 +1,6 @@
 import "server-only";
 import { identifyLeg } from "@/lib/corridors";
-import { roundtripPromoForReturnLeg } from "@/lib/promo-match";
+import { comboPromoFor, roundtripPromoForReturnLeg } from "@/lib/promo-match";
 import type { BookingConfig, Promo } from "@/schemas/booking-config";
 
 /** Dữ kiện tối thiểu của một đơn lấy từ `GET bookings/{code}` (bằng token của khách, nên chỉ đơn của chính họ). */
@@ -14,15 +14,29 @@ export interface OrderFacts {
   customerKeys: string[];
   /** Vé còn hiệu lực (không huỷ). */
   liveTickets: number;
+  /** Hạng xe của đơn (`tickets[].trip.product.name` của vé còn hiệu lực đầu tiên); null = không đọc được. */
+  productName?: string | null;
   /** Chuyến của đơn (mọi vé cùng chuyến). null nếu thiếu toạ độ/giờ. */
   trip: { dep: { lat: number; lng: number }; dest: { lat: number; lng: number }; departureTime: string } | null;
 }
 
-export type Rejection = "not_owner" | "order_cancelled" | "not_active" | "not_matching" | "no_outbound" | "outbound_unpaid" | "outbound_not_reverse" | "outbound_after" | "seats_exceed" | "order_unknown";
+export type Rejection =
+  | "not_owner"
+  | "order_cancelled"
+  | "not_active"
+  | "not_matching"
+  | "combo_not_matching"
+  | "no_outbound"
+  | "outbound_unpaid"
+  | "outbound_not_reverse"
+  | "outbound_after"
+  | "seats_exceed"
+  | "order_unknown";
 
 export const REJECTION_MESSAGE: Record<Rejection, string> = {
   not_active: "Chương trình giảm giá không còn áp dụng.",
   not_matching: "Ưu đãi khứ hồi không áp dụng cho chuyến này (tuyến, chiều, ngày hoặc giờ chưa đúng điều kiện).",
+  combo_not_matching: "Ưu đãi combo không áp dụng cho đơn này (tuyến, chiều, ngày giờ, thời gian đặt trước hoặc số vé chưa đúng điều kiện).",
   no_outbound: "Ưu đãi chiều về cần đơn chiều đi hợp lệ của quý khách. Vui lòng đặt chiều về từ trang thành công của đơn chiều đi.",
   outbound_unpaid: "Đơn chiều đi chưa thanh toán nên chưa áp dụng được ưu đãi chiều về.",
   outbound_not_reverse: "Đơn chiều đi không phải chiều ngược lại của chuyến này.",
@@ -79,5 +93,46 @@ export function checkRoundtripEligibility(input: EligibilityInput): { promo: Pro
   if (!outLeg || outLeg.corridor.id !== leg.corridor.id || outLeg.chieu === leg.chieu) return { promo: null, rejection: "outbound_not_reverse" };
   if (outbound.trip.departureTime > current.trip.departureTime) return { promo: null, rejection: "outbound_after" };
   if (seats > outbound.liveTickets) return { promo: null, rejection: "seats_exceed" };
+  return { promo, rejection: null };
+}
+
+export interface ComboEligibilityInput {
+  config: BookingConfig;
+  promoId: number;
+  /** Đơn đang đặt; token combo phải mang đúng mã đơn này. */
+  current: OrderFacts | null;
+  /** Mã đơn ghi trong token. */
+  tokenOrder: string;
+  /** Số ghế mang token trong yêu cầu. */
+  seats: number;
+  nowMs?: number;
+}
+
+/**
+ * Điều kiện BẮT BUỘC trước khi đổi token combo thành mã thật: chương trình combo đang chạy; token gắn đúng đơn đang đặt; đơn chưa huỷ;
+ * chuyến của đơn (toạ độ vé từ apigw) đúng tuyến/chiều và khớp ngày, thứ, khung giờ, thời gian đặt trước so với lúc này; tổng số vé còn hiệu lực
+ * nằm trong [min, max], có bậc giá đúng hạng xe của đơn và đúng số vé; số ghế mang token không vượt số vé đó. Nhiều combo cùng khớp thì chỉ
+ * chương trình đứng trước trong cấu hình được áp (cùng quy tắc với client), khách không tự chọn chương trình khác.
+ */
+export function checkComboEligibility(input: ComboEligibilityInput): { promo: Promo; rejection: null } | { promo: null; rejection: Rejection } {
+  const { config, promoId, current, tokenOrder, seats } = input;
+  const promo = config.promos.find((p) => p.id === promoId);
+  if (!promo || promo.type !== "combo") return { promo: null, rejection: "not_active" };
+  if (!current?.trip || current.code !== tokenOrder) return { promo: null, rejection: "order_unknown" };
+  if (current.cancelled) return { promo: null, rejection: "order_cancelled" };
+  if (seats > current.liveTickets) return { promo: null, rejection: "seats_exceed" };
+  const leg = identifyLeg(config, current.trip.dep, current.trip.dest);
+  if (!leg || leg.corridor.id !== promo.corridor) return { promo: null, rejection: "combo_not_matching" };
+  if (!current.productName) return { promo: null, rejection: "order_unknown" };
+  const matched = comboPromoFor(config, {
+    corridorId: leg.corridor.id,
+    chieu: leg.chieu,
+    travelDate: dateOf(current.trip.departureTime),
+    departure: hhmmOf(current.trip.departureTime),
+    seatCount: current.liveTickets,
+    productName: current.productName,
+    nowMs: input.nowMs,
+  });
+  if (!matched || matched.id !== promo.id) return { promo: null, rejection: "combo_not_matching" };
   return { promo, rejection: null };
 }
