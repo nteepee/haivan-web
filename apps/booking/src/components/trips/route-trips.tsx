@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useBookingConfig } from "@/components/booking-config-provider";
 import { SearchForm } from "@/components/search/search-form";
 import { useToday } from "@/hooks/use-today";
-import { corridorForLanding } from "@/lib/corridors";
+import { corridorForLanding, corridorForRouteForm } from "@/lib/corridors";
 import type { SearchParamsData, SearchPoint } from "@/lib/search-url";
 import { TripList } from "./trip-list";
 
@@ -29,8 +29,14 @@ function useLandingCorridor(landing?: string): SearchParamsData["corridor"] | un
  * tuyến khác → điền sẵn đầu tuyến (không có tuyến → form trống, trang noindex như web cũ).
  */
 export function RouteSearchForm({ places, landing }: { places?: RoutePlaces | null; landing?: string }) {
-  const corridor = useLandingCorridor(landing);
-  if (corridor) return <SearchForm mode="corridor" initial={{ numberGuest: 1, corridor }} todayChips />;
+  const config = useBookingConfig();
+  // Ô tìm vé khoá theo tuyến cả với trang sân bay (thuộc tuyến Sài Gòn – Vũng Tàu, trạm sân bay chọn sẵn); danh sách chuyến vẫn theo đúng hai đầu của trang.
+  const corridor = useMemo<SearchParamsData["corridor"] | undefined>(() => {
+    const match = landing ? corridorForRouteForm(config, landing) : null;
+    if (!match) return undefined;
+    return { tuyen: match.corridor.id, chieu: match.chieu, diemDi: match.diemDi, diemDen: match.diemDen, ngayVe: null, chang: null, donDi: null, gio: null };
+  }, [config, landing]);
+  if (corridor) return <SearchForm mode="corridor" initial={{ numberGuest: 1, corridor }} todayChips lockCorridor />;
   return <SearchForm initial={places ? { from: places.from, to: places.to, numberGuest: 1 } : undefined} />;
 }
 

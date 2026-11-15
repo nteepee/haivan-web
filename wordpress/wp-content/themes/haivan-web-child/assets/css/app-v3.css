@@ -60,6 +60,7 @@ html:root, html .hv2 {
   --hv2-muted: #5B6472;
   --hv2-muted-dark: #C4C9D2;
   --hv2-gold: #8A6500;                /* yellow-family accent text: 4.9:1 on paper, 4.7:1 on tint */
+  --hv2-gold-display: #A87800;        /* large headings only (>= 24px): 3.6:1 on paper, 3.4:1 on tint, 3.9:1 on white */
 }
 html body { background: var(--color-paper); color: var(--color-text); }
 
@@ -125,7 +126,7 @@ html body .hv2-sec:not(.hv2-sec--dark):not(.hv2-sec--yellow):not(.hv2-sec--tint)
 html body .hv-trip-price strong { color: var(--color-price); }
 
 /* Photos and media frames: radius 20 (big) / 16 (in grids) */
-html body :is(.hv2-split-photo, .hv2-wide-photo, .hv2-lounge-photo, .hv2-story img, .hv-photo, .hv-photo-strip img) {
+html body :is(.hv2-split-photo, .hv2-wide-photo, .hv2-lounge-photo, .hv-photo, .hv-photo-strip img) {
   border-radius: 20px !important;
   overflow: hidden;
 }

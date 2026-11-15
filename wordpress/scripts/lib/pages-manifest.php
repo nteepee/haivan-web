@@ -57,7 +57,6 @@ return array(
 		'ho-tro/huong-dan-thanh-toan'                  => array( 'Hướng dẫn thanh toán', 'Payment guide', null ),
 		'ho-tro/thanh-toan-viettel'                    => array( 'Hướng dẫn thanh toán Viettel Money', 'Viettel Money payment guide', null ),
 		// Khác
-		'haivanplus'                                   => array( 'HAIVAN Plus', 'HAIVAN Plus', null ),
 		'mobile'                                       => array( 'Ứng dụng HAIVAN', 'HAIVAN app', null ),
 		'xe-san-bay'                                   => array( 'Xe sân bay', 'Airport transfer', null ),
 		// Tuyến đường (trang giới thiệu tuyến)

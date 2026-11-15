@@ -12,6 +12,8 @@ x-wp-env: &wp-env
   WORDPRESS_TABLE_PREFIX: hv_
   # Bí mật dùng chung với server Next (header X-HV-Secret của GET /wp-json/haivan-web/v1/promo-codes). Đặt trong .env (gitignored), tối thiểu 16 ký tự; trống = endpoint luôn trả 403.
   HV_WP_SHARED_SECRET: ${HV_WP_SHARED_SECRET:-}
+  # Bí mật báo Next làm mới giá/ưu đãi khi MKT lưu (inc/next-revalidate.php); trống = dùng HV_WP_SHARED_SECRET.
+  HV_REVALIDATE_SECRET: ${HV_REVALIDATE_SECRET:-}
   # App Next nội bộ cho giá "từ" hôm nay của tuyến (GET /api/hv/route-price); không gọi được thì trang ẩn giá.
   HV_NEXT_INTERNAL_URL: ${HV_NEXT_INTERNAL_URL:-http://host.docker.internal:3010}
   WORDPRESS_CONFIG_EXTRA: |

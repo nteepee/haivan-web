@@ -3,7 +3,7 @@
  * wp eval-file /scripts/content-dedupe.php   (dry-run mặc định; HV_APPLY=1 để ghi; HV_REPORT=1 quét thêm các bài khác)
  *
  * Bỏ bản lặp nguyên văn của khối nội dung trên các trang bị nhân đôi khi nhập từ web cũ:
- *   /chung-toi/lien-he, /haivanplus, /dat-ve-nhanhs/khachhang, /dat-ve-nhanh/khachhang (và bản /en/ của chúng).
+ *   /chung-toi/lien-he, /dat-ve-nhanhs/khachhang, /dat-ve-nhanh/khachhang (và bản /en/ của chúng).
  * Thuật toán: tách nội dung thành khối cấp cao nhất (p, div, ul, ol, h1-h6, table, blockquote, figure, section, pre, hr; chữ lẻ giữa các khối
  * là một khối riêng); nếu một dãy k khối liền nhau lặp lại NGUYÊN VĂN ngay sau chính nó thì xoá bản lặp, kể cả bản lặp dở dang đứng cuối.
  * Chỉ coi là lặp khi dãy có chữ >= 20 ký tự hoặc có ảnh (không xoá đoạn trống). Chỉ chạm các trang trong danh sách trắng ở trên.
@@ -19,7 +19,7 @@ require_once __DIR__ . '/lib/content-blocks.php';
 $run    = new HVC_Run( 'content-dedupe' );
 $report = '1' === (string) ( getenv( 'HV_REPORT' ) ?: '0' );
 
-$whitelist = array( 'chung-toi/lien-he', 'haivanplus', 'dat-ve-nhanhs/khachhang', 'dat-ve-nhanh/khachhang' );
+$whitelist = array( 'chung-toi/lien-he', 'dat-ve-nhanhs/khachhang', 'dat-ve-nhanh/khachhang' );
 
 /** Đường dẫn trang không có tiền tố ngôn ngữ. */
 $page_key = static function ( $id ) {

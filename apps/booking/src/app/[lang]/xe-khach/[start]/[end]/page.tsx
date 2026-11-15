@@ -10,14 +10,16 @@ import { getBookingConfig } from "@/lib/booking-config-source";
 import { corridorLanding, corridorListing } from "@/lib/corridor-landing";
 import { getRouteLanding } from "@/lib/route-landing";
 import { getRouteListing } from "@/lib/route-listing";
+import { isReturnOnlyRoute, RETURN_ONLY_ROUTES, reversedListing, withWayroadName } from "@/lib/route-listing-variants";
 import { routePricesToday } from "@/server/route-price";
 import { routePromos } from "@/lib/promo-match";
 import { routeRuleOffers } from "@/lib/rule-offers";
 
 export async function generateStaticParams() {
-  // Tuyến phổ biến + trang tuyến của 4 tuyến chính trong cấu hình (kể cả chiều CMS không biết, vd my-dinh/moc-chau).
+  // Tuyến phổ biến + trang tuyến của 4 tuyến chính trong cấu hình (kể cả chiều CMS không biết, vd my-dinh/moc-chau)
+  // + chiều về chỉ có bài WP (vd ban-phu/my-dinh).
   const config = await getBookingConfig();
-  const slugs = new Set(popularRoutes.map((r) => r.slug));
+  const slugs = new Set([...popularRoutes.map((r) => r.slug), ...RETURN_ONLY_ROUTES]);
   for (const c of config.corridors) for (const slug of [c.landing.ab, c.landing.ba]) if (slug) slugs.add(slug);
   return [...slugs].map((slug) => {
     const [start, end] = slug.split("/");
@@ -37,6 +39,15 @@ async function loadView(lang: string, start: string, end: string) {
   let wp = null;
   if (route) {
     wp = isIndexableLocale(locale) ? await getRouteLanding(start, end) : null;
+    // Trang tuyến của tuyến chính: tiêu đề các mục gọi theo tỉnh/thành của cấu hình ("Hà Nội" thay "Mỹ Đình" của CMS).
+    if (corridor) route = withWayroadName(route, corridorListing(corridor, slug, locale).data.wayroad?.name);
+  } else if (isReturnOnlyRoute(slug)) {
+    // Chiều về CMS không biết (vd ban-phu/my-dinh): như trang tuyến chính, bản vi cần bài WP mới dựng; hai đầu tuyến lấy từ
+    // listing CMS của chiều đi (đảo lại), chuyến lấy từ apigw như mọi trang tuyến.
+    wp = isIndexableLocale(locale) ? await getRouteLanding(start, end) : null;
+    if (isIndexableLocale(locale) && !wp) return null;
+    const outbound = await getRouteListing(end, start);
+    route = outbound ? reversedListing(outbound, slug) : null;
   } else if (corridor) {
     // CMS không biết tuyến nhưng đây là trang tuyến của một tuyến chính: dựng từ bài WP (hv_route) + toạ độ đầu tuyến;
     // chuyến lấy từ apigw như mọi trang tuyến. Bản vi cần có bài WP mới index; chưa có bài → giữ hành vi cũ (200 + noindex, chỉ form).

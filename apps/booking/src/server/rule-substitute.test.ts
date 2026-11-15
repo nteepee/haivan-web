@@ -14,7 +14,7 @@ import { resetPromoSecretsForTest } from "./promo-secrets";
  * Luật giá v2 ở BFF: token `@auto:<post_id>:<đơn>` chỉ được đổi thành mã ERP khi engine (chạy trên dữ liệu đơn thật) chọn đúng luật đó.
  * Luật đầy đủ + SĐT thử đến từ route bí mật `/promo-codes` của WP.
  */
-vi.mock("next/cache", () => ({ cacheLife: vi.fn() }));
+vi.mock("next/cache", () => ({ cacheLife: vi.fn(), cacheTag: vi.fn() }));
 
 const ORIGIN = "http://127.0.0.1:3100";
 const MOCK = "http://127.0.0.1:4010";

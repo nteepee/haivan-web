@@ -1,18 +1,21 @@
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { bookingConfigSchema, type BookingConfig } from "@/schemas/booking-config";
 import { FALLBACK_BOOKING_CONFIG } from "./booking-config-fallback";
 import { createLastGood, unwrapFetched, type Fetched } from "./last-good";
 import { routeBaseUrl } from "./route-landing";
+import { BOOKING_CONFIG_TAG } from "./wp-price-cache";
 
 /** Bản tốt gần nhất của WP; WP lỗi mà chưa từng có thì dùng bản dự phòng. */
 const lastGood = createLastGood<BookingConfig>("[booking-config] fallback", "null");
 
 /**
- * Lấy cấu hình từ WP, cache tối đa 5 phút (profile `bookingConfig`). 404 (WP chưa có endpoint) → `none`, lặng lẽ dùng dự phòng.
+ * Lấy cấu hình từ WP, cache tối đa 1 phút (profile `bookingConfig`); WP lưu chương trình/tuyến thì gọi `/api/hv/revalidate` để bỏ
+ * cache ngay (tag `BOOKING_CONFIG_TAG`, gắn cho cả bản lỗi để lần báo đổi cũng xoá bản lỗi). 404 (WP chưa có endpoint) → `none`, lặng lẽ dùng dự phòng.
  * Lỗi mạng/5xx/timeout/sai hợp đồng → `error` cache ngắn; không ném trong phạm vi cache (xem `Fetched`).
  */
 async function loadWpBookingConfig(url: string): Promise<Fetched<BookingConfig>> {
   "use cache";
+  cacheTag(BOOKING_CONFIG_TAG);
   try {
     const res = await fetch(url, { headers: { Accept: "application/json" }, signal: AbortSignal.timeout(5000) });
     if (res.status === 404) {

@@ -72,8 +72,6 @@ function hv2_t( $key ) {
 			'jr_5_alt'      => array( 'Nhân viên Hải Vân trò chuyện cùng hành khách trong phòng chờ', 'Hai Van staff with passengers in the lounge' ),
 			'jr_ticket'     => array( 'Vé điện tử', 'E-ticket' ),
 			'jr_ticket_g'   => array( 'Giường', 'Berth' ),
-			'jr_story_k'    => array( 'Chuyện có thật', 'A true story' ),
-			'jr_story'      => array( 'Một đoàn 6 khách đi từ Vũng Tàu đến sân bay Tân Sơn Nhất để bay Phú Quốc. Xe khởi hành đúng giờ nhưng do ùn tắc giao thông, cả đoàn lỡ chuyến bay. Hải Vân đã bồi hoàn toàn bộ chi phí đổi vé máy bay cho cả 6 khách và miễn phí chuyến xe chiều về từ sân bay.', 'A group of six travelled from Vung Tau to Tan Son Nhat airport for a flight to Phu Quoc. The coach left on time, but heavy traffic made the group miss their flight. Hai Van paid for all six to rebook and gave them the return trip from the airport free of charge.' ),
 			'off_eyebrow'   => array( 'Ưu đãi hôm nay', 'Today’s offers' ),
 			'off_h2_a'      => array( 'Đi cùng nhau.', 'Travel together.' ),
 			'off_h2_b'      => array( 'Tiết kiệm nhiều hơn.', 'Save more.' ),
@@ -145,7 +143,7 @@ function hv2_render_services() {
 	echo '<p class="hv2-svc-extra"><a class="hv2-textlink" href="' . esc_url( $p . '/dich-vu/hang-hoa' ) . '">' . esc_html( hv2_t( 'svc_cargo' ) ) . '<span aria-hidden="true">→</span></a></p>';
 }
 
-/** 04 · 5 chặng của một chuyến đi + một chuyện có thật. */
+/** 04 · 5 chặng của một chuyến đi + lời khách thật (inc/home-reviews.php). */
 function hv2_render_journey() {
 	list( $hot ) = hv2_hotline();
 	$steps       = array(
@@ -169,7 +167,7 @@ function hv2_render_journey() {
 		echo '<p>' . esc_html( 'jr_5' === $k ? sprintf( hv2_t( 'jr_5_d' ), $hot ) : hv2_t( $k . '_d' ) ) . '</p></li>';
 	}
 	echo '</ol>';
-	echo '<figure class="hv2-story"><figcaption>' . esc_html( hv2_t( 'jr_story_k' ) ) . '</figcaption><blockquote><p>' . esc_html( hv2_t( 'jr_story' ) ) . '</p></blockquote></figure>';
+	hv2_render_reviews();
 }
 
 /** 05 · Ưu đãi đang hiệu lực (thẻ dùng chung: hv2_offer_cards). Rỗng = ẩn khối. */

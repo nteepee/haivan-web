@@ -40,8 +40,10 @@ export function tripPrices(items: readonly unknown[]): RoutePrices {
     const price = displayPrice(parsed.data);
     if (price === null || price <= 0) continue;
     if (out.min === null || price < out.min) out.min = price;
-    const name = parsed.data.product.name.trim();
-    if (name && !(out.byClass[name] <= price)) out.byClass[name] = price;
+    // Ghi theo cả tên ("Cao cấp") lẫn mã hạng ("ROYAL"): WP đặt tên Royal/Luxury/Eco, khớp được qua mã khi ERP còn tên cũ.
+    for (const key of new Set([parsed.data.product.name.trim(), parsed.data.product.code.trim()])) {
+      if (key && !(out.byClass[key] <= price)) out.byClass[key] = price;
+    }
   }
   return out;
 }

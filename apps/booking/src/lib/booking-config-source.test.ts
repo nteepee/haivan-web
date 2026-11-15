@@ -4,7 +4,7 @@ import fallbackJson from "@/content/booking-config-fallback.json";
 import { server } from "../../test/msw-server";
 import { bookingConfigSchema } from "@/schemas/booking-config";
 
-vi.mock("next/cache", () => ({ cacheLife: vi.fn() }));
+vi.mock("next/cache", () => ({ cacheLife: vi.fn(), cacheTag: vi.fn() }));
 
 const WP = "http://wp.test";
 const URL_CONFIG = `${WP}/wp-json/haivan-web/v1/booking-config`;
@@ -90,6 +90,16 @@ describe("getBookingConfig", () => {
     expect(config.promos.map((p) => p.id)).toEqual([7]);
     expect(JSON.stringify(config)).not.toMatch(/"code":"/);
     expect(config.promos[0]).not.toHaveProperty("code");
+  });
+
+  it("cache gắn tag BOOKING_CONFIG_TAG để /api/hv/revalidate bỏ được ngay khi WP lưu", async () => {
+    const { getBookingConfig } = await load();
+    const { cacheTag } = await import("next/cache");
+    const { BOOKING_CONFIG_TAG } = await import("./wp-price-cache");
+    server.use(http.get(URL_CONFIG, () => HttpResponse.json(wpConfig())));
+    await getBookingConfig();
+    expect(vi.mocked(cacheTag)).toHaveBeenCalledWith(BOOKING_CONFIG_TAG);
+    expect(BOOKING_CONFIG_TAG).toBe("hv:booking-config");
   });
 
   it("WP 404 (endpoint chưa có) → dự phòng, lặng lẽ (không cảnh báo)", async () => {

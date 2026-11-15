@@ -10,8 +10,10 @@ const nextConfig: NextConfig = {
     // Nội dung landing tuyến từ WP (src/lib/route-landing.ts): làm mới mỗi giờ. Request-time render phục vụ bản cũ khi hết hạn
     // rồi làm mới nền; trang ISR tạo lại ở foreground nên bản "tốt gần nhất" được giữ riêng trong src/lib/last-good.ts.
     routeLanding: { stale: 3600, revalidate: 3600, expire: 604800 },
-    // Cấu hình tuyến chính + chương trình giảm giá từ WP (src/lib/booking-config-source.ts): MKT bật/tắt nên làm mới tối đa 5 phút.
-    bookingConfig: { stale: 60, revalidate: 300, expire: 900 },
+    // Cấu hình tuyến chính + chương trình giảm giá/combo từ WP (src/lib/booking-config-source.ts). Đường chính: WP lưu → POST
+    // /api/hv/revalidate → bỏ cache ngay. Hạn 60 s chỉ là lưới an toàn khi WP không gọi được Next và cho mốc ngày (chương trình
+    // tới ngày bắt đầu/kết thúc mà không ai lưu bài).
+    bookingConfig: { stale: 30, revalidate: 60, expire: 300 },
   },
   partialPrefetching: true,
   turbopack: {

@@ -46,13 +46,15 @@ interface Props {
   todayChips?: boolean;
   /** Thanh tìm vé gọn luôn mở (trang kết quả): chip tuyến một dòng, các ô + "Tìm vé" một hàng. */
   bar?: boolean;
+  /** Chế độ tuyến: khoá tuyến đang chọn, ẩn nút đổi tuyến (trang tuyến). */
+  lockCorridor?: boolean;
 }
 
 /**
  * Ô tìm vé: chế độ tuyến chính (`CorridorForm`) hoặc chọn điểm tự do (`FreeSearchForm`), đổi qua lại bằng liên kết cuối thẻ.
  * Chế độ tự do giữ nguyên hành vi cũ.
  */
-export function SearchForm({ initial, glass = false, mode, todayChips = false, bar = false }: Props) {
+export function SearchForm({ initial, glass = false, mode, todayChips = false, bar = false, lockCorridor = false }: Props) {
   const { corridors } = useBookingConfig();
   const entry = corridors.length ? (mode ?? (initial?.corridor ? "corridor" : "free")) : "free";
   if (entry === "corridor") {
@@ -65,6 +67,7 @@ export function SearchForm({ initial, glass = false, mode, todayChips = false, b
         glass={glass}
         bar={bar}
         todayChips={todayChips}
+        lockCorridor={lockCorridor}
       />
     );
   }

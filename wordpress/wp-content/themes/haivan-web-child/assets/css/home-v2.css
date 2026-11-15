@@ -80,10 +80,17 @@
   .hv2-ticket strong { font-size: 17px; }
   .hv2-ticket-qr { width: 64px; background-size: 16px 16px; }
 }
-.hv2-story { margin-top: 56px; padding: 32px 24px; border-left: 5px solid var(--hv2-yellow); background: var(--hv2-surface); }
-.hv2-story figcaption { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--hv2-gold); }
-.hv2-story blockquote p { margin-top: 12px; max-width: 52rem; font-size: clamp(1.125rem, 1rem + .6vw, 1.5rem); line-height: 1.55; letter-spacing: -.01em; }
-@media (min-width: 48rem) { .hv2-story { padding: 40px 48px; } }
+/* Lời khách thật (inc/home-reviews.php): thẻ dùng chung .hv2-quotes (v2.css), thêm đầu khối và link nguồn */
+.hv2-reviews { margin-top: 64px; padding-top: 40px; border-top: 1px solid var(--hv2-line); }
+.hv2-reviews-head { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; margin-bottom: 28px; }
+.hv2-reviews-head h3 { font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem); line-height: 1.15; font-weight: 400; letter-spacing: -.03em; }
+.hv2-reviews-score { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 10px; font-size: 1rem; font-weight: 700; color: var(--hv2-ink); }
+.hv2-reviews-stars { color: var(--hv2-gold); }
+.hv2-reviews-place { font-weight: 400; color: var(--hv2-muted); }
+.hv2-reviews-list blockquote p { font-size: 1.0625rem; }
+.hv2-reviews-list figcaption a { border-bottom: 1px solid var(--hv2-yellow); }
+.hv2-reviews-list figcaption a:hover { color: var(--hv2-ink); }
+@media (min-width: 60rem) { .hv2-reviews-head { flex-direction: row; align-items: flex-end; justify-content: space-between; } }
 
 /* 07 · Phòng chờ */
 .hv2-lounge { display: grid; gap: 24px; }

@@ -71,6 +71,18 @@ const pushed = () => {
 };
 
 describe("SearchForm chế độ tuyến", () => {
+  it("trang tuyến (lockCorridor): ẩn 4 nút tuyến, chỉ còn trạm của đúng tuyến đang xem", () => {
+    render(
+      <Providers locale="vi">
+        <SearchForm mode="corridor" initial={{ numberGuest: 1, corridor: { tuyen: "sg-vt", chieu: "ab", diemDi: null, diemDen: null, ngayVe: null, chang: null, donDi: null, gio: null } }} lockCorridor />
+      </Providers>,
+    );
+    expect(screen.queryByRole("group", { name: "Tuyến chính" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Hà Nội – Điện Biên" })).not.toBeInTheDocument();
+    const all = [...optionLabels(select("Điểm đi")), ...optionLabels(select("Điểm đến"))].join(" | ");
+    expect(all).not.toMatch(/Điện Biên(?! Phủ)|Mộc Châu|Sơn La|Mỹ Đình/); // "Điện Biên Phủ" là tên đường ở Sài Gòn
+    expect(select("Điểm đến").selectedOptions[0]).toHaveTextContent("Vũng Tàu");
+  });
   it("4 nút tuyến không có tiêu đề; tuyến đầu được chọn; trạm mặc định theo chiều a → b", () => {
     renderForm();
     const group = screen.getByRole("group", { name: "Tuyến chính" });

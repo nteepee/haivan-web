@@ -5,6 +5,7 @@
   --hv2-ink: var(--color-ink);
   --hv2-yellow: var(--color-accent);
   --hv2-gold: #8a6500;                 /* chữ nhãn họ vàng: 4.9:1 trên nền giấy */
+  --hv2-gold-display: #a87800;         /* vàng tiêu đề lớn (>= 24px): 3.6:1 giấy, 3.4:1 nền phụ, 3.3:1 #E9EBEF, 3.9:1 trắng */
   --hv2-paper: var(--color-paper);
   --hv2-tint: var(--color-paper-2);
   --hv2-surface: var(--color-surface);
@@ -72,7 +73,7 @@ body { background: var(--color-paper); color: var(--color-text); }
 .hv-rhead .hv-rhero { padding-block: 24px 56px; align-items: end; }
 .hv-rhead .hv-rhero-text { gap: 18px; }
 .hv-rhead h1 { font-size: clamp(2rem, 1.4rem + 2.4vw, 3.5rem); line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; text-wrap: balance; }
-.hv-rhead h1 em { font-style: normal; color: var(--hv2-gold); }
+.hv-rhead h1 em { font-style: normal; color: var(--hv2-gold-display); }
 .hv-rhead .hv-lead { max-width: 36rem; font-size: 1.0625rem; line-height: 1.65; color: var(--hv2-muted); }
 .hv-rhead .hv-lead.text-ink { color: var(--hv2-muted); }
 .hv-rhead .hv-link { font-weight: 700; color: var(--hv2-ink); }
@@ -238,7 +239,7 @@ body { background: var(--color-paper); color: var(--color-text); }
 .hv-ground .hv2r-head h2::before { display: none; }
 .hv2r-eyebrow { font-size: 13px; line-height: 1.4; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--hv2-gold); }
 .hv2r-head h2 { margin-top: 10px; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem); line-height: 1.1; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
-.hv2r-head h2 em { display: block; font-style: normal; color: var(--hv2-gold); }
+.hv2r-head h2 em { display: block; font-style: normal; color: var(--hv2-gold-display); }
 .hv2r-intro { max-width: 34rem; color: var(--hv2-muted); font-size: 1.0625rem; line-height: 1.65; }
 .hv2r-intro > * + * { margin-top: 10px; }
 @media (min-width: 60rem) {

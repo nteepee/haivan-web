@@ -63,13 +63,13 @@ $hv_db_stops = $ln( array(
 ) );
 $hv_db_classes = $ln( array(
 	'Cao cấp | 22 | | Hạng Royal Cabin: cabin riêng rộng gần 1 m, chăn ga trắng, màn hình và bảng điều khiển tại giường. Xe 22–24 cabin. | Điều hòa; Cabin riêng; Chăn ga gối trắng; Màn hình và bảng điều khiển | dien-bien-hero-royal-bed.webp',
-	'Tiết kiệm | 34 | | Hạng Luxury giường nằm 34–36 chỗ: khoang mobihome, giường có rèm che riêng tư, màn hình và bàn nhỏ để đồ. | Điều hòa; Chăn gối; Rèm che riêng tư; Màn hình riêng | dien-bien-hero-cabin-bed.webp',
-	'Siêu rẻ | 44 | | Hạng Eco 44 giường: giường da, chăn gối, tủ lạnh nước uống và cổng sạc USB tại giường. | Điều hòa; Giường da, chăn gối; Cổng sạc USB; Nước uống ướp lạnh | dien-bien-hero-berth-aisle.webp',
+	'Tiết kiệm | 34 | | Hạng Luxury giường nằm 34–36 chỗ: khoang mobihome, giường có rèm che riêng tư, màn hình và bàn nhỏ để đồ. | Điều hòa; Chăn gối; Rèm che riêng tư; Màn hình riêng | db-luxury-berth.webp',
+	'Siêu rẻ | 44 | | Hạng Eco 44 giường: giường da, chăn gối, tủ lạnh nước uống và cổng sạc USB tại giường. | Điều hòa; Giường da, chăn gối; Cổng sạc USB; Nước uống ướp lạnh | db-eco-aisle.webp',
 ) );
 $hv_db_reasons = static fn( $go ) => $ln( array(
 	( $go ? 'Đi đêm, sáng tới Điện Biên' : 'Đi đêm, sáng về tới Hà Nội' ) . ' | Xe rời bến buổi tối và tới nơi vào sáng hôm sau, ngủ một giấc là hết chặng đèo hơn mười tiếng. Xe chạy qua đêm nên hãy xem kỹ ngày đến của chuyến. | dien-bien-hero-bus.webp',
 	'Ba hạng xe giường nằm | Eco, Luxury và Royal Cabin: giường da, chăn gối, cổng sạc USB; Luxury có rèm che và màn hình riêng, Royal Cabin là cabin riêng rộng gần 1 m. | dien-bien-hero-berth-aisle.webp',
-	'Không nhồi nhét, không ghế phụ | Mỗi khách một giường đã đánh số trên sơ đồ. Hải Vân không bán ghế phụ, không cho nằm sàn, xe chạy đúng tuyến và nốt đã đăng ký với cơ quan quản lý. | dien-bien-hero-cabin-duvet.webp',
+	'Không nhồi nhét, không ghế phụ | Mỗi khách một giường đã đánh số trên sơ đồ. Hải Vân không bán ghế phụ, không cho nằm sàn, xe chạy đúng tuyến và đúng điểm đón trả đã đăng ký với cơ quan quản lý. | dien-bien-hero-cabin-duvet.webp',
 	'Phòng chờ ngay cạnh bến Mỹ Đình | Tới sớm thì ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng: điều hòa, trà bánh, trái cây, chỗ để hành lý; tới giờ mới ra xe. | hn-lounge-inside.webp',
 	'Trung chuyển miễn phí tới bệnh viện | Khách Điện Biên, Sơn La xuống Hà Nội khám bệnh được đưa miễn phí từ 01 Nguyễn Hoàng tới 10 bệnh viện lớn như Bạch Mai, Việt Đức, Nhi Trung ương, K Tân Triều. Đăng ký khi đặt vé. | hn-csr-trungchuyen.webp',
 	'Gửi hàng cùng chuyến xe | Nhận từ phong bì tới hàng cồng kềnh, có xe tải tới 8 tấn; hàng đi Tây Bắc thường tới sau 4–12 tiếng. Giao nhận tại 01 Nguyễn Hoàng. | hn-ship-1.webp',
@@ -172,7 +172,7 @@ return array(
 			'Nhà xe rất oke lun nha, rất đúng giờ, tài xế lịch sự, chạy xe cũng rất an toàn luôn, xe sạch không có mùi hôi, ghế ngồi êm ái có massage. | Khách đánh giá trên Google',
 		) ),
 		'stats'            => "30+ | năm vận tải\n120+ | lượt xe mỗi ngày\n40+ | xe limousine\n26 | điểm đón trả",
-		'story'            => 'Một đoàn 6 khách đi từ Vũng Tàu lên Tân Sơn Nhất để bay Phú Quốc. Xe xuất phát đúng giờ nhưng cả tuyến bị tắc vì sự cố, đoàn lỡ chuyến bay. Hải Vân bồi hoàn toàn bộ chi phí đổi vé máy bay cho cả 6 người và miễn phí chiều về từ sân bay.',
+		'story'            => 'Một đoàn 6 khách đi từ Vũng Tàu đến sân bay Tân Sơn Nhất để bay Phú Quốc. Xe khởi hành đúng giờ nhưng do ùn tắc giao thông, cả đoàn lỡ chuyến bay. Hải Vân đã bồi hoàn toàn bộ chi phí đổi vé máy bay cho cả 6 khách và miễn phí chuyến xe chiều về từ sân bay.',
 	),
 
 	'my-dinh/dien-bien' => array(

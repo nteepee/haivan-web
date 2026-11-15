@@ -4,6 +4,7 @@ import { publicOrigin } from "@/lib/public-origin";
 import { isIndexableLocale } from "@/lib/route-landing-build";
 import { getBookingConfig } from "@/lib/booking-config-source";
 import { getRouteLanding } from "@/lib/route-landing";
+import { RETURN_ONLY_ROUTES } from "@/lib/route-listing-variants";
 
 const esc = (v: string) => v.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
@@ -17,9 +18,14 @@ export async function GET() {
   const locales = LOCALES.filter(isIndexableLocale);
   const entries: Array<{ loc: string; lastmod?: string }> = locales.map((l) => ({ loc: `${origin}${localePrefix(l)}/xe-khach` }));
   const popular = new Set(popularRoutes.map((r) => r.slug));
-  // Trang tuyến của 4 tuyến chính mà CMS không biết (vd my-dinh/moc-chau): chỉ vào sitemap khi WP đã có bài (trang mới index được).
+  // Trang tuyến của 4 tuyến chính mà CMS không biết (vd my-dinh/moc-chau) và chiều về chỉ có bài WP (vd ban-phu/my-dinh):
+  // chỉ vào sitemap khi WP đã có bài (trang mới index được).
   const config = await getBookingConfig();
-  const extra = [...new Set(config.corridors.flatMap((c) => [c.landing.ab, c.landing.ba]).filter((s): s is string => !!s && !popular.has(s)))];
+  const extra = [
+    ...new Set(
+      [...config.corridors.flatMap((c) => [c.landing.ab, c.landing.ba]), ...RETURN_ONLY_ROUTES].filter((s): s is string => !!s && !popular.has(s)),
+    ),
+  ];
   const routes = (
     await Promise.all(
       [...popular, ...extra].map(async (slug) => {

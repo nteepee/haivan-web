@@ -1,7 +1,8 @@
 <?php
 /**
  * REST GET /wp-json/haivan-web/v1/booking-config: 4 tuyến chính + chương trình giảm giá đang chạy, theo hợp đồng
- * plans/261029-1444-core-routes-search-promos/contract.md (version 1). Công khai, Cache-Control public max-age=300.
+ * plans/261029-1444-core-routes-search-promos/contract.md (version 1). Công khai, Cache-Control no-cache (Next tự cache và được
+ * báo làm mới ngay khi lưu, xem inc/next-revalidate.php; tầng trung gian không được giữ bản cũ).
  *
  * hv_booking_config() là nguồn duy nhất: REST trả đúng mảng này, còn ô tìm vé [haivan_search] nhúng cùng mảng
  * dưới dạng JSON inline (không gọi REST lần nữa).
@@ -80,12 +81,15 @@ add_action(
 	}
 );
 
-/** Công khai, cache 5 phút (ngắn để bật/tắt chương trình có hiệu lực nhanh). Đặt sau mọi filter của core. */
+/**
+ * Công khai nhưng không cho tầng trung gian (CDN, proxy) giữ bản cũ: giá/ưu đãi phải đổi ngay khi MKT lưu. Next tự cache
+ * (src/lib/booking-config-source.ts) và bị bỏ cache qua /api/hv/revalidate. Đặt sau mọi filter của core.
+ */
 add_filter(
 	'rest_post_dispatch',
 	static function ( $response, $server, $request ) {
 		if ( '/haivan-web/v1/booking-config' === $request->get_route() && $response instanceof WP_REST_Response && 200 === $response->get_status() ) {
-			$response->header( 'Cache-Control', 'public, max-age=300' );
+			$response->header( 'Cache-Control', 'public, no-cache' );
 		}
 		return $response;
 	},

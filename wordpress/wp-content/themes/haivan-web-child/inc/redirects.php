@@ -5,6 +5,7 @@
  *  - mảnh vụn rỗng của /dat-ve-nhanh/* (header, footer, slide...) -> /dat-ve-nhanh;
  *  - /mobile -> dải tải app ở trang chủ (#hv-app); /haivanplus (sản phẩm đã ngừng) -> trang chủ;
  *  - /tuyen-duong/<tuyến cũ> -> trang tuyến tương ứng, tuyến đã bỏ (Đà Lạt, Hà Giang, Sa Pa) -> /xe-khach.
+ *  - /bus-app/<mã xe> (QR trên xe): 302 theo thiết bị sang App Store / Google Play / #hv-app, noindex, không cache.
  * Áp dụng cho cả /en/. Giữ nguyên query string (utm_*, aff_sid). MKT thêm/bớt quy tắc bằng filter hv_redirect_rules.
  * Các trang nguồn được scripts/seo-hardening.php đặt noindex để rời sitemap Rank Math.
  *
@@ -74,6 +75,51 @@ function hv_redirect_target( $path ) {
 	}
 	return null;
 }
+
+/**
+ * Đích của link QR dán trên xe /bus-app/<mã xe> (web cũ gọi apigw.haivan.com/api/qrcode/bus rồi sang OneLink AppsFlyer).
+ * Chọn đích theo User-Agent: iPhone/iPad/iPod -> App Store, Android -> Google Play, còn lại -> dải tải app ở trang chủ.
+ * Mã xe được gắn làm chiến dịch (App Store `ct`, Play `referrer` utm_*) để đo lượt tải theo xe; mã lạ thì bỏ qua.
+ *
+ * @param string $bus  Mã xe trong URL (có thể rỗng).
+ * @param string $ua   User-Agent của khách.
+ * @param string $lang Tiền tố ngôn ngữ "" hoặc "/en".
+ * @return string URL tuyệt đối (cửa hàng) hoặc đường dẫn nội bộ.
+ */
+function hv_bus_app_target( $bus, $ua, $lang = '' ) {
+	$campaign = 1 === preg_match( '/^[A-Za-z0-9._-]{1,32}$/', (string) $bus ) ? 'bus-' . $bus : '';
+	// Giống web cũ: mã xe hợp lệ đi qua AppsFlyer OneLink để team app giữ số liệu quét QR theo từng xe; OneLink tự chuyển store theo thiết bị.
+	if ( '' !== $campaign ) {
+		return 'https://haivan-app.onelink.me/BX9S/' . rawurlencode( (string) $bus );
+	}
+	if ( 1 === preg_match( '/iPhone|iPad|iPod/i', (string) $ua ) ) {
+		return 'https://apps.apple.com/vn/app/id1440552948' . ( '' !== $campaign ? '?ct=' . rawurlencode( $campaign ) : '' );
+	}
+	if ( false !== stripos( (string) $ua, 'Android' ) ) {
+		$referrer = 'utm_source=bus&utm_medium=qr' . ( '' !== $campaign ? '&utm_campaign=' . $campaign : '' );
+		return 'https://play.google.com/store/apps/details?id=com.havaz_app&referrer=' . rawurlencode( $referrer );
+	}
+	return $lang . '/#hv-app';
+}
+
+add_action(
+	'template_redirect',
+	static function () {
+		$uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '/'; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		if ( 1 !== preg_match( '#^(/en)?/bus-app(?:/([^/?\#]*))?/?(?:[?\#]|$)#', $uri, $m ) ) {
+			return;
+		}
+		$ua = isset( $_SERVER['HTTP_USER_AGENT'] ) ? (string) wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		$to = hv_bus_app_target( rawurldecode( $m[2] ?? '' ), $ua, $m[1] ?? '' );
+		// Đích phụ thuộc User-Agent: cấm nginx/CDN cache (302 + no-store) và không cho lập chỉ mục.
+		nocache_headers();
+		header( 'Vary: User-Agent' );
+		header( 'X-Robots-Tag: noindex, nofollow' );
+		wp_redirect( $to, 302, 'Hai Van' ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- đích cố định (App Store/Play/nội bộ), không lấy từ input.
+		exit;
+	},
+	0
+);
 
 add_action(
 	'template_redirect',

@@ -1,0 +1,110 @@
+{
+ "ha-noi": {
+  "title": "Hanoi",
+  "intro": "Travel tips for Hanoi in one place: what's new in the capital, how getting around has changed and what to see before your trip.",
+  "rm_title": "Hanoi travel guide | Hai Van",
+  "rm_desc": "Travel tips for Hanoi in one place: what's new in the capital, getting around, and Hai Van coaches to and from Hanoi."
+ },
+ "vung-tau": {
+  "title": "Vung Tau",
+  "intro": "Travel tips for Vung Tau in one place: what's new by the sea, how getting there has changed and what to see before your trip.",
+  "rm_title": "Vung Tau travel guide | Hai Van",
+  "rm_desc": "Travel tips for Vung Tau in one place: beaches, food, getting there, and Hai Van coaches from Saigon to Vung Tau."
+ },
+ "dien-bien": {
+  "title": "Dien Bien",
+  "intro": "Dien Bien: relive the proud history of the nation.",
+  "rm_title": "Dien Bien travel guide | Hai Van",
+  "rm_desc": "Dien Bien: relive the proud history of the nation. Travel tips and Hai Van coaches from Hanoi to Dien Bien."
+ },
+ "son-la": {
+  "title": "Son La",
+  "intro": "Son La, home to the distinctive cultures of the Northwest.",
+  "rm_title": "Son La travel guide | Hai Van",
+  "rm_desc": "Son La, home to the distinctive cultures of the Northwest. Travel tips and Hai Van coaches from Hanoi to Son La."
+ },
+ "ho-chi-minh": {
+  "title": "Ho Chi Minh City",
+  "intro": "A fast-paced city with a quiet beauty underneath.",
+  "rm_title": "Ho Chi Minh City travel guide | Hai Van",
+  "rm_desc": "A fast-paced city with a quiet beauty underneath. Travel tips and Hai Van coaches from Saigon."
+ },
+ "lao-cai": {
+  "title": "Lao Cai",
+  "intro": "Cool weather and a rich mix of ethnic cultures.",
+  "rm_title": "Lao Cai travel guide | Hai Van",
+  "rm_desc": "Cool weather and a rich mix of ethnic cultures. Travel tips for Lao Cai from Hai Van."
+ },
+ "ha-giang": {
+  "title": "Ha Giang",
+  "intro": "Stunning scenery along endless mountain roads.",
+  "rm_title": "Ha Giang travel guide | Hai Van",
+  "rm_desc": "Stunning scenery along endless mountain roads. Travel tips for Ha Giang from Hai Van."
+ },
+ "moc-chau": {
+  "title": "Moc Chau",
+  "intro": "The Da Lat of the Northwest.",
+  "rm_title": "Moc Chau travel guide | Hai Van",
+  "rm_desc": "Moc Chau, the Da Lat of the Northwest. Travel tips and Hai Van coaches from Hanoi to Moc Chau."
+ },
+ "da-lat": {
+  "title": "Da Lat",
+  "intro": "The city of flowers, tucked among vast green pine forests.",
+  "rm_title": "Da Lat travel guide | Hai Van",
+  "rm_desc": "The city of flowers, tucked among vast green pine forests. Travel tips for Da Lat from Hai Van."
+ },
+ "sa-pa": {
+  "title": "Sapa",
+  "intro": "The \"town in the mist\", famous for its majestic mountains.",
+  "rm_title": "Sapa travel guide | Hai Van",
+  "rm_desc": "The \"town in the mist\", famous for its majestic mountains. Travel tips for Sapa from Hai Van."
+ },
+ "da-nang": {
+  "title": "Da Nang",
+  "intro": "Vietnam's most liveable city.",
+  "rm_title": "Da Nang travel guide | Hai Van",
+  "rm_desc": "Vietnam's most liveable city. Travel tips for Da Nang from Hai Van."
+ },
+ "nha-trang": {
+  "title": "Nha Trang",
+  "intro": "A land of blue sea and white sand.",
+  "rm_title": "Nha Trang travel guide | Hai Van",
+  "rm_desc": "A land of blue sea and white sand. Travel tips for Nha Trang from Hai Van."
+ },
+ "tuyen-quang": {
+  "title": "Tuyen Quang",
+  "intro": "A land of beautiful landscapes, proud historic sites and a pleasant climate.",
+  "rm_title": "Tuyen Quang travel guide | Hai Van",
+  "rm_desc": "A land of beautiful landscapes, proud historic sites and a pleasant climate. Travel tips for Tuyen Quang."
+ },
+ "hue": {
+  "title": "Hue",
+  "intro": "Gentle and poetic, as pretty as a painting.",
+  "rm_title": "Hue travel guide | Hai Van",
+  "rm_desc": "Gentle and poetic, as pretty as a painting. Travel tips for Hue from Hai Van."
+ },
+ "hoi-an": {
+  "title": "Hoi An",
+  "intro": "One of Asia's finest old towns, with centuries-old architecture.",
+  "rm_title": "Hoi An travel guide | Hai Van",
+  "rm_desc": "One of Asia's finest old towns, with centuries-old architecture. Travel tips for Hoi An from Hai Van."
+ },
+ "ninh-binh": {
+  "title": "Ninh Binh",
+  "intro": "Unspoilt nature and charming rivers and mountains.",
+  "rm_title": "Ninh Binh travel guide | Hai Van",
+  "rm_desc": "Unspoilt nature and charming rivers and mountains. Travel tips for Ninh Binh from Hai Van."
+ },
+ "ha-long": {
+  "title": "Ha Long",
+  "intro": "Wild and majestic, one of the New Seven Wonders of Nature.",
+  "rm_title": "Ha Long travel guide | Hai Van",
+  "rm_desc": "Wild and majestic, one of the New Seven Wonders of Nature. Travel tips for Ha Long Bay from Hai Van."
+ },
+ "bac-ninh": {
+  "title": "Bac Ninh",
+  "intro": "Bac Ninh, a land of folk songs and charm.",
+  "rm_title": "Bac Ninh travel guide | Hai Van",
+  "rm_desc": "Bac Ninh, a land of folk songs and charm. Travel tips for Bac Ninh from Hai Van."
+ }
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, Menu, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale, useT } from "@/components/providers";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -12,8 +12,10 @@ import { switchLocalePath } from "./language-switch";
 
 const barePath = (path: string) => path.replace(/^\/(en|vi)(?=\/|$)/, "").replace(/\/+$/, "") || "/";
 
-/** Liên kết menu (đường dẫn tương đối hoặc URL đầy đủ của WordPress) có trỏ tới trang đang xem không; bỏ qua tiền tố ngôn ngữ. */
-function isCurrent(pathname: string, href: string): boolean {
+/** Liên kết menu (đường dẫn tương đối hoặc URL đầy đủ của WordPress) có trỏ tới trang đang xem không; bỏ qua tiền tố ngôn ngữ.
+ * pathname null = chưa biết (bản HTML tĩnh dựng sẵn) → không đánh dấu mục nào. */
+function isCurrent(pathname: string | null, href: string): boolean {
+  if (pathname === null) return false;
   try {
     return barePath(new URL(href, "https://menu.invalid").pathname) === barePath(pathname);
   } catch {
@@ -24,8 +26,21 @@ function isCurrent(pathname: string, href: string): boolean {
 /** Menu desktop: mục có con là NÚT mở dropdown (Radix), không dẫn sang trang nào; chỉ mục con là liên kết (review 2026-11-13).
  * Mục không có con vẫn là liên kết; trang hiện tại có vạch dưới. */
 export function HeaderNav({ items }: { items: MenuItem[] }) {
+  // usePathname() ngoài <Suspense> làm Next không dựng lại được trang tĩnh lúc chạy (sau revalidateTag) → 500.
+  // Bản dựng sẵn hiện menu đủ mục, chưa gạch chân trang hiện tại; trình duyệt thêm gạch chân ngay khi chạy.
+  return (
+    <Suspense fallback={<HeaderNavView items={items} pathname={null} />}>
+      <HeaderNavLive items={items} />
+    </Suspense>
+  );
+}
+
+function HeaderNavLive({ items }: { items: MenuItem[] }) {
+  return <HeaderNavView items={items} pathname={usePathname()} />;
+}
+
+function HeaderNavView({ items, pathname }: { items: MenuItem[]; pathname: string | null }) {
   const t = useT();
-  const pathname = usePathname();
   return (
     <nav aria-label={t("header.main_menu")} className="hv-nav">
       {items.map((item) =>
@@ -58,9 +73,20 @@ export function HeaderNav({ items }: { items: MenuItem[] }) {
 
 /** Menu điện thoại: nút "Menu" mở bảng dưới header; Esc hoặc bấm ra ngoài đóng lại, tiêu điểm về nút. */
 export function MobileNav({ items }: { items: MenuItem[] }) {
+  return (
+    <Suspense fallback={<MobileNavView items={items} pathname={null} />}>
+      <MobileNavLive items={items} />
+    </Suspense>
+  );
+}
+
+function MobileNavLive({ items }: { items: MenuItem[] }) {
+  return <MobileNavView items={items} pathname={usePathname()} />;
+}
+
+function MobileNavView({ items, pathname }: { items: MenuItem[]; pathname: string | null }) {
   const t = useT();
   const locale = useLocale();
-  const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
   const p = localePrefix(locale);
@@ -143,7 +169,7 @@ export function MobileNav({ items }: { items: MenuItem[] }) {
               ) : null}
             </li>
             <li>
-              <a href={switchLocalePath(pathname, target)} lang={target} className="hv-menu-link" onClick={() => setOpen(false)}>
+              <a href={switchLocalePath(pathname ?? (p || "/"), target)} lang={target} className="hv-menu-link" onClick={() => setOpen(false)}>
                 {t(target === "en" ? "header.english" : "header.vietnamese")}
               </a>
             </li>

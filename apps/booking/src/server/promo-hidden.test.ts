@@ -10,7 +10,7 @@ import { stringifyQuery } from "@/lib/qs";
 import { SESSION_COOKIE } from "./session";
 import { resetPromoSecretsForTest } from "./promo-secrets";
 
-vi.mock("next/cache", () => ({ cacheLife: vi.fn() }));
+vi.mock("next/cache", () => ({ cacheLife: vi.fn(), cacheTag: vi.fn() }));
 
 const ORIGIN = "http://127.0.0.1:3100";
 const MOCK = "http://127.0.0.1:4010";

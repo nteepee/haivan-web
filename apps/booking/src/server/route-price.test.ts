@@ -25,13 +25,20 @@ describe("minTripPrice", () => {
 });
 
 describe("tripPrices / classPrice", () => {
-  const withClass = (name: string, min: number, seats = 5) => ({ ...BASE, available_seats: seats, product: { ...BASE.product, name }, price: { ...BASE.price, min, max: min, percent: 0 }, route: { ...BASE.route, show_price: 1 } });
+  const withClass = (name: string, min: number, seats = 5, code = name.toUpperCase()) => ({ ...BASE, available_seats: seats, product: { ...BASE.product, name, code }, price: { ...BASE.price, min, max: min, percent: 0 }, route: { ...BASE.route, show_price: 1 } });
   it("giá thấp nhất theo hạng, bỏ chuyến hết chỗ; khớp tên WP Royal/Luxury/Eco", () => {
     const p = tripPrices([withClass("Luxury", 230000), withClass("Luxury", 200000), withClass("Royal", 230000), withClass("Economy", 150000, 0)]);
     expect(p.min).toBe(200000);
-    expect(p.byClass).toEqual({ Luxury: 200000, Royal: 230000 });
+    expect(p.byClass).toEqual({ Luxury: 200000, LUXURY: 200000, Royal: 230000, ROYAL: 230000 });
     expect(classPrice(p, "Royal")).toBe(230000);
     expect(classPrice(p, "luxury")).toBe(200000);
     expect(classPrice(p, "Eco")).toBeNull();
+  });
+
+  it("ERP còn tên cũ (Cao cấp / Tiết kiệm / Siêu rẻ): khớp tên WP Royal/Luxury/Eco qua mã hạng", () => {
+    const p = tripPrices([withClass("Cao cấp", 450000, 5, "ROYAL"), withClass("Tiết kiệm", 380000, 5, "LUXURY"), withClass("Siêu rẻ", 300000, 5, "ECONOMY")]);
+    expect(classPrice(p, "Royal")).toBe(450000);
+    expect(classPrice(p, "Luxury")).toBe(380000);
+    expect(classPrice(p, "Eco")).toBe(300000);
   });
 });

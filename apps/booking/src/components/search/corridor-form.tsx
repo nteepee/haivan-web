@@ -44,6 +44,8 @@ interface Props {
   bar?: boolean;
   /** Hiện hàng "Chuyến hôm nay" dưới thẻ. */
   todayChips: boolean;
+  /** Trang tuyến: khoá đúng tuyến của trang, ẩn 4 nút chọn tuyến (khách đang xem Vũng Tàu không thấy Điện Biên, Mộc Châu, Sơn La). */
+  lockCorridor?: boolean;
 }
 
 const GUEST_OPTIONS = Array.from({ length: MAX_SEATS }, (_, i) => i + 1);
@@ -97,7 +99,7 @@ export function plateClass(glass: boolean, bar = false) {
   return `${glass ? "hv-plate glass" : "hv-plate hv-plate-solid"}${bar ? " hv-plate--bar" : ""}`;
 }
 
-export function CorridorForm({ init, date: initialDate, guests: initialGuests, type, glass, bar = false, todayChips }: Props) {
+export function CorridorForm({ init, date: initialDate, guests: initialGuests, type, glass, bar = false, todayChips, lockCorridor = false }: Props) {
   const t = useT();
   const locale = useLocale();
   const router = useRouter();
@@ -165,6 +167,7 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
   return (
     <>
       <section className={plateClass(glass, bar)} aria-label={t("search.searching_tickets")}>
+        {lockCorridor ? null : (
         <div className="hv-corr-btns" role="group" aria-label={t("corridor.label")}>
           {corridors.map((c) => (
             // Tên truy cập = nhãn đầy đủ; bên trong có hai bản hiển thị (điện thoại: hai dòng từ hai đầu tuyến; từ 40rem: một dòng nhãn đầy đủ).
@@ -182,6 +185,7 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
             </button>
           ))}
         </div>
+        )}
         <form
           noValidate
           className="hv-plate-grid hv-corr-grid"

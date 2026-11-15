@@ -19,6 +19,24 @@ export function corridorForLanding(config: BookingConfig, slug: string): { corri
   return null;
 }
 
+/** Trang tuyến không phải landing của tuyến chính nhưng chạy trên tuyến đó: ô tìm vé khoá theo tuyến, chọn sẵn trạm (id trạm WP). */
+const FORM_LANDING_ALIASES: Record<string, { tuyen: string; chieu: CorridorDirection; diemDi: string | null; diemDen: string | null }> = {
+  "tan-son-nhat/vung-tau": { tuyen: "sg-vt", chieu: "ab", diemDi: "tsn-t1", diemDen: null },
+  "vung-tau/tan-son-nhat": { tuyen: "sg-vt", chieu: "ba", diemDi: null, diemDen: "tsn-t1" },
+};
+
+/** Tuyến chính + chiều + trạm chọn sẵn cho ô tìm vé của trang tuyến: landing của tuyến chính, hoặc trang sân bay thuộc tuyến Sài Gòn – Vũng Tàu. */
+export function corridorForRouteForm(
+  config: BookingConfig,
+  slug: string,
+): { corridor: Corridor; chieu: CorridorDirection; diemDi: string | null; diemDen: string | null } | null {
+  const match = corridorForLanding(config, slug);
+  if (match) return { ...match, diemDi: null, diemDen: null };
+  const alias = FORM_LANDING_ALIASES[slug];
+  const corridor = alias ? findCorridor(config, alias.tuyen) : undefined;
+  return alias && corridor ? { corridor, chieu: alias.chieu, diemDi: alias.diemDi, diemDen: alias.diemDen } : null;
+}
+
 /** Đầu đi / đầu đến theo chiều ("ab": a → b). */
 export function endsFor(corridor: Corridor, chieu: CorridorDirection): { from: CorridorEnd; to: CorridorEnd } {
   return chieu === "ab" ? { from: corridor.ends.a, to: corridor.ends.b } : { from: corridor.ends.b, to: corridor.ends.a };

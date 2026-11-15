@@ -5,7 +5,7 @@ import { GET, POST } from "@/app/api/hv/rules/[action]/route";
 import { RULE_EXAMPLES } from "@/price-rules/examples";
 import { canonicalJson, ruleHash } from "./rule-tools";
 
-vi.mock("next/cache", () => ({ cacheLife: vi.fn() }));
+vi.mock("next/cache", () => ({ cacheLife: vi.fn(), cacheTag: vi.fn() }));
 const SECRET = "wp-shared-secret-1234";
 const env = { ...process.env };
 beforeEach(() => {
