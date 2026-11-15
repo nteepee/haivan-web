@@ -1,7 +1,7 @@
 "use client";
 
 import { QRCodeSVG } from "qrcode.react";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
 import { formatMoney } from "@/lib/format";
 
 export interface TicketView {
@@ -28,6 +28,7 @@ const routeName = (tk: TicketView) => {
 /** Thẻ vé (trang thanh toán, thành công, chuyến đi của tôi): tuyến, ngày, giờ, chặng, mã vé, ghế, QR. */
 export function TicketCard({ ticket, showQr, showPrice = true, action, nested }: { ticket: TicketView; showQr?: boolean; showPrice?: boolean; action?: React.ReactNode; nested?: boolean }) {
   const t = useT();
+  const locale = useLocale();
   const surcharge = (ticket.transit_price ?? []).reduce((s, x) => s + (x.tcp_price ?? 0), 0);
   const dep = ticket.trip?.departure_time;
   const duration = ticket.trip?.duration ?? 0;
@@ -39,22 +40,22 @@ export function TicketCard({ ticket, showQr, showPrice = true, action, nested }:
     <article className={nested ? "overflow-hidden" : "hv-card overflow-hidden"}>
       <header className="flex flex-wrap justify-between gap-x-4 border-b border-rule bg-paper-2 px-card py-3 font-extrabold text-ink">
         <span>{routeName(ticket)}</span>
-        <span className="font-normal text-muted">{dep ? new Date(dep.replace(" ", "T")).toLocaleDateString("vi-VN", { weekday: "long", day: "2-digit", month: "long" }) : ""}</span>
+        <span className="font-normal text-muted">{dep ? new Date(dep.replace(" ", "T")).toLocaleDateString(locale === "en" ? "en-GB" : "vi-VN", { weekday: "long", day: "2-digit", month: "long" }) : ""}</span>
       </header>
       <div className="flex gap-4 p-card">
         <div className="min-w-0 flex-1">
           <p className="flex justify-between gap-4 font-semibold">
             <span>{ticket.trip?.product?.name}</span>
-            {showPrice ? <span className="tabular-nums">{formatMoney(ticket.price)}</span> : null}
+            {showPrice ? <span className="tabular-nums">{formatMoney(ticket.price, locale)}</span> : null}
           </p>
           {/* Giá chính là giá thực trả (như trang thành công web cũ); có khuyến mãi thì thêm giá niêm yết và dòng giảm (không hiện mã). */}
           {showPrice && (ticket.price_discount ?? 0) > 0 ? (
             <>
-              <p className="flex justify-between gap-4 text-14 text-muted tabular-nums"><span>{t("payment.list_price")}</span><span>{formatMoney(ticket.price + (ticket.price_discount ?? 0))}</span></p>
-              <p className="flex justify-between gap-4 text-14 font-semibold text-success tabular-nums"><span>{t("payment.promotion")}</span><span>-{formatMoney(ticket.price_discount ?? 0)}</span></p>
+              <p className="flex justify-between gap-4 text-14 text-muted tabular-nums"><span>{t("payment.list_price")}</span><span>{formatMoney(ticket.price + (ticket.price_discount ?? 0), locale)}</span></p>
+              <p className="flex justify-between gap-4 text-14 font-semibold text-success tabular-nums"><span>{t("payment.promotion")}</span><span>-{formatMoney(ticket.price_discount ?? 0, locale)}</span></p>
             </>
           ) : null}
-          {showQr || surcharge ? <p className="text-right text-14 text-muted tabular-nums">{t("booking_infor.surcharge")} : {formatMoney(surcharge)}</p> : null}
+          {showQr || surcharge ? <p className="text-right text-14 text-muted tabular-nums">{t("booking_infor.surcharge")} : {formatMoney(surcharge, locale)}</p> : null}
           <ol className="relative mt-3 grid gap-2 before:absolute before:left-[calc(var(--s-3)/2)] before:top-3 before:bottom-3 before:w-(--line-strong) before:-translate-x-1/2 before:bg-edge">
             {ticket.pick_up?.address && ticket.pick_up.address !== ticket.departure?.name ? (
               <li className={note}>{ticket.pick_up.address} ({t(ticket.transit?.departure ? "payment.transit_vehicle" : "payment.self_service")})</li>

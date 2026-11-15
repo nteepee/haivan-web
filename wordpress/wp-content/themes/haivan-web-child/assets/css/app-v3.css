@@ -1,0 +1,228 @@
+/* App v3 look for the web (same tokens as the HaiVan Android app and the Zalo Mini App ver 2).
+   Source of truth for the values: HaiVan-Android/docs/design-guidelines.md + ui/theme/Hv2.kt.
+   Enqueued after the theme CSS on every WordPress page and imported by the Next.js booking app, it only re-skins:
+   layout, markup, copy and URLs stay as they are.
+   Specificity, not load order, decides: `html body` + a doubled class beats the editorial v2 rules (`.hv2 .x`, 0,2,0),
+   and search.css, which the [haivan_search] shortcode enqueues later in the page.
+   `!important` is kept only for properties no state changes (radius, top-bar removal) or where v2 itself uses it. */
+
+/* 1. Tokens ------------------------------------------------------------------------------------- */
+/* `.hv2` re-declares its own --hv2-* on the element, so the wrapper is targeted too (html .hv2 beats .hv2). */
+html:root, html .hv2 {
+  /* brand */
+  --color-accent: #FFC20E;            /* Yellow: primary button, selected tab/date */
+  --color-accent-hover: #F0A500;      /* YellowDark */
+  --color-accent-edge: #F0A500;
+  --color-select-edge: #A67C00;       /* selection ring, 3:1 on white */
+  --color-accent-soft: #FFF7DB;       /* YellowSoft */
+  --color-accent-ink: #0C0D12;        /* Ink: text on yellow, dark buttons */
+  --color-field: #F4F5F7;
+  /* ground and text */
+  --color-paper: #F4F5F7;             /* Paper: page ground */
+  --color-surface: #FFFFFF;           /* Surface: cards */
+  --color-paper-2: #EEF0F3;           /* Tint */
+  --color-paper-3: #E9EBEF;
+  --color-tint-warm: #FFF7DB;
+  --color-ink: #0C0D12;
+  --color-ink-deep: #0C0D12;
+  --color-text: #1F2937;
+  --color-muted: #5B6472;             /* app Muted #6B7280 darkened: 5.5:1 on the grey page ground */
+  --color-muted-on-dark: #C4C9D2;
+  --color-rule: #E9EBEF;              /* Line: dividers and card hairlines */
+  --color-rule-2: #F0F1F4;
+  --color-edge: #80889A;              /* field and seat boundary: >= 3:1 on paper and white (WCAG 1.4.11), app Line is only 1.1:1 */
+  --color-sold: #E9EBEF;
+  --color-link: #005081;              /* Accent: links */
+  --color-price: #B45309;             /* PriceColor */
+  --color-on-strong: #FFFFFF;
+  /* radius ladder: one scale (Hv2 RadiusSm/Md/Lg + Pill) */
+  --r-1: 12px;                        /* inputs, square chips, seats */
+  --r-2: 12px;                        /* rows, menus, small media */
+  --r-3: 16px;                        /* cards, forms, search card */
+  --r-4: 20px;                        /* sheets, dialogs, big photos */
+  --r-round: 50%;
+  --r-sm: 12px; --r-md: 16px; --r-lg: 20px;
+  --r-pill: 12px;                     /* buttons, chips, badges, tabs: rounded 12, not pills (review 2026-11-12) */
+  /* soft shadows instead of hard borders */
+  --shadow-1: 0 1px 2px rgb(16 24 40 / .04), 0 2px 8px rgb(16 24 40 / .05);
+  --shadow-2: 0 8px 24px rgb(16 24 40 / .08);
+  --shadow-3: 0 24px 48px rgb(16 24 40 / .14);
+  --shadow-card: var(--shadow-1); --shadow-float: var(--shadow-2); --shadow-raise: var(--shadow-3);
+  --hairline: 1px solid #E9EBEF;
+  /* the editorial "v2" layer reads these */
+  --hv2-ink: #0C0D12;
+  --hv2-ink-2: #1F2937;
+  --hv2-paper: #F4F5F7;
+  --hv2-tint: #EEF0F3;
+  --hv2-surface: #FFFFFF;
+  --hv2-line: #E9EBEF;
+  --hv2-line-dark: #3A3F4B;
+  --hv2-muted: #5B6472;
+  --hv2-muted-dark: #C4C9D2;
+  --hv2-gold: #8A6500;                /* yellow-family accent text: 4.9:1 on paper, 4.7:1 on tint */
+}
+html body { background: var(--color-paper); color: var(--color-text); }
+
+/* 2. Headings: bold Nunito like the app (H1-H3 800), no hairline display type --------------------- */
+/* !important: v2 sets weight 400 at 0,2,1 and the Next pages put utility classes on headings */
+html body :is(h1, h2, h3) { font-weight: 800 !important; letter-spacing: -.02em; }
+html body .hv2-head h2 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.5rem); line-height: 1.08; }
+html body .hv2-hero h1 { line-height: 1; letter-spacing: -.03em; } /* cỡ chữ: home-v2.css (hero chứa thẻ đặt vé) */
+html body :is(.hv2-route-name, .hv2-route-name b) { font-weight: 800; }
+
+/* Labels keep their text; the "01 ·" numbering is gone in v3 (the number is always the label's only <span>) */
+html body :is(.hv2-eyebrow, .hv2-step-k) > span, html body .hv2-svc-body > .hv2-no { display: none; }
+html body .hv2-eyebrow { letter-spacing: .08em; }
+
+/* 3. Buttons: rounded 12. Yellow with ink text = primary, ink = dark, white = outline ------------------- */
+html body :is(.hv2-btn, .hv-btn, .hv-search__submit) { border-radius: 12px !important; }
+html body .hv2-btn.hv2-btn:not(.hv2-btn--yellow) { background: var(--hv2-ink); color: #fff; }
+html body .hv2-btn.hv2-btn--yellow,
+html body :is(.hv-btn-primary, .hv-plate-go),
+html body .hv-search.hv-search .hv-search__submit.hv-search__submit {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  font-weight: 800;
+}
+html body :is(.hv2-btn--yellow, .hv-btn-primary, .hv-plate-go):not(:disabled):not([aria-disabled="true"]):hover,
+html body .hv-search.hv-search .hv-search__submit.hv-search__submit:not(:disabled):hover { background: var(--color-accent-hover); }
+html body :is(.hv2-btn--yellow, .hv-plate-go)::after,
+html body .hv-search.hv-search .hv-search__submit.hv-search__submit::after { color: var(--color-accent-ink); }
+
+/* Header: white bar, pill login button, round call button */
+html body .hv-header { background: #fff; box-shadow: 0 1px 0 var(--color-rule); }
+html body :is(.hv-header-account > a, .hv-header-account > button, .hv-header .hv-account > a, .hv-header .hv-account > button) { border-radius: 12px; }
+html body .hv-call-fab.hv-call-fab { border-radius: 50%; background: var(--color-accent); color: var(--color-accent-ink); box-shadow: var(--shadow-2); }
+html body .hv-call-fab.hv-call-fab:hover { background: var(--color-accent-hover); }
+html body :is(.hv-menu-panel, .hv-dropdown, .hv-menu-sub, .hv-account__menu) { border-radius: 16px !important; box-shadow: var(--shadow-2); }
+
+/* 4. Cards: white, radius 16, soft shadow, no yellow top bar ------------------------------------ */
+/* No overflow:hidden on forms and containers: it would clip the search autocomplete, sticky TOC and focus rings */
+html body :is(.hv2-card, .hv2-svc-card > a, .hv2-quotes figure, .hv2-csr figure, .hv2-offer, .hv2-promo-feat,
+  .hv-card, .hv-rcard, .hv-trip, .hv2-book-card, .hv-hero-card, .hv2-leadform, .hv-cta, .hv-toc__box) {
+  border-radius: 16px !important;
+  box-shadow: var(--shadow-1) !important;
+}
+/* Only cards whose media runs to the edge clip (they hold no popups) */
+html body :is(.hv2-card, .hv2-svc-card > a, .hv2-csr figure, .hv-card, .hv-rcard) { overflow: hidden; }
+html body :is(.hv2-book-card, .hv-hero-card) { box-shadow: var(--shadow-2) !important; }
+html body :is(.hv2-svc-card > a, .hv2-card, .hv-card, .hv-rcard):hover { box-shadow: var(--shadow-2) !important; }
+html body :is(.hv2-card-body, .hv2-svc-body, .hv2-csr figcaption, .hv2-quotes figure, .hv2-offer, .hv-card-body,
+  .hv-rcard-body, .hv-toc__box, .hv2-leadform, .hv2-howto li) { border-top: 0 !important; }
+html body .hv2-offer.hv2-offer { background: var(--hv2-ink-2); }
+html body .hv2-offer--lead.hv2-offer--lead { background: var(--color-accent); }
+html body .hv2-offer-tag { padding: 4px 12px; border-radius: 6px; letter-spacing: .04em; } /* nhãn nhỏ ~26px: 12 sẽ thành viên thuốc */
+
+/* No coloured side bars (v2 accent stripes): soft yellow notes and plain cards instead */
+html .hv2 .hv-entry :is(.hv-seo-bridge, p.hv-context-link, p.hv-context-outro) {
+  border-left: 0; border-radius: 12px; background: var(--color-accent-soft);
+}
+html body :is(.hv-cta, .hv-dest-routes) { border-left: 0 !important; }
+html .hv2 .hv-toc a[aria-current="true"] { box-shadow: none; background: var(--color-accent-soft); border-radius: 8px; }
+
+/* Prices: PriceColor on white and on the plain grey page (5.0:1 / 4.6:1); never on tint, dark or yellow bands */
+html body .hv2-sec:not(.hv2-sec--dark):not(.hv2-sec--yellow):not(.hv2-sec--tint) .hv2-route-price strong,
+html body .hv-trip-price strong { color: var(--color-price); }
+
+/* Photos and media frames: radius 20 (big) / 16 (in grids) */
+html body :is(.hv2-split-photo, .hv2-wide-photo, .hv2-lounge-photo, .hv2-story img, .hv-photo, .hv-photo-strip img) {
+  border-radius: 20px !important;
+  overflow: hidden;
+}
+html body :is(.hv2-step-media, .hv2-ticket, .hv-postrow__thumb, .hv-side__img, .hv-trip-thumb) { border-radius: 16px !important; overflow: hidden; }
+html body :is(.hv2-card > .hv2-card-img, .hv2-svc-card .hv2-svc-img, .hv-card > .hv-card-img) { border-radius: 0 !important; }
+
+/* 5. Fields: radius 12 on the grey field ground, 3:1 edge; error / disabled / focus states restated - */
+html body .hv-field.hv-field,
+html body .hv-search.hv-search :is(.hv-search__control--select select, .hv-search__field input, .hv-search__addret, .hv-search__counter, .hv-search__datebox),
+html body .hv2-leadform-field :is(input, select, textarea) {
+  border-radius: 12px;
+  background: var(--color-field);
+  border-color: var(--color-edge);
+}
+html body .hv-field.hv-field:hover:not(:disabled) { border-color: var(--color-ink); }
+html body :is(.hv-field.hv-field, .hv-search.hv-search :is(input, select), .hv2-leadform-field :is(input, select, textarea)):focus-visible {
+  background: #fff;
+  outline: 2px solid var(--color-select-edge);
+  outline-offset: 1px;
+}
+html body :is(.hv-field.hv-field, .hv-search.hv-search :is(input, select))[aria-invalid="true"] { border-color: var(--color-error); }
+html body :is(.hv-field.hv-field, .hv-search.hv-search :is(input, select)):disabled { background: var(--color-paper-2); }
+html body .hv-search.hv-search .hv-search__retclear { border-radius: 12px; background: var(--color-field); }
+html body .hv-search.hv-search .hv-search__swap { border-radius: 50%; background: #fff; box-shadow: 0 0 0 1px var(--color-rule); color: var(--color-ink); }
+html body .hv-search.hv-search .hv-search__swap:hover { background: var(--color-accent-soft); }
+
+/* 6. Choosers. Chips (route picker, filters): selected = ink ground, white text (Hv2Chip).
+      Tabs (sub-navigation, trip-type): selected = yellow pill with ink text (bottom-tab rule) -------- */
+html .hv2 .hv-search.hv-search .hv-search__routes { gap: 8px; border-bottom: 0; flex-wrap: wrap; }
+html .hv2 .hv-search.hv-search .hv-search__route {
+  min-height: 40px; padding: 0 16px; margin-bottom: 0; border: 0; border-radius: 12px;
+  background: var(--color-paper); color: var(--color-text); justify-items: center; text-align: center;
+}
+html .hv2 .hv-search.hv-search .hv-search__route:hover { background: var(--color-accent-soft); }
+html .hv2 .hv-search.hv-search .hv-search__route[aria-pressed="true"] { background: var(--color-ink); color: #fff; }
+/* Next booking page route picker: same chip (rounded 12, even side padding) */
+html body .hv-corr-btns.hv-corr-btns { border-bottom: 0; }
+html body .hv-corr-btn.hv-corr-btn {
+  border: 0; border-radius: 12px; background: var(--color-paper); color: var(--color-text); box-shadow: none; padding-inline: 16px;
+}
+html body .hv-corr-btn.hv-corr-btn:hover { background: var(--color-accent-soft); }
+html body .hv-corr-btn.hv-corr-btn[aria-pressed="true"] { background: var(--color-ink); color: #fff; box-shadow: none; }
+html body .hv-corr-btn.hv-corr-btn[aria-pressed="true"] .hv-corr-a { color: var(--color-muted-on-dark); }
+html body :is(.hv2-chip, .hv-chip, .hv-search__chip, .hv2-filter a, .hv2-filter button, .hv-tags__item, .hv2-badges > *, .hv-badges > *) {
+  border-radius: 12px !important;
+}
+html body .hv-chip:is([aria-pressed="true"], [aria-selected="true"], [data-active="true"]) {
+  background: var(--color-ink); color: #fff; box-shadow: none;
+}
+html body .hv2-tabs .hv-subnav a { border-radius: 12px; padding-inline: 16px !important; }
+html body .hv2-tabs .hv-subnav a[aria-current="page"] { box-shadow: none !important; background: var(--color-accent); color: var(--color-accent-ink); }
+html body .hv-tab { border-radius: 12px; padding-inline: 16px !important; }
+html body :is(.hv-tab[aria-selected="true"], .hv-tab[aria-current="page"], a.hv-tab[aria-current="page"]:hover) {
+  background: var(--color-accent); color: var(--color-accent-ink); box-shadow: none;
+}
+
+/* Seats (Next booking): radius 12; colours and the selected state stay with the booking app's own rules */
+html body .hv-seat { border-radius: 12px; }
+
+/* 7. Links in running text: accent blue (v2 forces ink with !important) */
+html .hv2 :is(.hv-entry, .hv2-prose, .hv2-reading) a:not([class]),
+html body :is(.hv-entry, .hv2-prose, .hv2-reading) a:not([class]) { color: var(--color-link) !important; }
+
+/* 8. Footer keeps its dark band; only corners follow the scale */
+html body :is(.hv-footer .hv-qr, .hv-app-qr, .hv2-qr) { border-radius: 12px; overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) { html body .hv2-svc-card > a:hover { transform: none; } }
+
+/* 9. Nhịp khoảng cách gọn hơn: đệm trên/dưới mỗi khối 48 / 64 / 72px (bản v2 là 72 / 96 / 110px, hai khối liền nhau hở tới 220px). */
+html .hv2 { --hv2-pad: 48px; }
+@media (min-width: 48rem) { html .hv2 { --hv2-pad: 64px; } }
+@media (min-width: 75rem) { html .hv2 { --hv2-pad: 72px; } }
+
+/* Link chữ trong form tìm vé ("Tìm theo điểm đi, điểm đến"): không nền khi rê chuột, giống link số tổng đài. */
+html body .hv-search .hv-search__link:hover { background: transparent; }
+
+/* 10. Đầu trang nội dung (Giới thiệu, chính sách...): gọn để ảnh chính lọt màn hình đầu (review 2026-11-12).
+   v2: đệm 64/64 + H1 tới 84px + tab cách 32px đẩy ảnh xuống dưới nếp gấp. */
+html body.hv2 .hv2-story-page.hv-page { padding-top: 8px; } /* .hv2 nằm trên <body>: body.hv2, không phải body .hv2 */
+html body .hv2-page-head { padding-block: 16px 20px; }
+@media (min-width: 60rem) { html body .hv2-page-head { padding-block: 24px 24px; } }
+html body .hv2-page-head h1 { margin-top: 10px; font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem); line-height: 1.08; letter-spacing: -.02em; }
+html body .hv2-page-head > :is(.hv-photo, figure, .hv-actions, .hv-lead) { margin-top: 16px; }
+html body .hv2-tabs { margin-bottom: 20px; }
+@media (min-width: 60rem) { html body .hv2-story-page .hv2-wide-photo { aspect-ratio: 5 / 2; } }
+
+/* 11. Chip đang chọn: chỉ đổi nền ink chữ trắng, không dấu tích (review 2026-11-12). */
+html body .hv-search .hv-search__route .hv-search__tick { display: none; } /* 0,3,2 thắng [aria-pressed] .hv-search__tick (0,3,0) của search.css */
+html body .hv-trip-card .hv-trip-card__cls, html body .hv-trip-card .hv-trip-card__seats { border-radius: 6px; } /* nhãn ~24px cao */
+
+/* 12. Menu: tiêu đề nhóm là <button> (không dẫn link) nên phải lấy phông và màu của menu; nhãn nhóm trên điện thoại không bấm được. */
+html body button.hv-nav-link { font-family: inherit; line-height: inherit; color: inherit; cursor: pointer; }
+/* Header dùng chung token với app Next (một nguồn màu): chữ menu, EN, viền nút Đăng nhập. */
+html body.hv2 .hv-nav-link, html body .hv2 .hv-nav-link { color: var(--color-text); }
+html body.hv2 :is(.hv-nav-link:hover, .hv-nav-link[aria-expanded="true"], .hv-nav-link[aria-current]) { color: var(--color-ink); }
+html body.hv2 .hv-lang { color: var(--color-text); }
+html body.hv2 .hv-header .hv-btn--ghost { border-color: var(--color-edge); }
+html body :is(.hv-menu-group, .hv-menu-group:hover, .hv-menu-group:active) {
+  background: transparent; color: var(--color-muted); font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; cursor: default;
+}

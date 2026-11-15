@@ -87,7 +87,8 @@ function hv_route_live_prices( $paths ) {
 
 /** 200000 → "200.000đ". */
 function hv_money( $n ) {
-	return number_format( (float) $n, 0, ',', '.' ) . 'đ';
+	// Phân cách nghìn theo ngôn ngữ (như Next formatMoney): vi "250.000đ", en "250,000đ".
+	return ( 'en' === hv_lang() ? number_format( (float) $n, 0, '.', ',' ) : number_format( (float) $n, 0, ',', '.' ) ) . 'đ';
 }
 
 /** Ô giá trong hàng tuyến v2 (`.hv2-route`): "Từ 200.000đ"; luôn in ô (rỗng khi không có giá) để các hàng cùng cột. */

@@ -35,6 +35,17 @@ while ( have_posts() ) :
 		<div class="hv-entry"><?php the_content(); ?></div>
 	<?php endif; ?>
 	<?php hv_render_dest_routes( $hv_name, $hv_slug, get_the_ID() ); ?>
+	<?php
+	// Bài viết (bai_viet) chỉ có tiếng Việt: bản en không liệt kê tiêu đề tiếng Việt, chỉ dẫn sang trang điểm đến bản vi.
+	if ( 'en' === hv_lang() ) :
+		$hv_vi = function_exists( 'pll_get_post' ) ? pll_get_post( get_the_ID(), 'vi' ) : 0;
+		?>
+		<p class="hv-entry"><?php echo esc_html( sprintf( hv_t( 'dest_guides_vi' ), $hv_name ) ); ?>
+			<?php if ( $hv_vi ) : ?>
+				<a href="<?php echo esc_url( get_permalink( $hv_vi ) ); ?>" hreflang="vi" lang="vi"><?php echo esc_html( hv_t( 'dest_guides_link' ) ); ?></a>
+			<?php endif; ?>
+		</p>
+	<?php else : ?>
 	<div class="hv-cols">
 		<div class="hv-cols__main">
 			<?php if ( $hv_query->have_posts() ) : ?>
@@ -54,6 +65,7 @@ while ( have_posts() ) :
 		</div>
 		<?php get_template_part( 'template-parts/side-posts', null, array( 'title' => hv_t( 'latest_posts' ), 'posts' => $hv_side ) ); ?>
 	</div>
+	<?php endif; ?>
 </div>
 	<?php
 endwhile;

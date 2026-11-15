@@ -55,7 +55,7 @@ URL: permalink `/%postname%` **không dấu `/` cuối**; `/slug/` được WP 3
 | URL | Nguồn trong WP |
 |---|---|
 | `/`, `/en/` | trang "Trang chủ"/"Home" (front-page.php, thiết kế v3): dải vàng (H1 + banner carousel), thẻ tìm vé nổi, dải 4 cam kết, Ưu đãi hôm nay, tuyến phổ biến, điểm đến, tin, dải app vàng, phòng chờ (xem "MKT sửa gì ở đâu" và "Banner và ưu đãi trang chủ") |
-| `/chung-toi/*`, `/dich-vu/**`, `/chinh-sach/*`, `/ho-tro/*`, `/tuyen-duong/*`, `/haivanplus`, `/mobile` | Trang (page) phân cấp, slug cũ; danh sách ở `scripts/lib/pages-manifest.php` |
+| `/chung-toi/*`, `/dich-vu/**`, `/chinh-sach/*`, `/ho-tro/*`, `/tuyen-duong/*`, `/mobile` | Trang (page) phân cấp, slug cũ; danh sách ở `scripts/lib/pages-manifest.php` |
 | `/xe-san-bay` (+ `/en/xe-san-bay`) | Trang (page) giữ URL, mẫu `page-xe-san-bay.php`: H1 của trang, một câu giới thiệu, nút gọi tổng đài, `[haivan_search]`, thẻ tuyến đi/đến sân bay lấy từ `hv_route` có đường dẫn chứa `san-bay`/`tan-son-nhat`/`noi-bai` (chỉ tuyến có thật; Nội Bài chưa có tuyến nên chưa hiện; không có tuyến thì ẩn khối). Nội dung trang (nếu MKT nhập) hiện dưới câu giới thiệu |
 | `/dat-ve-nhanh*`, `/dat-ve-nhanhs*` | Trang dùng mẫu `templates/landing-search.php` (hero + `[haivan_search]`) |
 | `/diem-den` | archive CPT `diem_den` (mọi điểm đến, theo thứ tự ưu tiên của CMS) |

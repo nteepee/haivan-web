@@ -22,36 +22,34 @@ $hv2_news                  = hv2_render_news();
 <div class="hv2">
 
 <section class="hv2-hero" aria-labelledby="hv2-h1">
-	<?php echo hv2_img_tag( 'hero-tay-bac.webp', hv2_t( 'hero_alt' ), 'class="hv2-hero-img" fetchpriority="high" decoding="async"' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+	<?php /* Khung riêng cắt ảnh (zoom khi vào trang): hero không cắt để danh sách gợi ý điểm đi/đến của thẻ đặt vé tràn ra ngoài được. */ ?>
+	<span class="hv2-hero-media"><?php echo hv2_img_tag( 'hero-tay-bac.webp', hv2_t( 'hero_alt' ), 'class="hv2-hero-img" fetchpriority="high" decoding="async"' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></span>
 	<div class="hv2-hero-copy">
 		<p class="hv2-eyebrow hv2-eyebrow--light"><span>01</span><?php echo esc_html( hv2_t( 'hero_kicker' ) ); ?></p>
 		<h1 id="hv2-h1"><span class="hv2-h1-brand"><?php echo esc_html( hv2_t( 'hero_h1_a' ) ); ?></span> <em><?php echo esc_html( hv2_t( 'hero_h1_b' ) ); ?><br><?php echo esc_html( hv2_t( 'hero_h1_c' ) ); ?></em></h1>
 		<p class="hv2-hero-lead"><?php echo esc_html( hv2_t( 'hero_lead' ) ); ?></p>
 		<p class="hv2-hero-links">
-			<a href="#hv2-book"><?php echo esc_html( hv2_t( 'hero_find' ) ); ?><span aria-hidden="true">↗</span></a>
 			<a href="<?php echo esc_url( $hv2_p . '/chung-toi/gioi-thieu' ); ?>"><?php echo esc_html( hv2_t( 'hero_story' ) ); ?><span aria-hidden="true">↗</span></a>
 		</p>
 	</div>
-	<p class="hv2-hero-foot" aria-hidden="true"><span><?php echo esc_html( hv2_t( 'hero_foot_a' ) ); ?></span><span><?php echo esc_html( hv2_t( 'hero_foot_b' ) ); ?></span></p>
+	<?php /* Thẻ đặt vé nằm trong hero, nền trong suốt (như app): ô nhập trắng đặc, chữ trắng trên lớp tối ở nửa dưới ảnh. */ ?>
+	<div class="hv2-book-card" id="hv2-book" role="region" aria-labelledby="hv2-book-h">
+		<div class="hv2-book-top">
+			<div><p class="hv2-eyebrow hv2-eyebrow--light"><span>02</span><?php echo esc_html( hv2_t( 'book_eyebrow' ) ); ?></p><h2 id="hv2-book-h"><?php echo esc_html( hv2_t( 'book_h2' ) ); ?></h2></div>
+			<?php /* Bật bằng home-v2.js: bấm "Khứ hồi" = bấm "Thêm ngày về" của form, "Một chiều" = bỏ ngày về. */ ?>
+			<div class="hv2-trip" role="group" aria-label="<?php echo esc_attr( hv2_t( 'trip_label' ) ); ?>" data-hv2-trip hidden>
+				<button type="button" data-trip="ow" aria-pressed="true"><?php echo esc_html( hv2_t( 'trip_ow' ) ); ?></button>
+				<button type="button" data-trip="rt" aria-pressed="false"><?php echo esc_html( hv2_t( 'trip_rt' ) ); ?></button>
+			</div>
+		</div>
+		<?php echo do_shortcode( '[haivan_search today="strip"]' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
+		<p class="hv2-book-help"><?php echo wp_kses( sprintf( esc_html( hv2_t( 'book_help' ) ), '<a href="' . esc_url( $hv2_tel ) . '">' . esc_html( $hv2_hot ) . '</a>' ), array( 'a' => array( 'href' => true ) ) ); ?></p>
+	</div>
 </section>
 
-<section class="hv2-book" id="hv2-book" aria-labelledby="hv2-book-h">
-	<div class="hv2-wrap">
-		<div class="hv2-book-card">
-			<div class="hv2-book-top">
-				<div><p class="hv2-eyebrow"><span>02</span><?php echo esc_html( hv2_t( 'book_eyebrow' ) ); ?></p><h2 id="hv2-book-h"><?php echo esc_html( hv2_t( 'book_h2' ) ); ?></h2></div>
-				<?php /* Bật bằng home-v2.js: bấm "Khứ hồi" = bấm "Thêm ngày về" của form, "Một chiều" = bỏ ngày về. */ ?>
-				<div class="hv2-trip" role="group" aria-label="<?php echo esc_attr( hv2_t( 'trip_label' ) ); ?>" data-hv2-trip hidden>
-					<button type="button" data-trip="ow" aria-pressed="true"><?php echo esc_html( hv2_t( 'trip_ow' ) ); ?></button>
-					<button type="button" data-trip="rt" aria-pressed="false"><?php echo esc_html( hv2_t( 'trip_rt' ) ); ?></button>
-				</div>
-			</div>
-			<?php echo do_shortcode( '[haivan_search today="strip"]' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
-			<p class="hv2-book-help"><?php echo wp_kses( sprintf( esc_html( hv2_t( 'book_help' ) ), '<a href="' . esc_url( $hv2_tel ) . '">' . esc_html( $hv2_hot ) . '</a>' ), array( 'a' => array( 'href' => true ) ) ); ?></p>
-		</div>
-	</div>
+<div class="hv2-book">
 	<?php echo hv_search_today_strip(); // phpcs:ignore WordPress.Security.EscapeOutput -- dựng và escape trong hv_search_shortcode(). ?>
-</section>
+</div>
 
 <section class="hv2-sec" aria-labelledby="hv2-svc">
 	<div class="hv2-wrap">

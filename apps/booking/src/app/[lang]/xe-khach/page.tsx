@@ -109,7 +109,7 @@ export default async function Page({ params }: PageProps<"/[lang]/xe-khach">) {
                   ) : null}
                   {c.price ? (
                     <p className="hv-rcard-price">
-                      <small>{t("route.from")}</small> <strong>{formatMoney(c.price)}</strong>
+                      <small>{t("route.from")}</small> <strong>{formatMoney(c.price, locale)}</strong>
                     </p>
                   ) : null}
                   <Link href={c.href} className="hv-btn hv-btn-primary hv-btn-sm hv-rcard-go" aria-label={`${t("route.book_ticket")} ${c.name}`}>

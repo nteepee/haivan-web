@@ -108,3 +108,15 @@ describe("liên kết thẻ tuyến chính", () => {
     expect(parseCorridorParams(url.searchParams)).toMatchObject({ tuyen: "hn-moc", chieu: "ab", diemDi: "my-dinh", diemDen: "nong-truong" });
   });
 });
+
+describe("identifyStop", () => {
+  it("nearest stop with its own point within 3 km, else the default stop near the corridor end", async () => {
+    const { identifyStop } = await import("./corridors");
+    const { FALLBACK_BOOKING_CONFIG } = await import("./booking-config-fallback");
+    const sgvt = FALLBACK_BOOKING_CONFIG.corridors.find((c) => c.id === "sg-vt")!;
+    const tsn = sgvt.stops.a.find((s) => s.id === "tsn-t1")!.point!;
+    expect(identifyStop(sgvt, "a", tsn)).toBe("tsn-t1");
+    expect(identifyStop(sgvt, "a", sgvt.ends.a.point)).toBe(sgvt.default_stop.a);
+    expect(identifyStop(sgvt, "a", { lat: 21.0, lng: 105.8 })).toBeNull();
+  });
+});

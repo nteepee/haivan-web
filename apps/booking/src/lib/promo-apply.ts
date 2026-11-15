@@ -5,6 +5,7 @@ import { checkPromotionsQuery } from "./confirm-queries";
 import { ApiError, gw } from "./http";
 import { autoToken, autoTokenPromoId } from "./auto-promo-token";
 import { comboPromoFor, roundtripPromoForReturnLeg } from "./promo-match";
+import { autoRuleFor } from "./rule-offers";
 import { stringifyQuery } from "./qs";
 
 /** Phần tử `codes[]` của check-promotions: `ticketPrice` có thể là chuỗi ("200000"), `priceDiscount` số hoặc chuỗi; trường lạ giữ nguyên. */
@@ -46,6 +47,9 @@ export function applyCheckedCodes(seats: DraftSeat[], raw: unknown): DraftSeat[]
  * Đây chỉ là gợi ý hiển thị: BFF kiểm lại toàn bộ điều kiện phía server trước khi đổi token thành mã thật.
  */
 export function eligibleAutoPromo(config: BookingConfig, draft: BookingDraft, nowMs = Date.now()): Promo | null {
+  // Luật giá v2 (WP gửi `rules`) đi trước; không khớp luật nào thì vẫn xét chương trình v1 trong giai đoạn chuyển.
+  const v2 = autoRuleFor(config, draft, nowMs);
+  if (v2) return v2;
   const own = draft.search.corridor;
   if (!own || draft.is_combo === 1 || draft.seats.some((s) => s.promotion || s.is_reward)) return null;
   const from = draft.trip_info.from.reached_at;
@@ -68,8 +72,11 @@ export function eligibleAutoPromo(config: BookingConfig, draft: BookingDraft, no
 const tokenFor = (draft: BookingDraft, promo: Promo): string => autoToken(promo.id, promo.type === "combo" ? draft.order_code : (draft.search.corridor?.donDi ?? ""));
 
 /** Gắn token chương trình cho các ghế đủ điều kiện (tối đa `seats.max`, ghế id nhỏ trước) rồi để server kiểm + tính giảm. */
-export async function applyAutoPromo(draft: BookingDraft, promo: Promo): Promise<DraftSeat[]> {
-  const eligible = [...draft.seats].sort((a, b) => a.id - b.id).slice(0, promo.seats.max).map((s) => s.id);
+export async function applyAutoPromo(draft: BookingDraft, promo: Promo, seatNames?: string[] | null): Promise<DraftSeat[]> {
+  // Luật v2: đúng các ghế engine chọn (rule-offers.autoRuleSeatNames); chương trình v1: tối đa seats.max ghế, id nhỏ trước.
+  const eligible = seatNames
+    ? draft.seats.filter((s) => seatNames.includes(s.name)).map((s) => s.id)
+    : [...draft.seats].sort((a, b) => a.id - b.id).slice(0, promo.seats.max).map((s) => s.id);
   const token = tokenFor(draft, promo);
   const withCode = clearPromo(draft.seats).map((s) => (eligible.includes(s.id) ? { ...s, promotion: token } : s));
   return checkPromotions(draft, withCode);

@@ -21,7 +21,8 @@ function isCurrent(pathname: string, href: string): boolean {
   }
 }
 
-/** Menu desktop: mục có con mở dropdown (Radix), mục thường là liên kết; trang hiện tại có vạch ink dưới. */
+/** Menu desktop: mục có con là NÚT mở dropdown (Radix), không dẫn sang trang nào; chỉ mục con là liên kết (review 2026-11-13).
+ * Mục không có con vẫn là liên kết; trang hiện tại có vạch dưới. */
 export function HeaderNav({ items }: { items: MenuItem[] }) {
   const t = useT();
   const pathname = usePathname();
@@ -30,21 +31,14 @@ export function HeaderNav({ items }: { items: MenuItem[] }) {
       {items.map((item) =>
         item.children?.length ? (
           <DropdownMenu key={item.label} modal={false}>
-            {/* Như WP: tiêu đề nhóm là liên kết thật (`<a href>`, bot và "mở tab mới" dùng được); bấm thường mở dropdown, bàn phím mở bằng Enter/Space/↓. */}
+            {/* Tiêu đề nhóm chỉ mở dropdown (chuột, Enter/Space/↓); không có href nên không đi tới trang nhóm. */}
             <DropdownMenuTrigger asChild>
-              <a
-                href={item.href}
-                className="hv-nav-link"
-                aria-current={item.children.some((c) => isCurrent(pathname, c.href)) ? "true" : undefined}
-                onClick={(e) => {
-                  if (e.button === 0 && !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) e.preventDefault();
-                }}
-              >
+              <button type="button" className="hv-nav-link" aria-current={item.children.some((c) => isCurrent(pathname, c.href)) ? "true" : undefined}>
                 {item.label}
-                <ChevronDown className="size-4" aria-hidden />
-              </a>
+                <ChevronDown className="size-icon" aria-hidden />
+              </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="min-w-56">
+            <DropdownMenuContent align="start" className="hv-nav-dropdown min-w-56">
               {item.children.map((child) => (
                 <DropdownMenuItem key={child.href + child.label} asChild>
                   <a href={child.href} aria-current={isCurrent(pathname, child.href) ? "page" : undefined}>{child.label}</a>
@@ -112,9 +106,14 @@ export function MobileNav({ items }: { items: MenuItem[] }) {
           <ul>
             {items.map((item) => (
               <li key={item.label}>
-                <a href={item.href} aria-current={isCurrent(pathname, item.href) ? "page" : undefined} className="hv-menu-link" onClick={() => setOpen(false)}>
-                  {item.label}
-                </a>
+                {item.children?.length ? (
+                  // Nhóm có mục con: chỉ là nhãn nhóm, không bấm được; khách chọn mục con bên dưới.
+                  <span className="hv-menu-link hv-menu-group">{item.label}</span>
+                ) : (
+                  <a href={item.href} aria-current={isCurrent(pathname, item.href) ? "page" : undefined} className="hv-menu-link" onClick={() => setOpen(false)}>
+                    {item.label}
+                  </a>
+                )}
                 {item.children?.map((child) => (
                   <a key={child.href + child.label} href={child.href} aria-current={isCurrent(pathname, child.href) ? "page" : undefined} className="hv-menu-link hv-menu-sub" onClick={() => setOpen(false)}>
                     {child.label}

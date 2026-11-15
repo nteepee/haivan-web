@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import popularRoutes from "@/content/popular-routes.json";
 import { RouteLandingPage } from "@/components/route-landing/route-landing-page";
 import { RouteSearchForm } from "@/components/trips/route-trips";
-import { isLocale, LOCALES, localePrefix } from "@/i18n/t";
+import { isLocale, LOCALES, localePrefix, translate } from "@/i18n/t";
 import { buildRouteLanding, isIndexableLocale } from "@/lib/route-landing-build";
 import { publicOrigin } from "@/lib/public-origin";
 import { routeTemplate } from "@/lib/route-landing-template";
@@ -12,6 +12,7 @@ import { getRouteLanding } from "@/lib/route-landing";
 import { getRouteListing } from "@/lib/route-listing";
 import { routePricesToday } from "@/server/route-price";
 import { routePromos } from "@/lib/promo-match";
+import { routeRuleOffers } from "@/lib/rule-offers";
 
 export async function generateStaticParams() {
   // Tuyến phổ biến + trang tuyến của 4 tuyến chính trong cấu hình (kể cả chiều CMS không biết, vd my-dinh/moc-chau).
@@ -51,15 +52,15 @@ async function loadView(lang: string, start: string, end: string) {
   // Nút "Xem chiều ngược lại": trang chiều ngược của tuyến chính nếu đã có; không thì liên kết reverse_route của bài WP.
   const reversePath = corridor?.reverseSlug ?? view.reverseRoute?.path ?? null;
   // Ưu đãi đang bật trong WP cho đúng tuyến/chiều của trang (chỉ trang tuyến thuộc tuyến chính).
-  const promos = corridor ? routePromos(config, corridor.corridor.id, corridor.chieu) : [];
+  const promos = corridor ? [...routeRuleOffers(config, corridor.corridor.id, corridor.chieu), ...routePromos(config, corridor.corridor.id, corridor.chieu)] : [];
   return { route, locale, view, corridor, reversePath, prices, promos };
 }
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/xe-khach/[start]/[end]">): Promise<Metadata> {
   const { lang, start, end } = await params;
   const loaded = await loadView(lang, start, end);
-  // Tuyến CMS không biết: như web cũ nhưng noindex; title tuyệt đối để không bị thêm hậu tố "| Hải Vân".
-  if (!loaded) return { title: { absolute: "Xe khách Hải Vân" }, robots: { index: false } };
+  // Tuyến CMS không biết: như web cũ nhưng noindex; title tuyệt đối theo locale (không thêm hậu tố thương hiệu lần nữa).
+  if (!loaded) return { title: { absolute: translate(isLocale(lang) ? lang : "vi", "xe_khach.title") }, robots: { index: false } };
   const { locale, view } = loaded;
   const path = `/xe-khach/${start}/${end}`;
   // hreflang chỉ liệt kê bản có nội dung thật; x-default → vi.

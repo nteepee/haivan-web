@@ -8,6 +8,7 @@ import { useToday } from "@/hooks/use-today";
 import { corridorSearchPoints, findCorridor, localized, reverseChieu, stopsFromParams, stopsToParams, endsFor } from "@/lib/corridors";
 import { isoToDmy } from "@/lib/format";
 import { promoLabel, roundtripPromoForOutbound } from "@/lib/promo-match";
+import { roundtripRuleForOutbound } from "@/lib/rule-offers";
 import { readReturnCarry, saveReturnCarry } from "@/lib/roundtrip-carry";
 import { appendCorridorParams, buildSearchUrl, type CorridorParams } from "@/lib/search-url";
 import { localePrefix } from "@/i18n/t";
@@ -55,7 +56,7 @@ export function ReturnCta({ order, tickets, paid }: { order: string; tickets?: n
   );
   const date = isoToDmy(ngayVe).replaceAll("-", "/");
   const ends = endsFor(corridor, chieu);
-  const promo = roundtripPromoForOutbound(config, corridor.id, intent.own.chieu, { returnDate: ngayVe, seatCount: intent.guests });
+  const promo = roundtripPromoForOutbound(config, corridor.id, intent.own.chieu, { returnDate: ngayVe, seatCount: intent.guests }) ?? roundtripRuleForOutbound(config, corridor.id, intent.own.chieu);
   return (
     <section className="hv-card hv-return-cta grid gap-3 p-card" aria-labelledby="return-cta-title">
       <h2 id="return-cta-title" className="text-h3">

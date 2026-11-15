@@ -1,6 +1,6 @@
 /* Thẻ tìm vé v4: tab phân đoạn xám, lưới ô nhập, nút đổi chiều tròn, bộ đếm số người. Chỉ dùng token. */
 @layer components {
-  /* Tab loại hình v4: thanh phân đoạn. Track xám paper-2 r-2 (đệm s-1, đồng tâm với đoạn r-1); đoạn đang chọn = nền trắng nổi bóng 1.
+  /* Tab loại hình (app v3): track xám paper-2 r-3, đoạn bo 12; đoạn đang chọn = nền vàng chữ ink.
      2x2 trên điện thoại, một hàng từ 40rem. Track nằm trong thẻ, cách mép card-pad. */
   .hv-tabs {
     display: grid;
@@ -8,7 +8,7 @@
     gap: var(--s-1);
     margin: var(--card-pad) var(--card-pad) 0;
     padding: var(--s-1);
-    border-radius: var(--r-2);
+    border-radius: var(--r-3);
     background: var(--color-paper-2);
   }
   .hv-tab {
@@ -19,7 +19,7 @@
     gap: var(--s-2);
     min-width: 0;
     padding: var(--s-1) var(--s-2);
-    border-radius: var(--r-1);
+    border-radius: var(--r-pill);
     color: var(--color-ink);
     font-weight: var(--weight-strong);
     line-height: 1.25;
@@ -38,8 +38,8 @@
     background: var(--color-accent);
   }
   .hv-tab[aria-current="page"] {
-    background: var(--color-surface);
-    box-shadow: var(--shadow-1);
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
     font-weight: var(--weight-display);
   }
   /* Thẻ tìm vé trên nền phẳng (không phải ảnh): nền đặc surface + bóng 2, không blur. */

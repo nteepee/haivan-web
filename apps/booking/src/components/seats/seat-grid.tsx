@@ -1,7 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
 import type { SeatGrid } from "@/lib/seats";
 import type { Seat } from "@/schemas/trip";
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 /** "190000" → "190.000": số; đơn vị "VNĐ" hiện ở dòng riêng dưới giá (ô hẹp, như web cũ). */
-const seatPrice = (n: number) => Math.round(n).toLocaleString("vi-VN");
+const seatPrice = (n: number, locale: string) => Math.round(n).toLocaleString(locale === "vi" ? "vi-VN" : "en-US");
 
 /**
  * Một tầng trong khung xe (r-3, bánh, tài xế, "Đầu xe" và "Cuối xe"). Ghế 64x52 r-1: trống = viền edge 1px; chọn = nền vàng + vòng chọn + dấu tick;
@@ -22,6 +22,7 @@ const seatPrice = (n: number) => Math.round(n).toLocaleString("vi-VN");
  */
 export function SeatFloor({ grid, selected, showPrice, onToggle, label }: Props) {
   const t = useT();
+  const locale = useLocale();
   const selectedIds = new Set(selected.map((s) => s.id));
   return (
     <div className="hv-bus" role="group" aria-label={label ?? t("list_trip.seat_map")}>
@@ -44,7 +45,7 @@ export function SeatFloor({ grid, selected, showPrice, onToggle, label }: Props)
             if (!seat) return <span key={`n${c}`} className="hv-seat-empty" aria-hidden />;
             const isSelected = selectedIds.has(seat.id);
             const booked = !seat.is_empty;
-            const price = seatPrice(seat.price);
+            const price = seatPrice(seat.price, locale);
             const ariaLabel = booked ? t("ux.seat_aria_booked", { name: seat.name }) : showPrice ? t("ux.seat_aria_price", { name: seat.name, price: `${price} ${t("ux.vnd")}` }) : t("ux.seat_aria", { name: seat.name });
             return (
               <button

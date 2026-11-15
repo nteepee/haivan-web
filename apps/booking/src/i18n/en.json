@@ -46,6 +46,7 @@
   "people": "people",
   "departure_date": "Departure date",
   "number_of_people": "Guests",
+  "group_note": "Up to {{max}} tickets per booking. For larger groups, call",
   "type": "Type",
   "search": "Search",
   "searching_tickets": "Search",
@@ -110,7 +111,7 @@
   "noti": "Notification",
   "view_details": "View details",
   "msg": {
-   "msg_booking_select_seat": "Only 9 tickets allowed for each reservation!",
+   "msg_booking_select_seat": "Up to 9 seats per booking. For larger groups, please call 1900 6763.",
    "msg_select_ticket": "ou haven't selected enough tickets!",
    "msg_change_num_ticket": "Would you like to change the quantity of tickets?",
    "msg_block_booking": "Booking for this trip has been blocked. Please do not proceed!",
@@ -130,6 +131,7 @@
   "seats_left": "{{n}} seats left",
   "today_discount": "-{{percent}}% today",
   "vehicle_alt": "{{name}} coach of Hai Van",
+  "route_line": "Coach line {{name}}",
   "seat_error": "Could not load the seat map. Please try again.",
   "count": "{{n}} trips on {{date}}",
   "edit": "Edit",
@@ -632,9 +634,9 @@
   "msg_check_up_rank": "You need xxx point or yyy trip to achieve the next tier ttt",
   "msg_check_rank": "You need 1 trip before ttt to achieve the next tier",
   "msg_check_remain_rank": "You need xxx point or yyy trip to maintain your rank before ttt",
-  "msg_request_carrental": "Thank you for choosing Hải Vân. We will contact you within 24 hours. For more information, please contact our customer service line at 1900 6763.",
+  "msg_request_carrental": "Thank you for choosing Hai Van. We will contact you within 24 hours. For more information, please contact our customer service line at 1900 6763.",
   "msg_review_send": "Thank you for using service. Providing you with a great experience is our top priority. THank you for taking the time to provide us with your feedback.",
-  "msg_view_map": "Thank you for choosing Hải Vân. For more information, please contact our customer service line at 1900 6763.",
+  "msg_view_map": "Thank you for choosing Hai Van. For more information, please contact our customer service line at 1900 6763.",
   "msg_review_order": "Let us know what you think",
   "hint_review_order": "Please help Hai Van improve our service by leaving your review for this shipment",
   "enter_full_name": "Please enter your full name",
@@ -758,10 +760,10 @@
   "rank_current": "current tier"
  },
  "route": {
-  "tpl_title": "Bus {{a}} to {{b}} – Tickets from {{price}} | Hải Vân",
-  "tpl_title_no_price": "Bus {{a}} to {{b}} | Hải Vân",
+  "tpl_title": "Bus {{a}} to {{b}} – Tickets from {{price}} | Hai Van",
+  "tpl_title_no_price": "Bus {{a}} to {{b}} | Hai Van",
   "tpl_h1": "Book bus tickets {{a}} to {{b}}",
-  "tpl_meta_head": "Book Hải Vân bus tickets {{a}} to {{b}}",
+  "tpl_meta_head": "Book Hai Van bus tickets {{a}} to {{b}}",
   "tpl_meta_price": "from {{price}}",
   "tpl_meta_time": "{{hours}} hours",
   "tpl_meta_pickup": "pick-up at {{place}}",
@@ -842,9 +844,15 @@
   "about_eyebrow": "Route guide"
  },
  "xe_khach": {
-  "title": "Book Hải Vân coach tickets online – Schedules & fares",
-  "h1": "Book Hải Vân coach tickets",
-  "description": "Book Hải Vân coach tickets online: check schedules and fares for Hanoi – Dien Bien, Son La and Vung Tau – Saigon. Choose your seat, pay with VNPay. Hotline 1900 6763."
+  "title": "Book Hai Van coach tickets online – Schedules & fares",
+  "h1": "Book Hai Van coach tickets",
+  "description": "Book Hai Van coach tickets online: check schedules and fares for Hanoi – Dien Bien, Son La and Vung Tau – Saigon. Choose your seat, pay with VNPay. Hotline 1900 6763.",
+  "search_title": "Find a coach trip"
+ },
+ "site": {
+  "title_default": "Hai Van coaches – intercity, private hire and airport transfers",
+  "title_template": "%s | Hai Van",
+  "description": "Book Hai Van coach tickets online: pick a trip, choose your seat and pay in minutes. Hotline 1900 6763."
  },
  "steps": {
   "label": "Booking steps",
@@ -864,7 +872,6 @@
   "add_return": "Add return date",
   "return_date": "Return date",
   "remove_return": "Remove return date",
-  "back_to_corridors": "Back to main routes",
   "today_all": "All day",
   "today_group": "Pick a time of day for today's trips",
   "today_count": "{{label}}, {{n}} trips",
@@ -887,11 +894,29 @@
   "return_route": "{{from}} → {{to}} · {{date}} · {{n}} tickets",
   "return_button": "Book return {{date}}",
   "return_leg_notice": "You are booking the return trip for outbound order {{code}}. The return is a separate order with its own payment.",
-  "other_province_lead": "Going elsewhere?",
-  "other_province_link": "Search by origin and destination",
   "today_label": "Today's trips",
   "today_route": "{{from}} to {{to}}",
   "ticket_one": "{{n}} ticket",
-  "ticket_other": "{{n}} tickets"
+  "ticket_other": "{{n}} tickets",
+  "ticket_group": "More than {{n}} (group)"
+ },
+ "page_title": {
+  "login": "Log in",
+  "profile": "Personal information",
+  "my_parcels": "Parcels",
+  "my_airport": "Airport transfers",
+  "my_hire": "Private hire",
+  "my_transfer": "Shuttle transfers",
+  "my_trips": "My trips",
+  "my_offers": "My offers",
+  "logout": "Log out",
+  "confirm": "Confirm your booking",
+  "extras": "Additional services",
+  "payment": "Payment",
+  "tracking": "Track your coach",
+  "partner_redirect": "Redirecting | Hai Van",
+  "payment_success": "Booking confirmed",
+  "fleet": "Fleet tracking",
+  "email_verify": "Verify your email"
  }
 }

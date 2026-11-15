@@ -49,7 +49,7 @@ export function RouteTripList({ places, landing }: { places: RoutePlaces; landin
   if (!search) return null;
   return (
     <>
-      <TripList search={search} />
+      <TripList search={search} legTitle={`${places.from.name} - ${places.to.name}`} />
       {/* Chỗ đệm cho thanh tổng cố định đáy khi một chuyến đang mở (cao 0 nếu không có thanh). */}
     </>
   );

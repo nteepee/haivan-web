@@ -46,8 +46,7 @@ test("ô tìm vé theo tuyến: chọn tuyến, trạm, ngày về → link tim-
     `from_location=21.0284297%2C105.7782687&to_location=20.8461723%2C104.6415738&numberGuest=2&date=${vnDay(0)}&sort_by=time&sort_mode=asc&type=2`,
   );
 
-  // "Sửa" mở lại form theo tuyến đã chọn sẵn.
-  await page.getByRole("button", { name: "Sửa" }).click();
+  // Thanh tìm vé ở đầu trang kết quả luôn mở, chọn sẵn tuyến + trạm (không còn nút "Sửa").
   await expect(page.getByRole("button", { name: "Hà Nội – Mộc Châu" })).toHaveAttribute("aria-pressed", "true");
   await expect(page.getByRole("combobox", { name: "Điểm đến" })).toHaveValue("ben-xe-mc");
   // (Trang chủ trước đó còn nằm ẩn trong DOM khi điều hướng mềm: chỉ xét ô đang hiện.)
@@ -74,8 +73,7 @@ test("trang tuyến của một tuyến chính chọn sẵn tuyến; trang tuy�
 
   await page.goto("/xe-khach/quan-1/vung-tau");
   await expect(page.getByRole("button", { name: "Sài Gòn – Vũng Tàu" })).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("button", { name: "Tìm theo điểm đi, điểm đến" }).click();
-  await expect(page.getByText("Điểm xuất phát")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Tìm theo điểm đi, điểm đến" })).toHaveCount(0);
 });
 
 test("trang tuyến chính mà CMS không biết (my-dinh/moc-chau): dựng từ bài WP, có H1, index, nút chiều ngược, bảng giá, chuyến theo toạ độ đầu tuyến", async ({ page, mock }) => {

@@ -30,10 +30,25 @@ async function loadWpBookingConfig(url: string): Promise<Fetched<BookingConfig>>
   }
 }
 
+/**
+ * Chỉ giữ luật giá v2 mà bản deploy này thực hiện được: luật ghi giảm trực tiếp ERP cần HV_ERP_DIRECT_URL/SECRET, luật có hạn mức cần
+ * sổ hạn mức (HV_WP_SHARED_SECRET + WP). Chưa hỗ trợ ở web: khách tự chọn (optin), combo 2 chặng (across_legs), điều kiện cách thanh toán/
+ * kênh (lúc áp mã chưa biết khách trả bằng gì). Không làm được thì không hiện cho khách (không hứa ưu đãi mà không áp được).
+ */
+function deployableRules(config: BookingConfig): BookingConfig {
+  const direct = /^https?:\/\//.test(process.env.HV_ERP_DIRECT_URL?.trim() ?? "") && (process.env.HV_ERP_DIRECT_SECRET?.trim().length ?? 0) >= 16;
+  const ledger = (process.env.HV_WP_SHARED_SECRET?.trim().length ?? 0) >= 16 && !!routeBaseUrl();
+  const rules = config.rules.filter(
+    ({ rule, has_quota }) =>
+      (rule.apply.settlement !== "erp_direct" || direct) && (!(has_quota || rule.quota) || ledger) && !rule.who.across_legs && rule.apply.mode === "auto" && !rule.who.payments && !rule.who.channels,
+  );
+  return rules.length === config.rules.length ? config : { ...config, rules };
+}
+
 /** Cấu hình đặt vé: WP (`haivan-web/v1/booking-config`) → bản WP tốt gần nhất → bản dự phòng. Không bao giờ ném lỗi. */
 export async function getBookingConfig(): Promise<BookingConfig> {
   const base = routeBaseUrl();
   if (!base) return FALLBACK_BOOKING_CONFIG;
   const wp = await lastGood.resolve("config", async () => unwrapFetched(await loadWpBookingConfig(`${base}/wp-json/haivan-web/v1/booking-config`)));
-  return wp ?? FALLBACK_BOOKING_CONFIG;
+  return wp ? deployableRules(wp) : FALLBACK_BOOKING_CONFIG;
 }

@@ -29,3 +29,47 @@
     sync();
   });
 })();
+
+/*
+ * Trang chủ: các khối hiện dần khi cuộn tới. Chỉ bật khi có IntersectionObserver và người dùng không chọn giảm chuyển động;
+ * lớp .hv2-js gắn bằng JS nên không có JS thì nội dung hiện sẵn. Phần tử cùng nhóm hiện so le (60ms, tối đa 6 bậc).
+ */
+(function () {
+  'use strict';
+  if (typeof IntersectionObserver !== 'function') { return; }
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+  var sel = '.hv2-sec .hv2-head, .hv2-svc-card, .hv2-step, .hv2-offer, .hv2-route, .hv2-dest, .hv2-newslist > *, .hv2-lounge, .hv2-story';
+  var els = document.querySelectorAll(sel);
+  if (!els.length) { return; }
+  document.documentElement.classList.add('hv2-js');
+  // Hiện xong thì gỡ lớp reveal để phần tử dùng lại transition gốc của nó (vd. hover của dòng tuyến).
+  function show(el) {
+    if (!el.classList.contains('hv2-reveal') || el.classList.contains('is-in')) { return; }
+    el.classList.add('is-in');
+    var done = function (ev) {
+      if (ev && (ev.target !== el || ev.propertyName !== 'transform')) { return; } // chờ transform (0,7s) xong, không phải opacity (0,6s)
+      el.classList.remove('hv2-reveal', 'is-in');
+      el.style.removeProperty('--hv2-d');
+      el.removeEventListener('transitionend', done);
+    };
+    el.addEventListener('transitionend', done);
+    setTimeout(done, 1500); // không có transitionend (tab nền, bị huỷ): vẫn gỡ
+  }
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { show(e.target); io.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+  Array.prototype.forEach.call(els, function (el) {
+    var item = el.closest('li') || el; // dòng tuyến, điểm đến là <a> trong <li>: đếm thứ tự theo <li>
+    var sib = item.parentElement ? Array.prototype.indexOf.call(item.parentElement.children, item) : 0;
+    el.style.setProperty('--hv2-d', (Math.min(sib, 5) * 60) + 'ms');
+    el.classList.add('hv2-reveal');
+    io.observe(el);
+  });
+  // Tab bàn phím tới phần tử chưa hiện (Firefox/Safari cuộn focus sát mép dưới): hiện ngay.
+  document.addEventListener('focusin', function (ev) {
+    var r = ev.target.closest && ev.target.closest('.hv2-reveal');
+    if (r) { show(r); io.unobserve(r); }
+  });
+})();

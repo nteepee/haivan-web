@@ -225,7 +225,19 @@ function hv_page_subnav( $post ) {
 }
 
 /**
+ * Chuỗi có chữ tiếng Việt có dấu (kể cả à, ì, ũ, đ): so với bản bỏ dấu của core.
+ *
+ * @param string $s Chuỗi.
+ * @return bool
+ */
+function hv_has_vi( $s ) {
+	$s = (string) $s;
+	return '' !== $s && remove_accents( $s ) !== $s;
+}
+
+/**
  * Văn bản thay thế (alt) cho ảnh đại diện của một bài: ưu tiên alt MKT đã nhập cho ảnh trong Media, không có thì lấy tiêu đề bài.
+ * Bản en không bao giờ trả alt tiếng Việt.
  *
  * @param WP_Post|int|null $post Bài.
  * @return string
@@ -237,7 +249,13 @@ function hv_image_alt( $post = null ) {
 	}
 	$thumb = (int) get_post_thumbnail_id( $post );
 	$alt   = $thumb > 0 ? trim( (string) get_post_meta( $thumb, '_wp_attachment_image_alt', true ) ) : '';
-	return '' !== $alt ? $alt : trim( wp_strip_all_tags( get_the_title( $post ) ) );
+	$title = trim( wp_strip_all_tags( get_the_title( $post ) ) );
+	if ( 'en' === hv_lang() ) {
+		// Ảnh dùng chung hai ngôn ngữ (alt tiếng Việt) và bài chỉ có tiếng Việt (vd. tuyến): bản en dùng tên tiếng Anh, bỏ dấu.
+		$alt = '' !== $alt && ! hv_has_vi( $alt ) ? $alt : $title;
+		return hv_has_vi( $alt ) && function_exists( 'hv_place_en' ) ? implode( ' - ', array_map( 'hv_place_en', explode( ' - ', $alt ) ) ) : $alt;
+	}
+	return '' !== $alt ? $alt : $title;
 }
 
 /**

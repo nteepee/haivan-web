@@ -27,7 +27,21 @@ function facts(view: RouteLandingView, t: (key: string, vars?: Record<string, st
 }
 
 /** H1 hai vế (v2): vế điểm đến tô vàng đậm bằng <em>; chữ H1 giữ nguyên, nếu không thấy điểm đến thì in nguyên chuỗi. */
-function splitH1(h1: string, end: string): ReactNode {
+/** Tên địa danh không bị ngắt giữa chừng ("Tân Sơn / Nhất"): nối tối đa 3 chữ cuối của mỗi tên bằng dấu cách không ngắt. */
+export function keepPlaceNames(text: string, names: string[]): string {
+  let out = text;
+  for (const name of names) {
+    const words = name.trim().split(/\s+/);
+    if (words.length < 2) continue;
+    const tail = words.slice(-3).join(" ");
+    out = out.split(tail).join(tail.replace(/ /g, "\u00a0"));
+  }
+  return out;
+}
+
+function splitH1(rawH1: string, rawEnd: string, start: string): ReactNode {
+  const h1 = keepPlaceNames(rawH1, [start, rawEnd]);
+  const end = keepPlaceNames(rawEnd, [rawEnd]);
   const at = end ? h1.indexOf(end) : -1;
   if (at < 0) return h1;
   return (
@@ -59,7 +73,7 @@ export function RouteHero({ view, locale, photo, reverse, children }: { view: Ro
             <Link href={`${prefix}/xe-khach`}>{t("route.crumb_coach")}</Link>
           </nav>
           <p className="hv-rhero2-eyebrow">{t("route.eyebrow")}</p>
-          <h1 id="route-h1">{splitH1(view.h1, view.end)}</h1>
+          <h1 id="route-h1">{splitH1(view.h1, view.end, view.start)}</h1>
           {view.intro ? <p className="hv-rhero2-lead">{view.intro}</p> : null}
           {items.length ? (
             <dl className="hv-rhero2-facts">

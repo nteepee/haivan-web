@@ -25,6 +25,7 @@
 @import "./hv-route.css";
 @import "./hv-leaflet.css";
 @import "./v2.css";
+@import "./hv-motion.css";
 
 @theme inline {
   --color-sidebar-ring: var(--sidebar-ring);

@@ -1,6 +1,6 @@
 /* Lớp thành phần dùng chung (v4): nút không viền, ô nhập viền 1px edge, thẻ r-3 bóng 1, lỗi, ảnh. Chỉ dùng token (docs/design/check-tokens.mjs). */
 @layer components {
-  /* Nút v4: 48 cao, r-1, không viền, chữ 16/24 800. Hover đổi màu, :active lún 1px, disabled 55%, loading = aria-busy. */
+  /* Nút v3: 48 cao, bo r-pill (12), không viền, chữ 16/24 800. Hover đổi màu, :active lún 1px, disabled 55%, loading = aria-busy. */
   .hv-btn {
     display: inline-flex;
     min-height: var(--control-h);
@@ -9,7 +9,7 @@
     gap: var(--s-2);
     padding: var(--s-3) var(--s-6);
     border: 0;
-    border-radius: var(--r-1);
+    border-radius: var(--r-pill);
     font-size: var(--fs-16);
     font-weight: var(--weight-display);
     line-height: var(--lh-16);
@@ -89,7 +89,7 @@
     padding: 0 var(--s-4);
     border: var(--line) solid var(--color-edge);
     border-radius: var(--r-1);
-    background: var(--color-surface);
+    background: var(--color-input);
     font-size: var(--fs-16);
     line-height: var(--lh-16);
     color: var(--color-text);
@@ -104,17 +104,19 @@
     opacity: 1;
   }
   .hv-field:hover:not(:disabled) {
-    background: var(--color-accent-soft);
+    border-color: var(--color-ink);
   }
   .hv-field:focus-visible {
     outline-offset: 0;
+    background: var(--color-surface);
   }
   .hv-field:disabled {
     background: var(--color-paper-2);
     opacity: 0.55;
     cursor: not-allowed;
   }
-  .hv-field[aria-invalid="true"] {
+  .hv-field[aria-invalid="true"],
+  .hv-field[aria-invalid="true"]:hover:not(:disabled) {
     border-color: var(--color-error);
   }
   .hv-label {
@@ -175,5 +177,24 @@
   }
   .hv-tabular {
     font-variant-numeric: tabular-nums;
+  }
+  /* Ô số vé vượt giới hạn mỗi đơn: dòng mời gọi tổng đài cho đoàn (nằm dưới ô, kéo hết hàng của form). */
+  .hv-group-note {
+    grid-column: 1 / -1;
+    margin-top: var(--s-2);
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-1);
+    background: var(--color-accent-soft);
+    color: var(--color-ink);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+  }
+  .hv-group-note-call {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-1);
+    font-weight: 800;
+    white-space: nowrap;
+    text-decoration: underline;
   }
 }

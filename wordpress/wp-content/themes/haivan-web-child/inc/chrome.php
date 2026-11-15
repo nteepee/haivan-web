@@ -47,7 +47,8 @@ function hv_render_primary_nav( array $items ) {
 		echo '<div class="hv-nav-item">';
 		if ( $has_sub ) {
 			$id = 'hv-dd-' . (int) $i;
-			echo '<a class="hv-nav-link" ' . hv_link_attrs( $item['href'] ) . $cur . ' data-hv-dd aria-haspopup="true" aria-expanded="false" aria-controls="' . esc_attr( $id ) . '">' . esc_html( $item['label'] ) . hv_icon( 'chevron-down' ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput
+			// Tiêu đề nhóm là nút mở dropdown, không dẫn sang trang nhóm (review 2026-11-13): chỉ mục con là liên kết.
+			echo '<button type="button" class="hv-nav-link"' . $cur . ' data-hv-dd aria-haspopup="true" aria-expanded="false" aria-controls="' . esc_attr( $id ) . '">' . esc_html( $item['label'] ) . hv_icon( 'chevron-down' ) . '</button>'; // phpcs:ignore WordPress.Security.EscapeOutput
 			echo '<div class="hv-dropdown" id="' . esc_attr( $id ) . '" hidden>';
 			foreach ( $item['children'] as $child ) {
 				echo '<a ' . hv_link_attrs( $child['href'] ) . '>' . esc_html( $child['label'] ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput
@@ -73,7 +74,11 @@ function hv_render_mobile_menu( array $items, array $switch ) {
 	echo hv_icon( 'menu', 'hv-ic--open' ) . hv_icon( 'x', 'hv-ic--close' ) . '<span>' . esc_html( hv_t( 'menu' ) ) . '</span></button>'; // phpcs:ignore WordPress.Security.EscapeOutput
 	echo '<nav id="hv-main-menu" class="hv-menu-panel" aria-label="' . esc_attr( hv_t( 'main_menu' ) ) . '" hidden><ul>';
 	foreach ( $items as $item ) {
-		echo '<li><a class="hv-menu-link" ' . hv_link_attrs( $item['href'] ) . '>' . esc_html( $item['label'] ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput
+		if ( ! empty( $item['children'] ) ) {
+			echo '<li><span class="hv-menu-link hv-menu-group">' . esc_html( $item['label'] ) . '</span>'; // nhóm có mục con: nhãn, không bấm được
+		} else {
+			echo '<li><a class="hv-menu-link" ' . hv_link_attrs( $item['href'] ) . '>' . esc_html( $item['label'] ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput
+		}
 		foreach ( (array) ( $item['children'] ?? array() ) as $child ) {
 			echo '<a class="hv-menu-link hv-menu-sub" ' . hv_link_attrs( $child['href'] ) . '>' . esc_html( $child['label'] ) . '</a>'; // phpcs:ignore WordPress.Security.EscapeOutput
 		}
@@ -146,7 +151,8 @@ function hv_render_logo_group( $title, array $logos ) {
 	}
 	echo '<section class="hv-footer-group"><p class="hv-footer-head">' . esc_html( $title ) . '</p><ul class="hv-chips">';
 	foreach ( $logos as $l ) {
-		$img = hv_logo_img( $l['img'], $l['alt'], 120, 32 );
+		$alt = 'en' === hv_lang() ? ( $l['alt_en'] ?? hv_alt_en( $l['alt'] ) ) : $l['alt'];
+		$img = hv_logo_img( $l['img'], $alt, 120, 32 );
 		echo '<li>' . ( ! empty( $l['href'] ) ? '<a href="' . esc_url( $l['href'] ) . '" target="_blank" rel="noopener">' . $img . '</a>' : $img ) . '</li>'; // phpcs:ignore WordPress.Security.EscapeOutput
 	}
 	echo '</ul></section>';

@@ -68,7 +68,7 @@ function SelectContent({
       <SelectPrimitive.Content
         data-slot="select-content"
         data-align-trigger={position === "item-aligned"}
-        className={cn("relative z-(--z-dropdown) max-h-(--radix-select-content-available-height) min-w-36 overflow-x-hidden overflow-y-auto rounded-2 bg-popover p-2 text-popover-foreground shadow-2", position ==="popper"&&"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className )}
+        className={cn("relative z-(--z-popover) max-h-(--radix-select-content-available-height) min-w-36 overflow-x-hidden overflow-y-auto rounded-2 bg-popover p-2 text-popover-foreground shadow-2", position ==="popper"&&"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className )}
         position={position}
         align={align}
         {...props}

@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
+import { localizedMetadata } from "@/lib/page-metadata";
 import { TrackingPage } from "@/components/tracking/tracking-page";
 
-export const metadata: Metadata = { title: "Theo dõi xe", robots: { index: false } };
+export const generateMetadata = localizedMetadata("tracking", { robots: { index: false } });
 
 export default function Page() {
   return (

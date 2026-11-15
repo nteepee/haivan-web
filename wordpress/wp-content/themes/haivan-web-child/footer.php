@@ -54,7 +54,7 @@ if ( ! is_front_page() ) {
 				<?php hv_render_logo_group( hv_t( 'payment_methods' ), $hv_site['payments'] ?? array() ); ?>
 				<?php
 				if ( $hv_cert ) {
-					hv_render_logo_group( hv_t( 'certification' ), array( array( 'img' => $hv_cert['img'], 'href' => $hv_cert['href'], 'alt' => $hv_cert['alt'] ?? hv_t( 'certification' ) ) ) );
+					hv_render_logo_group( hv_t( 'certification' ), array( array( 'img' => $hv_cert['img'], 'href' => $hv_cert['href'], 'alt' => $hv_cert['alt'] ?? hv_t( 'certification' ), 'alt_en' => $hv_cert['alt_en'] ?? hv_t( 'certification' ) ) ) );
 				}
 				?>
 			</div>

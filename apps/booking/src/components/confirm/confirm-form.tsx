@@ -141,7 +141,7 @@ export function ConfirmForm({ draft, customerData, promotions, services: initial
                 {showPrice ? (
                   <p className="hv-sticky-sum lg:hidden">
                     <span className="hv-sticky-label">{t("booking_infor.total")}</span>
-                    <span className="hv-total">{formatMoney(total)}</span>
+                    <span className="hv-total">{formatMoney(total, locale)}</span>
                   </p>
                 ) : null}
                 <button type="button" onClick={submit} aria-busy={pending} disabled={pending} className="hv-btn hv-btn-primary hv-btn-lg lg:w-full">

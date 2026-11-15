@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HV_WEB_VERSION', '1.10.8' );
+define( 'HV_WEB_VERSION', '1.10.27' );
 define( 'HV_WEB_DIR', get_stylesheet_directory() );
 define( 'HV_WEB_URI', get_stylesheet_directory_uri() );
 
@@ -22,7 +22,7 @@ foreach (
 		'i18n', 'i18n-labels', 'tokens', 'icons', 'admin-fields', 'layout', 'layout-admin', 'template-tags', 'chrome',
 		'content-types', 'search-shortcode', 'home-settings', 'mkt-shared', 'banners', 'banners-render', 'offers', 'offers-render',
 		'corridors', 'promos', 'booking-config', 'mkt-admin', 'home-rest', 'home', 'home-blocks', 'v2', 'v2-story', 'home-v2', 'cta', 'entry-tables',
-		'route-meta', 'route-rest', 'dest-routes', 'content-fixes', 'toc', 'redirects', 'seo', 'schema', 'hardening',
+		'route-meta', 'route-rest', 'dest-routes', 'content-fixes', 'toc', 'redirects', 'seo', 'schema', 'hardening', 'site-tags',
 	) as $hv_inc
 ) {
 	require_once HV_WEB_DIR . '/inc/' . $hv_inc . '.php';
@@ -77,6 +77,9 @@ add_action(
 		wp_enqueue_script( 'hv-v2', HV_WEB_URI . '/assets/js/v2.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
 		// Design system v2 nạp sau cùng cho mọi trang: phủ lớp v4 bằng một bộ biến + thành phần (assets/css/v2.css).
 		wp_enqueue_style( 'hv-v2', $css . 'v2.css', array( 'hv-footer' ), HV_WEB_VERSION );
+		// Giao diện app v3 (cùng token với app Android / Mini App): chỉ đổi phong cách, giữ bố cục.
+		// Thắng các CSS khác bằng độ ưu tiên selector (html body …), không dựa vào thứ tự nạp (search.css do shortcode nạp sau).
+		wp_enqueue_style( 'hv-app-v3', $css . 'app-v3.css', array( 'hv-v2' ), (string) filemtime( HV_WEB_DIR . '/assets/css/app-v3.css' ) );
 		wp_enqueue_script( 'hv-site', HV_WEB_URI . '/assets/js/site.js', array(), HV_WEB_VERSION, array( 'strategy' => 'defer', 'in_footer' => true ) );
 		wp_add_inline_script( 'hv-site', 'window.HV_SITE=' . wp_json_encode( hv_site_js_config() ) . ';', 'before' );
 	},

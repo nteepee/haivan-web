@@ -8,6 +8,7 @@ import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { LoginDialog } from "@/components/auth/login-dialog";
 import { useLocale, useT } from "@/components/providers";
+import { tripClassLabel } from "@/lib/trip-labels";
 import { StickyBar } from "@/components/ui/sticky-bar";
 import { useSession } from "@/hooks/use-session";
 import { localePrefix } from "@/i18n/t";
@@ -16,7 +17,7 @@ import { draftFromHold } from "@/lib/hold-draft";
 import { formatMoney } from "@/lib/format";
 import { ApiError, gw } from "@/lib/http";
 import type { SearchParamsData } from "@/lib/search-url";
-import { buildHoldBody, mergeFloors, toggleSeat } from "@/lib/seats";
+import { buildHoldBody, MAX_SEATS, mergeFloors, toggleSeat } from "@/lib/seats";
 import { holdResponseSchema } from "@/schemas/booking";
 import type { Seat, SeatMapResponse, Trip } from "@/schemas/trip";
 import { useBookingDraft } from "@/stores/booking-draft";
@@ -107,9 +108,9 @@ export function SeatPanel({ trip, search, seatMap, numberGuest, onGuestsChange }
           {selected.length ? (
             <>
               <span className="hv-sticky-label">
-                {t("list_trip.selected_seats", { seats: selected.map((s) => s.name).join(", "), product: trip.product.name, time: trip.time })}
+                {t("list_trip.selected_seats", { seats: selected.map((s) => s.name).join(", "), product: tripClassLabel(trip.product.name, locale), time: trip.time })}
               </span>
-              {showPrice ? <span className="hv-total">{formatMoney(total)}</span> : null}
+              {showPrice ? <span className="hv-total">{formatMoney(total, locale)}</span> : null}
               {showPrice ? <span className="hv-sticky-label">{t("booking_infor.total")}</span> : null}
             </>
           ) : (
@@ -169,7 +170,7 @@ export function SeatPanel({ trip, search, seatMap, numberGuest, onGuestsChange }
         open={guestOpen}
         onOpenChange={setGuestOpen}
         value={numberGuest}
-        max={trip.available_seats}
+        max={Math.min(trip.available_seats, MAX_SEATS)}
         onUpdate={(n) => {
           if (n < selected.length) setSelected([]);
           onGuestsChange(n);

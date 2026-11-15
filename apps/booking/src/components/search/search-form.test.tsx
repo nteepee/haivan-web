@@ -1,10 +1,11 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import placesFixture from "../../../test/fixtures/places.json";
 import { Providers } from "@/components/providers";
 import { SearchForm, SHOW_SERVICE_TABS } from "./search-form";
 
-vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
+const nav = vi.hoisted(() => ({ push: vi.fn() }));
+vi.mock("next/navigation", () => ({ useRouter: () => ({ push: nav.push }) }));
 vi.mock("@/hooks/use-trips", () => ({ usePlaces: () => ({ data: placesFixture }) }));
 
 beforeEach(() => {
@@ -77,5 +78,39 @@ describe("SearchForm", () => {
     cleanup();
     renderForm("2026-10-27");
     expect(screen.getByLabelText("Ngày đi")).toHaveValue("2026-10-29");
+  });
+
+  it("số người tối đa 9: bấm + ở 9 hoặc gõ 15 thì giữ 9 và hiện số tổng đài cho đoàn", () => {
+    renderForm();
+    const input = screen.getByRole("spinbutton");
+    fireEvent.change(input, { target: { value: "9" } });
+    expect(screen.queryByText(/Mỗi đơn đặt tối đa 9 vé/)).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /tăng|increase/i }));
+    expect(input).toHaveValue(9);
+    expect(screen.getByRole("link", { name: /1900 6763/ })).toHaveAttribute("href", "tel:19006763");
+    fireEvent.change(input, { target: { value: "15" } });
+    expect(input).toHaveValue(9);
+    fireEvent.blur(input);
+    expect(screen.getByText(/Mỗi đơn đặt tối đa 9 vé/)).toBeInTheDocument();
+  });
+
+  it("đang hiện ghi chú đoàn (>9 vé) thì nút Tìm không chuyển trang; về 9 vé thì tìm bình thường", () => {
+    nav.push.mockClear();
+    render(
+      <Providers locale="vi">
+        <SearchForm initial={{ from: { name: "Quận 1", lat: 10.78, lng: 106.69 }, to: { name: "Vũng Tàu", lat: 10.34, lng: 107.07 }, date: "2026-10-29" }} />
+      </Providers>,
+    );
+    const input = screen.getByRole("spinbutton");
+    fireEvent.change(input, { target: { value: "15" } });
+    fireEvent.submit(input.closest("form")!);
+    expect(nav.push).not.toHaveBeenCalled();
+    // Ô đang hiện 9 (đã chặn); bớt một vé rồi thêm lại = chọn đúng 9 vé, ghi chú ẩn và tìm được.
+    fireEvent.click(screen.getByRole("button", { name: /giảm|fewer/i }));
+    fireEvent.click(screen.getByRole("button", { name: /tăng|more/i }));
+    expect(screen.queryByText(/Mỗi đơn đặt tối đa 9 vé/)).not.toBeInTheDocument();
+    fireEvent.submit(input.closest("form")!);
+    expect(nav.push).toHaveBeenCalledTimes(1);
+    expect(nav.push.mock.calls[0][0]).toContain("numberGuest=9");
   });
 });

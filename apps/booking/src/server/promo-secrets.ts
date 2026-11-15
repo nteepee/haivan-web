@@ -1,6 +1,7 @@
 import "server-only";
 import { z } from "zod";
 import { routeBaseUrl } from "@/lib/route-landing";
+import { configRuleSchema, type ConfigRule } from "@/schemas/booking-config";
 
 /**
  * Mã khuyến mãi thật của chương trình tự áp, đọc phía server từ route RIÊNG của WordPress (header `X-HV-Secret`).
@@ -23,10 +24,16 @@ const TIMEOUT_MS = 4000;
 const codesSchema = z.object({
   codes: z.union([z.record(z.string(), z.string()), z.array(z.object({ id: z.union([z.number(), z.string()]), code: z.string() }))]).default({}),
   mask: z.array(z.string()).default([]),
+  /** Luật giá v2 ĐẦY ĐỦ (cả quota) trạng thái on/test, để server đánh giá lại; từng luật kiểm riêng, luật sai bị bỏ. */
+  rules: z.array(z.unknown()).default([]),
+  /** SĐT được thử luật `test` (chỉ chữ số). */
+  testers: z.array(z.string()).default([]),
 });
 
 interface State {
   active: ReadonlyMap<string, string>;
+  rules: readonly ConfigRule[];
+  testers: ReadonlySet<string>;
   at: number;
 }
 let state: State | null = null;
@@ -69,7 +76,12 @@ async function refresh(): Promise<void> {
     const active = new Map(entries.filter(([, code]) => code.trim().length > 0).map(([id, code]) => [id, code.trim()]));
     for (const [id, code] of active) seen.set(code.toLowerCase(), id);
     for (const code of parsed.mask) if (code.trim() && !seen.has(code.trim().toLowerCase())) seen.set(code.trim().toLowerCase(), null);
-    state = { active, at: Date.now() };
+    const rules = parsed.rules.flatMap((item) => {
+      const r = configRuleSchema.safeParse(item);
+      if (!r.success) console.warn(`[promo-secrets] bỏ luật ${String((item as { rule?: { id?: unknown } })?.rule?.id ?? "?")}: ${r.error.issues[0]?.path.join(".")} ${r.error.issues[0]?.message}`);
+      return r.success ? [r.data] : [];
+    });
+    state = { active, rules, testers: new Set(parsed.testers.map((p) => p.replace(/\D/g, "")).filter(Boolean)), at: Date.now() };
     everFetched = true;
     failedAt = 0;
     warned = false;
@@ -100,6 +112,12 @@ async function load(): Promise<void> {
 export async function getPromoCodes(): Promise<ReadonlyMap<string, string>> {
   await load();
   return state && Date.now() - state.at <= ACTIVE_TTL_MS ? state.active : new Map();
+}
+
+/** Luật giá v2 đầy đủ + SĐT thử (rỗng khi chưa đọc được hoặc bản cũ quá `ACTIVE_TTL_MS`: không áp luật nào thay vì áp luật cũ). */
+export async function getServerRules(): Promise<{ rules: readonly ConfigRule[]; testers: ReadonlySet<string> }> {
+  await load();
+  return state && Date.now() - state.at <= ACTIVE_TTL_MS ? { rules: state.rules, testers: state.testers } : { rules: [], testers: new Set() };
 }
 
 export interface MaskSet {

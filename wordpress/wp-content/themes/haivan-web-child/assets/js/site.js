@@ -171,12 +171,14 @@
 
     if (burger) burger.addEventListener('click', function () { setBurger(panel.hidden); });
     dds.forEach(function (a) {
-      // Cảm ứng: lần chạm đầu mở dropdown, lần hai đi tới trang của mục cha. Chuột: rê chuột đã mở sẵn nên bấm đi tới trang cha. Không có JS: luôn đi tới trang cha.
+      // Tiêu đề nhóm là <button>, không có trang để đi tới: bấm/chạm chỉ mở dropdown (đang mở bằng rê chuột thì giữ nguyên).
       a.addEventListener('click', function (ev) {
+        ev.preventDefault();
         if (a.getAttribute('aria-expanded') !== 'true') {
-          ev.preventDefault();
           closeDds(a);
           setDd(a, true);
+        } else if (!window.matchMedia('(hover: hover)').matches) {
+          setDd(a, false); // cảm ứng: chạm lần hai đóng lại
         }
       });
       var item = a.parentNode;

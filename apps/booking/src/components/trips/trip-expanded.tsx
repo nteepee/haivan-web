@@ -2,10 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
+import { tripClassLabel } from "@/lib/trip-labels";
 import { SeatPanel } from "@/components/seats/seat-panel";
 import { useTripDetail } from "@/hooks/use-trips";
 import type { SearchParamsData } from "@/lib/search-url";
+import { tripPhotos } from "@/lib/trip-photos";
 import type { Trip } from "@/schemas/trip";
 
 // Leaflet chỉ tải khi mở thẻ (không SSR).
@@ -14,9 +16,10 @@ const JourneyMap = dynamic(() => import("./journey-map").then((m) => m.JourneyMa
 /** Phần mở rộng thẻ chuyến: ảnh xe, sơ đồ ghế + giữ chỗ, bản đồ lộ trình. */
 export function TripExpanded({ trip, search }: { trip: Trip; search: SearchParamsData }) {
   const t = useT();
+  const locale = useLocale();
   const [guests, setGuests] = useState(search.numberGuest);
   const detail = useTripDetail(trip, guests, true);
-  const images = trip.car_imgs ?? [];
+  const images = tripPhotos(trip);
 
   return (
     <div className="hv-trip-panel">
@@ -25,7 +28,7 @@ export function TripExpanded({ trip, search }: { trip: Trip; search: SearchParam
           {images.slice(0, 4).map((src, i) => (
             <figure key={src} className="hv-photo relative">
               {/* eslint-disable-next-line @next/next/no-img-element -- ảnh từ CMS nhiều host */}
-              <img src={src} width={544} height={363} alt={t("list_trip.vehicle_alt", { name: trip.product.name })} loading="lazy" />
+              <img src={src} width={544} height={363} alt={t("list_trip.vehicle_alt", { name: tripClassLabel(trip.product.name, locale) })} loading="lazy" />
               {i === 3 && images.length > 4 ? (
                 <span className="absolute inset-0 grid place-items-center bg-scrim font-extrabold text-surface">
                   +{images.length - 4} {t("list_trip.other_images")}

@@ -45,6 +45,11 @@
 .hv-search__note { padding: var(--s-3) var(--s-4); color: var(--color-muted); }
 .hv-search__error { grid-column: 1 / -1; margin: 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-1); background: var(--color-error-soft); box-shadow: inset 0 0 0 var(--line) var(--color-error); color: var(--color-error); font-weight: var(--weight-strong); }
 .hv-search__error[hidden] { display: none; }
+/* Số vé vượt giới hạn mỗi đơn (9): mời gọi tổng đài cho đoàn. */
+.hv-search__groupnote { grid-column: 1 / -1; margin: 0; padding: var(--s-3) var(--s-4); border-radius: var(--r-1); background: var(--color-accent-soft); color: var(--color-ink); }
+.hv-search__groupnote[hidden] { display: none; }
+.hv-search__groupnote a { display: inline-flex; align-items: center; gap: var(--s-1); font-weight: var(--weight-strong); white-space: nowrap; color: inherit; }
+.hv-search__groupnote svg { width: 1em; height: 1em; }
 .hv-search__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); margin: 0; }
 @media (min-width: 40rem) {
   .hv-search__tabs { grid-template-columns: repeat(4, max-content); justify-content: start; width: fit-content; }
@@ -140,3 +145,41 @@
 .hv-hero-card h1 { padding: var(--s-4) var(--s-4) 0; }
 .hv-hero-card .hv-search { box-shadow: none; }
 @media (min-width: 40rem) { .hv-hero-card h1 { padding: var(--s-6) var(--s-6) 0; } }
+
+/* "Chuyến hôm nay": chip đang lọc + danh sách chuyến sắp chạy (search.js dựng .hv-search__trips trong khối hôm nay). */
+.hv-search__chip[aria-pressed="true"], .hv-search__chip[aria-pressed="true"]:not(:disabled):hover, .hv-search__chip[aria-pressed="true"]:not(:disabled):active { background: var(--color-ink); box-shadow: none; color: #fff; }
+.hv-search__chip[aria-pressed="true"] .hv-search__count { color: inherit; opacity: .8; }
+.hv-search__trips { display: grid; gap: var(--s-4); flex-basis: 100%; width: 100%; }
+.hv-search__trips[hidden] { display: none; }
+.hv-search__trips-grid { display: grid; gap: var(--gap-card, var(--s-4)); grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 40rem) { .hv-search__trips-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 60rem) { .hv-search__trips-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.hv-trip-card { display: grid; gap: var(--s-2); padding: var(--s-4); border-radius: var(--r-3); background: var(--color-surface); box-shadow: var(--shadow-1); color: var(--color-text); text-decoration: none; transition: box-shadow var(--dur-short) var(--ease-out); }
+.hv-trip-card:hover { box-shadow: var(--shadow-2); }
+.hv-trip-card:focus-visible, .hv2 .hv-trip-card:focus-visible { outline: var(--line-strong) solid var(--color-focus); outline-offset: var(--line-strong); }
+.hv-trip-card.is-full { background: var(--color-paper-2); box-shadow: none; } /* hết chỗ: nền xám, chữ giữ đủ tương phản (không làm mờ cả thẻ) */
+.hv-trip-card__plus { margin-left: 2px; font-size: var(--fs-14); font-weight: var(--weight-strong); color: var(--color-muted); }
+.hv-trip-card__times { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--s-3); }
+.hv-trip-card__times strong { font-size: var(--fs-24); line-height: var(--lh-24); font-weight: var(--weight-display); color: var(--color-ink); }
+.hv-trip-card__dur { text-align: center; font-size: var(--fs-14); line-height: var(--lh-14); color: var(--color-muted); }
+.hv-trip-card__route { overflow: hidden; font-size: var(--fs-14); line-height: var(--lh-14); color: var(--color-muted); text-overflow: ellipsis; white-space: nowrap; }
+.hv-trip-card__foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2); margin-top: var(--s-1); }
+.hv-trip-card__cls, .hv-trip-card__seats { padding: 2px var(--s-3); border-radius: var(--r-pill, 999px); font-size: var(--fs-14); line-height: var(--lh-14); font-weight: var(--weight-strong); }
+.hv-trip-card__cls { background: var(--color-paper-2); color: var(--color-ink); }
+.hv-trip-card__seats { background: var(--color-success-soft); color: var(--color-success); }
+.hv-trip-card.is-full .hv-trip-card__seats { background: var(--color-paper-2); color: var(--color-muted); }
+.hv-trip-card__price { display: inline-flex; align-items: baseline; gap: var(--s-2); margin-left: auto; }
+.hv-trip-card__price strong { font-size: var(--fs-18); line-height: var(--lh-18); font-weight: var(--weight-display); color: var(--color-price, #B45309); }
+.hv-trip-card__price s { font-size: var(--fs-14); color: var(--color-muted); }
+.hv-search__trips-empty { margin: 0; color: var(--color-muted); }
+.hv-search__trips-all { justify-self: start; display: inline-flex; align-items: center; min-height: var(--tap-min); font-weight: var(--weight-display); color: var(--color-ink); text-decoration: underline; text-decoration-color: var(--color-accent); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.hv-search__trips-arrow { margin-left: var(--s-2); }
+/* Thẻ chuyến hiện so le mỗi lần vẽ (tải xong, đổi chip); nhấc nhẹ khi rê chuột. */
+@keyframes hv-trip-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .hv-trip-card { animation: hv-trip-in .45s cubic-bezier(.16, 1, .3, 1) backwards; transition: box-shadow var(--dur-short) var(--ease-out), translate var(--dur-short) var(--ease-out); }
+  .hv-trip-card:nth-child(2) { animation-delay: .04s; } .hv-trip-card:nth-child(3) { animation-delay: .08s; }
+  .hv-trip-card:nth-child(4) { animation-delay: .12s; } .hv-trip-card:nth-child(5) { animation-delay: .16s; }
+  .hv-trip-card:nth-child(6) { animation-delay: .2s; }
+  .hv-trip-card:hover { translate: 0 -2px; } /* thuộc tính riêng, không tranh với transform của animation */
+}

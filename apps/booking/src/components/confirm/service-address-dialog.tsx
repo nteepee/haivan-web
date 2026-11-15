@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import type { PricedService, TransitTicketState } from "@/lib/bonus-services";
 import { formatMoney } from "@/lib/format";
@@ -23,6 +23,7 @@ const field = "hv-field";
 /** Modal "Cập nhật" dịch vụ tận nhà: một điểm cho mọi vé hoặc "Đón nhiều điểm"; giá từ `v4/get-price-ticket`. */
 export function ServiceAddressDialog({ open, onOpenChange, service, draft, onSave }: Props) {
   const t = useT();
+  const locale = useLocale();
   const pickUp = service.dvbs_code === "TCDON";
   const [multi, setMulti] = useState(false);
   const [tickets, setTickets] = useState<TransitTicketState[]>(() => service.dvbs_tickets.map((tk) => ({ ...tk })));
@@ -98,7 +99,7 @@ export function ServiceAddressDialog({ open, onOpenChange, service, draft, onSav
           tickets.map((tk, i) => (
             <fieldset key={tk.id} className="grid gap-2 rounded-2 bg-paper-2 p-3">
               <legend className="px-1 font-extrabold">
-                {t("booking_infor.seats")} {String(tk.number ?? i + 1)} – {formatMoney(Number(tk.price) || 0)}
+                {t("booking_infor.seats")} {String(tk.number ?? i + 1)} – {formatMoney(Number(tk.price) || 0, locale)}
               </legend>
               <label className="flex min-h-control cursor-pointer items-center gap-3">
                 <input type="checkbox" checked={!!tk.check} onChange={(e) => void toggleTicket(i, e.target.checked)} className="size-icon shrink-0 accent-ink" /> {service.title}
@@ -112,7 +113,7 @@ export function ServiceAddressDialog({ open, onOpenChange, service, draft, onSav
         ) : (
           <div className="grid gap-2">
             <AddressSearch value={addr(tickets[0] ?? ({} as TransitTicketState))} placeholder={t(pickUp ? "booking_infor.pick_up" : "booking_infor.drop_off")} onPick={(a) => void setAddress("all", a)} />
-            <p>{tickets.length} {t("booking_infor.guest")} • {formatMoney(tickets.reduce((s, tk) => s + (tk.check ? Number(tk.price) || 0 : 0), 0))}</p>
+            <p>{tickets.length} {t("booking_infor.guest")} • {formatMoney(tickets.reduce((s, tk) => s + (tk.check ? Number(tk.price) || 0 : 0), 0), locale)}</p>
           </div>
         )}
         <button type="button" onClick={save} className="hv-btn hv-btn-primary w-full">

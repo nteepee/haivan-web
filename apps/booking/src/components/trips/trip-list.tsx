@@ -14,7 +14,8 @@ import { TripFilterBar } from "./trip-filter-bar";
  * Danh sách chuyến + hàng lọc/sắp xếp phía client + "Xem thêm" (vẫn tải thêm trang; bộ lọc áp dụng cho phần đã tải);
  * rỗng hoặc lỗi → màn "RẤT TIẾC" như web cũ.
  */
-export function TripList({ search }: { search: SearchParamsData }) {
+/** `legTitle`: tiêu đề chặng cho thẻ chuyến ở trang tuyến (xem TripCard). */
+export function TripList({ search, legTitle }: { search: SearchParamsData; legTitle?: string }) {
   const t = useT();
   const trips = useTrips(search);
   const items = useMemo(() => trips.data?.pages.flatMap((p) => p.data) ?? [], [trips.data]);
@@ -65,7 +66,7 @@ export function TripList({ search }: { search: SearchParamsData }) {
       <div className="hv-trips">
         {visible.length ? (
           visible.map((trip, i) => (
-            <TripCard key={trip.id} trip={trip} search={search} priority={i === 0} open={openId === trip.id} onToggle={() => setOpenId((id) => (id === trip.id ? null : trip.id))} />
+            <TripCard key={trip.id} trip={trip} search={search} legTitle={legTitle} priority={i === 0} open={openId === trip.id} onToggle={() => setOpenId((id) => (id === trip.id ? null : trip.id))} />
           ))
         ) : (
           <div className="hv-card grid justify-items-start gap-3 p-card" role="status">

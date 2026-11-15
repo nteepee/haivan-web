@@ -1,5 +1,5 @@
-/* Hải Vân design tokens v4: v3 tokens plus the logo-derived radius ladder, functional glass and the selection ring. tokens.css (v3) is untouched; migrate code to these names.
-   v4 = "kính chức năng" (glass only on floating layers) + fixed radius 4/8/16/24 + circle for icon-only squares + no black borders (see v4-glass-radius-proposal.md).
+/* Hải Vân design tokens. Values = HaiVan app v3 since 2026-11-12 (cool grey paper, ink #0C0D12, soft shadows); structure from v4.
+   Radius: one corner style site-wide (manager review 2026-11-12): controls 12, cards 16, media 20, controls <= 32px 6, circle only for icon-only squares; no pills.
    Every colour is hex by default; the oklch twin lives in the @supports (color: oklch(0% 0 0)) block below (a custom property never falls back, so both on one line made old WebViews lose the colour).
    Tailwind 4: paste the :root body into `@theme { ... }`; map --r-* to --radius-*, --fs-* to --text-*. Raw px is only legal inside this block.
    WordPress: enqueue this file as is; theme CSS reads the same variables. Hallmark mapping: Ink paper/ink/rule + brand yellow in the accent role. */
@@ -7,29 +7,33 @@
   color-scheme: light;
 
   /* Brand field and the one colour that means "act / selected" */
-  --color-accent: #FFC20E;
-  --color-accent-hover: #F2B600;
-  --color-accent-edge: #D9A400;   /* decorative edge, pressed state: 2.2:1 on white, never the only cue */
-  --color-select-edge: #A67C00;   /* selection ring: 3.8:1 on surface, 3.4:1 on --select-bg (WCAG 1.4.11 needs 3:1) */
-  --color-accent-soft: #FFF3CD;
-  --color-accent-ink: #333333;
-  --color-field: var(--color-accent);
+  /* App v3 values (same as the HaiVan Android app, ui/theme/Hv2.kt + docs/design-guidelines.md). */
+  --color-accent: #FFC20E;        /* Yellow: primary button, selected tab */
+  --color-accent-hover: #F0A500;  /* YellowDark */
+  --color-accent-edge: #F0A500;   /* decorative edge, pressed state, never the only cue */
+  --color-select-edge: #A67C00;   /* selection ring: 3:1 on surface and on --select-bg (WCAG 1.4.11) */
+  --color-accent-soft: #FFF7DB;   /* YellowSoft */
+  --color-accent-ink: #0C0D12;    /* Ink: text on yellow */
+  --color-field: var(--color-accent);   /* brand yellow ground: header bar, yellow bands */
+  --color-input: #F4F5F7;         /* text field, select and counter ground (app v3) */
 
-  /* Paper (warm, chroma 0.004 to 0.01 toward the brand hue) and ink */
-  --color-paper: #FAF9F5;
-  --color-surface: #FEFEFB;
-  --color-paper-2: #F3F2EC;
-  --color-paper-3: #EAE8E1;
-  --color-ink: #333333;       /* brand dark: headings, buttons, footer band */
-  --color-ink-deep: #252421;
-  --color-text: #272623;        /* body copy, 14:1 on paper */
-  --color-muted: #565552;       /* 6.9:1 on paper; never on yellow */
-  --color-muted-on-dark: #BFBEB9;
-  --color-rule: #DFDED8;
-  --color-rule-2: #EEEDE8;
-  --color-edge: #787773;        /* field, seat and card-control edge, 4.2:1 on surface */
-  --color-sold: #E5E4E1;
-  --color-scrim: rgb(26 25 23 / 0.55);                                /* behind dialogs and photo captions only */
+  /* Cool grey paper, white cards, ink */
+  --color-paper: #F4F5F7;
+  --color-surface: #FFFFFF;
+  --color-paper-2: #EEF0F3;
+  --color-paper-3: #E9EBEF;
+  --color-ink: #0C0D12;         /* headings, dark buttons, selected chip */
+  --color-ink-deep: #0C0D12;
+  --color-text: #1F2937;        /* body copy */
+  --color-muted: #5B6472;       /* app Muted #6B7280 darkened: 5.5:1 on paper */
+  --color-muted-on-dark: #C4C9D2;
+  --color-line-dark: #3A3F4B;   /* rules on ink sections */
+  --color-rule: #E9EBEF;        /* app Line: card hairlines, dividers */
+  --color-rule-2: #F0F1F4;
+  --color-edge: #80889A;        /* field and seat boundary: >= 3:1 on paper, surface and paper-2 (WCAG 1.4.11); app Line is only 1.1:1 */
+  --color-sold: #E9EBEF;
+  --color-price: #B45309;       /* PriceColor: fares on white and on paper */
+  --color-scrim: rgb(12 13 18 / 0.55);                                /* behind dialogs and photo captions only */
   --color-focus: var(--color-ink);   --color-focus-on-dark: var(--color-accent);
 
   /* States: always with an icon and words, never colour alone */
@@ -37,13 +41,13 @@
   --color-error-soft: #FFEFED;
   --color-success: #2E7D31;  /* 5.1:1 */
   --color-success-soft: #E3F7E2;
-  --color-link: #0E5FB4;       /* running-text links only, 6:1 */
+  --color-link: #005081;       /* app Accent: running-text links only */
 
   /* v3 app-style: section tints and the secondary (promo) palette.
      Rule: a strong fill always carries its --color-on-* text (>= 4.5:1); a soft tint always carries --color-ink text (>= 10:1).
      Strong colours are never text on a tint, never body copy, never states (states keep error / success). */
-  --color-tint-warm: #FFF8E3;   /* section band: warm yellow tint */
-  --color-on-strong: #FEFEFB;   /* text on the deep promo fills */
+  --color-tint-warm: #FFF7DB;   /* section band: warm yellow tint */
+  --color-on-strong: #FFFFFF;   /* text on ink and on the deep promo fills */
   --color-promo-orange: #F28C28;  /* ink text on it, 5.2:1 */
   --color-promo-orange-soft: #FFE9D2;
   --color-promo-teal: #0B6F6F;   /* surface text 5.9:1 */
@@ -91,16 +95,17 @@
 
   /* Radius v4: derived from the HAIVAN logo. Logo corner r is about 1/12 of the letter height (2 on a 24 cap height), so r = short side / 12, snapped to a ladder.
      Containers that hold content (cards, forms, sheets) stop at r-3; r-4 is for media-only frames (banner, big photo, map). Inner = outer - padding, never below r-1. */
-  --r-1: 4px;        /* short side up to 72px: button, input, chip, tag, badge, seat, tab, thumbnail */
-  --r-2: 8px;        /* 73 to 144px: media inset in a card, trip row, menu, small photo */
-  --r-3: 16px;       /* 145 to 240px: card, search form, sheet, dialog, sticky bar */
-  --r-4: 24px;       /* over 240px, media only: hero banner, big photo, map frame */
+  /* App v3 radius (Hv2 RadiusSm/Md/Lg). One corner style site-wide: controls 12, never pills (review 2026-11-12). */
+  --r-1: 12px;       /* button, input, chip, tab, badge, seat, thumbnail */
+  --r-2: 12px;       /* trip row, menu, small photo, media inset in a card */
+  --r-3: 16px;       /* card, search form, sheet, dialog, sticky bar */
+  --r-4: 20px;       /* media only: hero banner, big photo, map frame */
   --r-round: 50%;    /* icon-only square buttons only (call, arrow, swap, avatar); never on anything wider than tall */
   /* v3 names kept as aliases so code migrates safely */
-  --r-sm: var(--r-1);
+  --r-sm: 6px;       /* controls 32px or smaller (checkbox, step number, badge): 12 would turn them into circles or pills */
   --r-md: var(--r-2);
   --r-lg: var(--r-3);   /* hero banner and big photos take --r-4 explicitly */
-  --r-pill: var(--r-1); /* badges and tags are r-1 rectangles now, not pills */
+  --r-pill: var(--r-1); /* buttons, chips, tabs, badges: rounded 12, not pills */
 
   /* Lines: hairline only. No black borders; depth comes from shadow and glass. */
   --line: 1px;            /* hairline: field edge, row rule, divider */
@@ -110,14 +115,14 @@
   --select-ring: 0 0 0 var(--line-strong) var(--color-select-edge);               /* box-shadow ring; always with a tick icon, never colour alone */
 
   /* Shadow v4: three levels of light */
-  --shadow-1: 0 1px 2px rgb(26 25 23 / 0.06), 0 2px 8px rgb(26 25 23 / 0.08);   /* rest: card, row, input group */
-  --shadow-2: 0 8px 24px rgb(26 25 23 / 0.10);                                          /* raised: hover, floating glass, menu, sticky bar */
-  --shadow-3: 0 24px 48px rgb(26 25 23 / 0.16);                                         /* dialog and sheet */
+  --shadow-1: 0 1px 2px rgb(16 24 40 / 0.04), 0 2px 8px rgb(16 24 40 / 0.05);   /* rest: card, row, input group (app v3, soft) */
+  --shadow-2: 0 8px 24px rgb(16 24 40 / 0.08);                                          /* raised: hover, floating glass, menu, sticky bar */
+  --shadow-3: 0 24px 48px rgb(16 24 40 / 0.14);                                         /* dialog and sheet */
   --shadow-card: var(--shadow-1); --shadow-float: var(--shadow-2); --shadow-raise: var(--shadow-3);   /* v3 aliases */
 
   /* Glass v4: functional, not decorative. Only on floating layers (sticky header, search card over the banner, sticky filter and total bars, dialog sheet).
      Never under text smaller than 16px; ink text on it is checked at 4.5:1 over the darkest backdrop (see README v4). At most three glass layers on one screen. */
-  --glass-bg: #FEFEFBC7;                    /* hex fallback = surface at 78% */
+  --glass-bg: #FFFFFFC7;                    /* hex fallback = surface at 78% */
   --glass-bg-yellow: #FFC20ED9;             /* hex fallback = accent at 85% */
   --glass-blur: 12px;                       /* 16px from 60rem */
   --glass-saturate: 160%;
@@ -127,36 +132,18 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); --ease-in: cubic-bezier(0.7, 0, 0.84, 0); --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --dur-micro: 120ms; --dur-short: 220ms; --dur-long: 420ms;
 
-  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500;
+  --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-popover: 450; --z-toast: 500;
+  /* --z-popover: popover/menu/select của Radix render qua portal ra <body>, nên phải nổi trên mọi lớp dính (thanh lọc, header) và cả hộp thoại đang mở chúng. --z-dropdown chỉ cho danh sách nằm trong luồng trang. */
 }
+/* oklch twins only for colours whose hex is not an app v3 value (the v3 neutrals are exact hex). */
 @supports (color: oklch(0% 0 0)) {
   :root {
     --color-accent: oklch(84.6% 0.172 85);
-    --color-accent-hover: oklch(80.9% 0.166 85);
-    --color-accent-edge: oklch(74.8% 0.153 85);
     --color-select-edge: oklch(61.1% 0.125 85);
-    --color-accent-soft: oklch(96.4% 0.051 93);
-    --color-accent-ink: oklch(32.1% 0.004 95);
-    --color-paper: oklch(98.2% 0.006 95);
-    --color-surface: oklch(99.6% 0.003 95);
-    --color-paper-2: oklch(96% 0.008 95);
-    --color-paper-3: oklch(93% 0.010 95);
-    --color-ink: oklch(32.1% 0.004 95);
-    --color-ink-deep: oklch(26% 0.006 95);
-    --color-text: oklch(27% 0.006 95);
-    --color-muted: oklch(45% 0.006 95);
-    --color-muted-on-dark: oklch(80% 0.006 95);
-    --color-rule: oklch(90% 0.008 95);
-    --color-rule-2: oklch(94.5% 0.006 95);
-    --color-edge: oklch(57% 0.006 95);
-    --color-sold: oklch(92% 0.005 95);
     --color-error: oklch(53.9% 0.194 27);
     --color-error-soft: oklch(96.5% 0.018 27);
     --color-success: oklch(52.3% 0.135 144);
     --color-success-soft: oklch(95.5% 0.035 144);
-    --color-link: oklch(49% 0.153 255);
-    --color-tint-warm: oklch(97.9% 0.028 92);
-    --color-on-strong: oklch(99.6% 0.003 95);
     --color-promo-orange: oklch(73.5% 0.161 59);
     --color-promo-orange-soft: oklch(94.6% 0.039 69);
     --color-promo-teal: oklch(49.2% 0.081 195);

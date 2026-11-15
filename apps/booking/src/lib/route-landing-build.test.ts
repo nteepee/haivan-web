@@ -3,7 +3,7 @@ import fixture from "../../test/fixtures/wp-route.json";
 import { routeLandingSchema } from "@/schemas/route-landing";
 import { buildRouteLanding, parsePrice, routeEndpoints } from "./route-landing-build";
 import type { RouteListing } from "./route-listing";
-import { DESCRIPTION_MAX, routeTemplate, TITLE_MAX } from "./route-landing-template";
+import { amenityEn, DESCRIPTION_MAX, placeEn, routeTemplate, TITLE_MAX } from "./route-landing-template";
 
 const tpl = routeTemplate("vi");
 const wp = routeLandingSchema.parse(fixture);
@@ -93,12 +93,21 @@ describe("buildRouteLanding", () => {
     expect(t.description.length).toBeLessThanOrEqual(DESCRIPTION_MAX);
   });
 
-  it("bản en bỏ qua meta CMS (tiếng Việt) và dùng mẫu en", () => {
+  it("bản en bỏ qua meta CMS (tiếng Việt), dùng mẫu en với tên địa danh không dấu", () => {
     const v = buildRouteLanding(null, cms({ meta_title: "Xe Quận 1 Đi Vũng Tàu | Hải Vân", meta_desc: "Mô tả CMS" }), routeTemplate("en"));
-    expect(v.title).toBe("Bus Mỹ Đình to Điện Biên | Hải Vân");
-    expect(v.h1).toBe("Book bus tickets Mỹ Đình to Điện Biên");
-    expect(v.description).toContain("Book Hải Vân bus tickets");
+    expect(v.title).toBe("Bus My Dinh to Dien Bien | Hai Van");
+    expect(v.h1).toBe("Book bus tickets My Dinh to Dien Bien");
+    expect(v.description).toContain("Book Hai Van bus tickets");
     expect(v.faq).toEqual([]);
+  });
+
+  it("bản en: tên quen dùng và tiện ích CMS được dịch; tên lạ giữ nguyên", () => {
+    expect(placeEn("Quận 1")).toBe("District 1");
+    expect(placeEn("Quận 1 Sân Bay")).toBe("District 1 & Airport");
+    expect(placeEn("Tân Sơn Nhất")).toBe("Tan Son Nhat Airport");
+    expect(placeEn("Yên Nghĩa")).toBe("Yen Nghia");
+    expect(amenityEn("Wifi miễn phí")).toBe("Free Wi-Fi");
+    expect(amenityEn("Bánh mì")).toBe("Bánh mì");
   });
 
   it("HTML WP đi qua sanitizer", () => {

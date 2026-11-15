@@ -26,11 +26,12 @@ const show = () =>
     </Providers>,
   );
 
-describe("HeaderNav: tiêu đề nhóm là liên kết thật", () => {
-  it("nhóm có con là <a href> (bot thấy được); bấm thường mở dropdown thay vì điều hướng", async () => {
+describe("HeaderNav: tiêu đề nhóm chỉ mở menu con", () => {
+  it("nhóm có con là nút (không href, không dẫn sang trang nhóm); bấm mở dropdown, mục con là liên kết", async () => {
     show();
-    const trigger = screen.getByRole("link", { name: "Tuyến đường" });
-    expect(trigger).toHaveAttribute("href", "/xe-khach");
+    expect(screen.queryByRole("link", { name: "Tuyến đường" })).not.toBeInTheDocument();
+    const trigger = screen.getByRole("button", { name: "Tuyến đường" });
+    expect(trigger).not.toHaveAttribute("href");
     expect(trigger).toHaveAttribute("aria-haspopup", "menu");
     await userEvent.click(trigger);
     expect(await screen.findByRole("menuitem", { name: "Mỹ Đình - Mộc Châu" })).toHaveAttribute("href", "/xe-khach/my-dinh/moc-chau");
@@ -38,7 +39,7 @@ describe("HeaderNav: tiêu đề nhóm là liên kết thật", () => {
 
   it("bàn phím mở được (Enter), mục không có con là liên kết thường", async () => {
     show();
-    screen.getByRole("link", { name: "Tuyến đường" }).focus();
+    screen.getByRole("button", { name: "Tuyến đường" }).focus();
     await userEvent.keyboard("{Enter}");
     expect(await screen.findByRole("menuitem", { name: "Mỹ Đình - Mộc Châu" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Hỗ trợ" })).toHaveAttribute("href", "/ho-tro");

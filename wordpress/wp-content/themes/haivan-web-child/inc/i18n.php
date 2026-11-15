@@ -75,6 +75,8 @@ function hv_t( $key, $lang = null ) {
 				'tags'             => 'Tag',
 				'pagination'       => 'Phân trang',
 				'no_posts'         => 'Chưa có bài viết cho điểm đến này.',
+				'dest_guides_vi'   => 'Cẩm nang du lịch %s hiện có bằng tiếng Việt.',
+				'dest_guides_link' => 'Đọc bằng tiếng Việt',
 			),
 			'en' => array(
 				'login'            => 'Log in',
@@ -113,6 +115,8 @@ function hv_t( $key, $lang = null ) {
 				'tags'             => 'Tags',
 				'pagination'       => 'Pagination',
 				'no_posts'         => 'No posts for this destination yet.',
+				'dest_guides_vi'   => 'Our travel guides for %s are currently available in Vietnamese.',
+				'dest_guides_link' => 'Read them in Vietnamese',
 			),
 		);
 	}

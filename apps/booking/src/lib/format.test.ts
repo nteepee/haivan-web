@@ -5,6 +5,8 @@ import { addDaysIso, countdown, dmyToIso, formatMoney, formatVnd, isoToDmy, pars
 describe("format", () => {
   it("tiền như web cũ", () => {
     expect(formatMoney(250000)).toBe("250.000đ");
+    expect(formatMoney(250000, "en")).toBe("250,000đ");
+    expect(formatVnd(250000, "en")).toBe("250,000 VND");
     expect(formatVnd(250000)).toBe("250.000 VNĐ");
   });
 

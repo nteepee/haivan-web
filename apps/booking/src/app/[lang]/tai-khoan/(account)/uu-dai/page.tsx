@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import { OffersPage } from "@/components/account/offers-page";
+import { localizedMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = { title: "Ưu đãi của tôi", robots: { index: false } };
+export const generateMetadata = localizedMetadata("my_offers", { robots: { index: false } });
 
 export default function Page() {
   return <OffersPage />;

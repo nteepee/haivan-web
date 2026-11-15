@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import { FleetNotice } from "@/components/tracking/fleet-notice";
+import { localizedMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = { title: "Theo dõi đội xe", robots: { index: false } };
+export const generateMetadata = localizedMetadata("fleet", { robots: { index: false } });
 
 export default function Page() {
   return <FleetNotice />;

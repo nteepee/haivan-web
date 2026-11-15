@@ -81,7 +81,29 @@ function hv_offer_meta( $post_id ) {
 		'cta'         => $g( 'cta' ),
 		'start'       => $g( 'start' ),
 		'end'         => $g( 'end' ),
+		// Bản tiếng Anh (trang /en): tên trống = không hiện ưu đãi ở bản en; ô khác trống = bỏ phần đó (giá trống = dùng giá vi).
+		'title_en'    => $g( 'title_en' ),
+		'badge_en'    => $g( 'badge_en' ),
+		'price_en'    => $g( 'price_en' ),
+		'unit_en'     => $g( 'unit_en' ),
+		'cond_en'     => $g( 'cond_en' ),
+		'cta_en'      => $g( 'cta_en' ),
 	);
+}
+
+/** Đổi các ô hiển thị sang bản tiếng Anh; null khi ưu đãi chưa có tên tiếng Anh (không hiện ở /en). */
+function hv_offer_localize_en( array $m ) {
+	if ( '' === $m['title_en'] ) {
+		return null;
+	}
+	$m['title'] = $m['title_en'];
+	$m['badge'] = $m['badge_en'];
+	// Không có giá tiếng Anh: đổi dấu chấm phân cách nghìn kiểu Việt sang dấu phẩy ("210.000đ" -> "210,000đ").
+	$m['price'] = '' !== $m['price_en'] ? $m['price_en'] : preg_replace( '/(?<=\d)\.(?=\d{3}\b)/', ',', (string) $m['price'] );
+	$m['unit']  = $m['unit_en'];
+	$m['cond']  = $m['cond_en'];
+	$m['cta']   = $m['cta_en'];
+	return $m;
 }
 
 function hv_offer_help_box() {
@@ -116,6 +138,13 @@ function hv_offer_metabox( $post ) {
 	echo '</select></label></p>';
 	$i( 'link', 'Liên kết: đường dẫn tuyến hoặc URL', $m['link'], 'Tuyến: <code>my-dinh/dien-bien</code> (thành /xe-khach/my-dinh/dien-bien); trang khác: <code>/dat-ve-nhanh</code> hoặc https. Để trống = thẻ không bấm được.' );
 	$i( 'cta', 'Chữ trên nút (mặc định Đặt vé)', $m['cta'], 'Vd. Tải ứng dụng.', 24 );
+	echo '<h4>Bản tiếng Anh (trang /en)</h4><p class="description">Để trống tên tiếng Anh = ưu đãi không hiện ở bản tiếng Anh.</p>';
+	$i( 'title_en', 'Tên tuyến (tiếng Anh), vd. Saigon to Vung Tau', $m['title_en'], '', 80 );
+	$i( 'badge_en', 'Huy hiệu (tiếng Anh), vd. Save 101k', $m['badge_en'], '', 40 );
+	$i( 'price_en', 'Giá nổi bật (tiếng Anh, trống = dùng giá tiếng Việt)', $m['price_en'], '', 20 );
+	$i( 'unit_en', 'Ghi chú giá (tiếng Anh), vd. / 2 Luxury tickets, 210k each', $m['unit_en'], '', 70 );
+	$i( 'cond_en', 'Điều kiện (tiếng Anh)', $m['cond_en'], '', 140 );
+	$i( 'cta_en', 'Chữ trên nút (tiếng Anh, mặc định Book)', $m['cta_en'], '', 24 );
 	$i( 'start', 'Hiện từ ngày', $m['start'], 'Để trống = hiện ngay.', 0, 'date' );
 	$i( 'end', 'Hiện đến hết ngày', $m['end'], 'Để trống = không hết hạn. Qua ngày này thẻ tự ẩn.', 0, 'date' );
 }
@@ -130,7 +159,7 @@ add_action(
 			return;
 		}
 		$p = static fn( $k ) => isset( $_POST[ 'hv_offer_' . $k ] ) ? trim( sanitize_text_field( wp_unslash( $_POST[ 'hv_offer_' . $k ] ) ) ) : '';
-		foreach ( array( 'badge' => 40, 'price' => 20, 'unit' => 70, 'cond' => 140, 'cta' => 24 ) as $k => $max ) {
+		foreach ( array( 'badge' => 40, 'price' => 20, 'unit' => 70, 'cond' => 140, 'cta' => 24, 'title_en' => 80, 'badge_en' => 40, 'price_en' => 20, 'unit_en' => 70, 'cond_en' => 140, 'cta_en' => 24 ) as $k => $max ) {
 			update_post_meta( $post_id, 'hv_offer_' . $k, mb_substr( $p( $k ), 0, $max ) );
 		}
 		update_post_meta( $post_id, 'hv_offer_badge_style', 'sale' === $p( 'badge_style' ) ? 'sale' : 'on-fill' );

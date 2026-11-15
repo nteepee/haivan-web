@@ -27,7 +27,7 @@ function ClassCard({ v, t, locale, south, price }: { v: RouteLandingView["vehicl
         {meta ? <p className="text-muted">{meta}</p> : null}
         {price ? (
           <p className="hv2r-class-price">
-            <small>{t("route.fact_price")}</small> <strong>{formatMoney(price)}</strong>
+            <small>{t("route.fact_price")}</small> <strong>{formatMoney(price, locale)}</strong>
           </p>
         ) : null}
         {v.text ? <p>{v.text}</p> : null}

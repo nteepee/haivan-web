@@ -1,0 +1,71 @@
+{
+ "db": [
+  {
+   "line": "royal",
+   "name": "cao cấp",
+   "seats": 0
+  },
+  {
+   "line": "royal",
+   "name": "royal",
+   "seats": 0
+  },
+  {
+   "line": "royal",
+   "name": "cung điện",
+   "seats": 0
+  },
+  {
+   "line": "lux",
+   "name": "tiết kiệm",
+   "seats": 0
+  },
+  {
+   "line": "lux",
+   "name": "lux",
+   "seats": 0
+  },
+  {
+   "line": "lux",
+   "name": "34",
+   "seats": 0
+  },
+  {
+   "line": "lux",
+   "name": "36",
+   "seats": 0
+  },
+  {
+   "line": "eco",
+   "name": "siêu rẻ",
+   "seats": 0
+  },
+  {
+   "line": "eco",
+   "name": "eco",
+   "seats": 0
+  },
+  {
+   "line": "eco",
+   "name": "44",
+   "seats": 0
+  }
+ ],
+ "vt": [
+  {
+   "line": "royal",
+   "name": "royal"
+  },
+  {
+   "line": "eco",
+   "name": "luxury",
+   "seats": 9
+  },
+  {
+   "line": "luxury",
+   "name": "luxury",
+   "seats": 11
+  }
+ ],
+ "mcsl": []
+}

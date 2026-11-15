@@ -31,11 +31,11 @@ export function GuestCountDialog({ open, onOpenChange, value, max, onUpdate }: P
           {t("list_trip.msg.msg_select_ticket")} {t("list_trip.msg.msg_change_num_ticket")}
         </DialogDescription>
         <div className="flex items-center justify-center gap-4 py-2">
-          <button type="button" aria-label="Giảm" onClick={() => setN((v) => Math.max(1, v - 1))} className="hv-btn hv-btn-outline size-12 rounded-round px-0">
+          <button type="button" aria-label={t("ux.guests_decrease")} onClick={() => setN((v) => Math.max(1, v - 1))} className="hv-btn hv-btn-outline size-12 rounded-round px-0">
             <Minus className="size-6" aria-hidden />
           </button>
           <span className="w-12 text-center text-2xl font-bold tabular-nums" aria-live="polite">{n}</span>
-          <button type="button" aria-label="Tăng" onClick={() => setN((v) => Math.min(Math.max(1, max), v + 1))} className="hv-btn hv-btn-outline size-12 rounded-round px-0">
+          <button type="button" aria-label={t("ux.guests_increase")} onClick={() => setN((v) => Math.min(Math.max(1, max), v + 1))} className="hv-btn hv-btn-outline size-12 rounded-round px-0">
             <Plus className="size-6" aria-hidden />
           </button>
         </div>

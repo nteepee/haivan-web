@@ -2,7 +2,7 @@
 @layer components {
   /* Nút tuyến: nút riêng (không phải thanh phân đoạn). Điện thoại: lưới 2x2, đủ 4 tuyến, không cuộn; mỗi nút hai dòng
      (đầu a nhạt, rồi mũi tên + đầu b đậm) cao bằng nhau. Từ 40rem: lưới 4 cột, một dòng nhãn đầy đủ.
-     Đang chọn = nền select + vòng chọn + dấu tick (không chỉ màu); tick ở góc trên phải trên điện thoại. */
+     Kiểu chip app v3: nền giấy, bo 12, đệm đều hai bên; đang chọn = nền ink chữ trắng đậm 800 (không dấu tích, theo review). */
   .hv-corr-btns {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -17,23 +17,26 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    padding: var(--s-2) var(--s-6) var(--s-2) var(--s-3);
+    padding: var(--s-2) var(--s-4);
     border-radius: var(--r-1);
-    background: var(--color-paper-2);
+    background: var(--color-paper);
     color: var(--color-ink);
     line-height: var(--lh-16);
     text-align: start;
     cursor: pointer;
   }
   .hv-corr-btn:hover {
-    background: var(--color-paper-3);
+    background: var(--color-accent-soft);
   }
   .hv-corr-btn:active {
     transform: translateY(var(--line));
   }
   .hv-corr-btn[aria-pressed="true"] {
-    background: var(--select-bg);
-    box-shadow: var(--select-ring);
+    background: var(--color-ink);
+    color: var(--color-on-strong);
+  }
+  .hv-corr-btn[aria-pressed="true"] .hv-corr-a {
+    color: var(--color-muted-on-dark);
   }
   .hv-corr-full {
     display: none;
@@ -56,11 +59,6 @@
   .hv-corr-btn[aria-pressed="true"] .hv-corr-b {
     font-weight: var(--weight-display);
   }
-  .hv-corr-check {
-    position: absolute;
-    inset-block-start: var(--s-2);
-    inset-inline-end: var(--s-2);
-  }
   @media (min-width: 40rem) {
     .hv-corr-btns {
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -72,14 +70,12 @@
       justify-content: center;
       gap: var(--s-2);
       padding: var(--s-1) var(--s-4);
+      border-radius: var(--r-pill);
       font-weight: var(--weight-strong);
       text-align: center;
     }
     .hv-corr-btn[aria-pressed="true"] {
       font-weight: var(--weight-display);
-    }
-    .hv-corr-check {
-      position: static;
     }
     .hv-corr-ends {
       display: none;
@@ -165,12 +161,29 @@
   .hv-corr-go {
     min-height: var(--control-h);
   }
+  /* Nhãn ô + nhãn ưu đãi trên CÙNG một dòng, cao bằng nhãn thường: nhãn ưu đãi dùng cỡ chữ của nhãn, không đệm dọc,
+     cắt "…" khi hẹp. Nếu xuống dòng, ô Ngày về bị đẩy thấp hơn các ô bên cạnh (lệch hàng, review 2026-11-13). */
   .hv-label-row {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--s-1) var(--s-2);
+    gap: var(--s-2);
+    min-width: 0;
+  }
+  .hv-label-row > label {
+    flex: none;
+  }
+  .hv-label-row > .hv-badge {
+    min-width: 0;
+    min-height: 0;
+    padding-block: 0;
+    overflow: hidden;
+    font-size: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .hv-return-field {
     display: flex;
@@ -286,5 +299,183 @@
   /* Thẻ "Đặt chiều về" ở trang thành công của chiều đi: nền vàng nhạt để nổi hơn các thẻ vé bên dưới. */
   .hv-return-cta {
     background: var(--color-accent-soft);
+  }
+}
+
+/* Thanh tìm vé luôn mở ở đầu trang kết quả (thay dải tóm tắt + nút "Sửa", review 2026-11-13).
+   Từ 60rem: dòng 1 = chip tuyến (trái) + "Đi tỉnh khác?" (phải); dòng 2 = các ô. Từ 75rem: Điểm đi ⇄ Điểm đến, Ngày đi, Ngày về, Số vé, Tìm vé trên một hàng. */
+@layer components {
+  .hv-plate--bar {
+    box-shadow: var(--shadow-2);
+  }
+  .hv-plate--bar .hv-corr-btns {
+    margin: var(--s-3) var(--s-4) 0;
+  }
+  .hv-plate--bar .hv-plate-grid {
+    padding: var(--s-3) var(--s-4) var(--s-4);
+    gap: var(--s-2) var(--s-3);
+  }
+  .hv-plate--bar .hv-plate-foot {
+    padding: 0 var(--s-4) var(--s-3);
+  }
+  @media (min-width: 40rem) {
+    .hv-plate--bar .hv-corr-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--s-2);
+    }
+    .hv-plate--bar .hv-corr-btn {
+      min-height: calc(var(--s-8) + var(--s-1));
+    }
+  }
+  @media (min-width: 60rem) {
+    .hv-plate--bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+    .hv-plate--bar > .hv-corr-btns {
+      grid-row: 1;
+      grid-column: 1;
+    }
+    .hv-plate--bar > .hv-plate-foot {
+      grid-row: 1;
+      grid-column: 2;
+      padding: var(--s-3) var(--s-4) 0;
+    }
+    .hv-plate--bar > :is(form, .hv-tabs) {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 75rem) {
+    .hv-plate--bar .hv-corr-grid {
+      grid-template-columns: minmax(0, 1fr) var(--control-h) minmax(0, 1fr) minmax(0, 3.2fr);
+      align-items: end; /* mọi ô chung một đường đáy, kể cả khi một nhãn cao hơn */
+    }
+    .hv-plate--bar .hv-corr-swap {
+      align-self: end;
+      margin: 0;
+    }
+    .hv-plate--bar .hv-corr-row {
+      grid-row: 1;
+      grid-column: 4;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 6rem auto;
+    }
+    /* Một hàng đủ chỗ cho "Bến xe Điện Biên" và "Thứ bảy, 14/11/2026" kể cả khi có nút bỏ ngày về: chữ 14, icon sát mép hơn, nút ✕ 44. */
+    .hv-plate--bar :is(.hv-field, .hv-datebox-text, .hv-return-add) {
+      font-size: var(--fs-14);
+    }
+    .hv-plate--bar .hv-selectbox > .hv-pin {
+      inset-inline-start: var(--s-3);
+    }
+    .hv-plate--bar .hv-selectbox > .hv-chev {
+      inset-inline-end: var(--s-3);
+    }
+    .hv-plate--bar .hv-selectbox-pin > select {
+      padding-inline-start: calc(var(--s-3) + var(--icon-size) + var(--s-2));
+    }
+    .hv-plate--bar .hv-selectbox > select {
+      padding-inline-end: calc(var(--s-3) + var(--icon-size) + var(--s-1));
+    }
+    .hv-plate--bar .hv-datebox-text {
+      inset-inline: var(--s-3) calc(var(--s-3) + var(--icon-size) + var(--s-1));
+    }
+    .hv-plate--bar .hv-return-clear {
+      width: var(--tap-min);
+      height: var(--tap-min);
+    }
+    .hv-plate--bar .hv-corr-note {
+      grid-row: 2;
+    }
+  }
+}
+
+/* Thanh tìm vé trên điện thoại: gọn (~380px thay vì ~640px) để danh sách chuyến lọt màn hình đầu.
+   Nhãn trên ô ẩn bằng mắt (vẫn là <label for> cho trình đọc màn hình); chip tuyến một dòng trượt ngang;
+   Điểm đi / Điểm đến chồng nhau, nút đổi chiều bên phải; [Ngày đi | Số vé], [Ngày về], [Tìm vé]. */
+@layer components {
+  @media (max-width: 39.99rem) {
+    .hv-plate--bar .hv-corr-btns {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: var(--s-2);
+      margin: var(--s-3) var(--s-3) 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .hv-plate--bar .hv-corr-btn {
+      flex: none;
+      min-height: calc(var(--s-8) + var(--s-1));
+      flex-direction: row;
+      align-items: center;
+      padding: var(--s-1) var(--s-3);
+      font-size: var(--fs-14);
+    }
+    .hv-plate--bar .hv-corr-ends {
+      display: none;
+    }
+    .hv-plate--bar .hv-corr-full {
+      display: block;
+      white-space: nowrap;
+    }
+    .hv-plate--bar :is(.hv-label, .hv-label-row) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+    .hv-plate--bar .hv-corr-grid {
+      grid-template-columns: minmax(0, 1fr) var(--tap-min);
+      gap: var(--s-2);
+      padding: var(--s-3);
+    }
+    .hv-plate--bar .hv-corr-from {
+      grid-row: 1;
+      grid-column: 1;
+    }
+    .hv-plate--bar .hv-corr-to {
+      grid-row: 2;
+      grid-column: 1;
+    }
+    .hv-plate--bar .hv-corr-swap {
+      grid-row: 1 / 3;
+      grid-column: 2;
+      align-self: center;
+      justify-self: center;
+      margin: 0;
+    }
+    .hv-plate--bar :is(.hv-corr-note, .hv-corr-row, .hv-group-note) {
+      grid-column: 1 / -1;
+    }
+    .hv-plate--bar .hv-corr-row {
+      grid-template-columns: minmax(0, 1fr) 6.5rem;
+      grid-template-areas: "date guests" "ret ret" "go go";
+      gap: var(--s-2);
+    }
+    .hv-plate--bar .hv-corr-row > :first-child {
+      grid-area: date;
+    }
+    .hv-plate--bar .hv-corr-row > :nth-child(2):not(.hv-corr-last) {
+      grid-area: ret;
+    }
+    .hv-plate--bar .hv-corr-last {
+      display: contents;
+    }
+    .hv-plate--bar .hv-corr-last > :first-child {
+      grid-area: guests;
+    }
+    .hv-plate--bar .hv-corr-go {
+      grid-area: go;
+    }
+    .hv-plate--bar :is(.hv-field, .hv-datebox-text, .hv-return-add) {
+      font-size: var(--fs-14);
+    }
+    .hv-plate--bar .hv-plate-foot {
+      padding: 0 var(--s-3) var(--s-3);
+      font-size: var(--fs-14);
+    }
   }
 }

@@ -97,7 +97,7 @@ export function SuccessPage() {
         <dl className="mx-auto grid w-full max-w-sm grid-cols-2 gap-x-4 gap-y-1 text-left">
           <dt className="text-muted">{t("confirmed.passengers")}</dt><dd className="font-semibold">{customer?.name}</dd>
           <dt className="text-muted">{t("confirmed.phone")}</dt><dd className="font-semibold">{customer?.phone}</dd>
-          {showPrice ? (<><dt className="text-muted">{t("confirmed.total_price")}</dt><dd className="text-20 font-extrabold text-ink tabular-nums">{formatMoney(data.price)}</dd></>) : null}
+          {showPrice ? (<><dt className="text-muted">{t("confirmed.total_price")}</dt><dd className="text-20 font-extrabold text-ink tabular-nums">{formatMoney(data.price, locale)}</dd></>) : null}
         </dl>
         <p className="flex flex-wrap items-center justify-center gap-3">
           <span className={`hv-tag ${paid ? "hv-tag-ok" : "hv-tag-bad"}`}>

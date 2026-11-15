@@ -20,15 +20,15 @@ function PromoCard({ promo, locale }: { promo: Promo; locale: Locale }) {
         <ul className="hv2r-promo-tiers">
           {promo.tiers.map((tier) => (
             <li key={`${tier.seats}-${tier.class}-${tier.price_vnd}`}>
-              <strong>{formatMoney(tier.price_vnd)}</strong>
-              {tier.was_vnd ? <s>{formatMoney(tier.was_vnd)}</s> : null}
+              <strong>{formatMoney(tier.price_vnd, locale)}</strong>
+              {tier.was_vnd ? <s>{formatMoney(tier.was_vnd, locale)}</s> : null}
               <span>{t("route.promo_tier", { seats: tier.seats, cls: tier.class || t("route.promo_any_class") })}</span>
             </li>
           ))}
         </ul>
       ) : promo.per_seat_vnd ? (
         <p className="hv2r-promo-price">
-          <strong>-{formatMoney(promo.per_seat_vnd)}</strong> <span>{t("route.promo_per_return_seat")}</span>
+          <strong>-{formatMoney(promo.per_seat_vnd, locale)}</strong> <span>{t("route.promo_per_return_seat")}</span>
         </p>
       ) : null}
       {terms.length ? (

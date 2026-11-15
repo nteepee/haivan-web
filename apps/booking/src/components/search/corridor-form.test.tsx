@@ -7,7 +7,7 @@ import { BookingConfigProvider } from "@/components/booking-config-provider";
 import { Providers } from "@/components/providers";
 import type { BookingConfig } from "@/schemas/booking-config";
 import { buildSearchUrl, parseCorridorParams, parseSearch, type CorridorParams, type SearchParamsData } from "@/lib/search-url";
-import { SearchForm, SHOW_SERVICE_TABS } from "./search-form";
+import { SearchForm } from "./search-form";
 
 const push = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push }) }));
@@ -86,7 +86,19 @@ describe("SearchForm chế độ tuyến", () => {
     expect(select("Điểm đến").selectedOptions[0]).toHaveTextContent("Vũng Tàu – Phòng chờ 156B Lê Hồng Phong");
     expect(select("Số vé")).toHaveValue("1");
     expect(select("Số vé").selectedOptions[0]).toHaveTextContent("1 vé");
-    expect(optionLabels(select("Số vé"))).toEqual(["1 vé", "2 vé", "3 vé", "4 vé", "5 vé", "6 vé", "7 vé", "8 vé", "9 vé"]);
+    expect(optionLabels(select("Số vé"))).toEqual(["1 vé", "2 vé", "3 vé", "4 vé", "5 vé", "6 vé", "7 vé", "8 vé", "9 vé", "Trên 9 vé (đoàn)"]);
+    expect(screen.queryByText(/Đoàn đông hơn/)).not.toBeInTheDocument();
+  });
+
+  it("chọn 'Trên 9 vé (đoàn)': hiện số tổng đài, bấm tìm không chuyển trang; chọn lại 9 vé thì ẩn", async () => {
+    renderForm();
+    await userEvent.selectOptions(select("Số vé"), "10");
+    const note = screen.getByText(/Mỗi đơn đặt tối đa 9 vé/);
+    expect(within(note).getByRole("link", { name: /1900 6763/ })).toHaveAttribute("href", "tel:19006763");
+    await userEvent.click(screen.getByRole("button", { name: "Tìm vé" }));
+    expect(push).not.toHaveBeenCalled();
+    await userEvent.selectOptions(select("Số vé"), "9");
+    expect(screen.queryByText(/Mỗi đơn đặt tối đa 9 vé/)).not.toBeInTheDocument();
   });
 
   it("đổi tuyến → danh sách trạm của tuyến mới, chiều về a → b, nút được chọn đổi theo", async () => {
@@ -225,13 +237,10 @@ describe("SearchForm chế độ tuyến", () => {
     expect(pushed().own).toMatchObject({ chang: "ve", donDi: "B02OUT1", chieu: "ba" });
   });
 
-  it("liên kết 'Đi tỉnh khác?' chuyển sang chọn điểm tự do (cũ) và quay lại được", async () => {
+  it("không còn liên kết 'Đi tỉnh khác?' sang chọn điểm tự do (review 2026-11-13)", () => {
     renderForm();
-    await userEvent.click(screen.getByRole("button", { name: "Tìm theo điểm đi, điểm đến" }));
-    expect(screen.getByText("Điểm xuất phát")).toBeInTheDocument();
-    expect(screen.queryByRole("navigation", { name: "Loại hình" }) !== null).toBe(SHOW_SERVICE_TABS);
-    await userEvent.click(screen.getByRole("button", { name: "Quay lại tuyến chính" }));
-    expect(screen.getByRole("group", { name: "Tuyến chính" })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Tìm theo điểm đi, điểm đến" })).not.toBeInTheDocument();
+    expect(screen.queryByText("Đi tỉnh khác?")).not.toBeInTheDocument();
   });
 
   it("bản EN: nhãn và tên tuyến tiếng Anh", () => {
@@ -240,7 +249,6 @@ describe("SearchForm chế độ tuyến", () => {
     expect(select("From")).toBeInTheDocument();
     expect(select("Tickets")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Add return date" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Search by origin and destination" })).toBeInTheDocument();
   });
 });
 

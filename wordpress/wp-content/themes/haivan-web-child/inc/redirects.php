@@ -3,7 +3,7 @@
  * Chuyển hướng 301 cho các trang rác còn sót từ web cũ (không sửa DB, chạy được cả khi trang đã bị xoá):
  *  - /dat-ve-nhanhs/* (slug thừa chữ "s")  -> /dat-ve-nhanh (trang tìm vé);
  *  - mảnh vụn rỗng của /dat-ve-nhanh/* (header, footer, slide...) -> /dat-ve-nhanh;
- *  - /mobile -> dải tải app ở trang chủ (#hv-app);
+ *  - /mobile -> dải tải app ở trang chủ (#hv-app); /haivanplus (sản phẩm đã ngừng) -> trang chủ;
  *  - /tuyen-duong/<tuyến cũ> -> trang tuyến tương ứng, tuyến đã bỏ (Đà Lạt, Hà Giang, Sa Pa) -> /xe-khach.
  * Áp dụng cho cả /en/. Giữ nguyên query string (utm_*, aff_sid). MKT thêm/bớt quy tắc bằng filter hv_redirect_rules.
  * Các trang nguồn được scripts/seo-hardening.php đặt noindex để rời sitemap Rank Math.
@@ -52,6 +52,9 @@ function hv_redirect_rules() {
 		$rules[] = array( '/dat-ve-nhanh/' . $frag, '/dat-ve-nhanh', false );
 	}
 	$rules[] = array( '/mobile', '/#hv-app', false );
+	$rules[] = array( '/app', '/#hv-app', false ); // link cũ trong tin tức (Lào Cai - Sapa) trỏ /app
+	// HAIVANplus đã ngừng: trang gỡ khỏi web, link cũ về trang chủ.
+	$rules[] = array( '/haivanplus', '/', true );
 	return (array) apply_filters( 'hv_redirect_rules', $rules );
 }
 

@@ -2,7 +2,8 @@
 
 import { Hourglass, TriangleAlert } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
+import { tripClassLabel } from "@/lib/trip-labels";
 import { countdown, formatMoney } from "@/lib/format";
 import type { BookingDraft, DraftSeat } from "@/stores/booking-draft";
 
@@ -51,6 +52,7 @@ export function Countdown({ deadline, onExpire, label }: { deadline: number; onE
 /** "Chi tiết giá": từng ghế, phụ thu, khuyến mãi/đổi điểm, tổng có vạch 1px (chỉ khi show_price !== 0). */
 export function PriceSummary({ seats, surcharge, show }: { seats: DraftSeat[]; surcharge: number; show: boolean }) {
   const t = useT();
+  const locale = useLocale();
   if (!show) return null;
   const total = seats.reduce((s, x) => (x.is_reward ? s : s + x.price - (x.discount ?? 0)), 0) + surcharge;
   const cell = "border-b border-rule py-3 align-top";
@@ -71,20 +73,20 @@ export function PriceSummary({ seats, surcharge, show }: { seats: DraftSeat[]; s
               {s.is_reward ? <span className={sub}>{t("booking_infor.exchange_points")}</span> : s.discount ? <span className={sub}>{t("booking_infor.promotion")}</span> : null}
             </td>
             <td className={`${cell} text-right`}>
-              {formatMoney(s.price)}
-              {s.is_reward ? <span className={sub}>-{formatMoney(s.price)}</span> : s.discount ? <span className={sub}>-{formatMoney(Math.min(s.discount, s.price))}</span> : null}
+              {formatMoney(s.price, locale)}
+              {s.is_reward ? <span className={sub}>-{formatMoney(s.price, locale)}</span> : s.discount ? <span className={sub}>-{formatMoney(Math.min(s.discount, s.price), locale)}</span> : null}
             </td>
           </tr>
         ))}
         <tr>
           <td className={cell}>{t("booking_infor.surcharge")}</td>
-          <td className={`${cell} text-right`}>{formatMoney(surcharge)}</td>
+          <td className={`${cell} text-right`}>{formatMoney(surcharge, locale)}</td>
         </tr>
       </tbody>
       <tfoot className="tabular-nums">
         <tr className="text-24 font-extrabold text-ink">
           <th scope="row" className="border-t border-rule pt-4 text-left">{t("booking_infor.total")}</th>
-          <td className="border-t border-rule pt-4 text-right">{formatMoney(total)}</td>
+          <td className="border-t border-rule pt-4 text-right">{formatMoney(total, locale)}</td>
         </tr>
       </tfoot>
     </table>
@@ -96,6 +98,7 @@ const hhmm = (v?: string) => (v ? v.slice(11, 16) : "");
 /** Tóm tắt chuyến: hạng xe, ngày khởi hành, các chặng đón/tuyến/trả trên một đường ray (chấm ink = bến lên xe, chấm vàng = bến xuống và điểm đón/trả). */
 export function TripSummary({ draft, valueStart, valueEnd }: { draft: BookingDraft; valueStart: string; valueEnd: string }) {
   const t = useT();
+  const locale = useLocale();
   const { trip_info: trip } = draft;
   const date = trip.from.reached_at ? new Date(trip.from.reached_at.replace(" ", "T")) : null;
   const stop = "relative pl-6 before:absolute before:left-0 before:top-2 before:size-3 before:rounded-round";
@@ -104,9 +107,9 @@ export function TripSummary({ draft, valueStart, valueEnd }: { draft: BookingDra
   const mode = (home: boolean) => t(home ? "booking_infor.transit_vehicle" : "booking_infor.self_service");
   return (
     <>
-      <h2 className="text-18 font-extrabold">{trip.product.name}</h2>
+      <h2 className="text-18 font-extrabold">{tripClassLabel(trip.product.name, locale)}</h2>
       <p className="text-14 font-semibold text-muted">
-        {date ? date.toLocaleDateString("vi-VN", { weekday: "long", day: "2-digit", month: "long" }) : trip.date}
+        {date ? date.toLocaleDateString(locale === "en" ? "en-GB" : "vi-VN", { weekday: "long", day: "2-digit", month: "long" }) : trip.date}
         {", "}
         {hhmm(trip.from.reached_at)} - {hhmm(trip.to.reached_at)}
       </p>

@@ -158,11 +158,18 @@
     font-weight: var(--weight-display);
     text-align: start;
   }
+  /* th mặc định căn giữa còn td căn trái nên tiêu đề lệch với dữ liệu: mọi ô căn trái, riêng cột giá (cuối) căn phải ở cả tiêu đề và dòng. */
   .hv-fare-table th,
   .hv-fare-table td {
     padding: var(--s-3) var(--s-4) var(--s-3) 0;
     border-bottom: var(--hairline);
+    text-align: start;
     vertical-align: top;
+  }
+  .hv-fare-table :is(th, td):last-child {
+    padding-inline-end: 0;
+    text-align: end;
+    white-space: nowrap;
   }
   .hv-fare-table thead th {
     color: var(--color-muted);

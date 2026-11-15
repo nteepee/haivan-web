@@ -1,6 +1,6 @@
 "use client";
 
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
 import { formatMoney, parseVnDateTime } from "@/lib/format";
 import type { BookingFull } from "@/schemas/account";
 
@@ -15,6 +15,7 @@ const stamp = (value?: string | null) => {
 /** Thẻ phòng chờ / trung chuyển của đơn (khi có `room` hoặc `tco_ticket`) + nút "Huỷ dịch vụ". */
 export function TransitServiceCard({ detail, paid, onCancel }: { detail: BookingFull; paid: boolean; onCancel: () => void }) {
   const t = useT();
+  const locale = useLocale();
   const { room, tco_ticket: tco } = detail;
   if (!room && !tco) return null;
   const cancelled = detail.ord_is_phong_cho === 2 || detail.ord_is_trung_chuyen === 2;
@@ -35,7 +36,7 @@ export function TransitServiceCard({ detail, paid, onCancel }: { detail: Booking
         <p className={line}>
           {t("account.guest_count")}: {guests}
         </p>
-        <p className={line}>{formatMoney(total)}</p>
+        <p className={line}>{formatMoney(total, locale)}</p>
       </div>
       {tco?.don_info?.address ? <p className={line}>{t("account.pick_up_point")}: {tco.don_info.address}</p> : null}
       {tco?.tra_info?.address ? <p className={line}>{t("account.drop_off_point")}: {tco.tra_info.address}</p> : null}

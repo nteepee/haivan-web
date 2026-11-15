@@ -10,6 +10,9 @@
 (function () {
   'use strict';
 
+  /** Giới hạn vé mỗi đơn của ERP (cùng MAX_SEATS bên Next). */
+  var MAX_GUESTS = 9;
+
   var placesPromise = {}; // url -> Promise<Group[]> (chia sẻ giữa nhiều form trên trang)
 
   function strip(s) {
@@ -184,6 +187,7 @@
     var swap = form.querySelector('.hv-search__swap');
     var status = form.querySelector('.hv-search__status');
     var errorBox = form.querySelector('.hv-search__error');
+    var groupNote = form.querySelector('.hv-search__groupnote');
     var groups = 'loading';
 
     var today = new Date();
@@ -192,6 +196,8 @@
     dateInput.min = isoDate(today);
     dateInput.max = isoDate(max);
     dateInput.value = isoDate(today);
+    // Bấm vào chữ ngày là mở bộ chọn ngày (không chỉ biểu tượng lịch), giống form tuyến chính.
+    dateInput.addEventListener('click', function () { if (typeof dateInput.showPicker === 'function') { try { dateInput.showPicker(); } catch (e) { /* đang mở hoặc không hỗ trợ */ } } });
 
     function showError(msg, target) {
       errorBox.textContent = msg;
@@ -237,13 +243,27 @@
       b.addEventListener('click', function () {
         var n = parseInt(guestsInput.value, 10);
         if (!isFinite(n) || n < 1) n = 1;
-        guestsInput.value = String(Math.max(1, n + Number(b.getAttribute('data-step'))));
+        var next = Math.max(1, n + Number(b.getAttribute('data-step')));
         clearError();
+        guestsInput.value = String(capGuests(next));
         syncSteps();
       });
     });
-    guestsInput.addEventListener('input', syncSteps);
-    guestsInput.addEventListener('blur', function () { if (!/^\d+$/.test(guestsInput.value.trim()) || Number(guestsInput.value) < 1) { guestsInput.value = '1'; syncSteps(); } });
+    /** Mỗi đơn tối đa MAX_GUESTS vé: vượt thì giữ ở mức tối đa và hiện số tổng đài cho đoàn. */
+    function capGuests(n) {
+      if (groupNote) groupNote.hidden = !(n > MAX_GUESTS);
+      return Math.min(n, MAX_GUESTS);
+    }
+    guestsInput.addEventListener('input', function () {
+      // Gõ lại số trong giới hạn thì ẩn ghi chú đoàn; số vượt chỉ chặn khi rời ô / bấm tìm.
+      if (groupNote && Number(guestsInput.value) <= MAX_GUESTS) groupNote.hidden = true;
+      syncSteps();
+    });
+    guestsInput.addEventListener('blur', function () {
+      if (!/^\d+$/.test(guestsInput.value.trim()) || Number(guestsInput.value) < 1) guestsInput.value = '1';
+      else guestsInput.value = String(capGuests(Number(guestsInput.value)));
+      syncSteps();
+    });
     syncSteps();
 
     swap.addEventListener('click', function () {
@@ -266,6 +286,7 @@
 
       var guests = Number(guestsInput.value);
       if (!/^\d+$/.test(String(guestsInput.value).trim()) || !isFinite(guests) || guests < 1) return showError(L.err_guests, guestsInput);
+      if (guests > MAX_GUESTS) { guestsInput.value = String(capGuests(guests)); return guestsInput.focus(); }
 
       function point(p) {
         // Tên có dấu phẩy sẽ làm vỡ bộ ba "tên,lat,lng" ở trang kết quả → thay bằng khoảng trắng.
@@ -293,7 +314,7 @@
   var TZ = 'Asia/Ho_Chi_Minh';
   var BUCKETS = { all: [0, 24 * 60], dawn: [0, 360], morning: [360, 660], noon: [660, 840], afternoon: [840, 1080], evening: [1080, 1440] }; // phút trong ngày, nửa mở [từ, đến) như TIME_BUCKETS của Next
   var MAX_TRIP_PAGES = 15; // apigw trả 10 chuyến/trang (SG-VT cả ngày khoảng 11 trang)
-  var tripCache = {}; // khoá tuyến+chiều+điểm+ngày -> { t, counts }
+  var tripCache = {}; // khoá tuyến+chiều+điểm+ngày -> { t, data: { counts, trips } }
 
   /** Hôm nay theo giờ Việt Nam, "YYYY-MM-DD" (không phụ thuộc múi giờ máy khách). */
   function vnToday() {
@@ -342,21 +363,70 @@
       .then(function (j) { if (timer) clearTimeout(timer); return j; }, function (e) { if (timer) clearTimeout(timer); return retry(e); });
   }
 
-  /** Cache số chuyến: bộ nhớ trang + sessionStorage 5 phút (try/catch: chế độ riêng tư/đầy bộ nhớ thì bỏ qua). */
+  /**
+   * Cache chuyến hôm nay: { counts, trips } (trips = bản rút gọn để vẽ danh sách), bộ nhớ trang + sessionStorage 5 phút
+   * (try/catch: chế độ riêng tư/đầy bộ nhớ thì bỏ qua). Tiền tố hvsc2: bản cũ hvsc: chỉ có counts, không dùng lại.
+   */
   var COUNT_TTL = 5 * 60 * 1000;
   function cacheGet(key) {
-    if (tripCache[key] && Date.now() - tripCache[key].t < COUNT_TTL) return tripCache[key].counts;
+    if (tripCache[key] && Date.now() - tripCache[key].t < COUNT_TTL) return tripCache[key].data;
     try {
-      var raw = window.sessionStorage.getItem('hvsc:' + key);
+      var raw = window.sessionStorage.getItem('hvsc2:' + key);
       var o = raw ? JSON.parse(raw) : null;
-      if (o && o.counts && Date.now() - o.t < COUNT_TTL) { tripCache[key] = o; return o.counts; }
+      if (o && o.data && o.data.counts && Array.isArray(o.data.trips) && Date.now() - o.t < COUNT_TTL) { tripCache[key] = o; return o.data; }
     } catch (e) { /* bỏ qua */ }
     return null;
   }
-  function cacheSet(key, counts) {
-    var o = { t: Date.now(), counts: counts };
+  function cacheSet(key, data) {
+    var o = { t: Date.now(), data: data };
     tripCache[key] = o;
-    try { window.sessionStorage.setItem('hvsc:' + key, JSON.stringify(o)); } catch (e) { /* bỏ qua */ }
+    try { window.sessionStorage.setItem('hvsc2:' + key, JSON.stringify(o)); } catch (e) { /* bỏ qua */ }
+  }
+
+  /** "HH:MM" -> phút trong ngày, hoặc null. */
+  function minOf(hhmm) {
+    var m = /^(\d{1,2}):(\d{2})/.exec(hhmm || '');
+    return m ? +m[1] * 60 + +m[2] : null;
+  }
+  /** Phút trong ngày hiện tại theo giờ Việt Nam (% 1440: có engine in "24:05" thay cho "00:05"). */
+  function vnNowMinutes() {
+    try {
+      var m = minOf(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date()));
+      if (m !== null) return m % 1440;
+    } catch (e) { /* trình duyệt cũ: dùng giờ máy */ }
+    var d = new Date();
+    return d.getHours() * 60 + d.getMinutes();
+  }
+  /** Số ngày giữa hai chuỗi "YYYY-MM-DD..." (0 khi thiếu). */
+  function dayDiff(a, b) {
+    if (!validIso(String(a).slice(0, 10)) || !validIso(String(b).slice(0, 10))) return 0;
+    var x = String(a).slice(0, 10).split('-');
+    var y = String(b).slice(0, 10).split('-');
+    return Math.round((Date.UTC(+y[0], +y[1] - 1, +y[2]) - Date.UTC(+x[0], +x[1] - 1, +x[2])) / 864e5);
+  }
+  /**
+   * Chuyến apigw -> các trường danh sách cần (giờ lấy theo điểm đón như phần đếm).
+   * depDay: điểm đón rơi sang ngày sau ngày tìm (không phải chuyến "hôm nay"); arrDay: đến nơi sau ngày đón bao nhiêu ngày (+1 chuyến đêm).
+   */
+  function compactTrip(t, date) {
+    var from = (t && t.from) || {};
+    var to = (t && t.to) || {};
+    var p = (t && t.price) || {};
+    var now = Number(p.price_discount || p.price || p.min) || 0;
+    var was = t && t.has_discount && Number(p.price) > now ? Number(p.price) : 0;
+    return {
+      dep: (from.reached_at ? String(from.reached_at).slice(11, 16) : '') || (t && t.time) || '',
+      arr: to.reached_at ? String(to.reached_at).slice(11, 16) : '',
+      depDay: from.reached_at ? dayDiff(date, from.reached_at) : 0,
+      arrDay: from.reached_at && to.reached_at ? dayDiff(from.reached_at, to.reached_at) : 0,
+      from: from.place_name || '',
+      to: to.place_name || '',
+      dur: (t && t.duration) || '',
+      seats: Number(t && t.available_seats),
+      cls: (t && t.product && t.product.name) || '',
+      price: t && t.route && t.route.show_price === 0 ? 0 : now,
+      was: was
+    };
   }
 
   /**
@@ -401,18 +471,18 @@
       var pages = [];
       for (var p = 2; p <= last; p++) pages.push(p);
       return mapPool(pages, 3, function (pg) { return getJson(base + '&page=' + pg, sig); }).then(function (rest) {
-        var trips = first.data.slice();
-        rest.forEach(function (pg) { if (pg && Array.isArray(pg.data)) trips = trips.concat(pg.data); });
+        var raw = first.data.slice();
+        rest.forEach(function (pg) { if (pg && Array.isArray(pg.data)) raw = raw.concat(pg.data); });
+        var trips = raw.map(function (t) { return compactTrip(t, date); });
         var counts = { all: trips.length, dawn: 0, morning: 0, noon: 0, afternoon: 0, evening: 0 };
         trips.forEach(function (t) {
-          var raw = (t && t.from && t.from.reached_at ? String(t.from.reached_at).slice(11, 16) : '') || (t && t.time) || '';
-          var m = /^(\d{1,2}):(\d{2})/.exec(raw);
-          if (!m) return;
-          var min = +m[1] * 60 + +m[2];
+          var min = minOf(t.dep);
+          if (min === null) return;
           ['dawn', 'morning', 'noon', 'afternoon', 'evening'].forEach(function (k) { if (min >= BUCKETS[k][0] && min < BUCKETS[k][1]) counts[k]++; });
         });
-        cacheSet(key, counts);
-        return counts;
+        var result = { counts: counts, trips: trips };
+        cacheSet(key, result);
+        return result;
       });
     }).catch(function (e) {
       if (local) local.abort(); // dừng các trang đang chạy
@@ -448,10 +518,26 @@
     var guestsSel = $('select[name="numberGuest"]');
     var status = $('.hv-search__status');
     var errorBox = $('.hv-search__error');
+    var groupNote = $('.hv-search__groupnote');
     var chips = today.querySelectorAll('.hv-search__chip');
     var chipsBox = today.querySelector('.hv-search__chips');
     var pairEl = today.querySelector('.hv-search__today-pair');
     var noteEl = today.querySelector('.hv-search__today-note');
+    // Danh sách chuyến sắp chạy hôm nay dưới hàng chip (như "Chuyến hôm nay" của app): dựng một lần, vẽ lại khi có số liệu/đổi chip.
+    var MAX_LIST = 6;
+    var TL = lang === 'en'
+      ? { seats: '%d seats left', full: 'Sold out', all: 'See all %d trips', none: 'No more departures in this time slot today.', noneDay: 'No more departures today.', list: 'Upcoming trips today', was: 'was', now: 'now', nextDay: 'arrives %d day later' }
+      : { seats: 'Còn %d chỗ', full: 'Hết chỗ', all: 'Xem tất cả %d chuyến', none: 'Khung giờ này hôm nay không còn chuyến sắp chạy.', noneDay: 'Hôm nay không còn chuyến sắp chạy.', list: 'Chuyến sắp chạy hôm nay', was: 'giá cũ', now: 'giá', nextDay: 'đến nơi sau %d ngày' };
+    var listEl = document.createElement('div');
+    listEl.className = 'hv-search__trips';
+    listEl.setAttribute('role', 'region');
+    listEl.setAttribute('aria-label', TL.list);
+    listEl.hidden = true;
+    today.appendChild(listEl);
+    var curBucket = 'all';
+    var lastData = null;
+    var lastDate = ''; // ngày VN lúc vẽ danh sách
+    var lastAt = 0;    // thời điểm nhận dữ liệu
     var name = function (o) { return (o && (o[lang] || o.vi)) || ''; };
     var byId = {};
     corridors.forEach(function (c) { byId[c.id] = c; });
@@ -492,14 +578,7 @@
       sel.value = stop(side).id;
     }
 
-    /** Phút trong ngày hiện tại theo giờ Việt Nam. */
-    function vnNowMinutes() {
-      try {
-        var parts = new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date()).split(':');
-        return +parts[0] * 60 + +parts[1];
-      } catch (e) { var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
-    }
-    function hhmm(v) { var m = /^(\d{2}):(\d{2})$/.exec(v || ''); return m ? +m[1] * 60 + +m[2] : null; }
+    var hhmm = minOf; // "HH:MM" -> phút (dùng chung với phần "Chuyến hôm nay")
     /** Ngày về `iso` có thể đủ điều kiện chương trình không: ngày đi áp dụng, thứ trong tuần, đặt trước (giờ xuất bến chưa biết nên chỉ loại khi chắc chắn không còn chuyến nào đủ). */
     function promoFitsDate(p, iso) {
       if (p.travel_from && iso < p.travel_from) return false;
@@ -553,6 +632,7 @@
       }
       syncDateText();
       renderPromo();
+      if (lastData) renderTrips(); // link thẻ chuyến mang ngày về: vẽ lại khi ngày về đổi
     }
 
     function renderDates() {
@@ -604,7 +684,9 @@
         // Đang tải: khoá hết; lỗi: mở hết (vẫn bấm tìm được); có số liệu: khung 0 chuyến bị khoá, "Cả ngày" luôn mở.
         c.disabled = mode === 'loading' || (mode === 'ok' && k !== 'all' && !(n > 0));
         c.setAttribute('aria-label', counts ? label + ', ' + fmt(n === 1 ? SC.trip_1 : SC.trip_n, n) : label);
+        c.setAttribute('aria-pressed', mode === 'ok' && k === curBucket ? 'true' : 'false');
       });
+      if (mode !== 'ok') listEl.hidden = true;
     }
     /** Khoá cache: tuyến + chiều + điểm tìm chuyến thực (hai điểm đón cùng toạ độ dùng chung) + ngày. */
     function todayKey(from, to, date) {
@@ -621,26 +703,113 @@
       var mine = ctl;
       var key = todayKey(from, to, date);
       var cached = cacheGet(key);
-      if (cached) { showCounts(cached); return; }
+      if (cached) { showData(cached); return; }
       setChips(null, 'loading');
       noteEl.textContent = SC.loading;
       loadToday(cfg, key, from, to, date, ctl ? ctl.signal : undefined).then(
-        function (counts) { if (mine === ctl) showCounts(counts); },
+        function (data) { if (mine === ctl) showData(data); },
         function (e) {
           if (mine !== ctl || (mine && mine.signal.aborted)) return; // đã đổi khoá: bỏ kết quả cũ
+          lastData = null;
           setChips(null, 'error');
           noteEl.textContent = SC.load_error;
         }
       );
     }
-    function showCounts(counts) {
-      setChips(counts, 'ok');
-      noteEl.textContent = counts.all > 0 ? '' : SC.none_today; // có chuyến: số đã nằm trên chip "Cả ngày"
+    function showData(data) {
+      lastData = data;
+      lastDate = vnToday();
+      lastAt = Date.now();
+      if (curBucket !== 'all' && !(data.counts[curBucket] > 0)) curBucket = 'all'; // khung đang chọn không còn chuyến: về "Cả ngày"
+      setChips(data.counts, 'ok');
+      noteEl.textContent = data.counts.all > 0 ? '' : SC.none_today; // có chuyến: số đã nằm trên chip "Cả ngày"
+      renderTrips();
+    }
+    function money(n) { return Math.round(n).toLocaleString('vi-VN') + 'đ'; }
+    function el(tag, cls, text) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    }
+    function bucketOf(min) {
+      var keys = ['dawn', 'morning', 'noon', 'afternoon', 'evening'];
+      for (var i = 0; i < keys.length; i++) if (min >= BUCKETS[keys[i]][0] && min < BUCKETS[keys[i]][1]) return keys[i];
+      return 'all';
+    }
+    /** Thẻ một chuyến: giờ đi → giờ đến, điểm đón → điểm trả, hạng xe, chỗ trống, giá. Bấm = trang kết quả đúng khung giờ. */
+    function tripCard(t) {
+      var a = el('a', 'hv-trip-card');
+      a.href = resultsUrl(vnToday(), bucketOf(minOf(t.dep)));
+      if (!(t.seats > 0)) a.classList.add('is-full');
+      var times = el('span', 'hv-trip-card__times');
+      times.appendChild(el('strong', 'hv-num', t.dep));
+      times.appendChild(el('span', 'hv-trip-card__dur', t.dur));
+      var arr = el('strong', 'hv-num', t.arr);
+      if (t.arrDay > 0) { // chuyến đêm: đến nơi ngày hôm sau
+        var plus = el('sup', 'hv-trip-card__plus', '+' + t.arrDay);
+        plus.setAttribute('aria-label', fmt(TL.nextDay, t.arrDay));
+        arr.appendChild(plus);
+      }
+      times.appendChild(arr);
+      a.appendChild(times);
+      a.appendChild(el('span', 'hv-trip-card__route', t.from + ' → ' + t.to));
+      var foot = el('span', 'hv-trip-card__foot');
+      if (t.cls) foot.appendChild(el('span', 'hv-trip-card__cls', t.cls));
+      foot.appendChild(el('span', 'hv-trip-card__seats', t.seats > 0 ? fmt(TL.seats, t.seats) : TL.full));
+      if (t.price > 0) {
+        var pr = el('span', 'hv-trip-card__price');
+        if (t.was > t.price) {
+          pr.appendChild(el('span', 'hv-sr', TL.was)); // trình đọc màn hình không đọc gạch ngang của <s>
+          pr.appendChild(el('s', 'hv-num', money(t.was)));
+          pr.appendChild(el('span', 'hv-sr', TL.now));
+        }
+        pr.appendChild(el('strong', 'hv-num', money(t.price)));
+        foot.appendChild(pr);
+      }
+      a.appendChild(foot);
+      return a;
+    }
+    /** Vẽ danh sách theo chip đang chọn: chỉ chuyến chưa khởi hành, tối đa MAX_LIST thẻ, cuối là "Xem tất cả". */
+    function renderTrips() {
+      listEl.textContent = '';
+      if (!lastData || !lastData.trips || !(lastData.counts.all > 0)) { listEl.hidden = true; return; }
+      var b = BUCKETS[curBucket] || BUCKETS.all;
+      var nowMin = vnNowMinutes();
+      // apigw xếp theo giờ xuất bến của nốt; khách thấy giờ đón tại điểm của mình, nên xếp lại theo giờ đón.
+      var rows = lastData.trips.filter(function (t) {
+        var m = minOf(t.dep);
+        return m !== null && !(t.depDay > 0) && m >= b[0] && m < b[1] && m >= nowMin; // đón sau nửa đêm thuộc ngày mai
+      }).sort(function (x, y) { return minOf(x.dep) - minOf(y.dep); });
+      if (!rows.length) {
+        var empty = el('p', 'hv-search__trips-empty', curBucket === 'all' ? TL.noneDay : TL.none);
+        empty.setAttribute('role', 'status');
+        listEl.appendChild(empty);
+      } else {
+        var grid = el('div', 'hv-search__trips-grid');
+        rows.slice(0, MAX_LIST).forEach(function (t) { grid.appendChild(tripCard(t)); });
+        listEl.appendChild(grid);
+      }
+      var more = el('a', 'hv-search__trips-all', fmt(TL.all, lastData.counts[curBucket] || lastData.counts.all));
+      var arrow = el('span', 'hv-search__trips-arrow', '→');
+      arrow.setAttribute('aria-hidden', 'true');
+      more.appendChild(arrow);
+      more.href = resultsUrl(vnToday(), curBucket);
+      listEl.appendChild(more);
+      listEl.hidden = false;
+    }
+    /** Trang để lâu/qua đêm: dữ liệu khác ngày hoặc quá 5 phút thì tải lại, còn mới thì chỉ vẽ lại (bỏ chuyến đã chạy, link mới). */
+    function refreshToday() {
+      if (!lastData) return;
+      if (lastDate !== vnToday() || Date.now() - lastAt > COUNT_TTL) scheduleToday();
+      else renderTrips();
     }
     /** Đổi biểu mẫu: chờ 400ms yên rồi mới tải, và chỉ khi hàng chip đang trong khung nhìn. */
     function scheduleToday() {
       clearTimeout(timer);
       if (ctl) { ctl.abort(); ctl = null; } // huỷ ngay các trang đang tải của khoá cũ
+      lastData = null; // danh sách của khoá cũ không còn đúng
+      listEl.hidden = true;
       pending = true;
       timer = setTimeout(function () { if (visible && !document.hidden) loadTodayNow(); }, 400);
     }
@@ -648,6 +817,7 @@
       new IntersectionObserver(function (entries) {
         visible = entries.some(function (e) { return e.isIntersecting; });
         if (visible && pending && !(today.closest('[data-hv-today-section]') || today).hidden) { clearTimeout(timer); timer = setTimeout(loadTodayNow, 0); }
+        else if (visible && !pending) refreshToday(); // cuộn lại tới khối sau một lúc: dữ liệu có thể đã cũ
       }, { rootMargin: '200px 0px' }).observe(today);
     }
 
@@ -664,21 +834,31 @@
       var date = (opts && opts.date) || dateIn.value;
       if (!validIso(date) || date < t || date > maxDate()) return showError(fmt(SC.err_date, cor().max_days), dateIn);
       var guests = Number(guestsSel.value);
-      if (!(guests >= 1 && guests <= 9)) return showError(SC.err_guests, guestsSel);
-      var ret = st.ret;
-      if (ret !== null) {
+      if (guests > MAX_GUESTS) { if (groupNote) groupNote.hidden = false; return guestsSel.focus(); } // "Trên 9 vé": gọi tổng đài
+      if (!(guests >= 1 && guests <= MAX_GUESTS)) return showError(SC.err_guests, guestsSel);
+      var ret = opts && opts.date ? todayRet(date) : st.ret;
+      if (ret !== null && !(opts && opts.date)) {
         var min = addDays(date, cor().sleeper ? 1 : 0);
-        if (opts && opts.date) {
-          if (!validIso(ret) || ret < min || ret > maxDate()) ret = null; // chip: bỏ ngày về không còn hợp lệ so với ngày hôm nay
-        } else if (!validIso(ret) || ret < min || ret > maxDate()) {
-          return showError(cor().sleeper ? SC.err_return_sl : SC.err_return, retIn);
-        }
+        if (!validIso(ret) || ret < min || ret > maxDate()) return showError(cor().sleeper ? SC.err_return_sl : SC.err_return, retIn);
       }
-      var f = pointOf(sideFrom());
-      var to = pointOf(sideTo());
+      setCookie('pll_language', cfg.lang);
+      window.location.assign(resultsUrl(date, opts && opts.bucket, ret));
+    }
+    /** Ngày về đi kèm khi tìm theo ngày hôm nay (chip, thẻ chuyến): bỏ ngày về không còn hợp lệ so với ngày đi. */
+    function todayRet(date) {
+      var ret = st.ret;
+      if (ret === null) return null;
+      var min = addDays(date, cor().sleeper ? 1 : 0);
+      return !validIso(ret) || ret < min || ret > maxDate() ? null : ret;
+    }
+    /** URL trang kết quả cho điểm đi/đến đang chọn; `bucket` = khung giờ (bỏ qua khi "all"). Không có `ret`: tính như chip. */
+    function resultsUrl(date, bucket, ret) {
+      if (arguments.length < 3) ret = todayRet(date);
+      var guests = Number(guestsSel.value);
+      if (!(guests >= 1 && guests <= MAX_GUESTS)) guests = 1;
       var q = [
-        'from=' + point(f),
-        'to=' + point(to),
+        'from=' + point(pointOf(sideFrom())),
+        'to=' + point(pointOf(sideTo())),
         'date=' + toDmy(date),
         'numberGuest=' + guests,
         'type=2',
@@ -688,9 +868,8 @@
         'diem_den=' + encodeURIComponent(stop(sideTo()).id)
       ];
       if (ret) q.push('ngay_ve=' + toDmy(ret));
-      if (opts && opts.bucket && opts.bucket !== 'all') q.push('gio=' + encodeURIComponent(opts.bucket));
-      setCookie('pll_language', cfg.lang);
-      window.location.assign(cfg.resultsPath + '?' + q.join('&'));
+      if (bucket && bucket !== 'all') q.push('gio=' + encodeURIComponent(bucket));
+      return cfg.resultsPath + '?' + q.join('&');
     }
 
     /* ---- Sự kiện ---- */
@@ -714,11 +893,35 @@
       retIn.focus();
     });
     retClear.addEventListener('click', function () { st.ret = null; renderReturn(); addBtn.focus(); });
-    guestsSel.addEventListener('change', function () { clearError(); scheduleToday(); });
+    guestsSel.addEventListener('change', function () {
+      clearError();
+      if (groupNote) groupNote.hidden = !(Number(guestsSel.value) > MAX_GUESTS);
+      scheduleToday();
+    });
     form.addEventListener('submit', function (ev) { ev.preventDefault(); submit(null); });
     Array.prototype.forEach.call(chips, function (c) {
-      c.addEventListener('click', function () { submit({ date: vnToday(), bucket: c.getAttribute('data-bucket') }); });
+      c.addEventListener('click', function () {
+        var k = c.getAttribute('data-bucket');
+        // Có danh sách: chip lọc ngay tại chỗ. Tải lỗi (không có danh sách): vẫn mở trang kết quả như trước.
+        if (!lastData) return submit({ date: vnToday(), bucket: k });
+        curBucket = k;
+        setChips(lastData.counts, 'ok');
+        renderTrips();
+      });
     });
+    // Thẻ chuyến và "Xem tất cả" là link thường; giữ ngôn ngữ cho trang kết quả như nút tìm.
+    function onListLink(ev) {
+      if (!(ev.target.closest && ev.target.closest('a'))) return;
+      if (Number(guestsSel.value) > MAX_GUESTS) { // "Trên 9 vé": như nút tìm, mời gọi tổng đài thay vì mở trang kết quả
+        ev.preventDefault();
+        if (groupNote) groupNote.hidden = false;
+        guestsSel.focus();
+        return;
+      }
+      setCookie('pll_language', cfg.lang);
+    }
+    listEl.addEventListener('click', onListLink);
+    listEl.addEventListener('auxclick', onListLink); // bấm chuột giữa (mở tab mới) cũng giữ ngôn ngữ
     var toFree = $('[data-switch="free"]');
     if (toFree) toFree.addEventListener('click', function () { onSwitch('free'); });
 
@@ -727,6 +930,7 @@
       if (document.hidden || form.hidden) return;
       renderDates();
       if (pending && visible) { clearTimeout(timer); timer = setTimeout(loadTodayNow, 0); } // tab quay lại: tải phần đang chờ
+      else refreshToday(); // danh sách đã có: bỏ chuyến đã chạy, tải lại nếu qua ngày/quá hạn
     });
 
     selectCorridor(st.cid);

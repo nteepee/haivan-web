@@ -1,4 +1,3 @@
-import { formatMoney } from "@/lib/format";
 import type { RouteListing } from "@/lib/route-listing";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import type { RouteLandingWp } from "@/schemas/route-landing";
@@ -90,11 +89,11 @@ function cmsDescription(cms: RouteListing): string | null {
  * Tiêu đề/mô tả của WP và CMS dùng nguyên văn; chỉ mẫu bị giới hạn độ dài.
  */
 export function buildRouteLanding(wp: RouteLandingWp | null, cms: RouteListing, tpl: RouteTemplate, livePrice: number | null = null): RouteLandingView {
-  const [start, end] = routeEndpoints(cms);
+  const [start, end] = routeEndpoints(cms).map((p) => tpl.place(p));
   const way = cms.data.wayroad;
   // Giá "từ" chỉ lấy từ chuyến thật hôm nay (`livePrice`, xem server/route-price.ts); giá trung bình của CMS đã cũ
   // (vd. 140.000đ Sài Gòn – Vũng Tàu) nên không dùng. Không có giá hôm nay → tiêu đề, mô tả, JSON-LD và đầu trang đều không có giá.
-  const priceLabel = livePrice !== null && livePrice > 0 ? formatMoney(livePrice) : null;
+  const priceLabel = livePrice !== null && livePrice > 0 ? tpl.money(livePrice) : null;
   const runHours = hours(way?.run_time);
   const pickups = wp?.pickup_points ?? [];
   const useCms = tpl.cmsMeta;
@@ -128,7 +127,7 @@ export function buildRouteLanding(wp: RouteLandingWp | null, cms: RouteListing, 
     stats: wp?.stats ?? [],
     story: text(wp?.story),
     vehicleClasses: wp?.vehicle_classes ?? [],
-    amenities: (cms.services ?? []).map((s) => ({ name: s.name, icon: s.image && /^https?:\/\//i.test(s.image) ? s.image : null })),
+    amenities: (cms.services ?? []).map((s) => ({ name: tpl.amenity(s.name), icon: s.image && /^https?:\/\//i.test(s.image) ? s.image : null })),
     relatedRoutes: wp?.related_routes ?? [],
     reverseRoute: wp?.reverse_route ?? null,
     roundTripNote: text(wp?.round_trip_note),

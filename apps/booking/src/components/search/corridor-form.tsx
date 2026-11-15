@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowLeftRight, ArrowRight, Check, ChevronDown, MapPin, Plus, X } from "lucide-react";
+import { ArrowLeftRight, ArrowRight, ChevronDown, MapPin, Plus, X } from "lucide-react";
+import { openDatePicker } from "@/lib/open-date-picker";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
 import { useBookingConfig } from "@/components/booking-config-provider";
@@ -24,8 +25,11 @@ import {
   type StopPick,
 } from "@/lib/corridors";
 import { promoLabel, roundtripPromoForOutbound } from "@/lib/promo-match";
+import { roundtripRuleForOutbound } from "@/lib/rule-offers";
 import { appendCorridorParams, buildSearchUrl, type CorridorParams } from "@/lib/search-url";
 import type { Corridor, CorridorDirection, CorridorStop } from "@/schemas/booking-config";
+import { MAX_SEATS } from "@/lib/seats";
+import { GroupCallNote } from "./group-call-note";
 import { TodayTrips } from "./today-trips";
 
 interface Props {
@@ -36,15 +40,19 @@ interface Props {
   /** `type` của link tìm chuyến (2 = xe liên tỉnh như web cũ). */
   type: number;
   glass: boolean;
+  /** Thanh tìm vé gọn (trang kết quả), xem `plateClass`. */
+  bar?: boolean;
   /** Hiện hàng "Chuyến hôm nay" dưới thẻ. */
   todayChips: boolean;
-  onFree: () => void;
 }
 
-const GUEST_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;
+const GUEST_OPTIONS = Array.from({ length: MAX_SEATS }, (_, i) => i + 1);
+/** Giá trị của dòng "Trên 9 vé": không tìm được, chỉ hiện số tổng đài cho đoàn. */
+const GROUP_VALUE = MAX_SEATS + 1;
 
 function StopSelect({ id, label, stops, value, onChange }: { id: string; label: string; stops: CorridorStop[]; value: string; onChange: (id: string) => void }) {
   const locale = useLocale();
+  const picked = stops.find((s) => s.id === value);
   return (
     <div className="min-w-0">
       <label htmlFor={id} className="hv-label">
@@ -52,7 +60,8 @@ function StopSelect({ id, label, stops, value, onChange }: { id: string; label: 
       </label>
       <div className="hv-selectbox hv-selectbox-pin">
         <MapPin className="hv-pin size-icon" aria-hidden />
-        <select id={id} value={value} onChange={(e) => onChange(e.target.value)} className="hv-field">
+        {/* title: tên trạm đầy đủ khi ô hẹp (thanh tìm vé) phải cắt "…". */}
+        <select id={id} value={value} title={picked ? localized(picked, locale) : undefined} onChange={(e) => onChange(e.target.value)} className="hv-field">
           {stops.map((s) => (
             <option key={s.id} value={s.id}>
               {localized(s, locale)}
@@ -70,7 +79,7 @@ function DateField({ id, value, min, max, onChange }: { id: string; value: strin
   const locale = useLocale();
   return (
     <div className="hv-datebox">
-      <input id={id} type="date" value={value} min={min || undefined} max={max || undefined} onChange={(e) => onChange(e.target.value)} className="hv-field tabular-nums" />
+      <input id={id} type="date" value={value} min={min || undefined} max={max || undefined} onChange={(e) => onChange(e.target.value)} onClick={openDatePicker} className="hv-field tabular-nums" />
       <span className="hv-datebox-text" aria-hidden>
         {formatDateLabel(value, locale)}
       </span>
@@ -83,7 +92,12 @@ function DateField({ id, value, min, max, onChange }: { id: string; value: strin
  * Ngày đi, "+ Thêm ngày về" (khứ hồi = 2 đơn liên tiếp, ngày về chỉ là ý định), Số vé, "Tìm vé".
  * Link tìm chuyến = `buildSearchUrl` (đầu tuyến hoặc toạ độ trạm) + query riêng của trang mình.
  */
-export function CorridorForm({ init, date: initialDate, guests: initialGuests, type, glass, todayChips, onFree }: Props) {
+/** Lớp của thẻ tìm vé: kính khi nổi trên ảnh, nền đặc trên nền phẳng; `bar` = thanh gọn luôn mở ở đầu trang kết quả (hv-corridor.css). */
+export function plateClass(glass: boolean, bar = false) {
+  return `${glass ? "hv-plate glass" : "hv-plate hv-plate-solid"}${bar ? " hv-plate--bar" : ""}`;
+}
+
+export function CorridorForm({ init, date: initialDate, guests: initialGuests, type, glass, bar = false, todayChips }: Props) {
   const t = useT();
   const locale = useLocale();
   const router = useRouter();
@@ -100,7 +114,9 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
   // Sửa lại một tìm kiếm có ngày về (query `ngay_ve`) thì ô ngày về mở sẵn; chặng về (chang=ve) thì không.
   const [returnOn, setReturnOn] = useState(!!init?.ngayVe && init.chang !== "ve");
   const [returnPicked, setReturnPicked] = useState(init?.ngayVe ?? "");
-  const [guests, setGuests] = useState(Math.min(9, Math.max(1, initialGuests ?? 1)));
+  const [picked, setGuests] = useState(Math.min(MAX_SEATS, Math.max(1, initialGuests ?? 1)));
+  const overMax = picked > MAX_SEATS;
+  const guests = Math.min(picked, MAX_SEATS);
 
   const corridor: Corridor = corridors.find((c) => c.id === corridorId) ?? initCorridor;
   const minDate = today;
@@ -112,13 +128,14 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
   const bounds = returnBounds(corridor, date, today);
   const returnDate = returnOn ? clampDate(returnPicked, bounds.min, bounds.max) : null;
   // today === "" khi prerender (chưa biết giờ): không đánh giá chương trình — đọc Date.now() lúc prerender làm cả khối nội dung bị bỏ khỏi HTML.
-  const roundtrip = sameLeg || !today ? null : roundtripPromoForOutbound(config, corridor.id, chieu, { returnDate, range: bounds, seatCount: guests });
+  const roundtrip = sameLeg || !today ? null : (roundtripPromoForOutbound(config, corridor.id, chieu, { returnDate, range: bounds, seatCount: guests }) ?? roundtripRuleForOutbound(config, corridor.id, chieu));
 
   const ends = endsFor(corridor, chieu);
   const stops = stopsFor(corridor, chieu);
   const stopIds = stopsToParams(chieu, picks);
   const points = corridorSearchPoints(corridor, chieu, picks);
-  const notes = [stops.from.find((s) => s.id === stopIds.diemDi)?.note, stops.to.find((s) => s.id === stopIds.diemDen)?.note].filter((n): n is string => !!n);
+  // Ghi chú trạm chỉ có tiếng Việt (WP): bản en không hiện, tên trạm en đã đủ ý.
+  const notes = locale !== "vi" ? [] : [stops.from.find((s) => s.id === stopIds.diemDi)?.note, stops.to.find((s) => s.id === stopIds.diemDen)?.note].filter((n): n is string => !!n);
 
   const pickCorridor = (next: Corridor) => {
     setCorridorId(next.id);
@@ -139,7 +156,7 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
     appendCorridorParams(buildSearchUrl({ ...points, date: searchDate, numberGuest: searchGuests, type }, localePrefix(locale)), own);
 
   const submit = () => {
-    if (!date) return;
+    if (!date || overMax) return;
     router.push(urlFor(date, guests, ownParams()));
   };
 
@@ -147,12 +164,11 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
   const returnId = `${ids}-return`;
   return (
     <>
-      <section className={glass ? "hv-plate glass" : "hv-plate hv-plate-solid"} aria-label={t("search.searching_tickets")}>
+      <section className={plateClass(glass, bar)} aria-label={t("search.searching_tickets")}>
         <div className="hv-corr-btns" role="group" aria-label={t("corridor.label")}>
           {corridors.map((c) => (
             // Tên truy cập = nhãn đầy đủ; bên trong có hai bản hiển thị (điện thoại: hai dòng từ hai đầu tuyến; từ 40rem: một dòng nhãn đầy đủ).
             <button key={c.id} type="button" className="hv-corr-btn" aria-pressed={c.id === corridor.id} aria-label={localized(c.label, locale)} onClick={() => pickCorridor(c)}>
-              {c.id === corridor.id ? <Check className="hv-corr-check size-icon shrink-0" strokeWidth={3} aria-hidden /> : null}
               <span className="hv-corr-full" aria-hidden>
                 {localized(c.label, locale)}
               </span>
@@ -211,7 +227,7 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
               <div className="min-w-0">
                 <div className="hv-label hv-label-row">
                   <label htmlFor={returnDate ? returnId : undefined}>{t("corridor.return_date")}</label>
-                  {roundtrip ? <span className="hv-badge hv-badge-sale">{promoLabel(roundtrip, locale)}</span> : null}
+                  {roundtrip ? <span className="hv-badge hv-badge-offer">{promoLabel(roundtrip, locale)}</span> : null}
                 </div>
                 {returnDate ? (
                   <div className="hv-return-field">
@@ -242,12 +258,13 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
                   {t("corridor.tickets")}
                 </label>
                 <div className="hv-selectbox">
-                  <select id={`${ids}-guests`} value={guests} onChange={(e) => setGuests(Number(e.target.value))} className="hv-field tabular-nums">
+                  <select id={`${ids}-guests`} value={picked} aria-describedby={overMax ? `${ids}-group` : undefined} onChange={(e) => setGuests(Number(e.target.value))} className="hv-field tabular-nums">
                     {GUEST_OPTIONS.map((n) => (
                       <option key={n} value={n}>
                         {t(n === 1 ? "corridor.ticket_one" : "corridor.ticket_other", { n })}
                       </option>
                     ))}
+                    <option value={GROUP_VALUE}>{t("corridor.ticket_group", { n: MAX_SEATS })}</option>
                   </select>
                   <ChevronDown className="hv-chev size-icon" aria-hidden />
                 </div>
@@ -257,13 +274,8 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
               </button>
             </div>
           </div>
+          {overMax ? <GroupCallNote id={`${ids}-group`} /> : null}
         </form>
-        <p className="hv-plate-foot">
-          <span className="text-muted">{t("corridor.other_province_lead")}</span>{" "}
-          <button type="button" className="hv-link text-link" onClick={onFree}>
-            {t("corridor.other_province_link")}
-          </button>
-        </p>
         {todayChips ? (
           <TodayTrips
             label={t("corridor.today_label")}
@@ -271,7 +283,7 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
             from={points.from}
             to={points.to}
             type={type}
-            onPick={(gio) => router.push(urlFor(today, guests, { ...ownParams(gio), ngayVe: null }))}
+            onPick={(gio) => !overMax && router.push(urlFor(today, guests, { ...ownParams(gio), ngayVe: null }))}
           />
         ) : null}
       </section>

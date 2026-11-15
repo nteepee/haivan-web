@@ -270,6 +270,25 @@ function hv_copyright_text( $text ) {
 }
 
 /**
+ * Alt tiếng Anh cho logo footer (MKT nhập alt tiếng Việt): câu quen thuộc dịch sẵn, còn lại bỏ dấu.
+ *
+ * @param string $alt Alt tiếng Việt.
+ * @return string
+ */
+function hv_alt_en( $alt ) {
+	$alt = trim( (string) $alt );
+	if ( preg_match( '/^Đối tác Hải Vân\s*(\d*)$/u', $alt, $m ) ) {
+		return trim( 'Hai Van partner ' . $m[1] );
+	}
+	$map = array(
+		'Thành viên Global Partner Network (GPN)' => 'Member of Global Partner Network (GPN)',
+		'Thanh toán tiền mặt'                     => 'Cash payment',
+		'Đã đăng ký với Bộ Công Thương'           => 'Registered with the Ministry of Industry and Trade',
+	);
+	return $map[ $alt ] ?? remove_accents( str_replace( 'Hải Vân', 'Hai Van', $alt ) );
+}
+
+/**
  * Trường tuỳ chọn của hợp đồng: vắng = Next dùng layout-fallback.json; mảng rỗng = ẩn hàng đó.
  *
  * @param array<string,string> $s Thiết lập.
@@ -278,7 +297,10 @@ function hv_copyright_text( $text ) {
 function hv_layout_optional_fields( array $s ) {
 	$out = array();
 	foreach ( array( 'partners', 'members', 'payments' ) as $k ) {
-		$out[ $k ] = hv_layout_text_to_logos( $s[ $k ] ?? '' );
+		$out[ $k ] = array_map(
+			static fn( $logo ) => $logo + array( 'alt_en' => hv_alt_en( $logo['alt'] ) ),
+			hv_layout_text_to_logos( $s[ $k ] ?? '' )
+		);
 	}
 	$social = array_filter(
 		array(
@@ -294,7 +316,8 @@ function hv_layout_optional_fields( array $s ) {
 	if ( '' !== $cert_href && '' !== $cert_img ) {
 		$out['certificate'] = array( 'href' => $cert_href, 'img' => $cert_img );
 		if ( '' !== trim( (string) ( $s['cert_alt'] ?? '' ) ) ) {
-			$out['certificate']['alt'] = trim( $s['cert_alt'] );
+			$out['certificate']['alt']    = trim( $s['cert_alt'] );
+			$out['certificate']['alt_en'] = hv_alt_en( trim( $s['cert_alt'] ) );
 		}
 	}
 	if ( '' !== hv_layout_img( $s['qr'] ?? '' ) ) {

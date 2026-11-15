@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
+import { localizedMetadata } from "@/lib/page-metadata";
 import { PaymentPage } from "@/components/payment/payment-page";
 
-export const metadata: Metadata = { title: "Thanh toán", robots: { index: false } };
+export const generateMetadata = localizedMetadata("payment", { robots: { index: false } });
 
 export default function Page() {
   return (

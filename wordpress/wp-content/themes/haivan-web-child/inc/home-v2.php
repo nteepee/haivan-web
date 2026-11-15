@@ -20,7 +20,7 @@ function hv2_t( $key ) {
 			'hero_h1_a'     => array( 'Xe khách Hải Vân.', 'Hai Van coaches.' ),
 			'hero_h1_b'     => array( 'Tử tế từ Tâm,', 'Kindness at heart,' ),
 			'hero_h1_c'     => array( 'chu đáo từ Hành.', 'care in every act.' ),
-			'hero_lead'     => array( 'Hơn 30 năm đưa khách đi Vũng Tàu, sân bay Tân Sơn Nhất và các tỉnh Tây Bắc, Hải Vân vẫn giữ một cách làm: lo cho hành khách như lo cho người nhà.', 'For more than 30 years, taking travellers to Vung Tau, Tan Son Nhat airport and the northwest, Hai Van has kept one habit: looking after every passenger like family.' ),
+			'hero_lead'     => array( 'Hơn 30 năm trên những hành trình đến Vũng Tàu, sân bay Tân Sơn Nhất và các tỉnh Tây Bắc, Hải Vân vẫn giữ một cách làm: lo cho hành khách như người nhà.', 'For more than 30 years on the roads to Vung Tau, Tan Son Nhat airport and the northwest, Hai Van has kept one habit: looking after every passenger like family.' ),
 			'hero_find'     => array( 'Tìm chuyến đi', 'Find a trip' ),
 			'hero_story'    => array( 'Câu chuyện Hải Vân', 'The Hai Van story' ),
 			'hero_alt'      => array( 'Xe giường nằm Hải Vân chạy trên đèo Tây Bắc lúc bình minh', 'A Hai Van sleeper coach on a northwest mountain pass at sunrise' ),
@@ -31,7 +31,7 @@ function hv2_t( $key ) {
 			'trip_rt'       => array( 'Khứ hồi', 'Return' ),
 			'book_eyebrow'  => array( 'Đặt vé nhanh', 'Quick booking' ),
 			'book_h2'       => array( 'Tìm chuyến đi của bạn', 'Find your trip' ),
-			'book_help'     => array( 'Cần người tư vấn? Gọi %s, luôn có người nghe máy.', 'Need a hand? Call %s, a real person always answers.' ),
+			'book_help'     => array( 'Cần người tư vấn? Gọi %s – luôn có người nghe máy và hỗ trợ bạn.', 'Need a hand? Call %s – a real person always answers and helps you.' ),
 			'svc_eyebrow'   => array( 'Đồng hành cùng bạn', 'With you all the way' ),
 			'svc_h2_a'      => array( 'Một chuyến đi tốt', 'A good journey' ),
 			'svc_h2_b'      => array( 'bắt đầu từ sự quan tâm.', 'starts with care.' ),
@@ -43,14 +43,14 @@ function hv2_t( $key ) {
 			'svc_2_d'       => array( 'Đón tại Tân Sơn Nhất (Làn B, cột B04), đưa thẳng về Vũng Tàu.', 'Pick-up at Tan Son Nhat (Lane B, pillar B04), straight to Vung Tau.' ),
 			'svc_2_alt'     => array( 'Xe Limousine Hải Vân đón khách ở sân bay Tân Sơn Nhất', 'A Hai Van limousine van at Tan Son Nhat airport' ),
 			'svc_3_t'       => array( 'Xe hợp đồng', 'Private hire' ),
-			'svc_3_d'       => array( 'Một chiếc xe có tài xế, cho chuyến đi riêng của gia đình hoặc doanh nghiệp.', 'A vehicle with a driver, for your family trip or company travel.' ),
+			'svc_3_d'       => array( 'Xe kèm tài xế, cho chuyến đi riêng của gia đình hoặc doanh nghiệp.', 'A vehicle with a driver, for your family trip or company travel.' ),
 			'svc_3_alt'     => array( 'Đội xe Limousine và tài xế Hải Vân', 'Hai Van limousine fleet and drivers' ),
 			'svc_more'      => array( 'Khám phá', 'Explore' ),
 			'svc_cargo'     => array( 'Gửi hàng cùng chuyến xe', 'Send parcels with our coaches' ),
 			'jr_eyebrow'    => array( 'Trên một chuyến đi', 'On every trip' ),
-			'jr_h2_a'       => array( 'Chu đáo không nằm ở lời hứa.', 'Care is not a promise.' ),
-			'jr_h2_b'       => array( 'Nó nằm ở những việc nhỏ.', 'It is in the small things.' ),
-			'jr_intro'      => array( 'Từ lúc bạn bấm đặt vé đến khi xuống xe, có 5 lần Hải Vân có mặt.', 'From the moment you book to the moment you arrive, Hai Van is there five times.' ),
+			'jr_h2_a'       => array( 'Sự chu đáo bắt đầu', 'Care starts' ),
+			'jr_h2_b'       => array( 'từ những điều nhỏ nhất.', 'with the smallest things.' ),
+			'jr_intro'      => array( 'Từ lúc đặt vé đến khi xuống xe, Hải Vân đồng hành cùng bạn qua 5 bước.', 'From booking to arrival, Hai Van is with you through five steps.' ),
 			'jr_1_k'        => array( 'Lúc đặt vé', 'When you book' ),
 			'jr_1_t'        => array( 'Đúng giường, đúng ghế bạn chọn', 'The exact berth or seat you chose' ),
 			'jr_1_d'        => array( 'Bạn tự chọn chỗ trên sơ đồ xe. Vé QR nằm gọn trong điện thoại, không sợ mất.', 'Pick your place on the seat map. Your QR ticket lives on your phone, never lost.' ),
@@ -73,7 +73,7 @@ function hv2_t( $key ) {
 			'jr_ticket'     => array( 'Vé điện tử', 'E-ticket' ),
 			'jr_ticket_g'   => array( 'Giường', 'Berth' ),
 			'jr_story_k'    => array( 'Chuyện có thật', 'A true story' ),
-			'jr_story'      => array( 'Một đoàn 6 khách đi từ Vũng Tàu lên Tân Sơn Nhất để bay Phú Quốc. Xe xuất phát đúng giờ nhưng cả tuyến bị tắc vì sự cố, đoàn lỡ chuyến bay. Hải Vân bồi hoàn toàn bộ chi phí đổi vé máy bay cho cả 6 người và miễn phí chiều về từ sân bay.', 'A group of six left Vung Tau on time for a flight to Phu Quoc, but an accident blocked the whole road and they missed the plane. Hai Van paid for all six to rebook their flights and gave them the return trip from the airport free of charge.' ),
+			'jr_story'      => array( 'Một đoàn 6 khách đi từ Vũng Tàu đến sân bay Tân Sơn Nhất để bay Phú Quốc. Xe khởi hành đúng giờ nhưng do ùn tắc giao thông, cả đoàn lỡ chuyến bay. Hải Vân đã bồi hoàn toàn bộ chi phí đổi vé máy bay cho cả 6 khách và miễn phí chuyến xe chiều về từ sân bay.', 'A group of six travelled from Vung Tau to Tan Son Nhat airport for a flight to Phu Quoc. The coach left on time, but heavy traffic made the group miss their flight. Hai Van paid for all six to rebook and gave them the return trip from the airport free of charge.' ),
 			'off_eyebrow'   => array( 'Ưu đãi hôm nay', 'Today’s offers' ),
 			'off_h2_a'      => array( 'Đi cùng nhau.', 'Travel together.' ),
 			'off_h2_b'      => array( 'Tiết kiệm nhiều hơn.', 'Save more.' ),
@@ -105,7 +105,7 @@ function hv2_t( $key ) {
 			'csr_2_t'       => array( 'Đồng hành cùng bệnh nhân Điện Biên', 'Standing with patients from Dien Bien' ),
 			'csr_3_t'       => array( 'Tặng vé cho học sinh, sinh viên mùa tựu trường', 'Free tickets for students going back to school' ),
 			'csr_4_t'       => array( 'Trao thẻ đi xe miễn phí tại Mộc Châu', 'Free travel cards in Moc Chau' ),
-			'csr_quote'     => array( 'Mỗi dịp Tết, những chuyến xe miễn phí đưa người lao động về quê đón năm mới. Có người kịp chuyến cuối cùng trong trưa 30, vẫn được nhận lời chúc và phong bao lì xì đầu năm.', 'Every Lunar New Year, free coaches take workers home. Some catch the very last trip on New Year’s Eve, and still get a lucky red envelope on board.' ),
+			'csr_quote'     => array( 'Mỗi dịp Tết, Hải Vân tổ chức những chuyến xe miễn phí đưa người lao động về quê đoàn viên. Có người kịp chuyến cuối cùng trưa 30 Tết, vẫn được nhận lời chúc và phong bao lì xì đầu năm.', 'Every Lunar New Year, Hai Van runs free coaches to take workers home to their families. Some catch the very last trip at noon on New Year’s Eve, and still receive warm wishes and a lucky red envelope.' ),
 			'csr_more'      => array( 'Phát triển bền vững', 'Sustainability' ),
 			'ds_eyebrow'    => array( 'Điểm đến', 'Destinations' ),
 			'ds_h2_a'       => array( 'Mỗi nơi đến,', 'Every place,' ),
@@ -161,7 +161,7 @@ function hv2_render_journey() {
 		echo '<li class="hv2-step"><div class="hv2-step-media">';
 		if ( '' === $st[1] ) {
 			// Chặng 1 không có ảnh chụp: dựng tấm vé điện tử minh hoạ bằng CSS.
-			echo '<div class="hv2-ticket" aria-hidden="true"><span class="hv2-ticket-k">' . esc_html( hv2_t( 'jr_ticket' ) ) . '</span><strong>SÀI GÒN</strong><i>↓</i><strong>VŨNG TÀU</strong><span class="hv2-ticket-seat">' . esc_html( hv2_t( 'jr_ticket_g' ) ) . ' A07</span><span class="hv2-ticket-qr"></span></div>';
+			echo '<div class="hv2-ticket" aria-hidden="true"><span class="hv2-ticket-k">' . esc_html( hv2_t( 'jr_ticket' ) ) . '</span><strong>' . ( 'en' === hv_lang() ? 'SAIGON' : 'SÀI GÒN' ) . '</strong><i>↓</i><strong>' . ( 'en' === hv_lang() ? 'VUNG TAU' : 'VŨNG TÀU' ) . '</strong><span class="hv2-ticket-seat">' . esc_html( hv2_t( 'jr_ticket_g' ) ) . ' A07</span><span class="hv2-ticket-qr"></span></div>';
 		} else {
 			echo hv2_img_tag( $st[1], hv2_t( $k . '_alt' ) ); // phpcs:ignore WordPress.Security.EscapeOutput
 		}
@@ -206,6 +206,9 @@ function hv2_render_lounges() {
 		foreach ( array_values( $lines ) as $i => $line ) {
 			$p   = array_map( 'trim', explode( '|', $line, 2 ) );
 			$map = 'https://www.google.com/maps/search/?api=1&query=' . rawurlencode( 'Hải Vân ' . $p[0] . ( isset( $p[1] ) ? ', ' . $p[1] : '' ) );
+			if ( 'en' === hv_lang() ) { // Bản en: địa chỉ không dấu như tên trạm bên Next ("34 Nguyen Thai Binh"); link bản đồ vẫn dùng bản có dấu.
+				$p = array_map( 'remove_accents', $p );
+			}
 			echo '<li><span class="hv2-no">' . esc_html( sprintf( '%02d', $i + 1 ) ) . '</span><div><h3>' . esc_html( $p[0] ) . '</h3>' . ( isset( $p[1] ) && '' !== $p[1] ? '<p>' . esc_html( $p[1] ) . '</p>' : '' ) . '</div>';
 			echo '<a class="hv2-textlink" href="' . esc_url( $map ) . '" target="_blank" rel="noopener" aria-label="' . esc_attr( hv2_t( 'lg_map' ) . ': ' . $p[0] ) . '">' . esc_html( hv2_t( 'lg_map' ) ) . '<span aria-hidden="true">↗</span></a></li>';
 		}
@@ -216,7 +219,7 @@ function hv2_render_lounges() {
 
 /** 08 · Con số (lấy từ trang Phát triển bền vững và Giới thiệu). */
 function hv2_render_stats() {
-	$items = array( array( '1994', 'st_1' ), array( '250', 'st_2' ), array( '1.000+', 'st_3' ), array( hv2_t( 'st_4_v' ), 'st_4' ) );
+	$items = array( array( '1994', 'st_1' ), array( '250', 'st_2' ), array( 'en' === hv_lang() ? '1,000+' : '1.000+', 'st_3' ), array( hv2_t( 'st_4_v' ), 'st_4' ) );
 	echo '<dl class="hv2-stats">';
 	foreach ( $items as $it ) {
 		echo '<div><dt>' . esc_html( hv2_t( $it[1] ) ) . '</dt><dd>' . esc_html( $it[0] ) . '</dd></div>';
@@ -257,7 +260,11 @@ function hv2_render_destinations() {
 			continue;
 		}
 		$post = get_page_by_path( $slug, OBJECT, 'diem_den' );
-		$href = $post ? get_permalink( $post ) : home_url( '/diem-den/' . $slug );
+		if ( $post && function_exists( 'pll_get_post' ) ) { // cùng slug ở hai ngôn ngữ: lấy bản của ngôn ngữ đang xem.
+			$tr   = pll_get_post( $post->ID, hv_lang() );
+			$post = $tr ? get_post( $tr ) : $post;
+		}
+		$href = $post ? get_permalink( $post ) : home_url( hv_lang_prefix() . '/diem-den/' . $slug );
 		$name = $names[ $en ? 1 : 0 ];
 		$out .= '<li><a class="hv2-dest" href="' . esc_url( $href ) . '">' . hv2_img_tag( $file, $name ) . '<span class="hv2-dest-name">' . esc_html( $name ) . '</span><span class="hv2-dest-go" aria-hidden="true">↗</span></a></li>';
 	}

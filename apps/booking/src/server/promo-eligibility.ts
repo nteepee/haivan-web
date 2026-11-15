@@ -18,6 +18,14 @@ export interface OrderFacts {
   productName?: string | null;
   /** Chuyến của đơn (mọi vé cùng chuyến). null nếu thiếu toạ độ/giờ. */
   trip: { dep: { lat: number; lng: number }; dest: { lat: number; lng: number }; departureTime: string } | null;
+  /** Mã chi nhánh ERP của đơn (`merchant_code`). */
+  merchant?: string | null;
+  /** Vé còn hiệu lực: tên ghế + giá (luật giá v2 tính trên giá thật của đơn, không tin giá trình duyệt). */
+  seats?: Array<{ no: string; price: number; code?: string }>;
+  /** Để đọc sơ đồ ghế (hạng ghế, số chỗ xe) khi luật cần. */
+  tripId?: number | null;
+  departureId?: number | null;
+  destinationId?: number | null;
 }
 
 export type Rejection =

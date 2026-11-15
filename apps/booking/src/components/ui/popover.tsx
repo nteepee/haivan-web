@@ -29,7 +29,7 @@ function PopoverContent({
         align={align}
         sideOffset={sideOffset}
         className={cn(
-          "z-(--z-dropdown) flex w-72 flex-col gap-3 rounded-2 bg-popover p-3 text-base text-popover-foreground shadow-2",
+          "z-(--z-popover) flex w-72 flex-col gap-3 rounded-2 bg-popover p-3 text-base text-popover-foreground shadow-2",
           className
         )}
         {...props}

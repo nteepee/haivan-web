@@ -1,11 +1,14 @@
 // Định dạng theo hiển thị web cũ. Giờ Việt Nam cố định UTC+7 (không có giờ mùa hè).
 const VN_OFFSET = "+07:00";
 
-/** 250000 → "250.000đ" */
-export const formatMoney = (value: number) => `${Math.round(value).toLocaleString("vi-VN")}đ`;
+/** Phân cách nghìn theo locale: vi "250.000", en "250,000". */
+const grouped = (value: number, locale: string) => Math.round(value).toLocaleString(locale === "vi" ? "vi-VN" : "en-US");
 
-/** 250000 → "250.000 VNĐ" (ô ghế) */
-export const formatVnd = (value: number) => `${Math.round(value).toLocaleString("vi-VN")} VNĐ`;
+/** 250000 → "250.000đ" (en: "250,000đ") */
+export const formatMoney = (value: number, locale = "vi") => `${grouped(value, locale)}đ`;
+
+/** 250000 → "250.000 VNĐ" (ô ghế; en: "250,000 VND") */
+export const formatVnd = (value: number, locale = "vi") => (locale === "vi" ? `${grouped(value, locale)} VNĐ` : `${grouped(value, locale)} VND`);
 
 /** "01-11-2026" → "2026-11-01" */
 export function dmyToIso(dmy: string): string {

@@ -5,7 +5,10 @@ import { useId } from "react";
 import { useBookingConfig } from "@/components/booking-config-provider";
 import { useLocale, useT } from "@/components/providers";
 import { formatMoney } from "@/lib/format";
+import { placeLineLabel, tripClassLabel } from "@/lib/trip-labels";
+import { tripPhotos } from "@/lib/trip-photos";
 import { comboPromoFor, comboTierExact, promoBadge } from "@/lib/promo-match";
+import { tripRuleBadge } from "@/lib/rule-offers";
 import type { SearchParamsData } from "@/lib/search-url";
 import type { Trip } from "@/schemas/trip";
 import { PriceBox } from "./price-box";
@@ -23,9 +26,9 @@ export function routeTitle(trip: Trip): string {
 /** Màu huy hiệu hạng xe theo tên hạng (Royal cam, Luxury xanh dương, Economy xanh lá); hạng khác dùng nền ink mặc định. */
 export function classBadgeTone(name: string): string {
   const n = name.toLowerCase();
-  if (n.includes("royal")) return "hv-badge-orange";
-  if (n.includes("lux")) return "hv-badge-blue";
-  if (n.includes("eco")) return "hv-badge-leaf";
+  if (n.includes("royal") || n.includes("cao cấp")) return "hv-badge-orange";
+  if (n.includes("lux") || n.includes("tiết kiệm")) return "hv-badge-blue";
+  if (n.includes("eco") || n.includes("siêu rẻ")) return "hv-badge-leaf";
   return "";
 }
 
@@ -62,32 +65,38 @@ interface Props {
   onToggle: () => void;
   /** Hàng đầu danh sách: ảnh tải ngay với ưu tiên cao (không lazy). */
   priority?: boolean;
+  /**
+   * Trang tuyến: tên chặng khách đi ("Hà Nội - Mộc Châu") làm tiêu đề thay tên tuyến ERP, vì xe tuyến dài hơn
+   * (vd. "Mỹ Đình - Mường Chà") cũng đón trả ở chặng này; tên tuyến ERP xuống dòng phụ.
+   */
+  legTitle?: string;
 }
 
 /**
  * Hàng chuyến v3: ảnh xe + huy hiệu hạng, tên tuyến (h3), giờ đi/đến 32px với đường kẻ "thời lượng + Xe liên tỉnh", hai điểm, huy hiệu chỗ,
  * giá nổi, nút "Chọn ghế". Dòng "*Khởi hành" hiện cả khi đóng nếu giờ/ngày khác. Mở = viền ink + ảnh + sơ đồ ghế.
  */
-export function TripCard({ trip, search, open, onToggle, priority = false }: Props) {
+export function TripCard({ trip, search, open, onToggle, priority = false, legTitle }: Props) {
   const t = useT();
   const locale = useLocale();
   const config = useBookingConfig();
   // Nhãn combo chỉ khi chuyến thuộc tuyến chính đang tìm và khớp chương trình đang chạy; không có chương trình thì không hiện gì.
   const combo = search.corridor
-    ? comboPromoFor(config, {
+    ? (tripRuleBadge(config, trip, search.corridor, search.numberGuest) ??
+      comboPromoFor(config, {
         corridorId: search.corridor.tuyen,
         chieu: search.corridor.chieu,
         travelDate: trip.date.slice(0, 10),
         departure: hhmm(trip.from.reached_at) || trip.time.slice(0, 5) || null,
         seatCount: search.numberGuest,
         productName: trip.product.name,
-      })
+      }))
     : null;
   const comboTier = combo ? comboTierExact(combo, trip.product.name, search.numberGuest) : null;
   const panelId = useId();
   const seats = trip.available_seats;
   const soldOut = seats === 0;
-  const thumb = trip.car_imgs?.[0];
+  const thumb = tripPhotos(trip)[0];
   const transit = (trip.transit ?? {}) as { start?: boolean; end?: boolean; is_check_transit_start?: boolean; is_check_transit_end?: boolean };
   const showDepartureNote = hhmm(trip.from.reached_at) !== trip.time;
   const percent = trip.price.percent ?? 0;
@@ -97,20 +106,26 @@ export function TripCard({ trip, search, open, onToggle, priority = false }: Pro
     </p>
   );
 
-  const classBadge = <span className={`hv-badge ${classBadgeTone(trip.product.name)}`}>{trip.product.name}</span>;
+  // Bản en: tên tuyến, chặng, điểm đón/trả và hạng xe từ ERP/CMS (tiếng Việt) đổi sang tên tiếng Anh/bỏ dấu.
+  const className = tripClassLabel(trip.product.name, locale);
+  const lineTitle = placeLineLabel(routeTitle(trip), locale);
+  const title = legTitle ? placeLineLabel(legTitle, locale) : lineTitle;
+  const place = (name: string) => placeLineLabel(name, locale);
+  const classBadge = <span className={`hv-badge ${classBadgeTone(className)}`}>{className}</span>;
 
   return (
-    <article className="hv-trip" data-open={open} aria-label={`${routeTitle(trip)} ${hhmm(trip.from.reached_at)}`}>
+    <article className="hv-trip" data-open={open} aria-label={`${title} ${hhmm(trip.from.reached_at)}`}>
       <div className="hv-trip-main" data-thumb={thumb ? "true" : "false"}>
         {thumb ? (
           <div className="hv-trip-thumb hv-photo">
             {/* eslint-disable-next-line @next/next/no-img-element -- ảnh từ CMS nhiều host */}
-            <img src={thumb} width={815} height={400} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : undefined} alt={t("list_trip.vehicle_alt", { name: trip.product.name })} />
-            <span className={`hv-badge hv-badge-photo ${classBadgeTone(trip.product.name)}`}>{trip.product.name}</span>
+            <img src={thumb} width={815} height={400} loading={priority ? "eager" : "lazy"} fetchPriority={priority ? "high" : undefined} alt={t("list_trip.vehicle_alt", { name: className })} />
+            <span className={`hv-badge hv-badge-photo ${classBadgeTone(className)}`}>{className}</span>
           </div>
         ) : null}
         <div className="hv-trip-body">
-          <h3 className="hv-trip-title">{routeTitle(trip)}</h3>
+          <h3 className="hv-trip-title">{title}</h3>
+          {legTitle ? <p className="hv-trip-line">{t("list_trip.route_line", { name: lineTitle })}</p> : null}
           <div className="hv-trip-times">
             <span className="hv-time">{hhmm(trip.from.reached_at)}</span>
             <p className="hv-stop-mid">
@@ -120,23 +135,23 @@ export function TripCard({ trip, search, open, onToggle, priority = false }: Pro
             <span className="hv-time">{hhmm(trip.to.reached_at)}</span>
           </div>
           <div className="hv-trip-route">
-            {transit.is_check_transit_start ? transitLine(search.from.name, transit.start) : null}
+            {transit.is_check_transit_start ? transitLine(place(search.from.name), transit.start) : null}
             <p className="hv-stop">
               <MapPin className="size-5" aria-hidden />
-              <span>{trip.from.place_name}</span>
+              <span>{place(trip.from.place_name)}</span>
             </p>
             <p className="hv-stop hv-stop-end">
               <Flag className="size-5" aria-hidden />
-              <span>{trip.to.place_name}</span>
+              <span>{place(trip.to.place_name)}</span>
             </p>
-            {transit.is_check_transit_end ? transitLine(search.to.name, transit.end) : null}
+            {transit.is_check_transit_end ? transitLine(place(search.to.name), transit.end) : null}
           </div>
           <div className="hv-trip-meta">
             {thumb ? null : classBadge}
             <SeatsBadge seats={seats} t={t} />
             {percent > 0 ? <span className="hv-tag hv-tag-bad">{t("list_trip.today_discount", { percent })}</span> : null}
             {combo ? <span className="hv-badge hv-badge-sale">{promoBadge(combo, locale)}</span> : null}
-            {comboTier ? <span className="font-semibold tabular-nums">{t("corridor.tier_from", { seats: comboTier.seats, price: formatMoney(comboTier.price_vnd) })}</span> : null}
+            {comboTier ? <span className="font-semibold tabular-nums">{t("corridor.tier_from", { seats: comboTier.seats, price: formatMoney(comboTier.price_vnd, locale) })}</span> : null}
           </div>
         </div>
         <div className="hv-trip-side">

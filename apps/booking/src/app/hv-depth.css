@@ -34,14 +34,14 @@
     background: var(--color-paper-2);
   }
 
-  /* Huy hiệu khuyến mãi: chữ nhật r-1, 14/20 800; mỗi màu đi với chữ --color-on-* cố định. */
+  /* Huy hiệu khuyến mãi: bo r-pill (12), 14/20 800; mỗi màu đi với chữ --color-on-* cố định. */
   .hv-badge {
     display: inline-flex;
     min-height: calc(var(--s-6) + var(--s-1));
     align-items: center;
     gap: var(--s-1);
-    padding: var(--s-1) var(--s-2);
-    border-radius: var(--r-1);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-sm);
     background: var(--color-ink);
     color: var(--color-on-strong);
     font-size: var(--fs-14);
@@ -52,6 +52,11 @@
   .hv-badge-sale {
     background: var(--color-promo-coral);
     color: var(--color-on-coral);
+  }
+  /* Ưu đãi khứ hồi cạnh nhãn Ngày về: vàng chữ ink như nhãn "Tiết kiệm ngay 20k/ghế" của app (Hv2LivelyBadge Yellow/Ink). */
+  .hv-badge-offer {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
   }
   .hv-badge-new {
     background: var(--color-promo-teal);
@@ -124,7 +129,7 @@
     height: var(--tap-min);
   }
 
-  /* Chip lọc: 44 cao, r-1, nền xám paper-2, không viền; đang lọc = nền select + vòng chọn 2px + tick (markup), chữ 800. */
+  /* Chip lọc (app v3): 44 cao, bo 12, nền trắng vạch mảnh; đang lọc = nền ink chữ trắng 800, không dấu tích. */
   .hv-chip {
     display: inline-flex;
     min-height: var(--tap-min);
@@ -133,8 +138,9 @@
     gap: var(--s-2);
     padding: 0 var(--s-4);
     border: 0;
-    border-radius: var(--r-1);
-    background: var(--color-paper-2);
+    border-radius: var(--r-pill);
+    background: var(--color-surface);
+    box-shadow: inset 0 0 0 var(--line) var(--color-rule);
     color: var(--color-ink);
     font-weight: var(--weight-strong);
     white-space: nowrap;
@@ -143,15 +149,16 @@
       box-shadow var(--dur-micro) var(--ease-out);
   }
   .hv-chip:hover {
-    background: var(--color-paper-3);
+    background: var(--color-accent-soft);
   }
   .hv-chip:active {
     transform: translateY(var(--line));
   }
   .hv-chip[data-active="true"],
   .hv-chip[aria-pressed="true"] {
-    background: var(--select-bg);
-    box-shadow: var(--select-ring);
+    background: var(--color-ink);
+    box-shadow: none;
+    color: var(--color-on-strong);
     font-weight: var(--weight-display);
   }
   .hv-chip[data-state="open"] .hv-chip-chevron {

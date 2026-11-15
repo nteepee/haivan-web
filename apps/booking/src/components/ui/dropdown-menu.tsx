@@ -42,7 +42,7 @@ function DropdownMenuContent({
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
         align={align}
-        className={cn("z-(--z-dropdown) max-h-(--radix-dropdown-menu-content-available-height) w-max min-w-32 max-w-[calc(100vw-2*var(--gutter))] overflow-x-hidden overflow-y-auto rounded-2 bg-popover p-2 text-popover-foreground shadow-2", className )}
+        className={cn("z-(--z-popover) max-h-(--radix-dropdown-menu-content-available-height) w-max min-w-32 max-w-[calc(100vw-2*var(--gutter))] overflow-x-hidden overflow-y-auto rounded-2 bg-popover p-2 text-popover-foreground shadow-2", className )}
         {...props}
       />
     </DropdownMenuPrimitive.Portal>
@@ -243,7 +243,7 @@ function DropdownMenuSubContent({
   return (
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
-      className={cn("z-(--z-dropdown) min-w-32 overflow-hidden rounded-2 bg-popover p-2 text-popover-foreground shadow-2", className )}
+      className={cn("z-(--z-popover) min-w-32 overflow-hidden rounded-2 bg-popover p-2 text-popover-foreground shadow-2", className )}
       {...props}
     />
   )

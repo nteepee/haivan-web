@@ -27,7 +27,7 @@ const localizedLayout = z.object({
 
 /** Ảnh tĩnh: đường dẫn bắt đầu bằng "/" (vd `/assets/images/..`, không `//host`, không `/\host`) hoặc URL https. */
 const imageSrc = z.string().regex(/^(\/(?![/\\])|https:\/\/)/, "img phải bắt đầu bằng / hoặc https://");
-const logoSchema = z.object({ img: imageSrc, href: linkHref.optional(), alt: z.string() });
+const logoSchema = z.object({ img: imageSrc, href: linkHref.optional(), alt: z.string(), alt_en: z.string().optional() });
 
 export const layoutSchema = z.object({
   version: z.literal(1),
@@ -40,7 +40,7 @@ export const layoutSchema = z.object({
   members: z.array(logoSchema).optional(),
   payments: z.array(logoSchema).optional(),
   social: z.object({ facebook: linkHref.optional(), youtube: linkHref.optional() }).optional(),
-  certificate: z.object({ href: linkHref, img: imageSrc, alt: z.string().optional() }).optional(),
+  certificate: z.object({ href: linkHref, img: imageSrc, alt: z.string().optional(), alt_en: z.string().optional() }).optional(),
   /** Ảnh mã QR tải ứng dụng. */
   qr: imageSrc.optional(),
   /** Huy hiệu cửa hàng: `appstore`/`playstore` ở dải tải app; `*_icon` ở thanh tối cuối trang. */

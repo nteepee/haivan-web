@@ -29,7 +29,7 @@
     height: calc(var(--s-6) + var(--s-1));
     flex: none;
     place-items: center;
-    border-radius: var(--r-1);
+    border-radius: var(--r-sm);
     background: var(--color-surface);
     box-shadow: inset 0 0 0 var(--line) var(--color-edge);
     font-size: var(--fs-14);

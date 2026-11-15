@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import { PartnerRedirect } from "@/components/search/partner-redirect";
+import { localizedMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = { title: { absolute: "Page redirect | Nhà Xe Hải Vân" }, robots: { index: false } };
+export const generateMetadata = localizedMetadata("partner_redirect", { robots: { index: false } }, true);
 
 export default function Page() {
   return <PartnerRedirect />;

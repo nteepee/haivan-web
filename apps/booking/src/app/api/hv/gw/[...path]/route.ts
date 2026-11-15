@@ -31,6 +31,8 @@ async function handle(request: NextRequest, ctx: RouteContext<"/api/hv/gw/[...pa
     // Mã khuyến mãi tự áp (khứ hồi) đi dưới dạng token `@auto:…`: kiểm điều kiện rồi mới đổi thành mã thật (mã thật không bao giờ tới client).
     const prepared = await prepareAutoPromo({ method: request.method, path: target, search: upstreamSearch(request), body: rawBody, authorization: session.authorization, mask });
     if (!prepared.ok) return jsonError(prepared.status, prepared.message);
+    // Luật ghi giảm trực tiếp ERP ở bước kiểm mã: BFF tự trả tiền giảm (không có mã để gửi apigw).
+    if (prepared.respond !== undefined) return NextResponse.json(prepared.respond, { headers: NO_STORE });
     const { body, search } = prepared;
     const upstream = await callApigw({
       method: request.method,
@@ -45,6 +47,9 @@ async function handle(request: NextRequest, ctx: RouteContext<"/api/hv/gw/[...pa
       clearSession(expired);
       return expired;
     }
+    // Chốt/trả suất ưu đãi, ghi giảm trực tiếp ERP sau khi apigw nhận đơn.
+    const failed = prepared.after ? await prepared.after(upstream.ok, await upstream.clone().text()) : null;
+    if (failed) return jsonError(failed.status, failed.message);
     // Che mã thật (nếu apigw lặp lại nó ở bất kỳ đâu trong phản hồi) về token trước khi trả cho trình duyệt.
     return relay(upstream, (text) => maskPromoCodes(text, mask.codes));
   } catch (error) {

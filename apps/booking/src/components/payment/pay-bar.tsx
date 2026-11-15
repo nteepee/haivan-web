@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronRight, CircleAlert, Loader2 } from "lucide-react";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
 import { StickyBar } from "@/components/ui/sticky-bar";
 import { formatMoney } from "@/lib/format";
 
@@ -13,13 +13,14 @@ export type PayHint = "method" | "bank" | null;
  */
 export function PayBar({ hint, busy, total, onPay }: { hint: PayHint; busy: boolean; total: number | null; onPay: () => void }) {
   const t = useT();
+  const locale = useLocale();
   return (
     <StickyBar>
       <div className="hv-sticky-inner">
         {total !== null ? (
           <p className="hv-sticky-sum">
             <span className="hv-sticky-label">{t("payment.total_price")}</span>
-            <span className="hv-total">{formatMoney(total)}</span>
+            <span className="hv-total">{formatMoney(total, locale)}</span>
           </p>
         ) : null}
         <button type="button" onClick={onPay} disabled={busy} aria-busy={busy} aria-describedby="pay-hint" className="hv-btn hv-btn-primary hv-btn-lg">

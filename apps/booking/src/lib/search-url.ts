@@ -1,4 +1,5 @@
 import { dmyToIso, isoToDmy, todayIsoVn } from "./format";
+import { MAX_SEATS } from "@/lib/seats";
 import { TIME_BUCKETS, type TimeBucketKey } from "./trip-filters";
 
 export interface SearchPoint {
@@ -63,7 +64,7 @@ export function parseSearch(params: URLSearchParams, now = Date.now()): SearchPa
     from,
     to,
     date,
-    numberGuest: Number.isFinite(guests) && guests > 0 ? guests : 1,
+    numberGuest: Number.isFinite(guests) && guests > 0 ? Math.min(guests, MAX_SEATS) : 1, // ERP: tối đa MAX_SEATS ghế/đơn
     type: /^\d+$/.test(type) ? Number(type) : 0,
   };
 }

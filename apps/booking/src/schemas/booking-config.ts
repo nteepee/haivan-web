@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { ruleSchema } from "@/price-rules/schema";
 
 /**
  * Hợp đồng `GET /wp-json/haivan-web/v1/booking-config` (WordPress sinh ra; xem plans/261029-1444-core-routes-search-promos/contract.md).
@@ -79,13 +80,14 @@ export const promoSchema = promoRaw
 
 /** Từng phần tử được kiểm riêng: một tuyến/chương trình sai hợp đồng bị bỏ, không làm hỏng cả cấu hình. */
 const dropped = new Set<string>();
-const lenient = <S extends z.ZodType>(kind: "corridor" | "promo", schema: S) =>
+const lenient = <S extends z.ZodType>(kind: "corridor" | "promo" | "rule", schema: S) =>
   z.array(z.unknown()).transform((items): z.output<S>[] =>
     items.flatMap((item) => {
       const parsed = schema.safeParse(item);
       if (parsed.success) return [parsed.data as z.output<S>];
       // Cảnh báo một lần cho mỗi phần tử (cấu hình được đọc lại mỗi vài phút): MKT cần biết vì sao tuyến/chương trình không hiện.
-      const id = item && typeof item === "object" && "id" in item ? String((item as { id: unknown }).id) : "?";
+      const obj = item && typeof item === "object" ? (item as { id?: unknown; post_id?: unknown; rule?: { id?: unknown } }) : {};
+      const id = String(obj.id ?? obj.rule?.id ?? obj.post_id ?? "?");
       const key = `${kind}:${id}`;
       if (!dropped.has(key)) {
         dropped.add(key);
@@ -95,10 +97,18 @@ const lenient = <S extends z.ZodType>(kind: "corridor" | "promo", schema: S) =>
     }),
   );
 
+/**
+ * Luật giá v2 công khai (src/price-rules/schema.ts): WP bỏ `quota`, `notes` trước khi xuất; `has_quota` = luật cần sổ hạn mức. `post_id` = ID bài hv_rule trong WP,
+ * dùng làm số trong token tự áp `@auto:<post_id>:<đơn>` (ID bài WP không trùng giữa hv_promo và hv_rule).
+ */
+export const configRuleSchema = z.object({ post_id: z.number().int().positive(), rule: ruleSchema, has_quota: z.boolean().default(false) });
+
 export const bookingConfigSchema = z.object({
-  version: z.literal(1),
+  version: z.union([z.literal(1), z.literal(2)]),
   corridors: lenient("corridor", corridorSchema),
   promos: lenient("promo", promoSchema),
+  /** v2: chỉ luật `on` (và `test` cho người thử); WP v1 không gửi → rỗng, mọi thứ chạy theo `promos` như cũ. */
+  rules: lenient("rule", configRuleSchema).default([]),
 });
 
 export type Corridor = z.infer<typeof corridorSchema>;
@@ -106,4 +116,5 @@ export type CorridorStop = Corridor["stops"]["a"][number];
 export type CorridorEnd = Corridor["ends"]["a"];
 export type Promo = z.infer<typeof promoSchema>;
 export type BookingConfig = z.infer<typeof bookingConfigSchema>;
+export type ConfigRule = z.infer<typeof configRuleSchema>;
 export type CorridorDirection = "ab" | "ba";

@@ -402,11 +402,15 @@ add_action(
 			return;
 		}
 		$q = hv_destination_query( (string) get_post_field( 'post_name', get_queried_object_id() ), hv_dest_page() );
-		if ( hv_dest_page() > max( 1, (int) $q->max_num_pages ) ) {
+		// Bản en không có danh sách bài (single-diem_den.php): mọi ?page=N > 1 là 404.
+		$last = 'en' === hv_lang() ? 1 : max( 1, (int) $q->max_num_pages );
+		if ( hv_dest_page() > $last ) {
 			global $wp_query;
 			$wp_query->set_404();
 			status_header( 404 );
 			nocache_headers();
+			// Không để core đoán bài theo slug (không biết ngôn ngữ): /diem-den/ha-noi?page=99 sẽ bị 301 sang bản en cùng slug.
+			add_filter( 'do_redirect_guess_404_permalink', '__return_false' );
 		}
 	},
 	5
@@ -431,6 +435,13 @@ add_action(
 	static function ( $post_id, $post ) {
 		if ( wp_is_post_revision( $post_id ) || 'publish' !== $post->post_status || '' === $post->post_name ) {
 			return;
+		}
+		// Tên term là tên tiếng Việt: bản dịch (vd. en "Hanoi") dùng chung term theo slug nhưng không đổi tên term.
+		if ( function_exists( 'pll_get_post_language' ) && function_exists( 'pll_default_language' ) ) {
+			$lang = pll_get_post_language( $post_id );
+			if ( $lang && pll_default_language() !== $lang ) {
+				return;
+			}
 		}
 		hv_ensure_location_term( $post->post_name, $post->post_title );
 	},
@@ -468,6 +479,73 @@ add_action(
 			$q->set( 'orderby', array( 'menu_order' => 'ASC', 'title' => 'ASC' ) );
 		} elseif ( $q->is_post_type_archive( 'tin_tuc' ) ) {
 			$q->set( 'posts_per_page', 12 );
+		}
+	}
+);
+
+/**
+ * Điểm đến vi và en dùng chung slug (= slug term hv_location, xem hv_destination_query). Polylang bản free không hỗ trợ
+ * slug trùng giữa hai ngôn ngữ, nên:
+ *  - khi lưu bài, chỉ thêm hậu tố -2 nếu slug đã có bài CÙNG ngôn ngữ;
+ *  - khi mở /diem-den/<slug> hoặc /en/diem-den/<slug>, chọn đúng bài theo tiền tố ngôn ngữ của URL.
+ */
+add_filter(
+	'wp_unique_post_slug',
+	static function ( $slug, $post_id, $status, $type, $parent, $original ) {
+		if ( 'diem_den' !== $type || $slug === $original || ! function_exists( 'pll_get_post_language' ) ) {
+			return $slug;
+		}
+		// Ngôn ngữ đang gửi lên (đổi ngôn ngữ ở trình sửa / sửa nhanh) đi trước ngôn ngữ đã lưu.
+		$sent = isset( $_POST['post_lang_choice'] ) ? $_POST['post_lang_choice'] : ( $_POST['inline_lang_choice'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification,WordPress.Security.ValidatedSanitizedInput
+		$lang = sanitize_key( wp_unslash( (string) $sent ) ) ?: ( pll_get_post_language( (int) $post_id ) ?: pll_default_language() );
+		$same = get_posts(
+			array(
+				'post_type'        => 'diem_den',
+				'name'             => $original,
+				'post_status'      => array( 'publish', 'draft', 'pending', 'private', 'future' ),
+				'post__not_in'     => array( (int) $post_id ),
+				'numberposts'      => 50,
+				'fields'           => 'ids',
+				'suppress_filters' => true,
+			)
+		);
+		if ( hv_ids_in_lang( $same, $lang ) ) {
+			return $slug;
+		}
+		return $original;
+	},
+	10,
+	6
+);
+
+add_action(
+	'pre_get_posts',
+	static function ( $q ) {
+		if ( is_admin() || ! $q->is_main_query() || '' === (string) $q->get( 'diem_den' ) || ! function_exists( 'pll_default_language' ) ) {
+			return;
+		}
+		// Polylang (và WP_Query với bài lẻ, vốn bỏ qua tax_query) không lọc ngôn ngữ khi tìm bài theo slug: tự chọn ID.
+		$path = (string) wp_parse_url( isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '/', PHP_URL_PATH ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
+		$lang = sanitize_key( (string) $q->get( 'lang' ) ) ?: ( 1 === preg_match( '#^/en(?=/|$)#', $path ) ? 'en' : pll_default_language() );
+		global $wpdb;
+		$ids  = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM {$wpdb->posts} WHERE post_type = 'diem_den' AND post_name = %s", sanitize_title( (string) $q->get( 'diem_den' ) ) ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
+		$ids  = array_values( array_filter( array_map( 'intval', $ids ), static fn( $id ) => pll_get_post_language( $id ) === $lang ) );
+		if ( $ids ) {
+			$q->set( 'post__in', $ids );
+		}
+	}
+);
+
+/**
+ * /en/diem-den khi chưa có bài điểm đến tiếng Anh nào (scripts/en-content-fixes.php tạo bản en): chuyển tạm (302)
+ * sang /diem-den thay vì hiện "trang không tồn tại". Khi có bài en, trang en tự hiện.
+ */
+add_action(
+	'template_redirect',
+	static function () {
+		if ( 'en' === hv_lang() && is_post_type_archive( 'diem_den' ) && ! is_paged() && ! have_posts() ) {
+			wp_safe_redirect( home_url( '/diem-den' ), 302, 'HaiVan' );
+			exit;
 		}
 	}
 );

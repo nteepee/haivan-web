@@ -36,7 +36,30 @@ function hv_rail( $id, $label, $items, $cls = '' ) {
 
 /** "Quận 1 - Vũng Tàu" -> "Quận 1 đi Vũng Tàu". */
 function hv_route_label( $title ) {
+	if ( 'en' === hv_lang() ) { // "Mỹ Đình - Điện Biên" -> "My Dinh to Dien Bien"; "Sài Gòn" -> "Saigon".
+		return implode( ' to ', array_map( 'hv_place_en', explode( ' - ', (string) $title ) ) );
+	}
 	return str_replace( ' - ', ' đi ', (string) $title );
+}
+
+/**
+ * Tên địa danh tiếng Anh quen dùng (như apps/booking/src/lib/route-landing-template.ts PLACE_EN), còn lại bỏ dấu.
+ *
+ * @param string $name Tên tiếng Việt.
+ * @return string
+ */
+function hv_place_en( $name ) {
+	$map = array(
+		'quận 1 sân bay' => 'District 1 & Airport',
+		'quận 1'         => 'District 1',
+		'tân sơn nhất'   => 'Tan Son Nhat Airport',
+		'sài gòn'        => 'Saigon',
+		'hà nội'         => 'Hanoi',
+		'hồ chí minh'    => 'Ho Chi Minh City',
+	);
+	$name = trim( (string) $name );
+	$key  = mb_strtolower( preg_replace( '/\s+/u', ' ', $name ) );
+	return $map[ $key ] ?? remove_accents( $name );
 }
 
 /** "2h" -> "2 giờ"; "4h15" -> "4 giờ 15" (bản tiếng Anh giữ nguyên). */

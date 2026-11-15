@@ -161,6 +161,9 @@ function hv_search_shortcode( $atts = array() ) {
 
 	$arrow_swap = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3 4 7l4 4M4 7h16M16 21l4-4-4-4M20 17H4"/></svg>';
 	$t          = static fn( $key ) => hv_t( $key, $lang );
+	// Mỗi đơn ERP tối đa 9 vé: chọn/gõ nhiều hơn thì hiện dòng mời gọi tổng đài (search.js bật/tắt).
+	list( $hot, $hot_tel ) = hv2_hotline();
+	$group_note            = '<p class="hv-search__groupnote" hidden>' . esc_html( sprintf( $t( 'sc_group_note' ), 9 ) ) . ' <a href="' . esc_url( $hot_tel ) . '">' . hv_icon( 'phone' ) . esc_html( $hot ) . '</a></p>';
 	$b_keys     = array( 'all', 'dawn', 'morning', 'noon', 'afternoon', 'evening' );
 	$strip      = 'strip' === $atts['today'];
 	$show_tabs  = 'on' === $atts['tabs'] || ( 'off' !== $atts['tabs'] && '1' === hv_home_settings()['show_service_tabs'] );
@@ -243,6 +246,7 @@ function hv_search_shortcode( $atts = array() ) {
 						<?php for ( $tix = 1; $tix <= 9; $tix++ ) : ?>
 						<option value="<?php echo (int) $tix; ?>"><?php echo esc_html( sprintf( $t( 1 === $tix ? 'sc_ticket_1' : 'sc_ticket_n' ), $tix ) ); ?></option>
 						<?php endfor; ?>
+						<option value="10"><?php echo esc_html( sprintf( $t( 'sc_ticket_group' ), 9 ) ); ?></option>
 					</select><?php echo hv_icon( 'chevron-down', 'hv-search__caret' ); // phpcs:ignore WordPress.Security.EscapeOutput ?>
 				</span>
 			</div>
@@ -250,7 +254,7 @@ function hv_search_shortcode( $atts = array() ) {
 		</div>
 		<p class="hv-search__status" role="status" aria-live="polite"></p>
 		<p class="hv-search__error" role="alert" hidden></p>
-		<p class="hv-search__switch"><?php echo esc_html( $t( 'sc_other_q' ) ); ?> <button type="button" class="hv-search__link" data-switch="free"><?php echo esc_html( $t( 'sc_other_link' ) ); ?></button></p>
+		<?php echo $group_note; // phpcs:ignore WordPress.Security.EscapeOutput -- đã escape khi dựng. ?>
 	</form>
 	<?php endif; ?>
 	<form class="hv-search__form hv-search__form--free" method="get" action="<?php echo esc_url( $cfg['resultsPath'] ); ?>" novalidate<?php echo $cmode ? ' hidden' : ''; ?>>
@@ -281,13 +285,14 @@ function hv_search_shortcode( $atts = array() ) {
 			<label id="<?php echo esc_attr( $uid ); ?>-guests-label" for="<?php echo esc_attr( $uid ); ?>-guests"><?php echo esc_html( $l['guests'] ); ?></label>
 			<div class="hv-search__counter">
 				<button type="button" data-step="-1" aria-label="<?php echo esc_attr( $l['guests_dec'] ); ?>" disabled><?php echo hv_icon( 'minus' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></button>
-				<input id="<?php echo esc_attr( $uid ); ?>-guests" type="number" name="numberGuest" min="1" step="1" value="1" inputmode="numeric" required>
+				<input id="<?php echo esc_attr( $uid ); ?>-guests" type="number" name="numberGuest" min="1" max="9" step="1" value="1" inputmode="numeric" required>
 				<button type="button" data-step="1" aria-label="<?php echo esc_attr( $l['guests_inc'] ); ?>"><?php echo hv_icon( 'plus' ); // phpcs:ignore WordPress.Security.EscapeOutput ?></button>
 			</div>
 		</div>
 		<button type="submit" class="hv-btn hv-btn--lg hv-search__submit"><?php echo esc_html( $l['submit'] ); ?></button>
 		<p class="hv-search__status" role="status" aria-live="polite"></p>
 		<p class="hv-search__error" role="alert" hidden></p>
+		<?php echo $group_note; // phpcs:ignore WordPress.Security.EscapeOutput -- đã escape khi dựng. ?>
 		<?php if ( $cmode ) : ?>
 		<p class="hv-search__switch"><button type="button" class="hv-search__link" data-switch="corridor"><?php echo esc_html( $t( 'sc_back_main' ) ); ?></button></p>
 		<?php endif; ?>

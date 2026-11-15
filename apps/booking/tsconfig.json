@@ -42,7 +42,9 @@
     ".next-e2e/types/**/*.ts",
     ".next-e2e/dev/types/**/*.ts",
     ".next-bis/types/**/*.ts",
-    ".next-bis/dev/types/**/*.ts"
+    ".next-bis/dev/types/**/*.ts",
+    ".next-vps/types/**/*.ts",
+    ".next-vps/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

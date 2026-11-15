@@ -23,7 +23,7 @@ export function RouteFareTable({ places, landing, classes, hours, title }: { pla
   const rows = buildFareRows(classes, loaded, { complete, hours });
   if (!rows.length) return null;
   const withTimes = rows.some((r) => r.times.length > 0);
-  const priceCell = (r: (typeof rows)[number]) => (r.minPrice !== null ? formatMoney(r.minPrice) : (r.priceLabel ?? "—"));
+  const priceCell = (r: (typeof rows)[number]) => (r.minPrice !== null ? formatMoney(r.minPrice, locale) : (r.priceLabel ?? "—"));
   const timeCell = (r: (typeof rows)[number]) => {
     if (!r.times.length) return "—";
     if (r.timesPartial) return t("route.fare_from_time", { time: r.times[0] });

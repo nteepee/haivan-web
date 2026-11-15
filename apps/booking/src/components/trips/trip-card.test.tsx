@@ -20,10 +20,10 @@ const SEARCH: SearchParamsData = {
 
 afterEach(cleanup);
 
-const renderCard = (trip: Trip, props: { open?: boolean; priority?: boolean } = {}) =>
+const renderCard = (trip: Trip, props: { open?: boolean; priority?: boolean; legTitle?: string } = {}) =>
   render(
     <Providers locale="vi">
-      <TripCard trip={trip} search={SEARCH} open={props.open ?? false} priority={props.priority} onToggle={() => undefined} />
+      <TripCard trip={trip} search={SEARCH} open={props.open ?? false} priority={props.priority} legTitle={props.legTitle} onToggle={() => undefined} />
     </Providers>,
   );
 
@@ -34,6 +34,17 @@ describe("TripCard: nhãn nghiệp vụ như web cũ", () => {
     const middle = screen.getByText("Xe liên tỉnh");
     expect(middle).toHaveTextContent("02h40");
     expect(screen.queryByText(/02 giờ/)).not.toBeInTheDocument();
+  });
+
+  it("trang tuyến: tiêu đề là chặng khách đi, tên tuyến ERP xuống dòng phụ 'Xe tuyến …'", () => {
+    renderCard(TRIP, { legTitle: "Sài Gòn - Vũng Tàu" });
+    expect(screen.getByRole("heading", { level: 3, name: "Sài Gòn - Vũng Tàu" })).toBeInTheDocument();
+    expect(screen.getByText("Xe tuyến Tân Sơn Nhất - Vũng Tàu")).toBeInTheDocument();
+  });
+
+  it("trang tìm chuyến (không có chặng): không có dòng 'Xe tuyến'", () => {
+    renderCard(TRIP);
+    expect(screen.queryByText(/^Xe tuyến/)).not.toBeInTheDocument();
   });
 
   it("số chỗ hiện 'N Chỗ trống'; hết chỗ hiện 'Hết chỗ' và nút không còn là nút vàng", () => {

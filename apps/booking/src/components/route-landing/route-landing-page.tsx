@@ -64,7 +64,7 @@ export function RouteLandingPage({ view, prices, promos = [], locale, places, or
           landing={`${start}/${end}`}
           classes={view.vehicleClasses.map((c) => {
             const live = priceOf(c.name);
-            return { name: c.name, price_from: live ? formatMoney(live) : null };
+            return { name: c.name, price_from: live ? formatMoney(live, locale) : null };
           })}
           hours={view.runHours}
           title={t("route.fare_caption", { a: view.start, b: view.end })}

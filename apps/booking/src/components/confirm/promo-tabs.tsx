@@ -3,7 +3,7 @@
 import { Check, Loader2 } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { toast } from "sonner";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
 import { autoTokenPromoId } from "@/lib/auto-promo-token";
 import { expiryOf, isExhausted, parsePromotions, type Promotion } from "@/schemas/promotion";
 import { gw } from "@/lib/http";
@@ -109,6 +109,7 @@ export function PromoCodeTab({ seats, promotions, busy, onApply }: { seats: Draf
 /** Tab "Đổi điểm": 1 điểm = 1đ; ghế có mã KM hoặc không đủ điểm bị khoá. */
 export function PointsTab({ seats: initial, points, onApply }: { seats: DraftSeat[]; points: number; onApply: (seats: DraftSeat[]) => void }) {
   const t = useT();
+  const locale = useLocale();
   const [seats, setSeats] = useState(initial);
   const used = seats.reduce((s, x) => (x.is_reward ? s + x.price : s), 0);
   return (
@@ -118,7 +119,7 @@ export function PointsTab({ seats: initial, points, onApply }: { seats: DraftSea
         const locked = !!s.promotion || (!s.is_reward && points - used - s.price < 0);
         return (
           <label key={s.id} className="flex min-h-control cursor-pointer items-center justify-between gap-3 rounded-2 bg-surface p-3 shadow-1 has-checked:bg-select has-checked:select-ring">
-            <span>{t("booking_infor.seats")} {s.name} — {s.price.toLocaleString("vi-VN")} {t("booking_infor.points")}</span>
+            <span>{t("booking_infor.seats")} {s.name} — {s.price.toLocaleString(locale === "vi" ? "vi-VN" : "en-US")} {t("booking_infor.points")}</span>
             <input type="checkbox" disabled={locked} checked={!!s.is_reward} onChange={(e) => setSeats(seats.map((x) => (x.id === s.id ? { ...x, is_reward: e.target.checked } : x)))} className="size-icon shrink-0 accent-ink" />
           </label>
         );

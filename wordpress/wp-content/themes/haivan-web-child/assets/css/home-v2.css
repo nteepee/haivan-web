@@ -1,24 +1,32 @@
 /* Trang chủ v2 (inc/home-v2.php): chỉ phần riêng của trang chủ. Biến và thành phần dùng chung nằm ở v2.css. */
 /* 01 · Hero: chép đúng số đo bản mẫu v0 (ảnh tràn, phủ than từ trái .94 → .77 → .13, chữ lệch trái 11vw, dòng chân hero). */
-.hv2-hero { position: relative; min-height: min(650px, 72vh); padding: clamp(60px, 9vw, 130px) clamp(24px, 11vw, 180px) 96px; overflow: hidden; background: #2b2b2b; color: #fff; isolation: isolate; }
-.hv2-hero-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; }
-.hv2-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(35 35 35 / .94) 0%, rgb(35 35 35 / .77) 42%, rgb(35 35 35 / .13) 100%); }
+/* Thẻ đặt vé nằm TRONG hero (front-page.php), nền trong suốt như app: vào trang là thấy ngay ô đặt vé trên ảnh. */
+.hv2-hero { position: relative; z-index: 3; padding: clamp(32px, 4.5vw, 64px) clamp(20px, 7vw, 140px) clamp(28px, 3.5vw, 48px); background: #2b2b2b; color: #fff; isolation: isolate; }
+.hv2-hero-media { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+/* Lớp tối nửa dưới ảnh: chữ trắng trong thẻ đặt vé luôn đủ tương phản, phần trên ảnh (núi, xe) vẫn sáng. */
+.hv2-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgb(12 13 18 / .78) 0%, rgb(12 13 18 / .55) 38%, rgb(12 13 18 / .25) 60%, rgb(12 13 18 / 0) 82%); pointer-events: none; }
+.hv2-hero-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 70% 50%; filter: brightness(1.12) saturate(1.05); }
+.hv2-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgb(35 35 35 / .8) 0%, rgb(35 35 35 / .55) 40%, rgb(35 35 35 / .08) 100%); }
 .hv2-hero-copy { max-width: 820px; padding: 0; margin: 0; }
 .hv2-hero-copy > :not(h1) { max-width: 620px; }
-.hv2-hero h1 { margin: 25px 0; font-size: clamp(50px, 7vw, 96px); line-height: .91; font-weight: 400; letter-spacing: -.05em; }
+.hv2-hero h1 { margin: 16px 0 14px; font-size: clamp(40px, 4.6vw, 68px); line-height: .98; font-weight: 400; letter-spacing: -.05em; }
 .hv2-h1-brand { display: block; margin-bottom: .3em; color: #fff; font-size: .36em; line-height: 1.1; letter-spacing: -.03em; font-weight: 700; }
 .hv2-hero h1 em { display: block; font-style: normal; color: var(--hv2-yellow); }
 .hv2-hero-lead { max-width: 390px; color: #e5e5e5; font-size: 15px; line-height: 1.7; }
-.hv2-hero-links { display: flex; flex-wrap: wrap; gap: 12px 30px; margin-top: 42px; }
+.hv2-hero-links { display: flex; flex-wrap: wrap; gap: 12px 30px; margin-top: 18px; }
 .hv2-hero-links a { display: inline-flex; align-items: center; min-height: 44px; padding-bottom: 0; border-bottom: 1px solid rgb(255 255 255 / .45); font-size: 13px; font-weight: 700; }
 .hv2-hero-links span { margin-left: 14px; color: var(--hv2-yellow); }
-.hv2-hero-foot { position: absolute; left: clamp(24px, 11vw, 180px); right: clamp(24px, 11vw, 180px); bottom: 70px; display: flex; justify-content: space-between; gap: 16px; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #ddd; }
 @media (max-width: 50rem) {
-  .hv2-hero { min-height: 570px; padding: 80px 24px 96px; }
-  .hv2-hero::before { background: linear-gradient(90deg, rgb(35 35 35 / .94) 0%, rgb(35 35 35 / .8) 60%, rgb(35 35 35 / .45) 100%); }
-  .hv2-hero h1 { font-size: 52px; }
-  .hv2-hero-foot { left: 24px; right: 24px; bottom: 56px; }
-  .hv2-hero-foot span + span { display: none; }
+  .hv2-hero { padding: 28px 20px 28px; }
+  .hv2-hero::before { background: linear-gradient(90deg, rgb(35 35 35 / .8) 0%, rgb(35 35 35 / .62) 60%, rgb(35 35 35 / .32) 100%); }
+  .hv2-hero h1 { font-size: 38px; }
+  .hv2-hero-lead, .hv2-hero-links { display: none; } /* điện thoại: nhường màn hình đầu cho thẻ đặt vé */
+}
+/* Màn hình thấp (laptop 13"): bỏ đoạn giới thiệu, bớt đệm trên để nút "Tìm vé" vẫn nằm trong màn hình đầu. */
+@media (min-width: 50.01rem) and (max-height: 760px) {
+  .hv2-hero { padding-top: 28px; }
+  .hv2-hero h1 { margin-bottom: 0; }
+  .hv2-hero-lead, .hv2-hero-links { display: none; }
 }
 
 /* 02 · Thẻ đặt vé: đè mép dưới hero (-48px), nền trắng góc vuông, bóng 0 18 50 .1. Form thật [haivan_search] được đổi lớp ngoài
@@ -26,7 +34,7 @@
 /* Khối bọc không có nền: margin âm của thẻ đè lên mép dưới ảnh hero (nền giấy của body nằm sau), thẻ nối liền với banner như bản mẫu. */
 .hv2-book { position: relative; z-index: 2; background: transparent; }
 .hv2-book > .hv2-wrap { max-width: 1280px; padding-inline: 24px; }
-.hv2-book-card { margin-top: -48px; padding: 25px 20px; background: #fff; box-shadow: 0 18px 50px rgb(0 0 0 / .10); }
+.hv2-book-card { position: relative; margin-top: 28px; padding: 0; background: transparent; color: #fff; }
 .hv2-book-top { display: flex; flex-direction: column; gap: 22px; }
 .hv2-book-card h2 { margin: 8px 0 0; font-size: 24px; font-weight: 400; letter-spacing: -.04em; }
 .hv2-trip { display: flex; gap: 24px; border-bottom: 1px solid #dedede; }
@@ -36,7 +44,7 @@
 .hv2-book-help { margin-top: 16px; color: #6a6a6a; font-size: 13px; }
 .hv2-book-help a { color: var(--hv2-ink); font-weight: 700; border-bottom: 1px solid currentColor; }
 @media (min-width: 50.01rem) {
-  .hv2-book-card { padding: 32px 38px; }
+  .hv2-book-card { padding: 0; }
   .hv2-book-top { flex-direction: row; align-items: flex-end; justify-content: space-between; }
   .hv2-book-card h2 { font-size: 27px; }
 }
@@ -44,7 +52,7 @@
 /* Khi công tắc Một chiều/Khứ hồi đã bật (có JS), ô "Ngày về" chỉ hiện ở chế độ khứ hồi; khi đó hàng form còn 6 cột. Kiểu form: v2.css (.hv2 .hv-search). */
 @media (min-width: 60rem) { .hv2-book-card:has([data-hv2-trip]:not([hidden])) .hv-search__form--corridor:has(.hv-search__retbox[hidden]) { grid-template-columns: minmax(0, 1fr) 44px minmax(0, 1fr) minmax(0, .9fr) 120px 150px; } }
 .hv2-book-card:has([data-hv2-trip]:not([hidden])) .hv-search__field--cret:has(.hv-search__retbox[hidden]) { display: none; }
-.hv2-book .hv-today { background: transparent; padding-block: 40px 0; }
+.hv2-book .hv-today { background: transparent; padding-block: 32px 0; }
 .hv2-book .hv-today .hv-container { max-width: 1280px; padding-inline: 24px; }
 
 /* 04 · 5 chặng */
@@ -114,3 +122,44 @@
 @media (prefers-reduced-motion: reduce) {
   .hv2 * { transition: none !important; }
 }
+
+/* Chuyển động trang chủ: chỉ khi người dùng không bật "giảm chuyển động". Vào trang: ảnh hero zoom chậm, chữ và thẻ đặt vé
+   trượt lên lần lượt. Cuộn: khối nào vào khung nhìn thì hiện dần (home-v2.js gắn .hv2-reveal; không có JS thì mọi thứ hiện sẵn). */
+@keyframes hv2-zoom { from { transform: scale(1.08); } to { transform: none; } }
+@keyframes hv2-rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .hv2-hero-img { animation: hv2-zoom 1.8s cubic-bezier(.16, 1, .3, 1) backwards; }
+  .hv2-hero-copy > * { animation: hv2-rise .7s cubic-bezier(.16, 1, .3, 1) backwards; }
+  .hv2-hero-copy > :nth-child(2) { animation-delay: .08s; }
+  .hv2-hero-copy > :nth-child(3) { animation-delay: .16s; }
+  .hv2-book-card { animation: hv2-rise .8s cubic-bezier(.16, 1, .3, 1) .22s backwards; }
+  .hv2-book-card .hv-search__route { animation: hv2-rise .5s cubic-bezier(.16, 1, .3, 1) backwards; }
+  .hv2-book-card .hv-search__route:nth-child(1) { animation-delay: .42s; }
+  .hv2-book-card .hv-search__route:nth-child(2) { animation-delay: .48s; }
+  .hv2-book-card .hv-search__route:nth-child(3) { animation-delay: .54s; }
+  .hv2-book-card .hv-search__route:nth-child(4) { animation-delay: .6s; }
+  .hv2-js .hv2-reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease-out, transform .7s cubic-bezier(.16, 1, .3, 1); transition-delay: var(--hv2-d, 0s); }
+  .hv2-js .hv2-reveal.is-in { opacity: 1; transform: none; }
+}
+@media print { .hv2-js .hv2-reveal { opacity: 1 !important; transform: none !important; } } /* in trang: không phụ thuộc cuộn */
+
+/* Thẻ đặt vé trong suốt trên ảnh (như app): chữ trắng, ô nhập trắng đặc, chip tuyến viền trắng (đang chọn: vàng chữ ink).
+   Chữ nhỏ nhất (nhãn 11px) nằm trên lớp tối ≥ .66 của ::after nên vẫn ≥ 4,5:1 cả khi phía sau là trời sáng. */
+html body .hv2-hero .hv2-book-card { background: transparent; box-shadow: none !important; border-radius: 0 !important; overflow: visible; }
+.hv2-hero .hv2-book-card h2 { color: #fff; text-shadow: 0 1px 2px rgb(0 0 0 / .35); }
+.hv2 .hv2-hero .hv-search .hv-search__field label,
+.hv2 .hv2-hero .hv-search .hv-search__switch,
+.hv2-hero .hv2-book-help { color: rgb(255 255 255 / .9); text-shadow: 0 1px 2px rgb(0 0 0 / .35); }
+.hv2 .hv2-hero .hv-search .hv-search__link, .hv2-hero .hv2-book-help a { color: #fff; border-bottom-color: var(--hv2-yellow); }
+.hv2-hero .hv2-trip { border-bottom-color: rgb(255 255 255 / .3); }
+.hv2-hero .hv2-trip button { color: rgb(255 255 255 / .85); }
+.hv2-hero .hv2-trip button[aria-pressed="true"] { color: #fff; }
+/* Ô nhập, nút đổi chiều: trắng đặc để đọc và bấm dễ trên ảnh. */
+html body .hv2-hero .hv-search.hv-search :is(.hv-search__control--select select, .hv-search__field input, .hv-search__addret, .hv-search__counter, .hv-search__datebox),
+html body .hv2-hero .hv-search.hv-search .hv-search__retclear { background: #fff; border-color: transparent; }
+html body .hv2-hero .hv-search.hv-search .hv-search__swap { background: #fff; box-shadow: none; color: var(--color-ink); }
+html body .hv2-hero .hv-search.hv-search .hv-search__swap:hover { background: var(--color-accent-soft); }
+/* Chip tuyến: kính trong viền trắng; đang chọn = vàng chữ ink (màu chọn của app). */
+html body .hv2-hero .hv-search.hv-search .hv-search__route { background: rgb(255 255 255 / .14); box-shadow: inset 0 0 0 1px rgb(255 255 255 / .45); color: #fff; }
+html body .hv2-hero .hv-search.hv-search .hv-search__route:hover { background: rgb(255 255 255 / .26); }
+html body .hv2-hero .hv-search.hv-search .hv-search__route[aria-pressed="true"] { background: var(--color-accent); box-shadow: none; color: var(--color-accent-ink); }

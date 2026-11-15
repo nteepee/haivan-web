@@ -9,6 +9,7 @@ import { autoTokenPromoId } from "@/lib/auto-promo-token";
 import { ApiError } from "@/lib/http";
 import { applyAutoPromo, clearPromo, hasServerDiscount } from "@/lib/promo-apply";
 import { promoLabel } from "@/lib/promo-match";
+import { autoRuleSeatNames, ruleAsPromo } from "@/lib/rule-offers";
 import type { Promo } from "@/schemas/booking-config";
 import { useBookingDraft, type BookingDraft, type DraftSeat } from "@/stores/booking-draft";
 
@@ -58,7 +59,7 @@ export function AutoPromo({ draft, promo, onApply, onSettled }: Props) {
     started.current = true;
     const label = promoLabel(promo, locale);
     const before = fingerprint(draft.seats);
-    applyAutoPromo(draft, promo)
+    applyAutoPromo(draft, promo, autoRuleSeatNames(config, draft, promo.id))
       .then((seats) => {
         const now = useBookingDraft.getState().draft;
         if (!now || now.order_code !== draft.order_code || fingerprint(now.seats) !== before) return; // ghế đã đổi: không ghi đè lựa chọn của khách
@@ -72,10 +73,10 @@ export function AutoPromo({ draft, promo, onApply, onSettled }: Props) {
         toast.warning(error instanceof ApiError && error.message ? t("corridor.rejected", { label, reason: error.message }) : t("corridor.rejected_generic", { label }));
       })
       .finally(onSettled);
-  }, [promo, draft, locale, onApply, onSettled, t]);
+  }, [promo, draft, locale, onApply, onSettled, t, config]);
 
   // Nhãn suy từ token trên ghế (không có mã thật ở client).
-  const shown = config.promos.find((p) => draft.seats.some((s) => autoTokenPromoId(s.promotion) === p.id));
+  const shown = [...config.promos, ...config.rules.map(ruleAsPromo)].find((p) => draft.seats.some((s) => autoTokenPromoId(s.promotion) === p.id));
   if (!shown) return null;
   return (
     <p role="status" className="hv-notice items-center">

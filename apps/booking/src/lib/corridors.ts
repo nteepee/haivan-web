@@ -132,6 +132,24 @@ function nearEnd(corridor: Corridor, end: "a" | "b", point: { lat: number; lng: 
   return anchors.some((anchor) => distanceKm(anchor, point) <= END_RADIUS_KM);
 }
 
+/** Bán kính nhận một trạm có toạ độ riêng (Tân Sơn Nhất, Lexington…) từ toạ độ vé. */
+export const STOP_RADIUS_KM = 3;
+
+/**
+ * Trạm của tuyến ở đầu `end` theo toạ độ vé: trạm có toạ độ riêng gần nhất trong STOP_RADIUS_KM; không có thì trạm mặc định của đầu đó
+ * nếu điểm gần đầu tuyến (trạm không toạ độ dùng toạ độ đầu tuyến); xa cả hai → null.
+ */
+export function identifyStop(corridor: Corridor, end: "a" | "b", point: { lat: number; lng: number }): string | null {
+  let best: { id: string; d: number } | null = null;
+  for (const s of corridor.stops[end]) {
+    if (!s.point) continue;
+    const d = distanceKm(s.point, point);
+    if (d <= STOP_RADIUS_KM && (!best || d < best.d)) best = { id: s.id, d };
+  }
+  if (best) return best.id;
+  return distanceKm(corridor.ends[end].point, point) <= END_RADIUS_KM ? corridor.default_stop[end] : null;
+}
+
 /**
  * Chuyến (điểm đi → điểm đến theo toạ độ của vé) thuộc tuyến chính nào và chiều nào; null nếu không khớp tuyến nào.
  * Dùng phía server để tự xác định tuyến/chiều của đơn từ dữ liệu apigw (không tin tham số do client gửi).

@@ -31,6 +31,12 @@ function hv_active_offers( $limit = 12 ) {
 		}
 		$m['id']    = $p->ID;
 		$m['title'] = get_the_title( $p );
+		if ( 'en' === hv_lang() ) {
+			$m = hv_offer_localize_en( $m );
+			if ( null === $m ) {
+				continue;
+			}
+		}
 		$m['image'] = hv_media_or_url( get_post_thumbnail_id( $p->ID ), $m['image_url'], 'medium_large', 900, 600 );
 		$out[]      = $m;
 		if ( count( $out ) >= $limit ) {

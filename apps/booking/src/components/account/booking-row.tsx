@@ -24,6 +24,7 @@ interface Props {
 /** Một đơn trong danh sách: tiêu đề (mã, ngày, nhãn/nút thanh toán), mở ra thì tải chi tiết `bookings/{code}`. */
 export function BookingRow({ row, tab, open, onToggle, reasons }: Props) {
   const t = useT();
+  const locale = useLocale();
   const p = localePrefix(useLocale());
   const info = row.booking.booking_info;
   const first = row.booking.booking_ticket[0];
@@ -64,13 +65,13 @@ export function BookingRow({ row, tab, open, onToggle, reasons }: Props) {
           {total != null && total > 0 ? (
             <p>
               <span className="block text-14 font-semibold text-muted">{t("trip.total_price")}</span>
-              <span className="text-20 font-extrabold text-ink tabular-nums">{formatMoney(total)}</span>
+              <span className="text-20 font-extrabold text-ink tabular-nums">{formatMoney(total, locale)}</span>
             </p>
           ) : <span />}
           {badge.kind === "pay" ? (
             <Link href={payUrl(p, info.code, merchantCode, first?.trip_id)} className="hv-btn hv-btn-primary hv-btn-sm">
               {t("trip.payment")}
-              {badge.amount != null ? <span className="tabular-nums">{formatMoney(badge.amount)}</span> : null}
+              {badge.amount != null ? <span className="tabular-nums">{formatMoney(badge.amount, locale)}</span> : null}
             </Link>
           ) : null}
         </div>

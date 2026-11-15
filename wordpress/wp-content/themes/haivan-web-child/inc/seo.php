@@ -54,7 +54,7 @@ add_filter(
 
 /** Thương hiệu cuối tiêu đề. */
 function hv_seo_brand_suffix() {
-	return ' | Hải Vân';
+	return 'en' === hv_lang() ? ' | Hai Van' : ' | Hải Vân';
 }
 
 /** Thêm "trang N" cho trang phân trang để tiêu đề không trùng nhau. */
@@ -83,7 +83,7 @@ add_filter(
 	static function ( $title ) {
 		$vi = 'vi' === hv_lang();
 		if ( is_post_type_archive( 'uu_dai' ) ) {
-			return hv_t( 'offers_page_h1' ) . ' – Vé xe Hải Vân';
+			return hv_t( 'offers_page_h1' ) . ( $vi ? ' – Vé xe Hải Vân' : hv_seo_brand_suffix() );
 		}
 		if ( is_post_type_archive( 'diem_den' ) ) {
 			return hv_seo_paged( $vi ? 'Điểm đến & kinh nghiệm du lịch' : 'Destinations & travel guides', get_query_var( 'paged' ) ) . hv_seo_brand_suffix();
@@ -112,7 +112,8 @@ add_filter(
 				return get_the_title( $post ) . hv_seo_brand_suffix();
 			}
 		}
-		return $title;
+		// Bản en: tên site (%sitename% của Rank Math) là "Hải Vân" → viết không dấu như mọi chữ tiếng Anh khác.
+		return $vi ? $title : str_replace( 'Hải Vân', 'Hai Van', (string) $title );
 	},
 	20
 );
@@ -126,6 +127,18 @@ add_filter(
 		if ( is_post_type_archive( 'uu_dai' ) ) {
 			return hv_t( 'offers_page_desc' );
 		}
+		// Rank Math mặc định "<Loại> Archive - Hải Vân": viết mô tả thật cho hai archive (cả vi lẫn en).
+		$vi = 'vi' === hv_lang();
+		if ( is_post_type_archive( 'diem_den' ) ) {
+			return $vi ? 'Kinh nghiệm du lịch, xe đi và cẩm nang các điểm đến trên tuyến xe Hải Vân: Hà Nội, Điện Biên, Sơn La, Mộc Châu, Vũng Tàu, Sài Gòn.' : 'Travel guides for destinations on the Hai Van coach network: Hanoi, Dien Bien, Son La, Moc Chau, Vung Tau and Ho Chi Minh City.';
+		}
+		if ( is_post_type_archive( 'tin_tuc' ) ) {
+			return $vi ? 'Tin tức, thông cáo và bài báo chí về hãng xe Hải Vân.' : 'News, announcements and press coverage of Hai Van coaches.';
+		}
+		if ( ! $vi && hv_has_vi( (string) $desc ) ) {
+			// Bản en không bao giờ hiện mô tả tiếng Việt (mô tả cũ / mô tả mặc định của site): dùng mô tả tiếng Anh chung.
+			return 'Hai Van coaches: intercity buses, private hire and airport transfers in Vietnam. Book online or call 1900 6763.';
+		}
 		if ( is_singular( 'page' ) && ! is_front_page() ) {
 			$front = (int) get_option( 'page_on_front' );
 			$home  = $front > 0 ? trim( (string) get_post_meta( $front, 'rank_math_description', true ) ) : '';
@@ -138,3 +151,23 @@ add_filter(
 		return $desc;
 	}
 );
+
+/** Thẻ og/twitter của bản en: mô tả/tiêu đề tiếng Việt (bài cũ, mặc định site) thay bằng bản tiếng Anh như thẻ description. */
+foreach ( array( 'rank_math/opengraph/facebook/og_description', 'rank_math/opengraph/twitter/twitter_description' ) as $hv_hook ) {
+	add_filter(
+		$hv_hook,
+		static function ( $desc ) {
+			return 'en' === hv_lang() ? (string) apply_filters( 'rank_math/frontend/description', (string) $desc ) : $desc;
+		},
+		20
+	);
+}
+foreach ( array( 'rank_math/opengraph/facebook/og_title', 'rank_math/opengraph/twitter/twitter_title' ) as $hv_hook ) {
+	add_filter(
+		$hv_hook,
+		static function ( $title ) {
+			return 'en' === hv_lang() ? str_replace( 'Hải Vân', 'Hai Van', (string) $title ) : $title;
+		},
+		20
+	);
+}

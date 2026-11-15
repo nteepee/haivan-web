@@ -1,6 +1,6 @@
 "use client";
 
-import { Banknote, Check, ChevronDown, Clock, ListFilter, Bus } from "lucide-react";
+import { Banknote, ChevronDown, Clock, ListFilter, Bus } from "lucide-react";
 import type { ReactNode } from "react";
 import { useT } from "@/components/providers";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -25,13 +25,13 @@ const SORT_KEY: Record<SortKey, string> = {
   seats: "list_trip.filter.sort_seats",
 };
 
-/** Một chip mở menu Radix: đang lọc = nền select + vòng chọn + dấu tick thay icon (không chỉ màu); chevron phải. */
+/** Một chip mở menu Radix: đang lọc = nền ink chữ trắng đậm (không dấu tích, theo review 2026-11-12); icon giữ nguyên; chevron phải. */
 function Chip({ label, icon, active, children }: { label: string; icon: ReactNode; active: boolean; children: ReactNode }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button type="button" className="hv-chip" data-active={active}>
-          {active ? <Check className="size-5" strokeWidth={3} aria-hidden /> : icon}
+          {icon}
           {label}
           <ChevronDown className="hv-chip-chevron size-5" aria-hidden />
         </button>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { AddressSearch, type PickedAddress } from "@/components/confirm/address-search";
-import { useT } from "@/components/providers";
+import { useLocale, useT } from "@/components/providers";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { checkTransitQuery, isMultiPoint, isPickUp, priceTicketQuery, withAddress, type TransitService, type TransitTicket } from "@/lib/account-transit";
 import { formatMoney } from "@/lib/format";
@@ -25,6 +25,7 @@ const priceOf = (res: unknown) => {
 
 function UpdateForm({ service, merchantCode, onSave }: Omit<Props, "title" | "onClose">) {
   const t = useT();
+  const locale = useLocale();
   const pickUp = isPickUp(service);
   const [multi, setMulti] = useState(isMultiPoint(service));
   const [tickets, setTickets] = useState<TransitTicket[]>(() => service.dvbs_tickets.map((tk) => ({ ...tk })));
@@ -74,7 +75,7 @@ function UpdateForm({ service, merchantCode, onSave }: Omit<Props, "title" | "on
       {tickets.map((tk, i) => (
         <fieldset key={tk.code ?? i} className="grid gap-2 rounded-2 bg-paper-2 p-3">
           <legend className="px-1 font-extrabold">
-            {t("booking_infor.seats")} {String(tk.number ?? i + 1)} - {formatMoney(Number(tk.price) || 0)}
+            {t("booking_infor.seats")} {String(tk.number ?? i + 1)} - {formatMoney(Number(tk.price) || 0, locale)}
           </legend>
           <label className="flex min-h-control cursor-pointer items-center gap-3">
             <input type="checkbox" checked={!!tk.check} onChange={(e) => void toggle(i, e.target.checked)} className="size-icon shrink-0 accent-ink" />

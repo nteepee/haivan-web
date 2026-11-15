@@ -43,6 +43,13 @@
     line-height: var(--lh-18);
     overflow-wrap: anywhere;
   }
+  /* Dòng phụ dưới tiêu đề chặng (trang tuyến): tên tuyến ERP của xe. */
+  .hv-trip-line {
+    color: var(--color-muted);
+    font-size: var(--fs-14);
+    line-height: var(--lh-14);
+    overflow-wrap: anywhere;
+  }
   /* Hàng giờ: giờ đi, đường kẻ đứt với thời lượng, giờ đến. */
   .hv-trip-times {
     display: grid;

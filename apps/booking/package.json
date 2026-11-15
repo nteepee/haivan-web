@@ -15,7 +15,8 @@
     "build:verify": "HV_BUILD_OFFLINE=1 NEXT_DIST_DIR=.next-verify NEXT_PUBLIC_CMS_URL=http://127.0.0.1:9 NEXT_PUBLIC_APIGW_URL=http://127.0.0.1:9 WP_LAYOUT_URL= next build && NEXT_DIST_DIR=.next-verify node scripts/check-ssr-h1.mjs --home-only",
     "contract-diff": "vitest run --config scripts/vitest.config.mts scripts/contract-diff.test.ts",
     "test:scripts": "vitest run --config scripts/vitest.config.mts",
-    "check:ssr-h1": "node scripts/check-ssr-h1.mjs"
+    "check:ssr-h1": "node scripts/check-ssr-h1.mjs",
+    "shadow-rules": "node --experimental-transform-types --disable-warning=ExperimentalWarning --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --import ./scripts/register-ts.mjs scripts/shadow-rules.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^6.0.2",

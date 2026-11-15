@@ -46,6 +46,7 @@
   "people": "người",
   "departure_date": "Ngày đi",
   "number_of_people": "Số người",
+  "group_note": "Mỗi đơn đặt tối đa {{max}} vé. Đoàn đông hơn, gọi",
   "type": "Loại hình",
   "search": "Tìm kiếm",
   "searching_tickets": "Tìm vé",
@@ -110,7 +111,7 @@
   "noti": "Thông báo",
   "view_details": "Xem chi tiết",
   "msg": {
-   "msg_booking_select_seat": "Chỉ được đặt tối đa 9 ghế với từng booking!",
+   "msg_booking_select_seat": "Mỗi đơn đặt tối đa 9 ghế. Đoàn đông hơn vui lòng gọi 1900 6763.",
    "msg_select_ticket": "Bạn chưa chọn đủ số lượng vé!",
    "msg_change_num_ticket": "Bạn có muốn thay đổi số lượng vé không?",
    "msg_block_booking": "Chuyến đi đã bị chặn đặt vé. Vui lòng không thao tác!",
@@ -130,6 +131,7 @@
   "seats_left": "{{n}} Chỗ trống",
   "today_discount": "-{{percent}}% Hôm nay",
   "vehicle_alt": "Xe {{name}} của Hải Vân",
+  "route_line": "Xe tuyến {{name}}",
   "seat_error": "Không tải được sơ đồ ghế. Vui lòng thử lại.",
   "count": "{{n}} chuyến ngày {{date}}",
   "edit": "Sửa",
@@ -844,7 +846,13 @@
  "xe_khach": {
   "title": "Đặt vé xe khách Hải Vân online – Lịch chạy & giá vé",
   "h1": "Đặt vé xe khách Hải Vân",
-  "description": "Đặt vé xe khách Hải Vân online: xem lịch chạy, giá vé các tuyến Hà Nội – Điện Biên, Sơn La, Vũng Tàu – Sài Gòn. Chọn ghế, thanh toán VNPay, hotline 1900 6763."
+  "description": "Đặt vé xe khách Hải Vân online: xem lịch chạy, giá vé các tuyến Hà Nội – Điện Biên, Sơn La, Vũng Tàu – Sài Gòn. Chọn ghế, thanh toán VNPay, hotline 1900 6763.",
+  "search_title": "Tìm chuyến xe khách"
+ },
+ "site": {
+  "title_default": "Hãng xe Hải Vân - xe liên tỉnh, xe hợp đồng, xe sân bay",
+  "title_template": "%s | Hải Vân",
+  "description": "Đặt vé xe khách Hải Vân trực tuyến: chọn chuyến, chọn ghế, thanh toán nhanh. Hotline 1900 6763."
  },
  "steps": {
   "label": "Các bước đặt vé",
@@ -864,7 +872,6 @@
   "add_return": "Thêm ngày về",
   "return_date": "Ngày về",
   "remove_return": "Bỏ ngày về",
-  "back_to_corridors": "Quay lại tuyến chính",
   "today_all": "Cả ngày",
   "today_group": "Chọn khung giờ chuyến hôm nay",
   "today_count": "{{label}}, {{n}} chuyến",
@@ -887,11 +894,29 @@
   "return_route": "{{from}} → {{to}} · {{date}} · {{n}} vé",
   "return_button": "Đặt chiều về {{date}}",
   "return_leg_notice": "Bạn đang đặt chiều về cho đơn chiều đi {{code}}. Chiều về là một đơn riêng, thanh toán riêng.",
-  "other_province_lead": "Đi tỉnh khác?",
-  "other_province_link": "Tìm theo điểm đi, điểm đến",
   "today_label": "Chuyến hôm nay",
   "today_route": "{{from}} đi {{to}}",
   "ticket_one": "{{n}} vé",
-  "ticket_other": "{{n}} vé"
+  "ticket_other": "{{n}} vé",
+  "ticket_group": "Trên {{n}} vé (đoàn)"
+ },
+ "page_title": {
+  "login": "Đăng nhập",
+  "profile": "Thông tin cá nhân",
+  "my_parcels": "Hàng hoá",
+  "my_airport": "Xe sân bay",
+  "my_hire": "Xe hợp đồng",
+  "my_transfer": "Trung chuyển",
+  "my_trips": "Chuyến đi của tôi",
+  "my_offers": "Ưu đãi của tôi",
+  "logout": "Đăng xuất",
+  "confirm": "Xác nhận thông tin đặt vé",
+  "extras": "Thông tin dịch vụ bổ sung",
+  "payment": "Thanh toán",
+  "tracking": "Theo dõi xe",
+  "partner_redirect": "Page redirect | Nhà Xe Hải Vân",
+  "payment_success": "Đặt chỗ thành công",
+  "fleet": "Theo dõi đội xe",
+  "email_verify": "Xác minh email"
  }
 }

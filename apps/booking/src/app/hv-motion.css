@@ -1,0 +1,156 @@
+/* Chuyển động (app v3: "có sức sống" nhưng nhẹ). Chỉ CSS, chỉ transform/opacity/màu, không đổi bố cục.
+   Không lớp (unlayered) và nạp cuối để thắng tiện ích Tailwind (animate-pulse). Toàn bộ nằm trong
+   prefers-reduced-motion: no-preference; người dùng bật "giảm chuyển động" thì không có gì chạy (xem thêm hv-states.css).
+   Không dùng transform lâu dài trên .hv-trip: nó chứa thanh tổng tiền dính, transform sẽ phá position: sticky/fixed bên trong. */
+
+@keyframes hv-rise {
+  from {
+    opacity: 0;
+    transform: translateY(var(--s-4));
+  }
+}
+@keyframes hv-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hv-pop {
+  0% {
+    transform: scale(0.9);
+  }
+  60% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes hv-zoom {
+  from {
+    transform: scale(1.06);
+  }
+}
+@keyframes hv-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* 1. Vào trang: thẻ tìm vé, tiêu đề trang kết quả, các bước hiện lên nhẹ. */
+  .hv-plate,
+  .hv-rs-top .hv-page-title {
+    animation: hv-rise var(--dur-long) var(--ease-out) backwards;
+  }
+  .hv-rs-top .hv-page-title {
+    animation-delay: 60ms;
+  }
+  .hv-plate {
+    animation-delay: 120ms;
+  }
+  .hv-step[aria-current="step"] .hv-step-mark {
+    animation: hv-pop var(--dur-long) var(--ease-out) 200ms backwards;
+  }
+
+  /* 2. Danh sách chuyến: thẻ trượt lên lần lượt (so le 50ms, tối đa 8 thẻ đầu); thẻ tải thêm cũng trượt lên. */
+  .hv-trips > .hv-trip {
+    animation: hv-rise var(--dur-long) var(--ease-out) backwards;
+  }
+  .hv-trips > .hv-trip:nth-child(2) { animation-delay: 50ms; }
+  .hv-trips > .hv-trip:nth-child(3) { animation-delay: 100ms; }
+  .hv-trips > .hv-trip:nth-child(4) { animation-delay: 150ms; }
+  .hv-trips > .hv-trip:nth-child(5) { animation-delay: 200ms; }
+  .hv-trips > .hv-trip:nth-child(6) { animation-delay: 250ms; }
+  .hv-trips > .hv-trip:nth-child(7) { animation-delay: 300ms; }
+  .hv-trips > .hv-trip:nth-child(n + 8) { animation-delay: 350ms; }
+
+  /* Khung chờ tải: ánh sáng chạy ngang (thay nhấp nháy animate-pulse). */
+  .hv-trips[aria-busy] > .hv-card {
+    background: linear-gradient(90deg, var(--color-paper-3) 30%, var(--color-paper-2) 50%, var(--color-paper-3) 70%);
+    background-size: 200% 100%;
+    animation: hv-shimmer 1.3s linear infinite;
+  }
+
+  /* 3. Mở chọn ghế: khung ảnh + sơ đồ ghế hiện lên; ghế vừa chọn "bật" nhẹ; dòng tổng tiền hiện dần. */
+  .hv-trip-panel {
+    animation: hv-rise var(--dur-long) var(--ease-out);
+  }
+  .hv-seat {
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      box-shadow var(--dur-short) var(--ease-out),
+      color var(--dur-short) var(--ease-out);
+  }
+  .hv-seat[aria-pressed="true"] {
+    animation: hv-pop var(--dur-short) var(--ease-out);
+  }
+  .hv-sticky-sum {
+    animation: hv-fade var(--dur-short) var(--ease-out);
+  }
+
+  /* 4. Chip, nút tuyến, nút: đổi màu mượt; nút chính nổi nhẹ khi rê chuột. */
+  .hv-corr-btn,
+  .hv-chip,
+  .hv-tab,
+  .hv-return-add,
+  .hv-swap {
+    transition:
+      background-color var(--dur-short) var(--ease-out),
+      color var(--dur-short) var(--ease-out),
+      box-shadow var(--dur-short) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+  .hv-swap:active:not(:disabled) svg {
+    transform: rotate(180deg);
+    transition: transform var(--dur-short) var(--ease-out);
+  }
+  .hv-btn {
+    transition:
+      background-color var(--dur-micro) var(--ease-out),
+      box-shadow var(--dur-short) var(--ease-out),
+      transform var(--dur-micro) var(--ease-out);
+  }
+
+  /* 5. Trang tuyến: ảnh đầu trang zoom chậm khi vào. */
+  .hv-rhero2-img {
+    animation: hv-zoom 1.6s var(--ease-out) backwards;
+  }
+}
+
+/* Rê chuột (chỉ thiết bị có chuột): thẻ nổi lên. .hv-trip chỉ đổi bóng (không transform, xem đầu file). */
+@media (prefers-reduced-motion: no-preference) and (hover: hover) {
+  .hv-trip {
+    transition: box-shadow var(--dur-short) var(--ease-out);
+  }
+  :is(.hv-rcard, .hv2r-card, .hv2r-lounge, .hv-ccard, .hv2r-promo) {
+    transition:
+      transform var(--dur-short) var(--ease-out),
+      box-shadow var(--dur-short) var(--ease-out);
+  }
+  :is(.hv-rcard, .hv2r-card, .hv2r-lounge, .hv-ccard):hover {
+    transform: translateY(calc(var(--s-1) * -1));
+    box-shadow: var(--shadow-2);
+  }
+  .hv2r-promo:hover {
+    transform: translateY(calc(var(--s-1) * -1));
+  }
+  .hv-btn-primary:not(:disabled):not([aria-disabled="true"]):hover {
+    transform: translateY(calc(var(--line) * -1));
+    box-shadow: var(--shadow-2);
+  }
+}
+
+/* 6. Trang tuyến và /xe-khach: khối hiện dần khi cuộn tới (CSS scroll-driven, không JS).
+   Trình duyệt chưa hỗ trợ animation-timeline thì hiện sẵn như cũ. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    :is(.hv2r-head, .hv2r-card, .hv2r-lounge, .hv-ccard, .hv2r-promo, .hv2r-quotes > li, .hv2r-area, .hv-rcard, .hv-fare-wrap) {
+      animation: hv-rise linear backwards;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
