@@ -1,6 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import tripsFixture from "../../test/fixtures/trips.json";
-import { classPrice, minTripPrice, tripPrices } from "./route-price";
+import { classPrice, minTripPrice, routePricesToday, tripPrices } from "./route-price";
+import { callApigw } from "./upstream";
+
+vi.mock("next/cache", () => ({ cacheLife: vi.fn(), cacheTag: vi.fn() }));
+vi.mock("./upstream", () => ({ callApigw: vi.fn() }));
 
 const BASE = tripsFixture.data[0] as Record<string, unknown> & { price: object; route: object; product: object };
 const trip = (price: object, showPrice = 1, seats = 5) => ({ ...BASE, available_seats: seats, price: { ...BASE.price, ...price }, route: { ...BASE.route, show_price: showPrice } });
@@ -40,5 +44,32 @@ describe("tripPrices / classPrice", () => {
     expect(classPrice(p, "Royal")).toBe(450000);
     expect(classPrice(p, "Luxury")).toBe(380000);
     expect(classPrice(p, "Eco")).toBe(300000);
+  });
+});
+
+describe("routePricesToday", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+    vi.mocked(callApigw).mockReset();
+  });
+  const page = (items: unknown[]) => new Response(JSON.stringify({ ...tripsFixture, data: items, meta: { ...tripsFixture.meta, last_page: 1 } }));
+  const dateOf = (call: unknown[]) => new URLSearchParams(String((call[0] as { search: string }).search)).get("date");
+
+  it("hôm nay hết chuyến còn đặt được (xe đêm đã xuất bến) → lấy giá ngày mai", async () => {
+    vi.useFakeTimers({ now: new Date("2026-11-15T15:50:00Z") }); // 22:50 giờ VN
+    vi.mocked(callApigw).mockImplementation(async (req) =>
+      new URLSearchParams(String(req.search)).get("date") === "2026-11-16" ? page([trip({ min: 450000, max: 450000, percent: 0 })]) : page([trip({ min: 450000, max: 450000, percent: 0 }, 1, 0)]),
+    );
+    const prices = await routePricesToday({ lat: 21.03, lng: 105.78 }, { lat: 21.4, lng: 103.02 });
+    expect(vi.mocked(callApigw).mock.calls.map(dateOf)).toEqual(["2026-11-15", "2026-11-16"]);
+    expect(prices.min).toBe(450000);
+  });
+
+  it("hôm nay còn chuyến → không hỏi ngày mai", async () => {
+    vi.useFakeTimers({ now: new Date("2026-11-15T01:00:00Z") });
+    vi.mocked(callApigw).mockImplementation(async () => page([trip({ min: 210000, max: 210000, percent: 0 })]));
+    const prices = await routePricesToday({ lat: 10.77, lng: 106.7 }, { lat: 10.35, lng: 107.08 });
+    expect(vi.mocked(callApigw).mock.calls.map(dateOf)).toEqual(["2026-11-15"]);
+    expect(prices.min).toBe(210000);
   });
 });

@@ -3,7 +3,7 @@ import { cacheLife } from "next/cache";
 import popularRoutes from "@/content/popular-routes.json";
 import { getBookingConfig } from "@/lib/booking-config-source";
 import { corridorLanding, corridorListing } from "@/lib/corridor-landing";
-import { todayIsoVn } from "@/lib/format";
+import { addDaysIso, todayIsoVn } from "@/lib/format";
 import { getRouteListing } from "@/lib/route-listing";
 import { displayPrice } from "@/lib/trip-filters";
 import { tripSchema, tripsResponseSchema } from "@/schemas/trip";
@@ -100,15 +100,13 @@ function secondsToVnMidnight(now = Date.now()): number {
 }
 
 /**
- * "Giá từ" của tuyến trong ngày hôm nay (giờ Việt Nam): giá thấp nhất trong mọi chuyến hôm nay của API danh sách chuyến (chỉ đọc).
- * Thay cho giá nhập tay đã cũ (vd. 140.000đ Sài Gòn – Vũng Tàu). Cache 1 giờ nhưng không quá nửa đêm (cả hạn dùng bản cũ),
- * nên sang ngày mới không còn giá hôm qua. Lỗi trang 1 → null (trang ẩn giá), cache 1 phút; lỗi trang sau → giữ giá các trang đọc được.
+ * Giá của tuyến trong một ngày (giờ Việt Nam): giá thấp nhất trong mọi chuyến còn đặt được của ngày đó (API danh sách chuyến, chỉ đọc).
+ * Cache 1 giờ nhưng không quá nửa đêm (cả hạn dùng bản cũ). Lỗi trang 1 → không có giá, cache 1 phút; lỗi trang sau → giữ giá các trang đọc được.
  */
-export async function routePricesToday(from: LatLng, to: LatLng): Promise<RoutePrices> {
+async function routePricesOn(from: LatLng, to: LatLng, date: string): Promise<RoutePrices> {
   "use cache";
   const ttl = Math.min(3600, secondsToVnMidnight());
   try {
-    const date = todayIsoVn();
     const first = await tripsPage(from, to, date, 1);
     const pages = Math.min(first.last, MAX_PAGES);
     const rest: PromiseSettledResult<Awaited<ReturnType<typeof tripsPage>>>[] = [];
@@ -122,9 +120,21 @@ export async function routePricesToday(from: LatLng, to: LatLng): Promise<RouteP
     return tripPrices(items);
   } catch (error) {
     cacheLife({ stale: 60, revalidate: 60, expire: Math.min(ttl, 600) });
-    console.warn("[route-price] không lấy được giá hôm nay:", String(error));
+    console.warn("[route-price] không lấy được giá:", date, String(error));
     return { min: null, byClass: {} };
   }
+}
+
+/**
+ * "Giá từ" của tuyến (thay cho giá nhập tay đã cũ): giá các chuyến hôm nay còn đặt được; hôm nay đã hết chuyến
+ * (vd. tuyến xe đêm Điện Biên sau giờ xuất bến) thì lấy giá ngày mai, để thẻ tuyến không mất giá vào buổi tối.
+ * Theo hạng xe: dùng cùng ngày với giá chung.
+ */
+export async function routePricesToday(from: LatLng, to: LatLng): Promise<RoutePrices> {
+  "use cache"; // đọc ngày hiện tại trong cache (prerender); hạn cache lấy theo bản ngắn nhất của hai lần gọi bên trong.
+  const today = todayIsoVn();
+  const prices = await routePricesOn(from, to, today);
+  return prices.min !== null ? prices : routePricesOn(from, to, addDaysIso(today, 1));
 }
 
 /** Chỉ giá thấp nhất mọi hạng (dùng chung bản cache của `routePricesToday`). */
