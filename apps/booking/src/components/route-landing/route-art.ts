@@ -42,8 +42,11 @@ export const ROUTE_HERO_ART: Record<string, Art> = {
 /** Ảnh nền banner trang tuyến (như banner trang chủ): tuyến Sài Gòn / Tân Sơn Nhất / Vũng Tàu dùng ảnh xe ven biển Vũng Tàu, còn lại ảnh xe Tây Bắc. */
 const HERO_SOUTH = art("v2/hero-bien-vung-tau.webp", 1672, 941, "Xe limousine Hải Vân tuyến Tân Sơn Nhất – Vũng Tàu chạy trên đường ven biển Vũng Tàu", "Hai Van Tan Son Nhat - Vung Tau limousines on the Vung Tau seaside road");
 const HERO_NORTH = art("v2/hero-tay-bac.webp", 1672, 941, "Xe giường nằm Hải Vân chạy trên đèo Tây Bắc", "Hai Van sleeper coach on a northwest mountain pass");
+/** Tuyến Hà Nội – Sơn La / Mộc Châu (Hải Vân Xuân Tráng): xe vàng biển "Mỹ Đình – Sơn La", không dùng ảnh xe Điện Biên. */
+const HERO_XUAN_TRANG = art("v2/hero-son-la.webp", 1400, 788, "Xe giường nằm Hải Vân Xuân Tráng tuyến Mỹ Đình – Sơn La", "Hai Van Xuan Trang sleeper coach on the My Dinh - Son La route");
 export function routeHeroPhoto(slug: string): Art {
-  return isSouthRoute(slug) ? HERO_SOUTH : HERO_NORTH;
+  if (isSouthRoute(slug)) return HERO_SOUTH;
+  return /(son-la|moc-chau)/.test(slug) ? HERO_XUAN_TRANG : HERO_NORTH;
 }
 
 /** Sơ đồ điểm dừng thật của tuyến Tây Bắc (chung cho các tuyến trên). */
@@ -67,8 +70,8 @@ export function classArt(name: string, south = false): { art: Art; cut: boolean 
     return null;
   }
   if (/royal/i.test(name)) return { art: art("v2/cabin-royal.webp", 1400, 1050, "Cabin giường nằm Royal của Hải Vân", "Hai Van Royal sleeper cabin"), cut: false };
-  if (/luxury|limousine/i.test(name)) return { art: art("phuong_tien_6.jpg", 815, 400, "Xe Luxury Hải Vân màu đen", "Black Hai Van Luxury coach"), cut: false };
-  if (/economy|\beco\b/i.test(name)) return { art: art("class-economy.jpg", 815, 400, "Xe giường nằm Economy của Hải Vân", "Hai Van Economy sleeper coach"), cut: false };
+  if (/luxury|limousine/i.test(name)) return { art: art("v2/db-class-luxury.webp", 1400, 1050, "Khoang giường nằm Luxury của Hải Vân, giường có rèm che", "Hai Van Luxury sleeper berths with privacy curtains"), cut: false };
+  if (/economy|\beco\b/i.test(name)) return { art: art("v2/db-class-eco.webp", 1400, 1050, "Lối đi xe giường nằm Eco 44 chỗ của Hải Vân", "Aisle of a Hai Van Eco 44-berth sleeper"), cut: false };
   return null;
 }
 
