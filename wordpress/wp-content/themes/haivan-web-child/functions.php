@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'HV_WEB_VERSION', '1.10.28' );
+define( 'HV_WEB_VERSION', '1.10.29' );
 define( 'HV_WEB_DIR', get_stylesheet_directory() );
 define( 'HV_WEB_URI', get_stylesheet_directory_uri() );
 
@@ -22,7 +22,7 @@ foreach (
 		'i18n', 'i18n-labels', 'tokens', 'icons', 'admin-fields', 'layout', 'layout-admin', 'template-tags', 'chrome',
 		'content-types', 'search-shortcode', 'home-settings', 'mkt-shared', 'banners', 'banners-render', 'offers', 'offers-render',
 		'corridors', 'promos', 'booking-config', 'next-revalidate', 'mkt-admin', 'home-rest', 'home', 'home-blocks', 'v2', 'v2-story', 'home-v2', 'home-reviews', 'cta', 'entry-tables',
-		'route-meta', 'route-rest', 'dest-routes', 'content-fixes', 'toc', 'redirects', 'seo', 'schema', 'hardening', 'site-tags',
+		'route-meta', 'route-rest', 'dest-routes', 'content-fixes', 'toc', 'redirects', 'seo', 'llms-txt', 'schema', 'hardening', 'site-tags',
 	) as $hv_inc
 ) {
 	require_once HV_WEB_DIR . '/inc/' . $hv_inc . '.php';
