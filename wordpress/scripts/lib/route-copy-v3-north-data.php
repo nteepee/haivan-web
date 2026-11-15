@@ -32,19 +32,19 @@ $faq_refund = "Có hoàn tiền khi hủy vé không? | Số tiền được ho�
 $faq_promo  = 'Mã khuyến mại có được dùng lại khi đổi hoặc hủy vé không? | Việc dùng lại mã sau khi đổi hoặc hủy vé phụ thuộc vào điều kiện của chương trình khuyến mại. Kiểm tra điều kiện của mã trước khi hủy.';
 $faq_points = static fn( $route ) => "Tuyến {$route} có được tích điểm không? | Có, nếu bạn là hội viên chương trình khách hàng thân thiết \"Tôi yêu Hải Vân\" và đặt vé trên website hoặc ứng dụng Hải Vân: điểm thưởng bằng 10% giá trị vé, dùng để quy đổi sang vé. Chưa là hội viên thì đăng ký tại {$loyal_txt} trước khi thanh toán.";
 $faq_child  = 'Chính sách giá vé cho trẻ em như thế nào? | Trẻ từ 6 tuổi trở lên hoặc nặng trên 25 kg cần mua vé có chỗ riêng. Với bé nhỏ hơn, hãy cung cấp tuổi của bé và cho biết bé nằm chung hay cần chỗ riêng để nhà xe xác nhận giá vé trước khi thanh toán.';
-$faq_late   = "Nếu đến muộn giờ xe chạy thì vé của tôi được xử lý thế nào? | Hãy báo ngay cho nhà xe qua 1900 6763 để kiểm tra cách xử lý vé. Không nên mặc định vé sẽ được đổi chuyến hoặc hoàn tiền: việc này tùy điều kiện của vé và chính sách tại {$policy_txt}.";
+$faq_late   = "Nếu đến muộn giờ xe chạy thì vé của tôi được xử lý thế nào? | Hãy có mặt tại điểm đón trước giờ xe chạy 30 phút. Nếu có thể đến muộn, báo ngay cho nhà xe qua 1900 6763 để kiểm tra cách xử lý vé. Không nên mặc định vé sẽ được đổi chuyến hoặc hoàn tiền: việc này tùy điều kiện của vé và chính sách tại {$policy_txt}.";
+$faq_free_ride = static fn( $place, $operator ) => "Có chương trình đi xe miễn phí cho người bệnh ở {$place} không? | Có. Chương trình đi xe miễn phí cho người bệnh có hoàn cảnh khó khăn đang áp dụng tại Điện Biên và Mộc Châu – Sơn La, do {$operator} cùng các phường, xã đã đồng hành tổ chức. Đối tượng và danh sách do địa phương rà soát; hỏi phường, xã nơi bạn sống hoặc gọi 1900 6763 trước khi sắp xếp chuyến đi.";
 $faq_kid_change = static fn( $hotline_note ) => "Đi cùng trẻ nhỏ hoặc cần đổi chuyến thì làm thế nào? | Trẻ từ 6 tuổi trở lên hoặc nặng trên 25 kg cần mua vé có chỗ riêng; với bé nhỏ hơn, cung cấp tuổi của bé và nhu cầu dùng chỗ khi đặt vé để xác nhận cách bố trí và giá vé. Nếu cần đổi chuyến, {$hotline_note} kèm mã vé và ngày muốn đổi; thời hạn, phí và khoản chênh lệch nếu có theo chính sách tại {$policy_txt}.";
 
 /* ---------- Hà Nội ⇄ Điện Biên (Bản Phủ, Mường Chà, Yên Nghĩa) ---------- */
 $db_classes_all = array(
 	'royal'  => 'Royal | 22 | | Xe 22–24 giường, mỗi khách một cabin riêng rộng gần 1 m. Ít chỗ nên yên tĩnh, hợp khi bạn muốn ngủ trọn đêm hoặc cần riêng tư. | Cabin riêng; Chăn ga gối trắng; Màn hình và bảng điều khiển; Điều hòa | dien-bien-hero-royal-bed.webp',
-	'luxury' => 'Luxury | 34 | | Xe 34–36 giường, cân bằng giữa giá và sự thoải mái: khoang mobihome, giường có rèm che riêng tư, màn hình và bàn nhỏ để đồ. | Rèm che riêng tư; Màn hình riêng; Chăn gối; Điều hòa | dien-bien-hero-cabin-bed.webp',
-	'eco'    => 'Eco | 44 | | Xe 44 giường, giá tiết kiệm nhất cho chặng dài: giường da, chăn gối, nước uống ướp lạnh và cổng sạc USB tại giường. | Giường da, chăn gối; Cổng sạc USB; Nước uống ướp lạnh; Điều hòa | dien-bien-hero-berth-aisle.webp',
+	'luxury' => 'Luxury | 34 | | Xe 34–36 giường, cân bằng giữa giá và sự thoải mái: khoang mobihome, giường có rèm che riêng tư, màn hình và bàn nhỏ để đồ. | Rèm che riêng tư; Màn hình riêng; Chăn gối; Điều hòa | db-class-luxury.webp',
+	'eco'    => 'Eco | 44 | | Xe 44 giường, giá tiết kiệm nhất cho chặng dài: giường da, chăn gối, nước uống ướp lạnh và cổng sạc USB tại giường. | Giường da, chăn gối; Cổng sạc USB; Nước uống ướp lạnh; Điều hòa | db-class-eco.webp',
 );
 $db_classes = static fn( array $keys ) => $ln( array_map( static fn( $k ) => $db_classes_all[ $k ], $keys ) );
 
 $db_stats = "30 | năm thương hiệu Hải Vân\n3 | hạng giường nằm Royal, Luxury, Eco";
-$db_story = 'Chương trình "Không bỏ lại ai phía sau": Hải Vân cùng các phường, xã đã đồng hành tổ chức đang hỗ trợ người bệnh có hoàn cảnh khó khăn đi xe miễn phí, hiện áp dụng tại Điện Biên và Mộc Châu – Sơn La. Đối tượng và danh sách do địa phương rà soát; hỏi phường, xã nơi bạn sống hoặc gọi 1900 6763 để biết điều kiện.';
 
 $o_lounge  = 'Phòng chờ 01 Nguyễn Hoàng | 01 Nguyễn Hoàng, phường Mỹ Đình, Hà Nội, ngay cạnh Bến xe Mỹ Đình | Mở theo giờ xe, hỏi 1900 6763 | Ngồi nghỉ có điều hòa, trà bánh, trái cây; đặt vé, gửi nhận hàng; điểm hẹn xe trung chuyển tới bệnh viện cho khách chiều về (báo khi đặt vé). | ' . $map( '01 Nguyễn Hoàng, Mỹ Đình, Hà Nội' ) . ' | Hà Nội · Phòng chờ VIP | hn-lounge-front.webp';
 $o_md      = 'Bến xe Mỹ Đình | Số 20 Phạm Hùng, phường Từ Liêm, Hà Nội | | Nơi xe xuất bến và trả khách ở đầu Hà Nội. | ' . $map( 'Bến xe Mỹ Đình, 20 Phạm Hùng, Hà Nội' ) . ' | Hà Nội · Bến xe | ';
@@ -80,7 +80,6 @@ $f_md_board = 'Lên xe ở đâu tại Hà Nội? | Xe xuất bến ở Bến xe
 
 /* ---------- Hải Vân Xuân Tráng: Hà Nội ⇄ Mộc Châu / Sơn La ---------- */
 $xt_stats = "30 | năm thương hiệu Hải Vân\n≈ 2.000 | thẻ đồng hành cho học sinh 2K8\n5 triệu | giá trị mỗi thẻ đồng hành";
-$xt_story = 'Chương trình "Không bỏ lại ai phía sau": Hải Vân Xuân Tráng cùng các phường, xã đã đồng hành tổ chức đang hỗ trợ người bệnh có hoàn cảnh khó khăn đi xe miễn phí, hiện áp dụng tại Mộc Châu – Sơn La và Điện Biên. Danh sách do địa phương rà soát tại từng bản; đối tượng, thời gian áp dụng và cách đăng ký theo thông báo chính thức của chương trình.';
 $xt_office_nt = 'Văn phòng 35 Nguyễn Tuân | Số 35 Nguyễn Tuân, quận Thanh Xuân, Hà Nội | Kiểm tra giờ làm việc qua 1900 6763 trước khi đến | Văn phòng Hải Vân Xuân Tráng ở Hà Nội, đồng thời là một điểm đón trả tùy chuyến. | ' . $map( '35 Nguyễn Tuân, Thanh Xuân, Hà Nội' ) . ' | Hà Nội · Văn phòng nhà xe | ';
 $xt_tram      = 'Trạm dừng nghỉ Mộc Châu | Tổ dân phố 70, phường Vân Sơn, Mộc Châu, Sơn La | Gọi 1900 6763 để hỏi giờ | Phòng chờ và điểm giao nhận hàng hoá của Hải Vân Xuân Tráng; nếu định chờ xe ở đây, kiểm tra chuyến đã đặt có đón tại trạm hay không. | ' . $map( 'Tổ dân phố 70, Vân Sơn, Mộc Châu, Sơn La' ) . ' | Mộc Châu · Trạm dừng nghỉ | hvxt-tram-dung-nghi.webp';
 $xt_off_thl   = 'Văn phòng 254 Trần Huy Liệu | Thị trấn Mộc Châu, Sơn La | | Một trong các điểm đón trả ở Mộc Châu. | ' . $map( '254 Trần Huy Liệu, Mộc Châu, Sơn La' ) . ' | Mộc Châu · Văn phòng | ';
@@ -155,6 +154,7 @@ return array(
 			'Hai chiều có phải chọn cùng loại xe và cùng số giường không? | Không bắt buộc. Bạn chọn chuyến, hạng xe và giường riêng cho từng chiều theo chỗ còn trống, và kiểm tra cả hai chặng trước khi thanh toán.',
 			'Có thể đặt nhiều giường cho cả nhóm không? | Có thể chọn một hoặc nhiều giường còn trống trên sơ đồ của chuyến. Muốn nằm gần nhau thì kiểm tra vị trí trước khi thanh toán.',
 			$faq_kid_change( 'gọi 1900 6763' ),
+			$faq_free_ride( 'Điện Biên', 'Hải Vân' ),
 		) ),
 		'content_html'     => '<h2>Lên Tây Bắc bằng xe giường nằm</h2><p>Với chặng đi kéo dài hơn mười tiếng, bạn nên chọn vị trí giường phù hợp để nghỉ ngơi trên xe. Chuyến xuất phát buổi tối dự kiến đến Điện Biên vào sáng hôm sau, nên hãy kiểm tra kỹ ngày đến khi sắp xếp lịch trình.</p><ul><li>Ba hạng: Royal (cabin riêng, ít chỗ, yên tĩnh), Luxury (giường có rèm che, màn hình riêng) và Eco (giường da, chăn gối, sạc USB, giá tiết kiệm nhất).</li><li>Mỗi khách một giường đánh số; Hải Vân không bán ghế phụ, không cho nằm sàn.</li><li>Tới sớm ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng, ngay cạnh Bến xe Mỹ Đình: điều hòa, trà bánh, chỗ để hành lý.</li><li>Nếu đặt thêm chiều Điện Biên về Hà Nội để đi khám bệnh, hãy xác nhận riêng dịch vụ trung chuyển đến đúng cơ sở và dành thêm thời gian từ điểm trả đến nơi khám.</li></ul><h2>Điểm đón và trả</h2><p>Chiều Hà Nội đi Điện Biên xuất phát từ Bến xe Mỹ Đình. Khi đặt vé, hãy kiểm tra điểm trả tại Bến xe khách thành phố Điện Biên Phủ, Bản Phủ hoặc Mường Chà theo chuyến bạn chọn; không mặc định mọi chuyến đều trả ở cả ba nơi.</p><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array( $p_md, $p_lounge, $p_db_bx ) ),
@@ -168,7 +168,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $db_stats,
-		'story'            => $db_story,
+		'story'            => '',
 	),
 
 	/* ===================== 06 · Điện Biên → Hà Nội ===================== */
@@ -203,6 +203,7 @@ return array(
 			'Có thể đặt nhiều giường cho cả gia đình không? | Có thể chọn nhiều giường còn trống trên cùng một sơ đồ; kiểm tra vị trí trước khi thanh toán nếu muốn nằm gần nhau.',
 			'Làm sao biết đúng điểm đón và điểm trả của tôi? | Đối chiếu cả điểm đón, giờ có mặt và điểm trả ghi trên vé. Nếu xuống Bến xe Mỹ Đình, hãy phân biệt điểm xuống xe với phòng chờ 01 Nguyễn Hoàng cạnh bến.',
 			$faq_kid_change( 'gọi 1900 6763' ),
+			$faq_free_ride( 'Điện Biên', 'Hải Vân' ),
 		) ),
 		'content_html'     => '<h2>Ngủ một giấc, sáng về Hà Nội</h2><p>Chặng Điện Biên – Hà Nội kéo dài hơn mười tiếng, với các chuyến giường nằm xuất phát buổi tối và dự kiến đến vào sáng hôm sau. Hãy kiểm tra ngày đến, giờ đến dự kiến và chừa thêm thời gian nếu có lịch hẹn tại Hà Nội.</p><ul><li>Lên xe ở Bến xe khách thành phố Điện Biên Phủ (79 Quốc lộ 12), hoặc ở Bản Phủ, Mường Chà trên một số chuyến.</li><li>Ba hạng giường nằm: Royal, Luxury và Eco; mỗi khách một giường đánh số, không ghế phụ, không nằm sàn.</li><li>Xuống ở Bến xe Mỹ Đình; ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng cạnh bến nếu bạn cần chờ thêm.</li><li>Nếu xuống Hà Nội khám bệnh, hãy cung cấp tên bệnh viện và địa chỉ cơ sở khi đặt vé để xác nhận khả năng trung chuyển, điểm hẹn và điều kiện áp dụng. Dành thêm thời gian từ điểm xuống xe đến nơi khám, thay vì chỉ tính giờ xe tới Mỹ Đình.</li></ul><h2>Văn phòng và điểm hẹn</h2><p>Văn phòng Hải Vân ở Điện Biên nằm tại 300 Nguyễn Hữu Thọ, phường Mường Thanh, Điện Biên Phủ. Hãy kiểm tra điểm đón ghi trên vé; nếu lên xe ở Bản Phủ hoặc Mường Chà, cần xác nhận rõ vị trí và giờ hẹn trước ngày đi. Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array(
@@ -222,7 +223,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $db_stats,
-		'story'            => $db_story,
+		'story'            => '',
 	),
 
 	/* ===================== 07 · Yên Nghĩa → Điện Biên ===================== */
@@ -253,8 +254,9 @@ return array(
 			$faq_points( 'Yên Nghĩa – Điện Biên' ),
 			$faq_child,
 			$faq_late,
+			$faq_free_ride( 'Điện Biên', 'Hải Vân' ),
 		) ),
-		'content_html'     => '<h2>Đi Điện Biên từ Yên Nghĩa</h2><p>Chặng Hà Nội – Điện Biên dài, nên các chuyến giường nằm chạy buổi tối và dự kiến đến vào sáng hôm sau. Hãy xem cả giờ xuất bến tại Yên Nghĩa lẫn ngày, giờ đến Điện Biên khi chọn chuyến.</p><ul><li>Ba hạng giường nằm: Royal (cabin riêng, ít chỗ, yên tĩnh), Luxury (cân bằng giữa giá và sự thoải mái) và Eco (giá tiết kiệm nhất).</li><li>Có mặt tại điểm đón trước giờ xe chạy; điểm lên xe và giờ có mặt ghi trên vé, gọi 1900 6763 nếu cần xác nhận.</li><li>Ở Điện Biên, kiểm tra điểm trả ghi trên vé trước ngày đi.</li><li>Chiều về hiện chưa có chuyến Điện Biên – Yên Nghĩa; về Hà Nội, chọn chuyến Điện Biên – Mỹ Đình.</li></ul><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
+		'content_html'     => '<h2>Đi Điện Biên từ Yên Nghĩa</h2><p>Chặng Hà Nội – Điện Biên dài, nên các chuyến giường nằm chạy buổi tối và dự kiến đến vào sáng hôm sau. Hãy xem cả giờ xuất bến tại Yên Nghĩa lẫn ngày, giờ đến Điện Biên khi chọn chuyến.</p><ul><li>Ba hạng giường nằm: Royal (cabin riêng, ít chỗ, yên tĩnh), Luxury (cân bằng giữa giá và sự thoải mái) và Eco (giá tiết kiệm nhất).</li><li>Có mặt tại điểm đón trước giờ xe chạy 30 phút; điểm lên xe và giờ có mặt ghi trên vé, gọi 1900 6763 nếu cần xác nhận.</li><li>Ở Điện Biên, kiểm tra điểm trả ghi trên vé trước ngày đi.</li><li>Chiều về hiện chưa có chuyến Điện Biên – Yên Nghĩa; về Hà Nội, chọn chuyến Điện Biên – Mỹ Đình.</li></ul><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array( 'Bến xe Yên Nghĩa | Quốc lộ 6, quận Hà Đông, Hà Nội | Điểm đón và giờ có mặt ghi trên vé', $p_db_bx ) ),
 		'offices'          => $ln( array( $o_yn, $o_db_bx, $o_db_off ) ),
 		'stops_intro'      => 'Đối chiếu điểm lên xe, giờ có mặt và điểm trả ghi trên vé; gọi 1900 6763 nếu cần xác nhận trước ngày đi.',
@@ -266,7 +268,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $db_stats,
-		'story'            => $db_story,
+		'story'            => '',
 	),
 
 	/* ===================== 08 · Mỹ Đình → Bản Phủ ===================== */
@@ -298,6 +300,7 @@ return array(
 			$faq_points( 'Mỹ Đình – Bản Phủ' ),
 			$faq_child,
 			$faq_late,
+			$faq_free_ride( 'Điện Biên', 'Hải Vân' ),
 		) ),
 		'content_html'     => '<h2>Đi Bản Phủ bằng xe giường nằm</h2><p>Chỉ một số chuyến Hà Nội – Điện Biên có điểm trả Bản Phủ, vì vậy hãy chọn đúng hành trình Mỹ Đình – Bản Phủ thay vì hành trình Điện Biên. Xe rời Bến xe Mỹ Đình buổi tối và dự kiến tới nơi sáng hôm sau.</p><ul><li>Giường nằm Royal (cabin riêng, ít chỗ, yên tĩnh) và Luxury (cân bằng giữa giá và sự thoải mái); hạng xe ghi trên từng chuyến.</li><li>Khách hạng Royal có thể đăng ký trung chuyển tại Bản Phủ: báo địa chỉ khi đặt vé để xác nhận điểm trả.</li><li>Điểm trả ở Bản Phủ chưa có địa chỉ cố định trên hệ thống; gọi 1900 6763 để xác nhận vị trí xuống xe trước ngày đi.</li><li>Tới sớm ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng, cạnh Bến xe Mỹ Đình.</li></ul><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array( $p_md, $p_lounge, $p_bp ) ),
@@ -311,7 +314,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $db_stats,
-		'story'            => $db_story,
+		'story'            => '',
 	),
 
 	/* ===================== 09 · Mỹ Đình → Mường Chà ===================== */
@@ -342,6 +345,7 @@ return array(
 			$faq_points( 'Mỹ Đình – Mường Chà' ),
 			$faq_child,
 			$faq_late,
+			$faq_free_ride( 'Điện Biên', 'Hải Vân' ),
 		) ),
 		'content_html'     => '<h2>Đi Mường Chà bằng xe giường nằm</h2><p>Chỉ một số chuyến Hà Nội – Điện Biên có điểm trả Mường Chà, vì vậy hãy chọn đúng hành trình Mỹ Đình – Mường Chà. Xe rời Bến xe Mỹ Đình buổi tối và dự kiến tới nơi sáng hôm sau.</p><ul><li>Theo lịch chạy hiện tại, chuyến Mường Chà dùng xe Luxury 34–36 giường; hạng xe ghi trên từng chuyến.</li><li>Điểm trả ở Mường Chà chưa có địa chỉ cố định trên hệ thống; gọi 1900 6763 để xác nhận vị trí xuống xe trước ngày đi.</li><li>Tới sớm ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng, cạnh Bến xe Mỹ Đình.</li></ul><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array( $p_md, $p_lounge, $p_mc ) ),
@@ -355,7 +359,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $db_stats,
-		'story'            => $db_story,
+		'story'            => '',
 	),
 
 	/* ===================== Mới · Bản Phủ → Mỹ Đình ===================== */
@@ -389,6 +393,7 @@ return array(
 			$faq_points( 'Bản Phủ – Mỹ Đình' ),
 			$faq_child,
 			$faq_late,
+			$faq_free_ride( 'Điện Biên', 'Hải Vân' ),
 		) ),
 		'content_html'     => '<h2>Về Hà Nội từ Bản Phủ</h2><p>Chỉ một số chuyến Điện Biên – Hà Nội đón khách ở Bản Phủ, vì vậy hãy chọn đúng hành trình Bản Phủ – Mỹ Đình. Xe chạy buổi tối và dự kiến về tới Hà Nội sáng hôm sau; chừa thêm thời gian nếu bạn có lịch hẹn.</p><ul><li>Giường nằm Royal (cabin riêng, ít chỗ, yên tĩnh) và Luxury (cân bằng giữa giá và sự thoải mái); hạng xe ghi trên từng chuyến.</li><li>Điểm đón ở Bản Phủ chưa có địa chỉ cố định trên hệ thống; gọi 1900 6763 để xác nhận vị trí và giờ hẹn trước ngày đi.</li><li>Xuống ở Bến xe Mỹ Đình; ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng cạnh bến nếu bạn cần chờ thêm.</li><li>Nếu xuống Hà Nội khám bệnh, cung cấp tên bệnh viện và địa chỉ cơ sở khi đặt vé để xác nhận khả năng trung chuyển, điểm hẹn và điều kiện áp dụng.</li></ul><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array( $p_bp, 'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Nơi xe trả khách ở đầu Hà Nội', $p_lounge ) ),
@@ -402,7 +407,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $db_stats,
-		'story'            => $db_story,
+		'story'            => '',
 	),
 
 	/* ===================== Mới · Mường Chà → Mỹ Đình ===================== */
@@ -435,6 +440,7 @@ return array(
 			$faq_points( 'Mường Chà – Mỹ Đình' ),
 			$faq_child,
 			$faq_late,
+			$faq_free_ride( 'Điện Biên', 'Hải Vân' ),
 		) ),
 		'content_html'     => '<h2>Về Hà Nội từ Mường Chà</h2><p>Chỉ một số chuyến Điện Biên – Hà Nội đón khách ở Mường Chà, vì vậy hãy chọn đúng hành trình Mường Chà – Mỹ Đình. Xe chạy buổi tối và dự kiến về tới Hà Nội sáng hôm sau; chừa thêm thời gian nếu bạn có lịch hẹn.</p><ul><li>Theo lịch chạy hiện tại, chuyến từ Mường Chà dùng xe Luxury 34–36 giường; hạng xe ghi trên từng chuyến.</li><li>Điểm đón ở Mường Chà chưa có địa chỉ cố định trên hệ thống; gọi 1900 6763 để xác nhận vị trí và giờ hẹn trước ngày đi.</li><li>Xuống ở Bến xe Mỹ Đình; ngồi nghỉ ở phòng chờ 01 Nguyễn Hoàng cạnh bến nếu bạn cần chờ thêm.</li><li>Nếu xuống Hà Nội khám bệnh, cung cấp tên bệnh viện và địa chỉ cơ sở khi đặt vé để xác nhận khả năng trung chuyển, điểm hẹn và điều kiện áp dụng.</li></ul><p>Xem thêm <a href="/diem-den/dien-bien">kinh nghiệm du lịch Điện Biên</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array( $p_mc, 'Bến xe Mỹ Đình | Số 20 đường Phạm Hùng, phường Từ Liêm, Hà Nội | Nơi xe trả khách ở đầu Hà Nội', $p_lounge ) ),
@@ -448,7 +454,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $db_stats,
-		'story'            => $db_story,
+		'story'            => '',
 	),
 
 	/* ===================== 10 · Hà Nội → Mộc Châu ===================== */
@@ -483,6 +489,7 @@ return array(
 			'Hải Vân Xuân Tráng có những dòng xe nào trên tuyến này? | Tuyến có xe limousine và xe giường nằm. Bạn nên kiểm tra tiện ích của từng chuyến, như ghế massage, cổng sạc, wifi, màn hình hoặc rèm che, thay vì mặc định mọi xe đều có đủ.',
 			'Làm sao biết đúng điểm đón và điểm trả của tôi? | Kiểm tra điểm đón tại Hà Nội, giờ có mặt và điểm trả tại Mộc Châu trong thông tin vé. Nếu địa chỉ hoặc vị trí chờ chưa rõ, bạn nên xác nhận với nhà xe trước ngày đi.',
 			$xt_kid,
+			$faq_free_ride( 'Mộc Châu', 'Hải Vân Xuân Tráng' ),
 		) ),
 		'content_html'     => '<h2>Đi Mộc Châu từ Hà Nội</h2><p>Khi lên kế hoạch đi Mộc Châu, bạn nên chọn chuyến theo giờ muốn đến và lịch nhận phòng. Với chuyến tối hoặc đêm, hãy kiểm tra ngày đến để tránh nhầm lịch lưu trú.</p><ul><li>Bạn có thể cân nhắc limousine nếu muốn ngồi hoặc xe giường nằm nếu muốn nằm nghỉ. Kiểm tra tiện ích và sơ đồ chỗ của đúng chuyến trước khi đặt.</li><li>Các điểm đón tại Hà Nội gồm Bến xe Mỹ Đình, 35 Nguyễn Tuân và 10 Châu Văn Liêm tùy chuyến; hãy kiểm tra điểm đón và giờ có mặt của chuyến đã chọn.</li><li>Trả ở Mộc Châu tại ' . $mc_drop_list . '; mỗi chuyến chỉ phục vụ một số điểm trong danh sách.</li><li>Xe hỗ trợ trả tận nơi lưu trú ở Mộc Châu: ghi địa chỉ homestay, khách sạn khi đặt vé để nhà xe xác nhận điểm xuống.</li></ul><h2>Trạm dừng nghỉ và gửi hàng</h2><p>Hải Vân Xuân Tráng có trạm dừng nghỉ ở Tổ dân phố 70, phường Vân Sơn, Mộc Châu: phòng chờ đồng thời là điểm giao nhận hàng. Xem thêm <a href="/diem-den/moc-chau">kinh nghiệm du lịch Mộc Châu</a> trước chuyến đi.</p>' . $policy_html,
 		'pickup_points'    => $ln( array(
@@ -508,7 +515,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $xt_stats,
-		'story'            => $xt_story,
+		'story'            => '',
 	),
 
 	/* ===================== 11 · Mộc Châu → Hà Nội ===================== */
@@ -567,7 +574,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $xt_stats,
-		'story'            => $xt_story,
+		'story'            => '',
 	),
 
 	/* ===================== 12 · Hà Nội → Sơn La ===================== */
@@ -601,6 +608,7 @@ return array(
 			'Đặt vé Hà Nội đi Sơn La online như thế nào? | Trên ứng dụng Hải Vân hoặc website, chọn ngày đi và chuyến, rồi chọn ghế hoặc giường còn trống trên sơ đồ. Kiểm tra điểm đón, điểm trả và tổng tiền trước khi thanh toán, sau đó lưu vé điện tử.',
 			'Làm sao biết đúng điểm đón và điểm trả của tôi? | Kiểm tra điểm đón tại Hà Nội, giờ có mặt và điểm trả tại Sơn La trong thông tin vé. Nếu muốn xuống ở một địa chỉ cụ thể trong trung tâm Sơn La, hãy xác nhận điểm trả với nhà xe trước ngày đi.',
 			$xt_kid,
+			$faq_free_ride( 'Sơn La', 'Hải Vân Xuân Tráng' ),
 		) ),
 		'content_html'     => '<h2>Đi Sơn La từ Hà Nội</h2><p>Theo lịch chạy hiện tại, hành trình Hà Nội đi Sơn La khoảng 6 giờ 20 đến 7 giờ 5 phút, tùy chuyến, giao thông và thời tiết. Hãy xem lịch chạy của ngày đi và dành thêm thời gian nếu có lịch hẹn sau khi đến.</p><ul><li>Royal: xe 22–24 giường, ít chỗ nên yên tĩnh. Luxury: 34–36 giường, cân bằng giữa giá và sự thoải mái. Eco: 44 giường, giá tiết kiệm nhất.</li><li>Hãy xem vị trí giường và kiểm tra thông tin về chăn gối, màn hình, rèm che của chuyến trước khi đặt.</li><li>Đặt vé qua ứng dụng, website, tổng đài 1900 6763 hoặc phòng vé ở Mỹ Đình, Mộc Châu và Sơn La.</li></ul><h2>Điểm đón và trả</h2><p>Tại Hà Nội, bạn có thể chọn chuyến đón ở Bến xe Mỹ Đình, 35 Nguyễn Tuân hoặc 10 Châu Văn Liêm. Tại Sơn La, xe hỗ trợ trả tận nơi trong khu vực trung tâm thành phố; cung cấp địa chỉ muốn xuống để nhà xe xác nhận điểm trả phù hợp. Xem thêm <a href="/diem-den/son-la">kinh nghiệm du lịch Sơn La</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array(
@@ -619,7 +627,7 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $xt_stats,
-		'story'            => $xt_story,
+		'story'            => '',
 	),
 
 	/* ===================== 13 · Sơn La → Hà Nội ===================== */
@@ -654,6 +662,7 @@ return array(
 			$xt_group( 'giường' ),
 			'Làm sao biết đúng điểm đón và điểm trả của tôi? | Kiểm tra điểm đón tại Sơn La, giờ có mặt và điểm trả tại Hà Nội trong thông tin vé. Nếu muốn được đón gần một địa chỉ cụ thể, hãy xác nhận điểm hẹn với nhà xe trước ngày đi.',
 			$xt_kid,
+			$faq_free_ride( 'Sơn La', 'Hải Vân Xuân Tráng' ),
 		) ),
 		'content_html'     => '<h2>Về Hà Nội từ Sơn La</h2><p>Chọn chuyến theo giờ cần có mặt tại Hà Nội và kiểm tra vị trí giường trước khi đặt. Nếu có lịch khám bệnh hoặc nối chuyến, hãy dành thêm thời gian cho giao thông và quãng đường từ điểm trả đến nơi hẹn.</p><ul><li>Nếu muốn được đón gần một địa chỉ ở trung tâm thành phố Sơn La, hãy cung cấp địa chỉ để nhà xe xác nhận điểm hẹn. Nếu lên xe tại Bến xe Sơn La, cần kiểm tra vị trí chờ và giờ có mặt của chuyến đã đặt.</li><li>Các điểm trả tại Hà Nội gồm Bến xe Mỹ Đình, 35 Nguyễn Tuân và 10 Châu Văn Liêm tùy chuyến; hãy chọn chuyến có điểm trả thuận tiện cho nơi bạn cần đến.</li><li>Tuyến chạy xe giường nằm Royal, Luxury và Eco. Kiểm tra sơ đồ chỗ và tiện ích của đúng chuyến trước khi chọn, thay vì mặc định mọi xe đều có màn hình hoặc rèm che.</li><li>Nếu cần trung chuyển đến bệnh viện tại Hà Nội, hãy xác nhận khả năng phục vụ, điểm đón, thời gian, chi phí và cách đăng ký trước chuyến đi.</li></ul><h2>Nơi mua vé và gửi hàng</h2><p>Bạn có thể mua vé tại phòng vé ở Sơn La, Mộc Châu hoặc Mỹ Đình. Nếu gửi hàng từ Sơn La về Hà Nội, hãy xác nhận điểm giao hàng ở Sơn La và điểm nhận tại Hà Nội. Đọc thêm <a href="/diem-den/son-la">kinh nghiệm du lịch Sơn La</a>.</p>' . $policy_html,
 		'pickup_points'    => $ln( array(
@@ -673,6 +682,6 @@ return array(
 		'rating'           => '',
 		'reviews'          => '',
 		'stats'            => $xt_stats,
-		'story'            => $xt_story,
+		'story'            => '',
 	),
 );

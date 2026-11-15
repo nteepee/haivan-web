@@ -322,7 +322,7 @@ return array(
 			'Thời gian được phép đổi hoặc hủy vé là bao lâu? | Nếu cần đổi hoặc hủy vé, hãy báo cho Hải Vân trước giờ khởi hành. Chuẩn bị mã vé và ngày đi để nhà xe kiểm tra thời hạn áp dụng cho vé của bạn. Chi tiết xem ' . $policy_text . '.',
 			'Có được hoàn tiền khi hủy vé không? | Tùy điều kiện của vé. Trước khi thanh toán, hãy xem thời hạn đổi hoặc hủy vé, mức phí và điều kiện hoàn tiền của vé bạn chọn; chi tiết xem ' . $policy_text . '.',
 			'Mã khuyến mại có được dùng lại khi đổi hoặc hủy vé không? | Việc dùng lại mã sau khi đổi hoặc hủy vé phụ thuộc vào điều kiện của chương trình khuyến mại. Kiểm tra điều kiện của mã trước khi hủy.',
-			'Nếu đến muộn giờ xe chạy thì vé của tôi được xử lý thế nào? | Hãy có mặt ở điểm đón trước giờ ghi trên vé. Nếu có thể đến muộn, gọi ngay 1900 6763 để được hỗ trợ đổi chuyến nếu còn chỗ; cách xử lý vé tùy điều kiện của vé, xem ' . $policy_text . '.',
+			'Nếu đến muộn giờ xe chạy thì vé của tôi được xử lý thế nào? | Hãy có mặt ở điểm đón trước giờ ghi trên vé 30 phút. Nếu có thể đến muộn, gọi ngay 1900 6763 để được hỗ trợ đổi chuyến nếu còn chỗ; cách xử lý vé tùy điều kiện của vé, xem ' . $policy_text . '.',
 			$faq_price( 'Vũng Tàu đi Tân Sơn Nhất' ),
 			$faq_classes( 'Vũng Tàu đi Tân Sơn Nhất' ),
 			$faq_seats,
