@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeftRight, ArrowRight, ChevronDown, MapPin, Plus, X } from "lucide-react";
+import { ArrowLeftRight, ArrowRight, ChevronDown, MapPin, Minus, Plus, X } from "lucide-react";
 import { openDatePicker } from "@/lib/open-date-picker";
 import { useRouter } from "next/navigation";
 import { useId, useState } from "react";
@@ -46,11 +46,12 @@ interface Props {
   todayChips: boolean;
   /** Trang tuyến: khoá đúng tuyến của trang, ẩn 4 nút chọn tuyến (khách đang xem Vũng Tàu không thấy Điện Biên, Mộc Châu, Sơn La). */
   lockCorridor?: boolean;
+  /**
+   * Trang tuyến có trang chiều ngược lại: bấm "Đổi chiều" sang trang đó (như booking.haivan.com), mang theo ngày đi, số vé,
+   * ngày về và trạm (đổi vai đón/trả) trên query `ngay`, `khach`, `ngay_ve`, `diem_di`, `diem_den`; mở thẳng ở thẻ tìm vé.
+   */
+  swapHref?: string | null;
 }
-
-const GUEST_OPTIONS = Array.from({ length: MAX_SEATS }, (_, i) => i + 1);
-/** Giá trị của dòng "Trên 9 vé": không tìm được, chỉ hiện số tổng đài cho đoàn. */
-const GROUP_VALUE = MAX_SEATS + 1;
 
 function StopSelect({ id, label, stops, value, onChange }: { id: string; label: string; stops: CorridorStop[]; value: string; onChange: (id: string) => void }) {
   const locale = useLocale();
@@ -99,7 +100,7 @@ export function plateClass(glass: boolean, bar = false) {
   return `${glass ? "hv-plate glass" : "hv-plate hv-plate-solid"}${bar ? " hv-plate--bar" : ""}`;
 }
 
-export function CorridorForm({ init, date: initialDate, guests: initialGuests, type, glass, bar = false, todayChips, lockCorridor = false }: Props) {
+export function CorridorForm({ init, date: initialDate, guests: initialGuests, type, glass, bar = false, todayChips, lockCorridor = false, swapHref = null }: Props) {
   const t = useT();
   const locale = useLocale();
   const router = useRouter();
@@ -116,9 +117,9 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
   // Sửa lại một tìm kiếm có ngày về (query `ngay_ve`) thì ô ngày về mở sẵn; chặng về (chang=ve) thì không.
   const [returnOn, setReturnOn] = useState(!!init?.ngayVe && init.chang !== "ve");
   const [returnPicked, setReturnPicked] = useState(init?.ngayVe ?? "");
-  const [picked, setGuests] = useState(Math.min(MAX_SEATS, Math.max(1, initialGuests ?? 1)));
+  const [picked, setGuests] = useState(Math.max(1, initialGuests ?? 1));
   const overMax = picked > MAX_SEATS;
-  const guests = Math.min(picked, MAX_SEATS);
+  const guests = Math.min(Math.max(1, picked), MAX_SEATS);
 
   const corridor: Corridor = corridors.find((c) => c.id === corridorId) ?? initCorridor;
   const minDate = today;
@@ -156,6 +157,18 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
   });
   const urlFor = (searchDate: string, searchGuests: number, own: CorridorParams) =>
     appendCorridorParams(buildSearchUrl({ ...points, date: searchDate, numberGuest: searchGuests, type }, localePrefix(locale)), own);
+
+  const swap = () => {
+    if (!lockCorridor || !swapHref) return setChieu(reverseChieu(chieu));
+    const back = stopsToParams(reverseChieu(chieu), picks);
+    const q = new URLSearchParams();
+    if (pickedDate) q.set("ngay", date);
+    if (picked > 1) q.set("khach", String(picked));
+    if (returnDate) q.set("ngay_ve", returnDate);
+    q.set("diem_di", back.diemDi);
+    q.set("diem_den", back.diemDen);
+    router.push(`${swapHref}?${q}#tim-ve`);
+  };
 
   const submit = () => {
     if (!date || overMax) return;
@@ -203,7 +216,7 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
               onChange={(id) => setPicks((p) => (chieu === "ab" ? { ...p, a: id } : { ...p, b: id }))}
             />
           </div>
-          <button type="button" aria-label={t("ux.swap_places")} onClick={() => setChieu(reverseChieu(chieu))} className="hv-swap hv-corr-swap">
+          <button type="button" aria-label={t("ux.swap_places")} onClick={swap} className="hv-swap hv-corr-swap">
             <ArrowLeftRight className="size-icon rotate-90 sm:rotate-0" aria-hidden />
           </button>
           <div className="hv-corr-to">
@@ -261,16 +274,25 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
                 <label htmlFor={`${ids}-guests`} className="hv-label">
                   {t("corridor.tickets")}
                 </label>
-                <div className="hv-selectbox">
-                  <select id={`${ids}-guests`} value={picked} aria-describedby={overMax ? `${ids}-group` : undefined} onChange={(e) => setGuests(Number(e.target.value))} className="hv-field tabular-nums">
-                    {GUEST_OPTIONS.map((n) => (
-                      <option key={n} value={n}>
-                        {t(n === 1 ? "corridor.ticket_one" : "corridor.ticket_other", { n })}
-                      </option>
-                    ))}
-                    <option value={GROUP_VALUE}>{t("corridor.ticket_group", { n: MAX_SEATS })}</option>
-                  </select>
-                  <ChevronDown className="hv-chev size-icon" aria-hidden />
+                <div className="hv-counter">
+                  <button type="button" aria-label={t("ux.guests_decrease")} disabled={picked <= 1} onClick={() => setGuests((g) => Math.max(1, g - 1))}>
+                    <Minus className="size-icon" aria-hidden />
+                  </button>
+                  {/* Gõ được số bất kỳ (đoàn đông); mỗi đơn tối đa MAX_SEATS vé nên trên mức đó hiện số tổng đài cho đoàn. */}
+                  <input
+                    id={`${ids}-guests`}
+                    type="number"
+                    inputMode="numeric"
+                    min={1}
+                    aria-describedby={overMax ? `${ids}-group` : undefined}
+                    value={picked || ""}
+                    onChange={(e) => setGuests(Math.max(0, Math.floor(Number(e.target.value)) || 0))}
+                    onBlur={() => setGuests((g) => Math.max(1, g))}
+                    className="tabular-nums"
+                  />
+                  <button type="button" aria-label={t("ux.guests_increase")} onClick={() => setGuests((g) => Math.max(1, g) + 1)}>
+                    <Plus className="size-icon" aria-hidden />
+                  </button>
                 </div>
               </div>
               <button type="submit" className="hv-btn hv-btn-primary hv-corr-go">

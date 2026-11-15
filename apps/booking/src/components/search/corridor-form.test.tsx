@@ -63,6 +63,8 @@ function renderForm({ locale = "vi", config, initial, todayChips }: Opts = {}) {
 }
 const select = (name: string | RegExp) => screen.getByRole("combobox", { name }) as HTMLSelectElement;
 const optionLabels = (el: HTMLSelectElement) => [...el.options].map((o) => o.textContent);
+const tickets = () => screen.getByRole("spinbutton", { name: "Số vé" }) as HTMLInputElement;
+const typeTickets = (n: number) => fireEvent.change(tickets(), { target: { value: String(n) } });
 const submit = () => userEvent.click(screen.getByRole("button", { name: "Tìm vé" }));
 const pushed = () => {
   expect(push).toHaveBeenCalledTimes(1);
@@ -96,20 +98,20 @@ describe("SearchForm chế độ tuyến", () => {
     expect(screen.queryByRole("tab")).not.toBeInTheDocument(); // không có tab một chiều/khứ hồi
     expect(select("Điểm đi").selectedOptions[0]).toHaveTextContent("Quận 1 – Phòng chờ 34 Nguyễn Thái Bình");
     expect(select("Điểm đến").selectedOptions[0]).toHaveTextContent("Vũng Tàu – Phòng chờ 156B Lê Hồng Phong");
-    expect(select("Số vé")).toHaveValue("1");
-    expect(select("Số vé").selectedOptions[0]).toHaveTextContent("1 vé");
-    expect(optionLabels(select("Số vé"))).toEqual(["1 vé", "2 vé", "3 vé", "4 vé", "5 vé", "6 vé", "7 vé", "8 vé", "9 vé", "Trên 9 vé (đoàn)"]);
+    expect(tickets()).toHaveValue(1);
+    expect(screen.getByRole("button", { name: "Giảm số người" })).toBeDisabled();
     expect(screen.queryByText(/Đoàn đông hơn/)).not.toBeInTheDocument();
   });
 
-  it("chọn 'Trên 9 vé (đoàn)': hiện số tổng đài, bấm tìm không chuyển trang; chọn lại 9 vé thì ẩn", async () => {
+  it("gõ số vé trên 9 (đoàn): giữ số đã gõ, hiện số tổng đài, bấm tìm không chuyển trang; về 9 vé thì ẩn", async () => {
     renderForm();
-    await userEvent.selectOptions(select("Số vé"), "10");
+    typeTickets(15);
+    expect(tickets()).toHaveValue(15);
     const note = screen.getByText(/Mỗi đơn đặt tối đa 9 vé/);
     expect(within(note).getByRole("link", { name: /1900 6763/ })).toHaveAttribute("href", "tel:19006763");
     await userEvent.click(screen.getByRole("button", { name: "Tìm vé" }));
     expect(push).not.toHaveBeenCalled();
-    await userEvent.selectOptions(select("Số vé"), "9");
+    typeTickets(9);
     expect(screen.queryByText(/Mỗi đơn đặt tối đa 9 vé/)).not.toBeInTheDocument();
   });
 
@@ -133,7 +135,7 @@ describe("SearchForm chế độ tuyến", () => {
     expect(select("Điểm đi")).toHaveValue("ben-xe-mc");
     expect(select("Điểm đến")).toHaveValue("nguyen-tuan");
     expect(screen.getByLabelText("Ngày đi")).toHaveValue("2026-10-31");
-    expect(select("Số vé")).toHaveValue("3");
+    expect(tickets()).toHaveValue(3);
     await submit();
     const { search, own } = pushed();
     // chiều b → a: đi từ Mộc Châu về Mỹ Đình
@@ -259,7 +261,7 @@ describe("SearchForm chế độ tuyến", () => {
     renderForm({ locale: "en" });
     expect(screen.getByRole("button", { name: "Saigon – Vung Tau" })).toBeInTheDocument();
     expect(select("From")).toBeInTheDocument();
-    expect(select("Tickets")).toBeInTheDocument();
+    expect(screen.getByRole("spinbutton", { name: "Tickets" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Add return date" })).toBeInTheDocument();
   });
 });
@@ -386,7 +388,7 @@ describe("Chuyến hôm nay", () => {
   it("bấm chip giữ số vé đã chọn trên form (đếm vẫn theo 1 vé)", async () => {
     tripsState.value = loaded(["07:00"]);
     renderForm({ todayChips: true });
-    await userEvent.selectOptions(select("Số vé"), "3");
+    typeTickets(3);
     await waitFor(() => expect(screen.getByRole("button", { name: /6–11h/ })).toBeEnabled());
     await userEvent.click(screen.getByRole("button", { name: /6–11h/ }));
     expect(pushed().search.numberGuest).toBe(3);

@@ -48,13 +48,15 @@ interface Props {
   bar?: boolean;
   /** Chế độ tuyến: khoá tuyến đang chọn, ẩn nút đổi tuyến (trang tuyến). */
   lockCorridor?: boolean;
+  /** Chế độ tuyến khoá: trang chiều ngược lại, nút "Đổi chiều" chuyển sang đó (xem `CorridorForm`). */
+  swapHref?: string | null;
 }
 
 /**
  * Ô tìm vé: chế độ tuyến chính (`CorridorForm`) hoặc chọn điểm tự do (`FreeSearchForm`), đổi qua lại bằng liên kết cuối thẻ.
  * Chế độ tự do giữ nguyên hành vi cũ.
  */
-export function SearchForm({ initial, glass = false, mode, todayChips = false, bar = false, lockCorridor = false }: Props) {
+export function SearchForm({ initial, glass = false, mode, todayChips = false, bar = false, lockCorridor = false, swapHref = null }: Props) {
   const { corridors } = useBookingConfig();
   const entry = corridors.length ? (mode ?? (initial?.corridor ? "corridor" : "free")) : "free";
   if (entry === "corridor") {
@@ -68,6 +70,7 @@ export function SearchForm({ initial, glass = false, mode, todayChips = false, b
         bar={bar}
         todayChips={todayChips}
         lockCorridor={lockCorridor}
+        swapHref={swapHref}
       />
     );
   }

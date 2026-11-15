@@ -55,7 +55,7 @@ export function RouteLandingPage({ view, prices, promos = [], locale, places, or
         <JsonLd key={i} data={data} />
       ))}
       <RouteHero view={view} locale={locale} photo={routeHeroPhoto(`${start}/${end}`)} reverse={reverse}>
-        <RouteSearchForm places={places} landing={`${start}/${end}`} />
+        <RouteSearchForm places={places} landing={`${start}/${end}`} swapHref={reverse?.href ?? null} />
       </RouteHero>
       <RoutePromos promos={promos} locale={locale} />
       <RouteSchedule view={view} locale={locale}>
