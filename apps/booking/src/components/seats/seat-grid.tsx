@@ -2,6 +2,7 @@
 
 import { Check } from "lucide-react";
 import { useLocale, useT } from "@/components/providers";
+import type { PolicySeat } from "@/lib/seat-policy";
 import type { SeatGrid } from "@/lib/seats";
 import type { Seat } from "@/schemas/trip";
 
@@ -45,8 +46,10 @@ export function SeatFloor({ grid, selected, showPrice, onToggle, label }: Props)
             if (!seat) return <span key={`n${c}`} className="hv-seat-empty" aria-hidden />;
             const isSelected = selectedIds.has(seat.id);
             const booked = !seat.is_empty;
+            // Chỗ web không bán (lib/seat-policy): nói rõ "Không bán online"/"Trung chuyển", không gộp vào "Đã đặt".
+            const closed = (seat as PolicySeat).transfer ? "transfer" : (seat as PolicySeat).web_blocked ? "offline" : null;
             const price = seatPrice(seat.price, locale);
-            const ariaLabel = booked ? t("ux.seat_aria_booked", { name: seat.name }) : showPrice ? t("ux.seat_aria_price", { name: seat.name, price: `${price} ${t("ux.vnd")}` }) : t("ux.seat_aria", { name: seat.name });
+            const ariaLabel = booked && closed ? t(closed === "transfer" ? "ux.seat_aria_transfer" : "ux.seat_aria_offline", { name: seat.name }) : booked ? t("ux.seat_aria_booked", { name: seat.name }) : showPrice ? t("ux.seat_aria_price", { name: seat.name, price: `${price} ${t("ux.vnd")}` }) : t("ux.seat_aria", { name: seat.name });
             return (
               <button
                 key={seat.id}
@@ -59,7 +62,7 @@ export function SeatFloor({ grid, selected, showPrice, onToggle, label }: Props)
               >
                 <span className="hv-seat-no">{seat.name}</span>
                 {booked ? (
-                  <span className="hv-seat-price">{t("list_trip.booked")}</span>
+                  <span className="hv-seat-price">{t(closed === "transfer" ? "list_trip.transfer_seat" : closed ? "list_trip.offline_seat" : "list_trip.booked")}</span>
                 ) : showPrice ? (
                   <>
                     <span className="hv-seat-price">{price}</span>

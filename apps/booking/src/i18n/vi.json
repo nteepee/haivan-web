@@ -93,6 +93,8 @@
   "seat_aria": "Ghế {{name}}",
   "seat_aria_price": "Ghế {{name}}, {{price}}",
   "seat_aria_booked": "Ghế {{name}}, đã đặt",
+  "seat_aria_offline": "Ghế {{name}}, không bán trực tuyến",
+  "seat_aria_transfer": "Ghế {{name}}, chỗ trung chuyển",
   "vnd": "VNĐ"
  },
  "list_trip": {
@@ -102,6 +104,8 @@
   "intercity_bus": "Xe liên tỉnh",
   "progress": "Đang đặt",
   "booked": "Đã đặt",
+  "offline_seat": "Không bán online",
+  "transfer_seat": "Trung chuyển",
   "continue": "Tiếp tục",
   "floor": "Tầng",
   "view_more": "Xem thêm",
@@ -133,6 +137,7 @@
   "vehicle_alt": "Xe {{name}} của Hải Vân",
   "route_line": "Xe tuyến {{name}}",
   "seat_error": "Không tải được sơ đồ ghế. Vui lòng thử lại.",
+  "load_error": "Chưa tải được danh sách chuyến do hệ thống đặt vé phản hồi chậm. Bạn bấm Thử lại, hoặc gọi hotline",
   "count": "{{n}} chuyến ngày {{date}}",
   "edit": "Sửa",
   "list_label": "Danh sách chuyến",

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { csrfViolation } from "@/server/csrf";
+import { blockedInHold } from "@/lib/seat-policy";
 import { allowedPath, isWrite } from "@/server/gw-allowlist";
 import { upstreamSearch } from "@/server/raw-query";
 import { jsonError, NO_STORE } from "@/server/respond";
@@ -24,6 +25,11 @@ async function handle(request: NextRequest, ctx: RouteContext<"/api/hv/gw/[...pa
 
   // DELETE transit/cancel-order có body {reason, type:0}.
   const rawBody = request.method === "GET" ? "" : await request.text();
+  // Chỗ web không bán (giường đầu xe Điện Biên, chỗ trung chuyển, giá tượng trưng): chặn cả khi client bỏ qua sơ đồ đã khoá.
+  if (request.method === "POST" && target === "hold-booking") {
+    const blocked = blockedInHold(safeJson(rawBody));
+    if (blocked.length) return jsonError(422, `Vị trí ${blocked.join(", ")} không mở bán trực tuyến. Vui lòng chọn vị trí khác.`);
+  }
   try {
     // Tập mã che (mọi mã của mọi chương trình, kể cả đã tắt): che MỌI phản hồi và chặn gõ thẳng mã ẩn.
     const mask = await getMaskSet();
@@ -63,3 +69,11 @@ export const GET = handle;
 export const POST = handle;
 export const PUT = handle;
 export const DELETE = handle;
+
+function safeJson(text: string): unknown {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}

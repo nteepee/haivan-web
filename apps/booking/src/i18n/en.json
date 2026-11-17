@@ -93,6 +93,8 @@
   "seat_aria": "Seat {{name}}",
   "seat_aria_price": "Seat {{name}}, {{price}}",
   "seat_aria_booked": "Seat {{name}}, booked",
+  "seat_aria_offline": "Seat {{name}}, not sold online",
+  "seat_aria_transfer": "Seat {{name}}, transfer seat",
   "vnd": "VND"
  },
  "list_trip": {
@@ -102,6 +104,8 @@
   "intercity_bus": "Inter-city Bus",
   "progress": "In progress of booking",
   "booked": "Booked",
+  "offline_seat": "Not online",
+  "transfer_seat": "Transfer",
   "continue": "Continue",
   "floor": "Floor",
   "view_more": "View more",
@@ -133,6 +137,7 @@
   "vehicle_alt": "{{name}} coach of Hai Van",
   "route_line": "Coach line {{name}}",
   "seat_error": "Could not load the seat map. Please try again.",
+  "load_error": "Could not load trips because the booking system is responding slowly. Please try again, or call the hotline",
   "count": "{{n}} trips on {{date}}",
   "edit": "Edit",
   "list_label": "Trip list",

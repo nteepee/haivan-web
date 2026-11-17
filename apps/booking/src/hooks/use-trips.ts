@@ -4,6 +4,8 @@ import { keepPreviousData, useInfiniteQuery, useQuery } from "@tanstack/react-qu
 import { z } from "zod";
 import { apigw } from "@/lib/http";
 import { tripsQuery, type SearchParamsData } from "@/lib/search-url";
+import { applySeatPolicy } from "@/lib/seat-policy";
+import { serverLog, timed } from "@/lib/track";
 import { journeyResponseSchema, placesResponseSchema, seatMapResponseSchema, tripSchema, tripsResponseSchema, type Trip } from "@/schemas/trip";
 
 /** `api/places?type=0|1` (cả hai như web cũ); lỗi → danh sách rỗng. */
@@ -67,13 +69,22 @@ export function useTripDetail(trip: Trip, numberGuest: number, enabled: boolean)
     enabled,
     queryFn: async () => {
       const [seats, journey] = await Promise.all([
-        apigw(`trips/${trip.id}`, {
-          query: { departure_id: placeIdOf(trip.from), destination_id: placeIdOf(trip.to), merchant_code: trip.merchant.code, numberGuest },
-          schema: seatMapResponseSchema,
-        }),
+        // Sơ đồ ghế: lỗi hoặc chậm (≥ 8 s) ghi nhật ký máy chủ; mở được/không được là bước "seat_map_view" của phễu.
+        timed("tai-so-do-ghe", () =>
+          apigw(`trips/${trip.id}`, {
+            query: { departure_id: placeIdOf(trip.from), destination_id: placeIdOf(trip.to), merchant_code: trip.merchant.code, numberGuest },
+            schema: seatMapResponseSchema,
+          }),
+        ).then(
+          (map) => (serverLog("seat_map_view", { position: "ok" }), map),
+          (error: unknown) => {
+            serverLog("seat_map_view", { position: "error" });
+            throw error;
+          },
+        ),
         apigw("el/trip_detail", { query: { trip_id: trip.id, merchant_code: trip.merchant.code }, schema: journeyResponseSchema }).catch(() => ({ journey: [] })),
       ]);
-      return { seats, journey: sliceJourney(journey.journey, placeIdOf(trip.from), placeIdOf(trip.to)) };
+      return { seats: applySeatPolicy(seats, trip.merchant.code), journey: sliceJourney(journey.journey, placeIdOf(trip.from), placeIdOf(trip.to)) };
     },
     staleTime: 0,
     placeholderData: keepPreviousData, // đổi số khách không làm mất sơ đồ đang chọn
