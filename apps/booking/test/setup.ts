@@ -1,7 +1,7 @@
 // Thứ tự nạp quan trọng: chặn DNS trước, rồi MSW, trước khi test file import gì.
 import "./dns-block";
 import "@testing-library/jest-dom/vitest";
-import { afterAll, afterEach, expect } from "vitest";
+import { afterAll, afterEach, expect, vi } from "vitest";
 import { server } from "./msw-server";
 import { blockedProductionRequests, isProductionUrl, recordBlocked } from "./network-guard";
 
@@ -15,6 +15,18 @@ server.listen({
     throw new Error(`Unhandled request in test: ${url || "(non-http frame)"}`);
   },
 });
+
+// Đo phễu / nhật ký phía khách (src/lib/track.ts) gửi request riêng tới /api/hv/client-log: tắt ở mọi test
+// để test kiểm request của luồng đặt vé không thấy request lạ. Test của chính track.ts gọi vi.unmock.
+vi.mock("@/lib/track", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/track")>()),
+  track: vi.fn(),
+  serverLog: vi.fn(),
+  logStep: vi.fn(),
+  timed: <T,>(_step: string, run: () => Promise<T>) => run(),
+  installGlobalTracking: () => () => {},
+  publishAttribution: vi.fn(),
+}));
 
 // jsdom chạy XHR đồng bộ ở tiến trình con, ngoài tầm MSW.
 if (typeof XMLHttpRequest !== "undefined") {

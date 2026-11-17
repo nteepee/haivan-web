@@ -5,6 +5,8 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { Toaster } from "@/components/ui/sonner";
 import { translate, type Locale } from "@/i18n/t";
 import { captureAffiliateCookies } from "@/lib/affiliate";
+import { captureAttribution } from "@/lib/attribution";
+import { installGlobalTracking, publishAttribution, serverLog } from "@/lib/track";
 
 const LocaleContext = createContext<Locale>("vi");
 
@@ -24,6 +26,14 @@ export function Providers({ locale, children }: { locale: Locale; children: Reac
   );
   // Như `_app` web cũ: URL có utm_source/aff_sid → ghi cookie 30 ngày (chỉ giá trị thật).
   useEffect(() => captureAffiliateCookies(new URLSearchParams(window.location.search)), []);
+  // Nguồn quảng cáo đầy đủ (utm_*, gclid, fbclid…) + nghe bấm gọi/Zalo, lỗi JS toàn trang (src/lib/track.ts).
+  // Lượt xem: một lần mỗi lần tải trang, như booking.haivan.com.
+  useEffect(() => {
+    captureAttribution();
+    publishAttribution();
+    serverLog("page_view");
+    return installGlobalTracking();
+  }, []);
   return (
     <LocaleContext.Provider value={locale}>
       <QueryClientProvider client={client}>

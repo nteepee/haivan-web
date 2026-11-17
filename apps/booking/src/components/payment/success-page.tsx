@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { track } from "@/lib/track";
 import { useSearchParams } from "next/navigation";
 import { Check, CircleAlert, CircleCheck, Loader2 } from "lucide-react";
 import { useEffect } from "react";
@@ -56,6 +57,18 @@ export function SuccessPage() {
       return gw(`bookings/${code}`, { query: { merchant_code: merchant }, schema: bookingDetailSchema });
     },
   });
+
+  // Chuyển đổi "payment_paid": một lần cho mỗi mã đơn đã thanh toán (tải lại trang không đếm lại).
+  const paidValue = booking.data?.data.payment?.type ? booking.data.data.price : null;
+  useEffect(() => {
+    if (paidValue === null || !code) return;
+    try {
+      const key = `hv_paid_tracked_${code}`;
+      if (sessionStorage.getItem(key)) return;
+      sessionStorage.setItem(key, "1");
+    } catch {}
+    track("payment_paid", { value: paidValue });
+  }, [paidValue, code]);
 
   useEffect(() => {
     if (booking.data && draft?.order_code === code) clear();

@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { logStep, serverLog, track } from "@/lib/track";
 import { useRouter } from "next/navigation";
 import { CircleAlert, Loader2 } from "lucide-react";
 import { useMemo, useState, useSyncExternalStore, type ReactNode } from "react";
@@ -67,6 +68,7 @@ export function SeatPanel({ trip, search, seatMap, numberGuest, onGuestsChange }
         void queryClient.invalidateQueries({ queryKey: ["session"] });
         return setLoginOpen(true);
       }
+      logStep("giu-ghe", 0, error instanceof ApiError ? `${error.status} ${error.message}` : String(error));
       toast.error(error instanceof ApiError ? error.message : "Không giữ được chỗ, vui lòng thử lại");
     },
   });
@@ -77,11 +79,13 @@ export function SeatPanel({ trip, search, seatMap, numberGuest, onGuestsChange }
     if (isCombo && selected.length !== numberGuest) return setGuestOpen(true);
     if (seatMap.is_locked) return toast.warning(t("list_trip.msg.msg_block_booking"));
     if (!session?.loggedIn) return setLoginOpen(true);
+    track("start_checkout", { time: trip.time, guests: selected.length, value: selected.reduce((sum, s) => sum + s.price, 0) });
     hold.mutate();
   };
 
   const onToggle = (seat: Seat) => {
     const next = toggleSeat(selected, seat, { isCombo, numberGuest });
+    if (!selected.length && next.seats.length) serverLog("seat_select");
     if (next.error === "max") toast.warning(t("list_trip.msg.msg_booking_select_seat"));
     if (next.error === "guest") setGuestOpen(true);
     setSelected(next.seats);

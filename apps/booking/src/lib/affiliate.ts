@@ -1,3 +1,4 @@
+import { currentAttribution } from "./attribution";
 import type { Affiliate } from "./seats";
 
 const LOG_QR_KEY = "hv_log_qr";
@@ -43,7 +44,8 @@ export function readAffiliate(now = Date.now()): Affiliate {
   } catch {
     aff = undefined;
   }
-  return { aff, utm_source: readCookie("utm_source"), aff_sid: readCookie("aff_sid") };
+  // Nguồn của lượt quảng cáo gần nhất (kể cả lượt chỉ có utm_source); thiếu thì cookie utm_source kiểu web cũ.
+  return { aff, utm_source: currentAttribution()?.utm_source ?? readCookie("utm_source"), aff_sid: readCookie("aff_sid") };
 }
 
 /** Ghi cookie affiliate từ URL hiện tại (30 ngày, path=/), chỉ giá trị thật — cùng ngữ nghĩa `_app` web cũ. */

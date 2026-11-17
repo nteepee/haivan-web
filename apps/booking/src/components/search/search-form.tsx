@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowLeftRight, Bus, Car, CarTaxiFront, Minus, Plus, PlaneTakeoff, type LucideIcon } from "lucide-react";
+import { track } from "@/lib/track";
 import { openDatePicker } from "@/lib/open-date-picker";
 import { useRouter } from "next/navigation";
 import { useId, useRef, useState } from "react";
@@ -117,6 +118,7 @@ function FreeSearchForm({ initial, glass, bar }: { initial?: Partial<SearchParam
       (from ? toRef : fromRef).current?.focus();
       return;
     }
+    track("search_trip", { date, guests: Math.max(1, guests), target: `${from.name} - ${to.name}`.slice(0, 30) });
     router.push(buildSearchUrl({ from, to, date, numberGuest: Math.max(1, guests), type: initial?.type ?? 2 }, localePrefix(locale)));
   };
 

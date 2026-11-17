@@ -29,6 +29,7 @@ import { roundtripRuleForOutbound } from "@/lib/rule-offers";
 import { appendCorridorParams, buildSearchUrl, type CorridorParams } from "@/lib/search-url";
 import type { Corridor, CorridorDirection, CorridorStop } from "@/schemas/booking-config";
 import { MAX_SEATS } from "@/lib/seats";
+import { track } from "@/lib/track";
 import { GroupCallNote } from "./group-call-note";
 import { TodayTrips } from "./today-trips";
 
@@ -172,6 +173,7 @@ export function CorridorForm({ init, date: initialDate, guests: initialGuests, t
 
   const submit = () => {
     if (!date || overMax) return;
+    track("search_trip", { date, guests, target: `${corridor.id}:${chieu}` });
     router.push(urlFor(date, guests, ownParams()));
   };
 

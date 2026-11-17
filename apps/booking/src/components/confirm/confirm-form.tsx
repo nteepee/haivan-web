@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
+import { track } from "@/lib/track";
 import { useRouter } from "next/navigation";
 import { ChevronRight, CircleAlert, Loader2 } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
@@ -74,6 +75,7 @@ export function ConfirmForm({ draft, customerData, promotions, services: initial
   const book = useMutation({
     mutationFn: (body: Record<string, unknown>) => gw("bookings", { method: "POST", body }),
     onSuccess: () => {
+      track("booking_created", { guests: draft.seats.length, value: seatsTotal(draft.seats), time: draft.trip_info.time ?? undefined });
       // Khứ hồi: nhớ ý định chiều về theo mã đơn để trang thành công mời đặt chiều về.
       saveReturnCarry(draft.order_code, draft.search.corridor, draft.seats.length);
       // Như web cũ: hold-transit sau mọi booking thành công, không chờ.
