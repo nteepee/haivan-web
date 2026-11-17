@@ -68,9 +68,26 @@ export async function request<S extends z.ZodType = z.ZodType<unknown>>(
   return schema ? schema.parse(data) : (data as z.output<S>);
 }
 
-/** Gọi thẳng apigw từ trình duyệt (endpoint công khai), như web cũ. */
-export const apigw = <S extends z.ZodType = z.ZodType<unknown>>(path: string, opts: RequestOptions<S> = {}) =>
-  request(`${APIGW_URL}/api/${path}`, { ...opts, headers: { ...DOMAIN_HEADER, ...opts.headers } });
+/**
+ * Host mà apigw chấp nhận gọi thẳng từ trình duyệt (Origin https://haivan.com, từ 16/11/2026). Đè được bằng
+ * NEXT_PUBLIC_APIGW_DIRECT_HOSTS (danh sách cách nhau dấu phẩy; test dùng để giữ chế độ gọi thẳng trên localhost).
+ */
+const APIGW_SITE_HOSTS = new Set((process.env.NEXT_PUBLIC_APIGW_DIRECT_HOSTS ?? "haivan.com").split(",").map((h) => h.trim()).filter(Boolean));
+
+/** Trang ở host được apigw chấp nhận → gọi thẳng; nơi khác (stg, tunnel) → qua máy chủ Next. */
+export const apigwDirect = (hostname = typeof window === "undefined" ? null : window.location.hostname): boolean =>
+  hostname === null || APIGW_SITE_HOSTS.has(hostname);
+
+/**
+ * Endpoint công khai của apigw. Trên haivan.com gọi thẳng như web cũ; ở nơi khác đi qua proxy `/api/hv/pub/*`
+ * (máy chủ gọi với Origin haivan.com, xem src/server/upstream.ts), vì apigw trả rỗng cho Origin lạ.
+ */
+export const apigw = <S extends z.ZodType = z.ZodType<unknown>>(path: string, opts: RequestOptions<S> = {}) => {
+  if (apigwDirect()) return request(`${APIGW_URL}/api/${path}`, { ...opts, headers: { ...DOMAIN_HEADER, ...opts.headers } });
+  const qs = opts.rawQuery ?? (opts.query ? stringifyQuery(opts.query) : "");
+  const raw: Record<string, string> = qs && /^[\x20-\x7e]*$/.test(qs) ? { "X-HV-Query": qs } : {};
+  return request(`/api/hv/pub/${path}`, { ...opts, query: undefined, rawQuery: qs, headers: { "X-HV-Req": "1", ...raw, ...opts.headers } });
+};
 
 /** CMS không nhận Authorization. */
 export const cms = <S extends z.ZodType = z.ZodType<unknown>>(path: string, opts: RequestOptions<S> = {}) =>

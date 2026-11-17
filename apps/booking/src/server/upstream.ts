@@ -13,9 +13,14 @@ export interface UpstreamRequest {
   write?: boolean;
   /** Hết giờ riêng (mặc định 30 s). */
   timeoutMs?: number;
+  /** IP khách (proxy công khai): chuyển tiếp qua X-Forwarded-For để giới hạn tần suất của apigw vẫn theo từng khách. */
+  clientIp?: string;
 }
 
 export class UpstreamBlocked extends Error {}
+
+/** Origin của site mà apigw chấp nhận cho `Domain: haivan.com`. */
+export const APIGW_SITE_ORIGIN = "https://haivan.com";
 
 /**
  * Gọi apigw với bộ header cố định của web cũ. Mặc định từ chối:
@@ -23,7 +28,7 @@ export class UpstreamBlocked extends Error {}
  * - backend không phải loopback khi chưa bật HV_LIVE_BACKEND=1;
  * - thao tác ghi tới backend thật khi chưa bật HV_LIVE_WRITES=1.
  */
-export async function callApigw({ method, path, search = "", body, authorization, write = method !== "GET", timeoutMs = 30_000 }: UpstreamRequest): Promise<Response> {
+export async function callApigw({ method, path, search = "", body, authorization, write = method !== "GET", timeoutMs = 30_000, clientIp }: UpstreamRequest): Promise<Response> {
   const env = serverEnv();
   const live = !isLoopbackOrigin(env.apigwOrigin);
   // Chốt chặn cuối của E2E: chặn trước cả các cờ HV_LIVE_* (có thể đến từ .env.local).
@@ -37,7 +42,10 @@ export async function callApigw({ method, path, search = "", body, authorization
   const url = new URL(`${env.apigwOrigin}/api/${path}${search}`);
   if (url.origin !== env.apigwOrigin) throw new UpstreamBlocked("URL upstream sai origin");
 
-  const headers: Record<string, string> = { Accept: "application/json", Domain: "haivan.com" };
+  // Từ 16/11/2026 apigw chỉ trả dữ liệu cho `Domain: haivan.com` khi Origin/Referer là https://haivan.com (khác → danh sách rỗng
+  // hoặc 403). Máy chủ Next gọi thay cho site haivan.com nên khai đúng origin đó, ở mọi môi trường (stg, prod).
+  const headers: Record<string, string> = { Accept: "application/json", Domain: "haivan.com", Origin: APIGW_SITE_ORIGIN, Referer: `${APIGW_SITE_ORIGIN}/` };
+  if (clientIp) headers["X-Forwarded-For"] = clientIp;
   if (body !== undefined) headers["Content-Type"] = "application/json";
   if (authorization) headers.Authorization = authorization;
 

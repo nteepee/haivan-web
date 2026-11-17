@@ -83,3 +83,14 @@ describe("gw path hợp lệ", () => {
     }
   });
 });
+
+describe("apigwDirect: chỉ haivan.com gọi thẳng apigw", () => {
+  it("haivan.com (và host trong NEXT_PUBLIC_APIGW_DIRECT_HOSTS) gọi thẳng; IP stg, tunnel, www đi qua máy chủ Next", async () => {
+    const { apigwDirect } = await import("./http");
+    expect(apigwDirect("haivan.com")).toBe(true);
+    expect(apigwDirect("14.225.206.62")).toBe(false);
+    expect(apigwDirect("harry-rebate-gordon-mas.trycloudflare.com")).toBe(false);
+    expect(apigwDirect("www.haivan.com")).toBe(false);
+    expect(apigwDirect(null)).toBe(true); // phía máy chủ
+  });
+});
