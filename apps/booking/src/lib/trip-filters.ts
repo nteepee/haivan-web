@@ -74,8 +74,19 @@ function compareBy(sort: SortKey): (a: Trip, b: Trip) => number {
   }
 }
 
+/**
+ * Ưu tiên thứ tự của trang tuyến (như booking.haivan.com):
+ * - `route`: chuyến có tên tuyến khớp đứng đầu khi xếp theo giờ (mặc định), vd trang Quận 1 – Vũng Tàu đưa tuyến "Vũng Tàu - Quận 1"
+ *   lên trước tuyến "Vũng Tàu - Tân Sơn Nhất" đón ở 159 Điện Biên Phủ. Khách tự chọn xếp theo giá/chỗ trống thì theo đúng lựa chọn đó.
+ * - `merchant`: cùng giờ / cùng giá thì chuyến của nhà xe này đứng trước (trang Hải Vân Xuân Tráng = "17").
+ */
+export interface TripPreference {
+  route?: RegExp;
+  merchant?: string;
+}
+
 /** Lọc rồi sắp xếp trên bản sao; không đổi mảng đầu vào. Bộ lọc giờ và hạng xe là AND giữa hai nhóm, OR trong mỗi nhóm. */
-export function applyTripFilters(trips: readonly Trip[], f: TripFilters): Trip[] {
+export function applyTripFilters(trips: readonly Trip[], f: TripFilters, prefer?: TripPreference): Trip[] {
   const out = trips.filter((trip) => {
     if (f.classes.length && !f.classes.includes(trip.product.name)) return false;
     if (f.buckets.length) {
@@ -85,5 +96,12 @@ export function applyTripFilters(trips: readonly Trip[], f: TripFilters): Trip[]
     }
     return true;
   });
-  return f.sort ? out.sort(compareBy(f.sort)) : out;
+  if (!prefer?.route && !prefer?.merchant) return f.sort ? out.sort(compareBy(f.sort)) : out;
+  const byTime = !f.sort || f.sort === "time";
+  const route = prefer.route;
+  const lineRank = (t: Trip) => (byTime && route?.test(t.route.name.normalize("NFC")) ? 0 : 1);
+  const merchantRank = (t: Trip) => (prefer.merchant && t.merchant.code === prefer.merchant ? 0 : 1);
+  const order = compareBy(f.sort ?? "time");
+  const index = new Map(out.map((t, i) => [t, i]));
+  return out.sort((a, b) => lineRank(a) - lineRank(b) || order(a, b) || merchantRank(a) - merchantRank(b) || index.get(a)! - index.get(b)!);
 }

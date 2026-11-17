@@ -93,3 +93,24 @@ describe("giá hiển thị, hạng xe, trạng thái", () => {
     expect(toggleIn(["a", "b"], "a")).toEqual(["b"]);
   });
 });
+
+describe("applyTripFilters: ưu tiên của trang tuyến", () => {
+  const line = (t: Trip, name: string, merchant = "02"): Trip => ({ ...t, route: { ...t.route, name }, merchant: { ...t.merchant, code: merchant } });
+  const q1 = { route: /quận 1/i };
+
+  it("trang Quận 1 – Vũng Tàu: tuyến Quận 1 đứng đầu khi xếp theo giờ, trong mỗi nhóm vẫn theo giờ", () => {
+    const list = [line(trip(1, "05:00"), "Vũng Tàu - Tân Sơn Nhất"), line(trip(2, "09:00"), "Vũng Tàu - Quận 1"), line(trip(3, "06:00"), "Vũng Tàu - Tân Sơn Nhất"), line(trip(4, "07:00"), "Vũng Tàu - Quận 1")];
+    expect(ids(applyTripFilters(list, EMPTY_FILTERS, q1))).toEqual([4, 2, 1, 3]);
+    expect(ids(applyTripFilters(list, { ...EMPTY_FILTERS, sort: "time" }, q1))).toEqual([4, 2, 1, 3]);
+  });
+
+  it("khách tự xếp theo giá: bỏ ưu tiên tuyến", () => {
+    const list = [line(trip(1, "05:00", { min: 150000 }), "Vũng Tàu - Tân Sơn Nhất"), line(trip(2, "07:00", { min: 250000 }), "Vũng Tàu - Quận 1")];
+    expect(ids(applyTripFilters(list, { ...EMPTY_FILTERS, sort: "price-asc" }, q1))).toEqual([1, 2]);
+  });
+
+  it("trang Xuân Tráng: cùng giờ thì chuyến nhà xe 17 đứng trước, khác giờ vẫn theo giờ", () => {
+    const list = [line(trip(1, "20:00"), "Mỹ Đình - Sơn La", "01"), line(trip(2, "20:00"), "Mỹ Đình - Sơn La", "17"), line(trip(3, "19:00"), "Mỹ Đình - Sơn La", "01")];
+    expect(ids(applyTripFilters(list, EMPTY_FILTERS, { merchant: "17" }))).toEqual([3, 2, 1]);
+  });
+});

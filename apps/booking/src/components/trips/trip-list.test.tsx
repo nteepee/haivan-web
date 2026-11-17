@@ -23,14 +23,20 @@ const mk = (id: number, time: string, product: string, min: number, seats = 11):
 // Giờ đi (đúng thứ tự API): 05:30 Economy, 07:00 Luxury, 12:15 Luxury, 19:00 Royal.
 const TRIPS = [mk(1, "05:30", "Economy", 150000, 2), mk(2, "07:00", "Luxury", 250000), mk(3, "12:15", "Luxury", 200000, 5), mk(4, "19:00", "Royal", 400000)];
 
-const state = { hasNextPage: false };
+const state = { hasNextPage: false, failed: false };
+const refetch = vi.fn();
 vi.mock("@/hooks/use-trips", () => ({
-  useTrips: () => ({ isPending: false, data: { pages: [{ data: TRIPS }] }, hasNextPage: state.hasNextPage, isFetchingNextPage: false, fetchNextPage: vi.fn() }),
+  useTrips: () =>
+    state.failed
+      ? { isPending: false, isError: true, error: new Error("HTTP 502"), isFetching: false, data: undefined, hasNextPage: false, isFetchingNextPage: false, fetchNextPage: vi.fn(), refetch }
+      : { isPending: false, data: { pages: [{ data: TRIPS }] }, hasNextPage: state.hasNextPage, isFetchingNextPage: false, fetchNextPage: vi.fn() },
   useTripDetail: () => ({ isPending: true }),
 }));
 
 beforeEach(() => {
   state.hasNextPage = false;
+  state.failed = false;
+  refetch.mockClear();
 });
 afterEach(cleanup);
 
@@ -123,5 +129,16 @@ describe("TripList: lọc và sắp xếp phía client", () => {
     await user.keyboard("{Escape}");
     expect(screen.getByText(/Bộ lọc chỉ áp dụng cho 4 chuyến đã tải/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Xem thêm" })).toBeInTheDocument();
+  });
+});
+
+describe("TripList: lỗi tải danh sách", () => {
+  it("apigw lỗi/treo → báo lỗi kèm Thử lại, không hiện màn 'không tìm thấy chuyến'", async () => {
+    state.failed = true;
+    renderList();
+    expect(screen.getByRole("alert")).toHaveTextContent("Chưa tải được danh sách chuyến");
+    expect(screen.queryByText("RẤT TIẾC!")).not.toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: "Thử lại" }));
+    expect(refetch).toHaveBeenCalledOnce();
   });
 });

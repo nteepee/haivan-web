@@ -7,6 +7,7 @@ import { SearchForm } from "@/components/search/search-form";
 import { useToday } from "@/hooks/use-today";
 import { corridorForLanding, corridorForRouteForm } from "@/lib/corridors";
 import type { SearchParamsData, SearchPoint } from "@/lib/search-url";
+import type { TripPreference } from "@/lib/trip-filters";
 import { TripList } from "./trip-list";
 
 /** Hai đầu tuyến (toạ độ CMS) truyền từ server sang các khối client của trang tuyến. */
@@ -82,12 +83,21 @@ export function useLandingSearch(places: RoutePlaces, landing?: string): SearchP
   );
 }
 
+/** Thứ tự ưu tiên theo trang tuyến (xem `TripPreference`): tuyến Quận 1 ở trang Sài Gòn ⇄ Vũng Tàu, nhà xe Hải Vân Xuân Tráng ở Sơn La / Mộc Châu. */
+const Q1_LINE: TripPreference = { route: /quận 1/i };
+const XUAN_TRANG: TripPreference = { merchant: "17" };
+export function routeTripPreference(landing?: string): TripPreference | undefined {
+  if (landing === "quan-1/vung-tau" || landing === "vung-tau/quan-1-san-bay") return Q1_LINE;
+  if (landing && /(son-la|moc-chau)/.test(landing)) return XUAN_TRANG;
+  return undefined;
+}
+
 export function RouteTripList({ places, landing }: { places: RoutePlaces; landing?: string }) {
   const search = useLandingSearch(places, landing);
   if (!search) return null;
   return (
     <>
-      <TripList search={search} legTitle={`${places.from.name} - ${places.to.name}`} />
+      <TripList search={search} legTitle={`${places.from.name} - ${places.to.name}`} prefer={routeTripPreference(landing)} />
       {/* Chỗ đệm cho thanh tổng cố định đáy khi một chuyến đang mở (cao 0 nếu không có thanh). */}
     </>
   );
